@@ -90,6 +90,7 @@ public class LoginActivity extends AppCompatActivity  {
                 //TextView t = (TextView) findViewById(R.id.prova);
                 Log.d("test debug:", "ci sono!");
 
+
                 while (data != -1) {
                     current += (char) data;
                     data = isw.read();
