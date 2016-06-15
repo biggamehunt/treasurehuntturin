@@ -89,6 +89,7 @@ public class LoginActivity extends AppCompatActivity   {
 
                 String res = new RetrieveFeedTask().execute(u).get();
 
+
                 Log.d("test debug", "res after:" + res);
             } catch (Exception e) {
                 e.printStackTrace();
