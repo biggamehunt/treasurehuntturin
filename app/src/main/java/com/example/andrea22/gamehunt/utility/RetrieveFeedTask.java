@@ -1,6 +1,7 @@
 package com.example.andrea22.gamehunt.utility;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,6 +24,7 @@ public class RetrieveFeedTask extends AsyncTask<String, Void, String> {
             InputStreamReader isw = new InputStreamReader(in);
 
             int data = isw.read();
+            Log.d("test debug", "data:" + data);
 
             String res="";
             while (data != -1) {
@@ -34,6 +36,8 @@ public class RetrieveFeedTask extends AsyncTask<String, Void, String> {
 
         } catch (Exception e) {
             this.exception = e;
+            Log.d("test debug", "eccez:" + e.getMessage());
+
             return null;
         }
     }

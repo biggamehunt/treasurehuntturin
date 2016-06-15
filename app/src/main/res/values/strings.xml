@@ -9,8 +9,8 @@
     <string name="email">Email</string>
     <string name="phone">Phone Number</string>
 
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_registration">Registrati</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_registration">No account yet? Create one</string>
 
 
 </resources>

@@ -1,5 +1,6 @@
 package com.example.andrea22.gamehunt;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
@@ -23,7 +24,7 @@ import java.net.URL;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity   {
+public class LoginActivity extends Activity {
     @Override
      protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +35,12 @@ public class LoginActivity extends AppCompatActivity   {
 
         EditText usernameview = (EditText) findViewById(R.id.username);
         String username =usernameview.getText().toString();
+        Log.d("test debug", "username:" + username);
+
         EditText passwordview = (EditText) findViewById(R.id.password);
         String password = passwordview.getText().toString();
+        Log.d("test debug", "password:" + password);
+
         try {
 
             try {
