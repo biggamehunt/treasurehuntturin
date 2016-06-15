@@ -1,16 +1,12 @@
 <resources>
-    <string name="app_name">GameHunt</string>
+    <string name="app_name">Login</string>
+    <string name="title_activity_registration">Registration</string>
+
 
     <!-- Strings related to login -->
-    <string name="username">Email</string>
     <string name="password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="action_registration">Registrati</string>
+    <string name="username">Username</string>
+
 </resources>
