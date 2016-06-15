@@ -1,9 +1,15 @@
 package com.example.andrea22.gamehunt;
 
+import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+
+import com.example.andrea22.gamehunt.utility.RetrieveFeedTask;
 
 import java.util.List;
 
@@ -19,5 +25,36 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class RegistrationActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_registration);
+    }
+
+    public void registration (View view) {
+        EditText usernameview = (EditText) findViewById(R.id.registration_username);
+        String username =usernameview.getText().toString();
+        EditText passwordview = (EditText) findViewById(R.id.registration_password);
+        String password = passwordview.getText().toString();
+        EditText emailview = (EditText) findViewById(R.id.registration_email);
+        String email = emailview.getText().toString();
+        EditText phoneview = (EditText) findViewById(R.id.registration_phone);
+        String phone = phoneview.getText().toString();
+        try {
+
+            try {
+                String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=registration&username=" + username + "&password=" + password + "&email=" + email + "&phone=" + phone;
+                String res = new RetrieveFeedTask().execute(u).get();
+                Log.d("test debug", "res after:" + res);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        } catch (Exception e) {
+            Log.d("test debug", "eccezione: "+e.getMessage());
+        }
+    }
+
 
 }

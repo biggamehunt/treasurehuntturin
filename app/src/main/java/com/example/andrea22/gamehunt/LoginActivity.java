@@ -24,7 +24,6 @@ import java.net.URL;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity   {
-    URL url;
     @Override
      protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +55,8 @@ public class LoginActivity extends AppCompatActivity   {
     }
 
     public void registration(View view)  {
-        //Intent intent = new Intent(this, RegistrationActivity.class);
-        //startActivity(intent);
+        Intent intent = new Intent(this, RegistrationActivity.class);
+        startActivity(intent);
     }
 
 }
