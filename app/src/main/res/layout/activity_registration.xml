@@ -1,133 +1,149 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.andrea22.gamehunt.LoginActivity">
+    tools:context="com.example.andrea22.gamehunt.RegistrationActivity"
+    android:background="@drawable/bg">
 
-    <!-- Login progress -->
-    <LinearLayout
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bgrect"
+        >
+
+
+
+    </FrameLayout>
+
+
+    <RelativeLayout
         android:id="@+id/email_login_form"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:weightSum="1">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/terms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_sign_in2"
+            android:textColor="#ffffff"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="turn_back_login"/>
 
-            <TextView
-                android:id="@+id/registration_textusername"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:text="@string/username"
-                />
+        />
 
-            <EditText
-                android:id="@+id/registration_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:singleLine="true"/>
+        <TextView
+            android:id="@+id/create"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_account"
+            android:textColor="#ffffff"
+            android:layout_marginTop="70dp"
+            android:textSize="23dp"
+            android:layout_centerHorizontal="true" />
 
-        </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/registration_textpassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:text="@string/password"
-                />
 
-            <EditText
-                android:id="@+id/registration_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:imeActionId="@+id/login"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:singleLine="true" />
 
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/registration_textemail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:text="@string/email"
-                />
-
-            <EditText
-                android:id="@+id/registration_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-
-                android:singleLine="true"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/registration_textphone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:text="@string/phone"
-                />
-
-            <EditText
-                android:id="@+id/registration_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:inputType="numberDecimal"
-                android:singleLine="true"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <Button
+        <TextView
             android:id="@+id/registration_regitration"
-            style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/action_sign_in"
-            android:textStyle="bold"
-            android:onClick="registration"
-            android:layout_weight="4.71" />
+            android:text="@string/continue_reg"
+            android:textColor="#ffffff"
+            android:textSize="19dp"
+            android:layout_above="@+id/terms"
+            android:padding="16dp"
+            android:gravity="center"
+            android:background="@drawable/rect"
+            android:layout_marginBottom="16dp"
+            android:onClick="registration"/>
 
-    </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/login_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="-05dp">
 
-    </ScrollView>
-</LinearLayout>
+            <EditText
+                android:textColor="#fff"
+                android:id="@+id/registration_username"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:background="@drawable/rect1"
+                android:layout_marginTop="180dp"
+                android:hint="@string/reg_username"
+                android:textColorHint="#ffffff"
+                android:paddingLeft="20dp"
+                android:drawableLeft="@drawable/user"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:drawablePadding="16dp">
+            </EditText>
+
+            <EditText
+                android:textColor="#fff"
+                android:id="@+id/registration_email"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:background="@drawable/rect1"
+                android:layout_marginTop="20dp"
+                android:hint="@string/reg_email"
+                android:textColorHint="#ffffff"
+                android:drawableLeft="@drawable/email"
+                android:paddingLeft="20dp"
+                android:drawablePadding="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+
+                >
+            </EditText>
+
+            <EditText
+                android:textColor="#fff"
+                android:id="@+id/registration_password"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:background="@drawable/rect1"
+                android:layout_marginTop="20dp"
+                android:hint="@string/reg_password"
+                android:textColorHint="#ffffff"
+                android:inputType="textPassword"
+                android:drawableLeft="@drawable/pass"
+                android:paddingLeft="20dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:drawablePadding="16dp">
+            </EditText>
+
+            <EditText
+                android:textColor="#fff"
+                android:id="@+id/registration_phone"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:background="@drawable/rect1"
+                android:layout_marginTop="20dp"
+                android:hint="@string/reg_phone"
+                android:textColorHint="#ffffff"
+                android:inputType="textPassword"
+                android:drawableLeft="@drawable/pass"
+                android:paddingLeft="20dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:drawablePadding="16dp">
+            </EditText>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+

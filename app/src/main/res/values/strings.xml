@@ -11,6 +11,12 @@
 
     <string name="action_sign_in">Sign in</string>
     <string name="action_registration">No account yet? Create one</string>
-
+    <string name="action_sign_in2">Already have an account? Sign in</string>
+    <string name="create_account">CREATE ACCOUNT</string>
+    <string name="continue_reg">Continue</string>
+    <string name="reg_username">Username</string>
+    <string name="reg_email">Email</string>
+    <string name="reg_password">Password</string>
+    <string name="reg_phone">Phone (optional)</string>
 
 </resources>

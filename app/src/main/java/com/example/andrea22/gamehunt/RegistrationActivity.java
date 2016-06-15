@@ -1,5 +1,6 @@
 package com.example.andrea22.gamehunt;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -54,6 +55,10 @@ public class RegistrationActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.d("test debug", "eccezione: "+e.getMessage());
         }
+    }
+    public void turn_back_login (View view) {
+        finish();
+
     }
 
 
