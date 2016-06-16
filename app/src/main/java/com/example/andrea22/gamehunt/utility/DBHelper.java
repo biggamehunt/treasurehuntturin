@@ -3,6 +3,7 @@ package com.example.andrea22.gamehunt.utility;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by Simone on 16/06/2016.
@@ -62,15 +63,17 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        context.deleteDatabase(DATABASE_NAME);
+
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(HuntTable.SQL_DROP_TABLE);
-        db.execSQL(UserTable.SQL_DROP_TABLE);
-
         db.execSQL(UserTable.SQL_CREATE_TABLE);
+        Log.v("db log", "Create Table User eseguito");
         db.execSQL(HuntTable.SQL_CREATE_TABLE);
+        Log.v("db log", "Create Table Hunt eseguito");
+
     }
 
     @Override

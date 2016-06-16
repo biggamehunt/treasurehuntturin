@@ -54,8 +54,14 @@ public class LoginActivity extends AppCompatActivity {
                 DBHelper mDbHelper = new DBHelper(getApplicationContext());
                 SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
+
+
                 String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=login&username=" + username + "&password=" + password;
                 String res = new RetrieveFeedTask().execute(u).get();
+
+                if (res != "0"){
+
+                }
 
                 JSONObject user = new JSONObject(res);
 
@@ -68,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 long newRowId;
                 newRowId = db.insert(DBHelper.UserTable.TABLE_NAME,null,values);
+                Log.v("db log", "Insert User eseguito");
 
                 JSONArray hunts_create = user.getJSONArray("hunts_create");
                 JSONObject hunt = null;
@@ -86,6 +93,8 @@ public class LoginActivity extends AppCompatActivity {
                     values.put(DBHelper.HuntTable.COLUMN_IDUSER, user.getString("idUser"));
 
                     newRowId = db.insert(DBHelper.HuntTable.TABLE_NAME,null,values);
+                    Log.v("db log", "Insert Hunt eseguito");
+
                 }
 
                 Log.d("test debug", "res after:" + res);
