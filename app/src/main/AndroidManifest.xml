@@ -26,11 +26,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegistrationActivity"
-            android:label="@string/title_activity_registration"
-            >
+        android:name=".RegistrationActivity"
+        android:label="@string/title_activity_registration">
+        </activity>
+        <activity
+            android:name=".HuntListActivity"
+            android:label="@string/title_activity_huntlist">
 
         </activity>
+
     </application>
 
 </manifest>

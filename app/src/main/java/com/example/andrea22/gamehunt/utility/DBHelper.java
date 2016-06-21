@@ -37,9 +37,9 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String TABLE_NAME = "HUNT";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_IDHUNT = "idHunt";
-        public static final String COLUMN_MAX_TEAM = "max_team";
-        public static final String COLUMN_TIME_START = "time_start";
-        public static final String COLUMN_TIME_END = "time_end";
+        public static final String COLUMN_MAX_TEAM = "maxTeam";
+        public static final String COLUMN_TIME_START = "timeStart";
+        public static final String COLUMN_TIME_END = "timeEnd";
         public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_ISFINISHED = "isFinished";
         public static final String COLUMN_IDUSER = "idUser";

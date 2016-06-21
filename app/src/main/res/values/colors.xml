@@ -3,4 +3,11 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="title">#EB5D2F</color>
+    <color name="metatile">#ef9172</color>
+    <color name="concept">#EB5D2F</color>
+    <color name="number">#EB5D2F</color>
+    <color name="progressbar">#EB5D2F</color>
+    <color name="secondprogressbar">#EB5D2F</color>
+    <color name="listname">#fff</color>
 </resources>

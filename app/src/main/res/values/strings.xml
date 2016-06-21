@@ -18,5 +18,6 @@
     <string name="reg_email">Email</string>
     <string name="reg_password">Password</string>
     <string name="reg_phone">Phone (optional)</string>
+    <string name="title_activity_huntlist">Hunt List</string>
 
 </resources>
