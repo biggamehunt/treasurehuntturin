@@ -43,9 +43,9 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String TABLE_NAME = "HUNT";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_IDHUNT = "idHunt";
-        public static final String COLUMN_MAX_TEAM = "maxTeam";
-        public static final String COLUMN_TIME_START = "timeStart";
-        public static final String COLUMN_TIME_END = "timeEnd";
+        public static final String COLUMN_MAXTEAM = "maxTeam";
+        public static final String COLUMN_TIMESTART = "timeStart";
+        public static final String COLUMN_TIMEEND = "timeEnd";
         public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_ISFINISHED = "isFinished";
         public static final String COLUMN_IDUSER = "idUser";
@@ -56,9 +56,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COLUMN_NAME + " TEXT NOT NULL, " +
                         COLUMN_IDHUNT + " INTEGER PRIMARY KEY NOT NULL, " +
-                        COLUMN_MAX_TEAM + " TEXT NOT NULL, " +
-                        COLUMN_TIME_START + " DATETIME NOT NULL, " +
-                        COLUMN_TIME_END + " DATETIME, " +
+                        COLUMN_MAXTEAM + " TEXT NOT NULL, " +
+                        COLUMN_TIMESTART + " DATETIME NOT NULL, " +
+                        COLUMN_TIMEEND + " DATETIME, " +
                         COLUMN_DESCRIPTION + " TEXT, " +
                         COLUMN_ISFINISHED + " BOOLEAN NOT NULL, " +
                         COLUMN_IDUSER + " INTEGER NOT NULL, " +
@@ -66,6 +66,37 @@ public class DBHelper extends SQLiteOpenHelper {
 
         private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
+
+    public class StageTable {
+        public static final String TABLE_NAME = "STAGE";
+        public static final String COLUMN_IDSTAGE = "idStage";
+        public static final String COLUMN_RAY = "ray";
+        public static final String COLUMN_NUMSTAGE = "numStage";
+        public static final String COLUMN_LOCATION = "location";
+        public static final String COLUMN_CLUE = "clue";
+        public static final String COLUMN_ISLOCATIONREQUIRED = "isLocationRequired";
+        public static final String COLUMN_ISPHOTOREQUIRED = "isPhotoRequired";
+        public static final String COLUMN_IDHUNT = "idHunt";
+        public static final String HUNTTABLE = "HUNT";
+
+        private static final String SQL_CREATE_TABLE =
+                "CREATE TABLE " + TABLE_NAME + " (" +
+                        COLUMN_IDSTAGE + " INTEGER PRIMARY KEY NOT NULL, " +
+
+                        COLUMN_RAY + " TEXT NOT NULL, " +
+                        COLUMN_NUMSTAGE + " INTEGER NOT NULL, " +
+                        COLUMN_LOCATION + " TEXT, " +
+                        COLUMN_CLUE + " TEXT, " +
+                        COLUMN_ISLOCATIONREQUIRED + " BOOLEAN NOT NULL, " +
+                        COLUMN_ISPHOTOREQUIRED + " BOOLEAN NOT NULL, " +
+
+                        COLUMN_IDHUNT + " INTEGER NOT NULL, " +
+                        "FOREIGN KEY(" + COLUMN_IDHUNT + ") REFERENCES " + HUNTTABLE + "(" + COLUMN_IDHUNT + "));";
+
+        private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+    }
+
+
 
     private DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -86,13 +117,17 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.v("db log", "Create Table User eseguito");
         db.execSQL(HuntTable.SQL_CREATE_TABLE);
         Log.v("db log", "Create Table Hunt eseguito");
+        db.execSQL(StageTable.SQL_CREATE_TABLE);
+        Log.v("db log", "Create Table Stage eseguito");
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(StageTable.SQL_DROP_TABLE);
         db.execSQL(HuntTable.SQL_DROP_TABLE);
         db.execSQL(UserTable.SQL_DROP_TABLE);
+
         onCreate(db);
     }
 
@@ -101,14 +136,14 @@ public class DBHelper extends SQLiteOpenHelper {
         JSONObject user = new JSONObject(res);
 
         ContentValues values = new ContentValues();
-        values.put(DBHelper.UserTable.COLUMN_IDUSER, user.getString("idUser"));
-        values.put(DBHelper.UserTable.COLUMN_USERNAME, user.getString("username"));
-        values.put(DBHelper.UserTable.COLUMN_EMAIL, user.getString("email"));
-        values.put(DBHelper.UserTable.COLUMN_PHOTO, user.isNull("photo") == false ? user.getString("photo") : "");
-        values.put(DBHelper.UserTable.COLUMN_PHONE, user.isNull("phone" ) == false ? user.getString("phone") : "");
+        values.put(UserTable.COLUMN_IDUSER, user.getString("idUser"));
+        values.put(UserTable.COLUMN_USERNAME, user.getString("username"));
+        values.put(UserTable.COLUMN_EMAIL, user.getString("email"));
+        values.put(UserTable.COLUMN_PHOTO, user.isNull("photo") == false ? user.getString("photo") : "");
+        values.put(UserTable.COLUMN_PHONE, user.isNull("phone" ) == false ? user.getString("phone") : "");
 
         long newRowId;
-        newRowId = db.insert(DBHelper.UserTable.TABLE_NAME,null,values);
+        newRowId = db.insert(UserTable.TABLE_NAME,null,values);
         Log.v("db log", "Insert User eseguito");
         if (user.isNull("hunts") == false) {
             JSONArray hunts_create = user.getJSONArray("hunts");
@@ -118,17 +153,50 @@ public class DBHelper extends SQLiteOpenHelper {
 
                     hunt = hunts_create.getJSONObject(i);
                     values = new ContentValues();
-                    values.put(DBHelper.HuntTable.COLUMN_NAME, hunt.getString("name"));
-                    values.put(DBHelper.HuntTable.COLUMN_IDHUNT, hunt.getString("idHunt"));
-                    values.put(DBHelper.HuntTable.COLUMN_MAX_TEAM, hunt.getString("maxTeam"));
-                    values.put(DBHelper.HuntTable.COLUMN_TIME_START, hunt.getString("timeStart"));
-                    values.put(DBHelper.HuntTable.COLUMN_TIME_END, hunt.getString("timeEnd"));
-                    values.put(DBHelper.HuntTable.COLUMN_DESCRIPTION, hunt.isNull("description") == false ? hunt.getString("description") : "");
-                    values.put(DBHelper.HuntTable.COLUMN_ISFINISHED, hunt.getString("isFinished"));
-                    values.put(DBHelper.HuntTable.COLUMN_IDUSER, user.getString("idUser"));
+                    values.put(HuntTable.COLUMN_NAME, hunt.getString("name"));
+                    values.put(HuntTable.COLUMN_IDHUNT, hunt.getString("idHunt"));
+                    values.put(HuntTable.COLUMN_MAXTEAM, hunt.getString("maxTeam"));
+                    values.put(HuntTable.COLUMN_TIMESTART, hunt.getString("timeStart"));
+                    values.put(HuntTable.COLUMN_TIMEEND, hunt.getString("timeEnd"));
+                    values.put(HuntTable.COLUMN_DESCRIPTION, hunt.isNull("description") == false ? hunt.getString("description") : "");
+                    values.put(HuntTable.COLUMN_ISFINISHED, hunt.getString("isFinished"));
+                    values.put(HuntTable.COLUMN_IDUSER, user.getString("idUser"));
 
-                    newRowId = db.insert(DBHelper.HuntTable.TABLE_NAME, null, values);
+                    newRowId = db.insert(HuntTable.TABLE_NAME, null, values);
                     Log.v("db log", "Insert Hunt eseguito");
+
+                    if (hunt.isNull("stages") == false) {
+                        JSONArray stages_create = user.getJSONArray("hunts");
+                        JSONObject stage = null;
+                        if (hunts_create != null || hunts_create.length()==0) {
+                            for (int j = 0; j < hunts_create.length(); j++) {
+
+                                stage = stages_create.getJSONObject(j);
+                                values = new ContentValues();
+
+
+
+
+
+
+                                values.put(StageTable.COLUMN_IDSTAGE, stage.getString("idStage"));
+                                values.put(StageTable.COLUMN_RAY, stage.isNull("ray") == false ? hunt.getString("ray"):"");
+                                values.put(StageTable.COLUMN_NUMSTAGE, hunt.getString("numStage"));
+                                values.put(StageTable.COLUMN_LOCATION, stage.isNull("location") == false ? hunt.getString("location"):"");
+                                values.put(StageTable.COLUMN_CLUE, stage.isNull("clue") == false ? hunt.getString("clue"):"");
+                                values.put(StageTable.COLUMN_ISLOCATIONREQUIRED, hunt.getString("isLocationRequired"));
+                                values.put(StageTable.COLUMN_ISPHOTOREQUIRED, hunt.getString("isPhotoRequired"));
+                                values.put(StageTable.COLUMN_IDHUNT, user.getString("idHunt"));
+
+                                newRowId = db.insert(StageTable.TABLE_NAME, null, values);
+
+                                Log.v("db log", "Insert Stage eseguito");
+
+                            }
+                        }
+                    }
+
+
 
                 }
             }

@@ -66,8 +66,8 @@ public class LoginActivity extends AppCompatActivity {
                     CharSequence text = getString(R.string.login_error);
                     int duration = Toast.LENGTH_SHORT;
 
-                   Toast toast = Toast.makeText(this, text, duration);
-                   toast.show();
+                       Toast toast = Toast.makeText(this, text, duration);
+                       toast.show();
                 }
 
 
