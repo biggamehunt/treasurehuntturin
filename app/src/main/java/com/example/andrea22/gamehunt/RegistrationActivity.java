@@ -1,6 +1,8 @@
 package com.example.andrea22.gamehunt;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.andrea22.gamehunt.utility.DBHelper;
 import com.example.andrea22.gamehunt.utility.RetrieveFeedTask;
 
 import java.util.List;
@@ -46,7 +49,13 @@ public class RegistrationActivity extends AppCompatActivity {
             try {
                 String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=registration&username=" + username + "&password=" + password + "&email=" + email + "&phone=" + phone;
                 String res = new RetrieveFeedTask().execute(u).get();
-                Log.d("test debug", "res after:" + res);
+                if (!res.equals("0")){
+                    DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                    SQLiteDatabase db = myHelper.getWritableDatabase();
+                    myHelper.createDB(db, res);
+                    Intent intent = new Intent(this, HuntListActivity.class);
+                    startActivity(intent);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

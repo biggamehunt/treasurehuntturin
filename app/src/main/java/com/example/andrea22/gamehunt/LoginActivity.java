@@ -15,6 +15,7 @@ import com.example.andrea22.gamehunt.utility.DBHelper;
 import com.example.andrea22.gamehunt.utility.RetrieveFeedTask;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -42,76 +43,37 @@ public class LoginActivity extends AppCompatActivity {
 
         EditText usernameview = (EditText) findViewById(R.id.username);
         String username = usernameview.getText().toString();
-        Log.d("test debug", "username:" + username);
 
         EditText passwordview = (EditText) findViewById(R.id.password);
         String password = passwordview.getText().toString();
-        Log.d("test debug", "password:" + password);
 
         try {
 
             try {
-                DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
-                SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
 
 
                 String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=login&username=" + username + "&password=" + password;
                 String res = new RetrieveFeedTask().execute(u).get();
 
-                if (res != "0"){
-                    JSONObject user = new JSONObject(res);
-
-                    ContentValues values = new ContentValues();
-                    values.put(DBHelper.UserTable.COLUMN_IDUSER, user.getString("idUser"));
-                    values.put(DBHelper.UserTable.COLUMN_USERNAME, user.getString("username"));
-                    values.put(DBHelper.UserTable.COLUMN_EMAIL, user.getString("email"));
-                    values.put(DBHelper.UserTable.COLUMN_PHOTO, user.isNull("photo") == false ? user.getString("photo") : "");
-                    values.put(DBHelper.UserTable.COLUMN_PHONE, user.isNull("phone" ) == false ? user.getString("phone") : "");
-
-                    long newRowId;
-                    newRowId = db.insert(DBHelper.UserTable.TABLE_NAME,null,values);
-                    Log.v("db log", "Insert User eseguito");
-
-                    JSONArray hunts_create = user.getJSONArray("hunts");
-                    JSONObject hunt = null;
-                    if (hunts_create!=null) {
-                        for (int i = 0; i < hunts_create.length(); i++) {
-
-                            hunt = hunts_create.getJSONObject(i);
-                            values = new ContentValues();
-                            values.put(DBHelper.HuntTable.COLUMN_NAME, hunt.getString("name"));
-                            values.put(DBHelper.HuntTable.COLUMN_IDHUNT, hunt.getString("idHunt"));
-                            values.put(DBHelper.HuntTable.COLUMN_MAX_TEAM, hunt.getString("maxTeam"));
-                            values.put(DBHelper.HuntTable.COLUMN_TIME_START, hunt.getString("timeStart"));
-                            values.put(DBHelper.HuntTable.COLUMN_TIME_END, hunt.getString("timeEnd"));
-                            values.put(DBHelper.HuntTable.COLUMN_DESCRIPTION, hunt.isNull("description") == false ? hunt.getString("description") : "");
-                            values.put(DBHelper.HuntTable.COLUMN_ISFINISHED, hunt.getString("isFinished"));
-                            values.put(DBHelper.HuntTable.COLUMN_IDUSER, user.getString("idUser"));
-
-                            newRowId = db.insert(DBHelper.HuntTable.TABLE_NAME, null, values);
-                            Log.v("db log", "Insert Hunt eseguito");
-
-                        }
-                    }
-
-                    Log.d("test debug", "res after:" + res);
+                if (!res.equals("0")){
+                    DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                    SQLiteDatabase db = myHelper.getWritableDatabase();
+                    myHelper.createDB(db, res);
                     Intent intent = new Intent(this, HuntListActivity.class);
                     startActivity(intent);
                 }
 
-
-
-
             } catch (Exception e) {
+                Log.d("test debug", "eccezione: "+e.getMessage());
                 e.printStackTrace();
             }
 
 
         } catch (Exception e) {
             Log.d("test debug", "eccezione: "+e.getMessage());
-        }
+            e.printStackTrace();
 
+        }
 
     }
 
