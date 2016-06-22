@@ -37,6 +37,11 @@
             android:label="@string/title_activity_huntlist">
 
         </activity>
+        <activity
+            android:name=".NewHuntActivity"
+            android:label="@string/title_activity_newhunt">
+
+        </activity>
 
     </application>
 

@@ -57,7 +57,7 @@ public class HuntListActivity extends AppCompatActivity {
     public void goToHunt(View view)  {
 
         Log.v("db log", "id: " +view.getId());
-        Intent intent = new Intent(this, RegistrationActivity.class);
+        Intent intent = new Intent(this, NewHuntActivity.class);
         startActivity(intent);
     }
 }
