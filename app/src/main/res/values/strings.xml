@@ -7,17 +7,27 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
-    <string name="phone">Phone Number</string>
+    <string name="phone">Numero di Telefono</string>
 
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_registration">No account yet? Create one</string>
-    <string name="action_sign_in2">Already have an account? Sign in</string>
-    <string name="create_account">CREATE ACCOUNT</string>
-    <string name="continue_reg">Continue</string>
+
+    <!-- LOGIN -->
+    <string name="action_sign_in">Login</string>
+    <string name="action_registration">Non hai un nuovo account? Creane uno!</string>
+    <string name="action_sign_in2">Hai già un account? Effettua il Login!</string>
+    <string name="create_account">CREA ACCOUNT</string>
+    <string name="continue_reg">Continua</string>
+    <string name="login_error">Errore: credenziali non valide</string>
+
+
+    <!-- REGISTRATION -->
     <string name="reg_username">Username</string>
     <string name="reg_email">Email</string>
     <string name="reg_password">Password</string>
-    <string name="reg_phone">Phone (optional)</string>
+    <string name="reg_phone">Telefono (opzionale)</string>
+    <string name="reg_error">Errore: username o email non disponibile</string>
+
+
+    <!-- HOME -->
     <string name="title_activity_huntlist">Hunt List</string>
     <string name="welcome">Scegli la caccia a cui partecipare</string>
 

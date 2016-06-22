@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.utility.DBHelper;
 import com.example.andrea22.gamehunt.utility.RetrieveFeedTask;
@@ -61,7 +62,15 @@ public class LoginActivity extends AppCompatActivity {
                     myHelper.createDB(db, res);
                     Intent intent = new Intent(this, HuntListActivity.class);
                     startActivity(intent);
+                } else {
+                    CharSequence text = getString(R.string.login_error);
+                    int duration = Toast.LENGTH_SHORT;
+
+                   Toast toast = Toast.makeText(this, text, duration);
+                   toast.show();
                 }
+
+
 
             } catch (Exception e) {
                 Log.d("test debug", "eccezione: "+e.getMessage());
