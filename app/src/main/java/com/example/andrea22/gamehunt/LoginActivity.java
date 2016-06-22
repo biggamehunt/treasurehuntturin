@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         try {
 
             try {
-                DBHelper mDbHelper = new DBHelper(getApplicationContext());
+                DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
                 SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
 

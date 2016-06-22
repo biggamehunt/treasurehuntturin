@@ -10,49 +10,15 @@
     tools:openDrawer="start">
 
 
-    <include layout="@layout/navbar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/white">
 
 
-
-
-
-        <android.support.v7.widget.Toolbar
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/menuToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FA6432">
-
-
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_three"/>
-
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_tool_2"
-                android:layout_gravity="right"
-                android:layout_marginRight="15dp"/>
-
-
-
-
-
-
-
-
-
-        </android.support.v7.widget.Toolbar>
+        <include layout="@layout/toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -62,6 +28,7 @@
         >
 
         <LinearLayout
+            android:id="@+id/huntsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -74,79 +41,17 @@
                 android:orientation="vertical"
                 android:background="#FFF">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Overview"
-                    android:textSize="20dp"
-                    android:textColor="@color/white"
-                    android:layout_gravity="center"
-                    android:textStyle="bold"
-                    android:layout_marginTop="25dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="What you are reading the most"
+                    android:text="@string/welcome"
                     android:layout_gravity="center"
                     android:textColor="@color/metatile"
                     android:textSize="14dp"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="20dp"/>
 
             </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#FFF"
-                android:layout_marginTop="40dp">
-
-
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="FASHION"
-                    android:textSize="14dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/concept"
-                    android:layout_marginLeft="30dp"/>
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="25%"
-                    android:textColor="@color/number"
-                    android:textStyle="bold"
-                    android:layout_marginRight="50dp"
-                    />
-
-            </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/firstBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="15dp"
-                android:layout_height="wrap_content"
-                android:progress="40"
-                android:progressTint="@color/progressbar"
-                android:secondaryProgress="250"
-                android:secondaryProgressTint="@color/secondprogressbar"
-                />
-
-
-
-
-
-
-
-
 
 
 
@@ -158,6 +63,7 @@
 
 
     </LinearLayout>
+   <include layout="@layout/navbar"/>
 
 
 

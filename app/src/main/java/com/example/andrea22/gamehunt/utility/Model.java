@@ -24,19 +24,19 @@ public class Model {
     private DBHelper dbHelper = null;
 
 
-    private Model (Context context) {
+    /*private Model (Context context) {
         this.applicationContext = context;
 
         this.dbHelper = new DBHelper(this.applicationContext);
     }
+*/
 
-
-    public static Model getInstance(Context context) {
+    /*public static Model getInstance(Context context) {
         if(instance==null) {
             instance = new Model(context.getApplicationContext());
         }
         return instance;
-    }
+    }*/
 
 /**
     public ArrayList<Course> getCourses() {

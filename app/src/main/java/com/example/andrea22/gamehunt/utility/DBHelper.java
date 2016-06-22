@@ -10,6 +10,7 @@ import android.util.Log;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
+    static DBHelper dbhelper = null;
 
     private static final String DATABASE_NAME = "GameHunt";
     private static final int DATABASE_VERSION = 1;
@@ -61,10 +62,17 @@ public class DBHelper extends SQLiteOpenHelper {
         private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 
-    public DBHelper(Context context) {
+    private DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         context.deleteDatabase(DATABASE_NAME);
 
+    }
+
+    public static  DBHelper getInstance(Context context){
+        if (dbhelper == null){
+            dbhelper = new DBHelper(context);
+        }
+        return dbhelper;
     }
 
     @Override
