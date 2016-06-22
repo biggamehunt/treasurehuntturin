@@ -1,27 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="#FFF"
-    >
-    <include
-        layout="@layout/navbar"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+
+    <include layout="@layout/navbar"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white">
 
-    <include layout="@layout/toolbar"/>
 
 
 
+
+        <android.support.v7.widget.Toolbar
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/menuToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FA6432">
+
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_three"/>
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_tool_2"
+                android:layout_gravity="right"
+                android:layout_marginRight="15dp"/>
+
+
+
+
+
+
+
+
+
+        </android.support.v7.widget.Toolbar>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:scrollbars="none"
+        android:background="@color/white"
         >
 
         <LinearLayout
@@ -42,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:text="Overview"
                     android:textSize="20dp"
-                    android:textColor="@color/title"
+                    android:textColor="@color/white"
                     android:layout_gravity="center"
                     android:textStyle="bold"
                     android:layout_marginTop="25dp" />
@@ -57,7 +94,6 @@
                     android:layout_marginTop="10dp"/>
 
             </LinearLayout>
-
 
 
             <LinearLayout
@@ -110,300 +146,6 @@
 
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#FFF"
-                android:layout_marginTop="40dp">
-
-
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="ENVIRONMENT"
-                    android:textSize="14dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/concept"
-                    android:layout_marginLeft="30dp"/>
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="45%"
-                    android:textColor="@color/number"
-                    android:textStyle="bold"
-                    android:layout_marginRight="50dp"
-                    />
-
-            </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/secondBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_marginRight="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="30dp"
-                android:progress="50"
-                android:progressTint="@color/progressbar"
-                android:secondaryProgress="250"
-                android:secondaryProgressTint="@color/secondprogressbar"
-
-                />
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#FFF"
-                android:layout_marginTop="40dp">
-
-
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="TECHNOLOGY"
-                    android:textSize="14dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/concept"
-                    android:layout_marginLeft="30dp"/>
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="30%"
-                    android:textColor="@color/number"
-                    android:textStyle="bold"
-                    android:layout_marginRight="50dp"
-                    />
-
-            </LinearLayout>
-
-
-            <ProgressBar
-                android:id="@+id/thirdbar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:progress="40"
-                android:progressTint="@color/progressbar"
-                android:secondaryProgress="250"
-                android:secondaryProgressTint="@color/secondprogressbar"
-                />
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#FFF"
-                android:layout_marginTop="40dp">
-
-
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="AUTO"
-                    android:textSize="14dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/concept"
-                    android:layout_marginLeft="30dp"/>
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="15%"
-                    android:textColor="@color/number"
-                    android:textStyle="bold"
-                    android:layout_marginRight="50dp"
-                    />
-
-            </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/fourthbar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:progress="20"
-                android:progressTint="@color/progressbar"
-                android:secondaryProgress="250"
-                android:secondaryProgressTint="@color/secondprogressbar"
-                />
-
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#FFF"
-                android:layout_marginTop="40dp">
-
-
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="FINANCE"
-                    android:textSize="14dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/concept"
-                    android:layout_marginLeft="30dp"/>
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="25%"
-                    android:textColor="@color/number"
-                    android:textStyle="bold"
-                    android:layout_marginRight="50dp"
-                    />
-
-            </LinearLayout>
-
-
-            <ProgressBar
-                android:id="@+id/fifthbar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:progress="35"
-                android:progressTint="@color/progressbar"
-                android:secondaryProgress="250"
-                android:secondaryProgressTint="@color/secondprogressbar"
-                />
-
-
-
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#FFF"
-                android:layout_marginTop="40dp">
-
-
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="SPORTS"
-                    android:textSize="14dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/concept"
-                    android:layout_marginLeft="30dp"/>
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="55%"
-                    android:textColor="@color/number"
-                    android:textStyle="bold"
-                    android:layout_marginRight="50dp"
-                    />
-
-            </LinearLayout>
-
-
-            <ProgressBar
-                android:id="@+id/sixthbar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:progress="55"
-                android:progressTint="@color/progressbar"
-                android:secondaryProgress="250"
-                android:secondaryProgressTint="@color/secondprogressbar"
-                />
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#FFF"
-                android:layout_marginTop="40dp"
-                >
-
-
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="SCIENCE"
-                    android:textSize="14dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/concept"
-                    android:layout_marginLeft="30dp"/>
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="85%"
-                    android:textColor="@color/number"
-                    android:textStyle="bold"
-                    android:layout_marginRight="50dp"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#FFF"
-                android:layout_marginBottom="30dp"
-                >
-                <ProgressBar
-                    android:id="@+id/sevenbar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:progress="80"
-                    android:progressTint="@color/progressbar"
-                    android:secondaryProgress="250"
-                    android:secondaryProgressTint="@color/secondprogressbar"
-                    />
-
-
-            </LinearLayout>
-
-
-
 
 
 
@@ -413,4 +155,10 @@
 
     </ScrollView>
 
-</LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</android.support.v4.widget.DrawerLayout>

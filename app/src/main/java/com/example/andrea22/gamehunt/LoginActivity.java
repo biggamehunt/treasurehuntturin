@@ -73,25 +73,26 @@ public class LoginActivity extends AppCompatActivity {
                     newRowId = db.insert(DBHelper.UserTable.TABLE_NAME,null,values);
                     Log.v("db log", "Insert User eseguito");
 
-                    JSONArray hunts_create = user.getJSONArray("hunts_create");
+                    JSONArray hunts_create = user.getJSONArray("hunts");
                     JSONObject hunt = null;
+                    if (hunts_create!=null) {
+                        for (int i = 0; i < hunts_create.length(); i++) {
 
-                    for(int i = 0; i < hunts_create.length(); i++ ){
+                            hunt = hunts_create.getJSONObject(i);
+                            values = new ContentValues();
+                            values.put(DBHelper.HuntTable.COLUMN_NAME, hunt.getString("name"));
+                            values.put(DBHelper.HuntTable.COLUMN_IDHUNT, hunt.getString("idHunt"));
+                            values.put(DBHelper.HuntTable.COLUMN_MAX_TEAM, hunt.getString("maxTeam"));
+                            values.put(DBHelper.HuntTable.COLUMN_TIME_START, hunt.getString("timeStart"));
+                            values.put(DBHelper.HuntTable.COLUMN_TIME_END, hunt.getString("timeEnd"));
+                            values.put(DBHelper.HuntTable.COLUMN_DESCRIPTION, hunt.isNull("description") == false ? hunt.getString("description") : "");
+                            values.put(DBHelper.HuntTable.COLUMN_ISFINISHED, hunt.getString("isFinished"));
+                            values.put(DBHelper.HuntTable.COLUMN_IDUSER, user.getString("idUser"));
 
-                        hunt = hunts_create.getJSONObject(i);
-                        values = new ContentValues();
-                        values.put(DBHelper.HuntTable.COLUMN_NAME, hunt.getString("name" ));
-                        values.put(DBHelper.HuntTable.COLUMN_IDHUNT, hunt.getString("idHunt" ));
-                        values.put(DBHelper.HuntTable.COLUMN_MAX_TEAM, hunt.getString("maxTeam"));
-                        values.put(DBHelper.HuntTable.COLUMN_TIME_START, hunt.getString("timeStart"));
-                        values.put(DBHelper.HuntTable.COLUMN_TIME_END, hunt.getString("timeEnd"));
-                        values.put(DBHelper.HuntTable.COLUMN_DESCRIPTION, hunt.isNull("description" ) == false ? hunt.getString("description") : "");
-                        values.put(DBHelper.HuntTable.COLUMN_ISFINISHED, hunt.getString("isFinished"));
-                        values.put(DBHelper.HuntTable.COLUMN_IDUSER, user.getString("idUser"));
+                            newRowId = db.insert(DBHelper.HuntTable.TABLE_NAME, null, values);
+                            Log.v("db log", "Insert Hunt eseguito");
 
-                        newRowId = db.insert(DBHelper.HuntTable.TABLE_NAME,null,values);
-                        Log.v("db log", "Insert Hunt eseguito");
-
+                        }
                     }
 
                     Log.d("test debug", "res after:" + res);

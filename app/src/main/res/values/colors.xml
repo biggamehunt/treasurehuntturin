@@ -10,4 +10,6 @@
     <color name="progressbar">#EB5D2F</color>
     <color name="secondprogressbar">#EB5D2F</color>
     <color name="listname">#fff</color>
+    <color name="white">#ffffff</color>
+
 </resources>
