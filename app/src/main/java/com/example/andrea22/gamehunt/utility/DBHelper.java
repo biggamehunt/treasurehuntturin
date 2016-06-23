@@ -144,6 +144,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(UserTable.COLUMN_PHOTO, user.isNull("photo") == false ? user.getString("photo") : "");
         values.put(UserTable.COLUMN_PHONE, user.isNull("phone" ) == false ? user.getString("phone") : "");
 
+
         long newRowId;
         newRowId = db.insert(UserTable.TABLE_NAME,null,values);
         Log.v("db log", "Insert User eseguito");
