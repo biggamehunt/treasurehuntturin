@@ -135,6 +135,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public void createDB(SQLiteDatabase db, String res) throws JSONException {
         JSONObject user = new JSONObject(res);
 
+
+
         ContentValues values = new ContentValues();
         values.put(UserTable.COLUMN_IDUSER, user.getString("idUser"));
         values.put(UserTable.COLUMN_USERNAME, user.getString("username"));

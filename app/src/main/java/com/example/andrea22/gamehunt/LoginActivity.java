@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(View view)  {
 
+
         EditText usernameview = (EditText) findViewById(R.id.username);
         String username = usernameview.getText().toString();
 
