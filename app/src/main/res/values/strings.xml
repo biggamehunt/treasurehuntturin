@@ -36,9 +36,10 @@
     <string name="newhunt">Gestisci una nuova caccia</string>
     <string name="nameHunt">Nome della Caccia</string>
     <string name="title_activity_newhunt">Nuova Caccia</string>
-    <string name="pick_time">Gestisci la cacciaaaa</string>
+    <string name="pick_time">Show Time</string>
     <string name="pick_date">Show Date</string>
     <string name="descriptionHunt">Descrizione</string>
     <string name="title_activity_maps">Map</string>
+    <string name="clueHunt">Suggerimento (Opzionale)</string>
 
 </resources>

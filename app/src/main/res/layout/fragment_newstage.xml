@@ -6,15 +6,6 @@
     tools:context="layout.newstage">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/action_registration"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="registration"
-        />
-
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -25,14 +16,49 @@
         tools:context="com.example.andrea22.gamehunt.MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/action_registration"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="registration"
-        />
+        <EditText
+            android:textColor="#544f4f"
+            android:id="@+id/clueHunt"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="20dp"
+            android:hint="@string/clueHunt"
+            android:textColorHint="#bfb4b4"
+            android:paddingLeft="20dp"
+            android:drawablePadding="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:maxLength="300"
+            />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="is location required?"
+            android:id="@+id/islocreq"
+            android:paddingLeft="20dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="is photo required?"
+            android:id="@+id/isphotoreq"
+            android:paddingLeft="20dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONFERMA"
+            android:id="@+id/donestage"
+            android:paddingLeft="20dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:onClick="TurnToHunt"
+            />
 
 
 </LinearLayout>
