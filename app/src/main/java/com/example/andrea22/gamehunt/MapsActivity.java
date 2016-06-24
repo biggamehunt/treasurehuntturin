@@ -65,12 +65,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            Log.v("maps", "locationnabled true");
             mMap.setMyLocationEnabled(true);
 
         } else {
-            Log.v("maps","locationnabled false");
-
             // Show rationale and request permission.
         }
 
@@ -78,12 +75,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Create a criteria object to retrieve provider
         Criteria criteria = new Criteria();
-
-        // Get the name of the best provider
-        //String provider = locationManager.getBestProvider(criteria, true);
-
-        // Get Current Location
-        //Location myLocation = locationManager.getLastKnownLocation(provider);
 
         LocationManager mLocationManager = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
         List<String> providers = mLocationManager.getProviders(true);
@@ -103,8 +94,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         if (bestLocation != null) {
-            Log.v("maps", "bestLocation != null");
-
             // Get latitude of the current location
             double latitude = bestLocation.getLatitude();
 
@@ -120,16 +109,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             //TODO: aggiungere su R.string titolo e snippet dei marker
             Marker marker =  mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
-
+            marker.setVisible(false);
         }
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
-                Log.d("DEBUG", "Map clicked [" + point.latitude + " / " + point.longitude + "]");
                 if (stagelocation != null) {
                     double distance = DistanceCalculator.distance(point.latitude, point.longitude, stagelocation.getPosition().latitude, stagelocation.getPosition().longitude,"K");
-                    Log.v("maps", "distance: "+distance*1000);
                     if ((distance*1000) <= 600){
                         if (finallocation!= null){
                             finallocation.remove();
@@ -142,8 +129,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                         stagelocation.remove();
                         circle.remove();
-                        Log.v("maps", "reinizializzo stagelocation: " + distance * 1000);
-
                         stagelocation = mMap.addMarker(new MarkerOptions().position(new LatLng(point.latitude, point.longitude)).title("New Stage!").snippet("This is the position of the stage"));
                         stagelocation.setVisible(false);
                         circle = mMap.addCircle(new CircleOptions()
@@ -158,9 +143,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         // For 0% transparency ( ie, opaque ) , specify ff
                                         // The remaining 6 characters(00ff00) specify the fill color
                                 .fillColor(0x2500ff00));
-
-                        Log.v("maps", "width: " + circle.getStrokeWidth());
-
                     }
                 } else {
 

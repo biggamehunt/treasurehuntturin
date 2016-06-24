@@ -75,6 +75,7 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String COLUMN_LOCATION = "location";
         public static final String COLUMN_CLUE = "clue";
         public static final String COLUMN_ISLOCATIONREQUIRED = "isLocationRequired";
+        public static final String COLUMN_ISCHECKREQUIRED = "isCheckRequired";
         public static final String COLUMN_ISPHOTOREQUIRED = "isPhotoRequired";
         public static final String COLUMN_IDHUNT = "idHunt";
         public static final String HUNTTABLE = "HUNT";
@@ -89,7 +90,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         COLUMN_CLUE + " TEXT, " +
                         COLUMN_ISLOCATIONREQUIRED + " BOOLEAN NOT NULL, " +
                         COLUMN_ISPHOTOREQUIRED + " BOOLEAN NOT NULL, " +
-
+                        COLUMN_ISCHECKREQUIRED + " BOOLEAN NOT NULL, " +
                         COLUMN_IDHUNT + " INTEGER NOT NULL, " +
                         "FOREIGN KEY(" + COLUMN_IDHUNT + ") REFERENCES " + HUNTTABLE + "(" + COLUMN_IDHUNT + "));";
 
