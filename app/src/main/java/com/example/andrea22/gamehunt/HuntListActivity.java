@@ -59,5 +59,7 @@ public class HuntListActivity extends AppCompatActivity {
         Log.v("db log", "id: " +view.getId());
         Intent intent = new Intent(this, NewHuntActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
+
     }
 }
