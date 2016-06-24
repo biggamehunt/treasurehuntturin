@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.example.andrea22.gamehunt.utility.DistanceCalculator;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,6 +34,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private Circle circle;
     Marker stagelocation = null;
+    Marker finallocation = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +98,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
                 // Found best last known location: %s", l);
                 bestLocation = l;
+
             }
         }
 
@@ -124,23 +128,58 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onMapClick(LatLng point) {
                 Log.d("DEBUG", "Map clicked [" + point.latitude + " / " + point.longitude + "]");
                 if (stagelocation != null) {
-                    stagelocation.remove();
-                    circle.remove();
+                    double distance = DistanceCalculator.distance(point.latitude, point.longitude, stagelocation.getPosition().latitude, stagelocation.getPosition().longitude,"K");
+                    Log.v("maps", "distance: "+distance*1000);
+                    if ((distance*1000) <= 600){
+                        if (finallocation!= null){
+                            finallocation.remove();
+                        }
+                        finallocation =  mMap.addMarker(new MarkerOptions().position(new LatLng(point.latitude, point.longitude)).title("Obbiettivo!").snippet("This is the position of the stage"));
+
+                    } else {
+                        if (finallocation!= null){
+                            finallocation.remove();
+                        }
+                        stagelocation.remove();
+                        circle.remove();
+                        Log.v("maps", "reinizializzo stagelocation: " + distance * 1000);
+
+                        stagelocation = mMap.addMarker(new MarkerOptions().position(new LatLng(point.latitude, point.longitude)).title("New Stage!").snippet("This is the position of the stage"));
+                        stagelocation.setVisible(false);
+                        circle = mMap.addCircle(new CircleOptions()
+                                .center(new LatLng(point.latitude, point.longitude))
+                                        //// TODO: fare il get dalla textbox
+                                .radius(600)
+                                .strokeColor(0x3500ff00)
+                                .strokeWidth(3)
+                                        //// TODO: inserire sta roba in colors.xml
+                                        // 0x represents, this is an hexadecimal code
+                                        // 55 represents percentage of transparency. For 100% transparency, specify 00.
+                                        // For 0% transparency ( ie, opaque ) , specify ff
+                                        // The remaining 6 characters(00ff00) specify the fill color
+                                .fillColor(0x2500ff00));
+
+                        Log.v("maps", "width: " + circle.getStrokeWidth());
+
+                    }
+                } else {
+
+                    stagelocation = mMap.addMarker(new MarkerOptions().position(new LatLng(point.latitude, point.longitude)).title("New Stage!").snippet("This is the position of the stage"));
+                    stagelocation.setVisible(false);
+                    circle = mMap.addCircle(new CircleOptions()
+                            .center(new LatLng(point.latitude, point.longitude))
+                                    //// TODO: fare il get dalla textbox
+                            .radius(600)
+                            .strokeColor(0x3500ff00)
+                            .strokeWidth(3)
+
+                                    //// TODO: inserire sta roba in colors.xml
+                                    // 0x represents, this is an hexadecimal code
+                                    // 55 represents percentage of transparency. For 100% transparency, specify 00.
+                                    // For 0% transparency ( ie, opaque ) , specify ff
+                                    // The remaining 6 characters(00ff00) specify the fill color
+                            .fillColor(0x2500ff00));
                 }
-
-                stagelocation =  mMap.addMarker(new MarkerOptions().position(new LatLng(point.latitude, point.longitude)).title("New Stage!").snippet("This is the position of the stage"));
-                circle = mMap.addCircle(new CircleOptions()
-                        .center(new LatLng(point.latitude, point.longitude))
-                                //// TODO: fare il get dalla textbox
-                        .radius(300)
-                        .strokeColor(Color.BLACK)
-                                //// TODO: inserire sta roba in colors.xml
-                                // 0x represents, this is an hexadecimal code
-                                // 55 represents percentage of transparency. For 100% transparency, specify 00.
-                                // For 0% transparency ( ie, opaque ) , specify ff
-                                // The remaining 6 characters(00ff00) specify the fill color
-                        .fillColor(0x5500ff00));
-
                 //Do your stuff with LatLng here
                 //Then pass LatLng to other activity
             }
