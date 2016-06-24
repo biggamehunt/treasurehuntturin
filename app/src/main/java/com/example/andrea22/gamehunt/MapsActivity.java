@@ -3,6 +3,7 @@ package com.example.andrea22.gamehunt;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
@@ -13,7 +14,13 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.Switch;
+import android.widget.Toast;
 
+import com.example.andrea22.gamehunt.utility.DBHelper;
 import com.example.andrea22.gamehunt.utility.DistanceCalculator;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,6 +42,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Circle circle;
     Marker stagelocation = null;
     Marker finallocation = null;
+    SeekBar seek;
+
+    @Override
+    protected void onResume (){
+        super.onResume();
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +58,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.fragment_newstage);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
 
+
+        seek = (SeekBar) findViewById(R.id.ray);
+
+        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                if (finallocation != null) {
+                    double distance = DistanceCalculator.distance(stagelocation.getPosition().latitude, stagelocation.getPosition().longitude, finallocation.getPosition().latitude, finallocation.getPosition().longitude, "K");
+                    if (distance > seekBar.getProgress() + 50) {
+                        Log.v("maps","distanza maggiore");
+                        finallocation.remove();
+                        finallocation = null;
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+
+                if (circle != null) {
+                    circle.setRadius(progress + 50);
+                }
+
+
+                // Here call your code when progress will changes
+            }
+        });
 
     }
 
@@ -116,16 +164,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMapClick(LatLng point) {
                 if (stagelocation != null) {
-                    double distance = DistanceCalculator.distance(point.latitude, point.longitude, stagelocation.getPosition().latitude, stagelocation.getPosition().longitude,"K");
-                    if ((distance*1000) <= 600){
-                        if (finallocation!= null){
+                    double distance = DistanceCalculator.distance(point.latitude, point.longitude, stagelocation.getPosition().latitude, stagelocation.getPosition().longitude, "K");
+                    if ((distance) <= (seek.getProgress() + 50)) {
+                        if (finallocation != null) {
                             finallocation.remove();
                         }
-                        finallocation =  mMap.addMarker(new MarkerOptions().position(new LatLng(point.latitude, point.longitude)).title("Obbiettivo!").snippet("This is the position of the stage"));
+                        finallocation = mMap.addMarker(new MarkerOptions().position(new LatLng(point.latitude, point.longitude)).title("Obbiettivo!").snippet("This is the position of the stage"));
 
                     } else {
-                        if (finallocation!= null){
+                        if (finallocation != null) {
                             finallocation.remove();
+                            finallocation = null;
                         }
                         stagelocation.remove();
                         circle.remove();
@@ -134,7 +183,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         circle = mMap.addCircle(new CircleOptions()
                                 .center(new LatLng(point.latitude, point.longitude))
                                         //// TODO: fare il get dalla textbox
-                                .radius(600)
+                                        // TODO: METTERE IL 50 TRA LE COSTANTI
+                                .radius(seek.getProgress() + 50)
                                 .strokeColor(0x3500ff00)
                                 .strokeWidth(3)
                                         //// TODO: inserire sta roba in colors.xml
@@ -151,7 +201,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     circle = mMap.addCircle(new CircleOptions()
                             .center(new LatLng(point.latitude, point.longitude))
                                     //// TODO: fare il get dalla textbox
-                            .radius(600)
+                            .radius(seek.getProgress() + 50)
                             .strokeColor(0x3500ff00)
                             .strokeWidth(3)
 
@@ -168,6 +218,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 
+
+    }
+
+    public void TurnToHunt (View view) {
+
+        //todo: inserire su string i toast
+
+        if (stagelocation == null) {
+            CharSequence text = " AREA DELLO STAGE MANCANTE!";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.show();
+        } else if (finallocation == null) {
+            CharSequence text = "PUNTO DI ARRIVO MANCANTE";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.show();
+        } else {
+            EditText clue = (EditText) findViewById(R.id.clueHunt);
+            String clueText =clue.getText().toString();
+
+            Switch islocreq = (Switch) findViewById(R.id.islocreq);
+            boolean islocreqText =islocreq.isChecked();
+
+            Switch isphotoreq = (Switch) findViewById(R.id.isphotoreq);
+            boolean isphotoreqText =isphotoreq.isChecked();
+
+            Switch ischeckreq = (Switch) findViewById(R.id.ischeckreq);
+            boolean ischeckreqText =ischeckreq.isChecked();
+
+            int rayText =seek.getProgress() + 50;
+
+            double lat = finallocation.getPosition().latitude;
+            double lon = finallocation.getPosition().longitude;
+            
+            DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+            SQLiteDatabase db = myHelper.getWritableDatabase();
+
+            myHelper.addStage(db, clueText, rayText, lat, lon, islocreqText, isphotoreqText, ischeckreqText);
+            onBackPressed();
+        }
 
     }
 

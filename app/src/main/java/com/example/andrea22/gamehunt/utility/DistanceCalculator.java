@@ -22,7 +22,7 @@ public class DistanceCalculator
             dist = dist * 0.8684;
         }
 
-        return (dist);
+        return (dist*1000);
     }
 
     /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/

@@ -67,6 +67,36 @@ public class DBHelper extends SQLiteOpenHelper {
         private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 
+
+    public class AddStageTable {
+        public static final String TABLE_NAME = "ADDSTAGE";
+        public static final String COLUMN_IDSTAGE = "idStage";
+        public static final String COLUMN_RAY = "ray";
+        public static final String COLUMN_LAT = "lat";
+        public static final String COLUMN_LON = "lon";
+        public static final String COLUMN_CLUE = "clue";
+        public static final String COLUMN_ISLOCATIONREQUIRED = "isLocationRequired";
+        public static final String COLUMN_ISCHECKREQUIRED = "isCheckRequired";
+        public static final String COLUMN_ISPHOTOREQUIRED = "isPhotoRequired";
+
+        private static final String SQL_CREATE_TABLE =
+                "CREATE TABLE " + TABLE_NAME + " (" +
+                        COLUMN_IDSTAGE + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+
+                        COLUMN_RAY + " TEXT NOT NULL, " +
+                        COLUMN_LAT + " DOUBLE, " +
+                        COLUMN_LON + " DOUBLE, " +
+                        COLUMN_CLUE + " TEXT, " +
+                        COLUMN_ISLOCATIONREQUIRED + " BOOLEAN NOT NULL, " +
+                        COLUMN_ISPHOTOREQUIRED + " BOOLEAN NOT NULL, " +
+                        COLUMN_ISCHECKREQUIRED + " BOOLEAN NOT NULL );";
+
+        private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+    }
+
+
+
+
     public class StageTable {
         public static final String TABLE_NAME = "STAGE";
         public static final String COLUMN_IDSTAGE = "idStage";
@@ -121,6 +151,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(StageTable.SQL_CREATE_TABLE);
         Log.v("db log", "Create Table Stage eseguito");
 
+        db.execSQL(AddStageTable.SQL_CREATE_TABLE);
+        Log.v("db log", "Create Table Stage eseguito");
+
     }
 
     @Override
@@ -128,6 +161,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(StageTable.SQL_DROP_TABLE);
         db.execSQL(HuntTable.SQL_DROP_TABLE);
         db.execSQL(UserTable.SQL_DROP_TABLE);
+
+        db.execSQL(AddStageTable.SQL_DROP_TABLE);
 
         onCreate(db);
     }
@@ -143,7 +178,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(UserTable.COLUMN_USERNAME, user.getString("username"));
         values.put(UserTable.COLUMN_EMAIL, user.getString("email"));
         values.put(UserTable.COLUMN_PHOTO, user.isNull("photo") == false ? user.getString("photo") : "");
-        values.put(UserTable.COLUMN_PHONE, user.isNull("phone" ) == false ? user.getString("phone") : "");
+        values.put(UserTable.COLUMN_PHONE, user.isNull("phone") == false ? user.getString("phone") : "");
 
 
         long newRowId;
@@ -205,6 +240,23 @@ public class DBHelper extends SQLiteOpenHelper {
                 }
             }
         }
+    }
+
+    public void addStage(SQLiteDatabase db, String clue, int ray, double lat, double lon, boolean isLocationRequired, boolean isCheckRequired, boolean isPhotoRequired)  {
+
+        ContentValues values = new ContentValues();
+        values.put(AddStageTable.COLUMN_RAY, ray);
+        values.put(AddStageTable.COLUMN_LAT, lat);
+        values.put(AddStageTable.COLUMN_LON, lon);
+        values.put(AddStageTable.COLUMN_CLUE, clue);
+        values.put(AddStageTable.COLUMN_ISLOCATIONREQUIRED, isLocationRequired);
+        values.put(AddStageTable.COLUMN_ISCHECKREQUIRED, isCheckRequired);
+        values.put(AddStageTable.COLUMN_ISPHOTOREQUIRED, isPhotoRequired);
+
+        long newRowId;
+        newRowId = db.insert(AddStageTable.TABLE_NAME,null,values);
+        Log.v("db log", "Insert AddStage eseguito");
+
     }
 
 
