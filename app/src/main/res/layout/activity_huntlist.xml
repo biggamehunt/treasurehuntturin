@@ -18,13 +18,11 @@
         android:orientation="vertical"
         android:background="@color/white">
 
-
         <include layout="@layout/toolbar"/>
 
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/main_content"
             xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -69,16 +67,16 @@
 
             </ScrollView>
 
-
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
+                app:elevation="6dp"
+                app:backgroundTint="@color/colorAccent"
+                app:pressedTranslationZ="12dp"
                 android:layout_margin="@dimen/fab_margin"
-                android:src="@android:drawable/ic_input_add"
-                />
-
+                android:src="@drawable/ic_add_white_24dp" />
 
         </android.support.design.widget.CoordinatorLayout>
 
