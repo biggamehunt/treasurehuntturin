@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -43,6 +45,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Marker stagelocation = null;
     Marker finallocation = null;
     SeekBar seek;
+    ScrollView scrollview;
+    ImageView transparentImageView;
 
     @Override
     protected void onResume (){
@@ -58,6 +62,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.fragment_newstage);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
+
+        scrollview = (ScrollView) findViewById(R.id.scrollViewNewStage);
+        transparentImageView = (ImageView) findViewById(R.id.transparent_image);
+
+        transparentImageView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        scrollview.requestDisallowInterceptTouchEvent(true);
+                        // Disable touch on transparent view
+                        return false;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        scrollview.requestDisallowInterceptTouchEvent(false);
+                        return true;
+
+                    case MotionEvent.ACTION_MOVE:
+                        scrollview.requestDisallowInterceptTouchEvent(true);
+                        return false;
+
+                    default:
+                        return true;
+                }
+            }
+        });
 
 
 
@@ -160,9 +194,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             marker.setVisible(false);
         }
 
+
+
+
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
+
                 if (stagelocation != null) {
                     double distance = DistanceCalculator.distance(point.latitude, point.longitude, stagelocation.getPosition().latitude, stagelocation.getPosition().longitude, "K");
                     if ((distance) <= (seek.getProgress() + 50)) {
@@ -218,7 +256,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 
-
     }
 
     public void TurnToHunt (View view) {
@@ -250,7 +287,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Switch ischeckreq = (Switch) findViewById(R.id.ischeckreq);
             boolean ischeckreqText =ischeckreq.isChecked();
 
+            EditText numberComplete = (EditText) findViewById(R.id.numberComplete);
+            int numberCompleteText =Integer.parseInt(numberComplete.getText().toString());
+
+
             int rayText =seek.getProgress() + 50;
+
+            double areaLat = stagelocation.getPosition().latitude;
+            double areaLon = stagelocation.getPosition().longitude;
 
             double lat = finallocation.getPosition().latitude;
             double lon = finallocation.getPosition().longitude;
@@ -258,7 +302,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
             SQLiteDatabase db = myHelper.getWritableDatabase();
 
-            myHelper.addStage(db, clueText, rayText, lat, lon, islocreqText, isphotoreqText, ischeckreqText);
+            myHelper.addStage(db, clueText, rayText, areaLat, areaLon, lat, lon, islocreqText, isphotoreqText, ischeckreqText,numberCompleteText);
             onBackPressed();
         }
 

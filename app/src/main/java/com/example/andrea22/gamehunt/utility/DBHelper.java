@@ -72,24 +72,30 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String TABLE_NAME = "ADDSTAGE";
         public static final String COLUMN_IDSTAGE = "idStage";
         public static final String COLUMN_RAY = "ray";
+        public static final String COLUMN_AREA_LAT = "areaLat";
+        public static final String COLUMN_AREA_LON = "areaLon";
         public static final String COLUMN_LAT = "lat";
         public static final String COLUMN_LON = "lon";
         public static final String COLUMN_CLUE = "clue";
         public static final String COLUMN_ISLOCATIONREQUIRED = "isLocationRequired";
         public static final String COLUMN_ISCHECKREQUIRED = "isCheckRequired";
         public static final String COLUMN_ISPHOTOREQUIRED = "isPhotoRequired";
+        public static final String COLUMN_NUMUSERTOFINISH = "numUserToFinish";
 
         private static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COLUMN_IDSTAGE + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-
-                        COLUMN_RAY + " TEXT NOT NULL, " +
-                        COLUMN_LAT + " DOUBLE, " +
-                        COLUMN_LON + " DOUBLE, " +
+                        COLUMN_AREA_LAT + " DOUBLE NOT NULL, " +
+                        COLUMN_AREA_LON + " DOUBLE NOT NULL, " +
+                        COLUMN_RAY + " INTEGER NOT NULL, " +
+                        COLUMN_LAT + " DOUBLE NOT NULL, " +
+                        COLUMN_LON + " DOUBLE NOT NULL, " +
                         COLUMN_CLUE + " TEXT, " +
                         COLUMN_ISLOCATIONREQUIRED + " BOOLEAN NOT NULL, " +
                         COLUMN_ISPHOTOREQUIRED + " BOOLEAN NOT NULL, " +
-                        COLUMN_ISCHECKREQUIRED + " BOOLEAN NOT NULL );";
+                        COLUMN_ISCHECKREQUIRED + " BOOLEAN NOT NULL, " +
+
+                        COLUMN_NUMUSERTOFINISH + " INTEGER NOT NULL );";
 
         private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
@@ -102,11 +108,15 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String COLUMN_IDSTAGE = "idStage";
         public static final String COLUMN_RAY = "ray";
         public static final String COLUMN_NUMSTAGE = "numStage";
-        public static final String COLUMN_LOCATION = "location";
+        public static final String COLUMN_AREA_LAT = "areaLat";
+        public static final String COLUMN_AREA_LON = "areaLon";
+        public static final String COLUMN_LAT = "lat";
+        public static final String COLUMN_LON = "lon";
         public static final String COLUMN_CLUE = "clue";
         public static final String COLUMN_ISLOCATIONREQUIRED = "isLocationRequired";
         public static final String COLUMN_ISCHECKREQUIRED = "isCheckRequired";
         public static final String COLUMN_ISPHOTOREQUIRED = "isPhotoRequired";
+        public static final String COLUMN_NUMUSERTOFINISH = "numUserToFinish";
         public static final String COLUMN_IDHUNT = "idHunt";
         public static final String HUNTTABLE = "HUNT";
 
@@ -114,13 +124,18 @@ public class DBHelper extends SQLiteOpenHelper {
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COLUMN_IDSTAGE + " INTEGER PRIMARY KEY NOT NULL, " +
 
-                        COLUMN_RAY + " TEXT NOT NULL, " +
+                        COLUMN_AREA_LAT + " DOUBLE NOT NULL, " +
+                        COLUMN_AREA_LON + " DOUBLE NOT NULL, " +
+                        COLUMN_RAY + " INTEGER NOT NULL, " +
+                        COLUMN_LAT + " DOUBLE NOT NULL, " +
+                        COLUMN_LON + " DOUBLE NOT NULL, " +
                         COLUMN_NUMSTAGE + " INTEGER NOT NULL, " +
-                        COLUMN_LOCATION + " TEXT, " +
                         COLUMN_CLUE + " TEXT, " +
                         COLUMN_ISLOCATIONREQUIRED + " BOOLEAN NOT NULL, " +
                         COLUMN_ISPHOTOREQUIRED + " BOOLEAN NOT NULL, " +
                         COLUMN_ISCHECKREQUIRED + " BOOLEAN NOT NULL, " +
+                        COLUMN_NUMUSERTOFINISH + " INTEGER NOT NULL, " +
+
                         COLUMN_IDHUNT + " INTEGER NOT NULL, " +
                         "FOREIGN KEY(" + COLUMN_IDHUNT + ") REFERENCES " + HUNTTABLE + "(" + COLUMN_IDHUNT + "));";
 
@@ -181,8 +196,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(UserTable.COLUMN_PHONE, user.isNull("phone") == false ? user.getString("phone") : "");
 
 
-        long newRowId;
-        newRowId = db.insert(UserTable.TABLE_NAME,null,values);
+        db.insert(UserTable.TABLE_NAME,null,values);
         Log.v("db log", "Insert User eseguito");
         if (user.isNull("hunts") == false) {
             JSONArray hunts_create = user.getJSONArray("hunts");
@@ -201,7 +215,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     values.put(HuntTable.COLUMN_ISFINISHED, hunt.getString("isFinished"));
                     values.put(HuntTable.COLUMN_IDUSER, user.getString("idUser"));
 
-                    newRowId = db.insert(HuntTable.TABLE_NAME, null, values);
+                    db.insert(HuntTable.TABLE_NAME, null, values);
                     Log.v("db log", "Insert Hunt eseguito");
 
                     if (hunt.isNull("stages") == false) {
@@ -214,20 +228,19 @@ public class DBHelper extends SQLiteOpenHelper {
                                 values = new ContentValues();
 
 
-
-
-
-
                                 values.put(StageTable.COLUMN_IDSTAGE, stage.getString("idStage"));
                                 values.put(StageTable.COLUMN_RAY, stage.isNull("ray") == false ? hunt.getString("ray"):"");
                                 values.put(StageTable.COLUMN_NUMSTAGE, hunt.getString("numStage"));
-                                values.put(StageTable.COLUMN_LOCATION, stage.isNull("location") == false ? hunt.getString("location"):"");
                                 values.put(StageTable.COLUMN_CLUE, stage.isNull("clue") == false ? hunt.getString("clue"):"");
                                 values.put(StageTable.COLUMN_ISLOCATIONREQUIRED, hunt.getString("isLocationRequired"));
                                 values.put(StageTable.COLUMN_ISPHOTOREQUIRED, hunt.getString("isPhotoRequired"));
                                 values.put(StageTable.COLUMN_IDHUNT, user.getString("idHunt"));
+                                values.put(StageTable.COLUMN_AREA_LAT, user.getString("areaLat"));
+                                values.put(StageTable.COLUMN_AREA_LON, user.getString("areaLon"));
+                                values.put(StageTable.COLUMN_LAT, user.getString("lat"));
+                                values.put(StageTable.COLUMN_LON, user.getString("lon"));
 
-                                newRowId = db.insert(StageTable.TABLE_NAME, null, values);
+                                db.insert(StageTable.TABLE_NAME, null, values);
 
                                 Log.v("db log", "Insert Stage eseguito");
 
@@ -242,19 +255,21 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addStage(SQLiteDatabase db, String clue, int ray, double lat, double lon, boolean isLocationRequired, boolean isCheckRequired, boolean isPhotoRequired)  {
+    public void addStage(SQLiteDatabase db, String clue, int ray, double areaLat, double areaLon, double  lat, double lon,boolean isLocationRequired, boolean isCheckRequired, boolean isPhotoRequired, int numUserToFinish)  {
 
         ContentValues values = new ContentValues();
         values.put(AddStageTable.COLUMN_RAY, ray);
+        values.put(AddStageTable.COLUMN_AREA_LAT, areaLat);
+        values.put(AddStageTable.COLUMN_AREA_LON, areaLon);
         values.put(AddStageTable.COLUMN_LAT, lat);
         values.put(AddStageTable.COLUMN_LON, lon);
         values.put(AddStageTable.COLUMN_CLUE, clue);
         values.put(AddStageTable.COLUMN_ISLOCATIONREQUIRED, isLocationRequired);
         values.put(AddStageTable.COLUMN_ISCHECKREQUIRED, isCheckRequired);
         values.put(AddStageTable.COLUMN_ISPHOTOREQUIRED, isPhotoRequired);
+        values.put(AddStageTable.COLUMN_NUMUSERTOFINISH, numUserToFinish);
 
-        long newRowId;
-        newRowId = db.insert(AddStageTable.TABLE_NAME,null,values);
+        db.insert(AddStageTable.TABLE_NAME,null,values);
         Log.v("db log", "Insert AddStage eseguito");
 
     }
