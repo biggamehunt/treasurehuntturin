@@ -3,8 +3,9 @@
     <color name="colorPrimary">#FF9800</color>
     <color name="colorPrimaryDark">#F57C00</color>
     <color name="navigationBarColor">#FB8C00</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#03A9F4</color>
 
+    <color name="listcolor">#FFECB3</color>
 
     <color name="title">#EB5D2F</color>
     <color name="metatile">#ef9172</color>

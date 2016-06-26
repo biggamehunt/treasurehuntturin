@@ -30,15 +30,12 @@ import com.example.andrea22.gamehunt.utility.DBHelper;
 public class HuntListActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FloatingActionButton fab;
-    private Animation rotate_forward;
+    private Animation rotate_forward,rotate_backward;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_huntlist);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.menuToolbar);
-        setSupportActionBar(toolbar);
 
         fab = (FloatingActionButton)findViewById(R.id.fab);
         rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
@@ -61,9 +58,16 @@ public class HuntListActivity extends AppCompatActivity implements View.OnClickL
                 TextView timeStart = (TextView) child.getChildAt(1);
                 Log.v("db log", "name db: " + c.getString(0)
                 );
+
                 name.setText(c.getString(c.getColumnIndex("name")));
                 timeStart.setText(c.getString(c.getColumnIndex("timeStart")));
                 myView.setId(Integer.parseInt(c.getString(c.getColumnIndex("idHunt"))));
+
+                if (Integer.parseInt(c.getString(c.getColumnIndex("idHunt")))%2 == 1){
+                    myView.setBackgroundResource(R.color.listcolor);
+                }
+
+
 
                 //toDo: ProgressBar e Matita
 
@@ -109,10 +113,11 @@ public class HuntListActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         if(v.getId() == R.id.fab){
             fab.startAnimation(rotate_forward);
-            Log.d("animazione completata", "");
             Intent intent = new Intent(this, NewHuntActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.enter, R.anim.exit);
+
+
 
 
         }
