@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -33,7 +34,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpCookie;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -71,12 +76,10 @@ public class LoginActivity extends AppCompatActivity {
 
         EditText passwordview = (EditText) findViewById(R.id.password);
         String password = passwordview.getText().toString();
-
+        //Task spinnerTask;
         try {
 
             try {
-
-
 
                 String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=login&username=" + username + "&password=" + password;
                 String res = new RetrieveFeedTask().execute(u).get();
@@ -167,6 +170,23 @@ public class LoginActivity extends AppCompatActivity {
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
