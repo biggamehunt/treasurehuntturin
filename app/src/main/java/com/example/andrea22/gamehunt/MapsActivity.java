@@ -2,6 +2,7 @@ package com.example.andrea22.gamehunt;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -301,8 +302,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             
             DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
             SQLiteDatabase db = myHelper.getWritableDatabase();
+            SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
 
-            myHelper.addStage(db, clueText, rayText, areaLat, areaLon, lat, lon, islocreqText, isphotoreqText, ischeckreqText,numberCompleteText);
+            myHelper.addStage(db, pref.getInt("idUser",0),clueText, rayText, areaLat, areaLon, lat, lon, islocreqText, isphotoreqText, ischeckreqText,numberCompleteText);
             onBackPressed();
         }
 

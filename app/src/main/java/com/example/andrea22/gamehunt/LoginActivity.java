@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -83,7 +84,11 @@ public class LoginActivity extends AppCompatActivity {
                 if (!res.equals("0")) {
                     DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                     SQLiteDatabase db = myHelper.getWritableDatabase();
-                    myHelper.createDB(db, res);
+                    int idUser = myHelper.createDB(db, res);
+                    SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putInt("idUser", idUser);
+                    editor.commit();
                     Intent intent = new Intent(this, HuntListActivity.class);
                     startActivity(intent);
                 } else {

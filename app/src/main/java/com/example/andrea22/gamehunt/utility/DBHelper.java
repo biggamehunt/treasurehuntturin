@@ -2,6 +2,7 @@ package com.example.andrea22.gamehunt.utility;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -81,6 +82,7 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String COLUMN_ISCHECKREQUIRED = "isCheckRequired";
         public static final String COLUMN_ISPHOTOREQUIRED = "isPhotoRequired";
         public static final String COLUMN_NUMUSERTOFINISH = "numUserToFinish";
+        public static final String COLUMN_IDUSER = "idUser";
 
         private static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
@@ -94,7 +96,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         COLUMN_ISLOCATIONREQUIRED + " BOOLEAN NOT NULL, " +
                         COLUMN_ISPHOTOREQUIRED + " BOOLEAN NOT NULL, " +
                         COLUMN_ISCHECKREQUIRED + " BOOLEAN NOT NULL, " +
-
+                        COLUMN_IDUSER + " INTEGER NOT NULL, " +
                         COLUMN_NUMUSERTOFINISH + " INTEGER NOT NULL );";
 
         private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -146,11 +148,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        context.deleteDatabase(DATABASE_NAME);
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(StageTable.SQL_DROP_TABLE);
+        db.execSQL(HuntTable.SQL_DROP_TABLE);
+        db.execSQL(UserTable.SQL_DROP_TABLE);
+        db.execSQL(UserTable.SQL_CREATE_TABLE);
+        db.execSQL(HuntTable.SQL_CREATE_TABLE);
+        db.execSQL(StageTable.SQL_CREATE_TABLE);
+        //context.deleteDatabase(DATABASE_NAME);
 
     }
 
-    public static  DBHelper getInstance(Context context){
+    public static DBHelper getInstance(Context context){
         if (dbhelper == null){
             dbhelper = new DBHelper(context);
         }
@@ -183,10 +192,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void createDB(SQLiteDatabase db, String res) throws JSONException {
+    public int createDB(SQLiteDatabase db, String res) throws JSONException {
         JSONObject user = new JSONObject(res);
-
-
 
         ContentValues values = new ContentValues();
         values.put(UserTable.COLUMN_IDUSER, user.getString("idUser"));
@@ -253,25 +260,31 @@ public class DBHelper extends SQLiteOpenHelper {
                 }
             }
         }
+        Log.v("iduser dbheper",user.getString("idUser"));
+        return Integer.parseInt(user.getString("idUser"));
     }
 
-    public void addStage(SQLiteDatabase db, String clue, int ray, double areaLat, double areaLon, double  lat, double lon,boolean isLocationRequired, boolean isCheckRequired, boolean isPhotoRequired, int numUserToFinish)  {
+    public void addStage(SQLiteDatabase db, int idUser, String clue, int ray, double areaLat, double areaLon, double  lat, double lon,boolean isLocationRequired, boolean isCheckRequired, boolean isPhotoRequired, int numUserToFinish)  {
+        if (idUser != 0){
+            ContentValues values = new ContentValues();
+            values.put(AddStageTable.COLUMN_RAY, ray);
+            values.put(AddStageTable.COLUMN_AREA_LAT, areaLat);
+            values.put(AddStageTable.COLUMN_AREA_LON, areaLon);
+            values.put(AddStageTable.COLUMN_LAT, lat);
+            values.put(AddStageTable.COLUMN_LON, lon);
+            values.put(AddStageTable.COLUMN_CLUE, clue);
+            values.put(AddStageTable.COLUMN_IDUSER, idUser);
 
-        ContentValues values = new ContentValues();
-        values.put(AddStageTable.COLUMN_RAY, ray);
-        values.put(AddStageTable.COLUMN_AREA_LAT, areaLat);
-        values.put(AddStageTable.COLUMN_AREA_LON, areaLon);
-        values.put(AddStageTable.COLUMN_LAT, lat);
-        values.put(AddStageTable.COLUMN_LON, lon);
-        values.put(AddStageTable.COLUMN_CLUE, clue);
-        values.put(AddStageTable.COLUMN_ISLOCATIONREQUIRED, isLocationRequired);
-        values.put(AddStageTable.COLUMN_ISCHECKREQUIRED, isCheckRequired);
-        values.put(AddStageTable.COLUMN_ISPHOTOREQUIRED, isPhotoRequired);
-        values.put(AddStageTable.COLUMN_NUMUSERTOFINISH, numUserToFinish);
+            values.put(AddStageTable.COLUMN_ISLOCATIONREQUIRED, isLocationRequired);
+            values.put(AddStageTable.COLUMN_ISCHECKREQUIRED, isCheckRequired);
+            values.put(AddStageTable.COLUMN_ISPHOTOREQUIRED, isPhotoRequired);
+            values.put(AddStageTable.COLUMN_NUMUSERTOFINISH, numUserToFinish);
 
-        db.insert(AddStageTable.TABLE_NAME,null,values);
-        Log.v("db log", "Insert AddStage eseguito");
+            db.insert(AddStageTable.TABLE_NAME,null,values);
 
+            Log.v("db log", "Insert AddStage eseguito");
+
+        }
     }
 
 

@@ -3,6 +3,7 @@ package com.example.andrea22.gamehunt;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -71,7 +72,9 @@ public class NewHuntActivity extends AppCompatActivity {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         JSONBuilder jsonBuilder = new JSONBuilder();
-        Cursor c = db.rawQuery("SELECT * FROM ADDSTAGE ", null);
+        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+        Log.v ("iduser",""+pref.getInt("idUser",0));
+        Cursor c = db.rawQuery("SELECT * FROM ADDSTAGE WHERE idUser = "+pref.getInt("idUser",0), null);
         try {
             JSONObject hunt = new JSONObject();
             hunt.put("name", name.getText().toString());
