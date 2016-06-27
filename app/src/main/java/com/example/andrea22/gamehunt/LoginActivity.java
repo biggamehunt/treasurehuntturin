@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.utility.DBHelper;
@@ -44,17 +45,23 @@ public class LoginActivity extends AppCompatActivity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    private ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        spinner=(ProgressBar)findViewById(R.id.spinner);
+        spinner.setVisibility(View.GONE);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     public void login(View view) {
+
+        spinner.setVisibility(View.VISIBLE);
+
 
 
         EditText usernameview = (EditText) findViewById(R.id.username);
@@ -66,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         try {
 
             try {
+
 
 
                 String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=login&username=" + username + "&password=" + password;
