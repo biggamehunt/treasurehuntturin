@@ -27,7 +27,7 @@
             android:layout_height="match_parent">
 
 
-            <ListView
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
@@ -65,7 +65,7 @@
 
                 </LinearLayout>
 
-            </ListView>
+            </ScrollView>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"
