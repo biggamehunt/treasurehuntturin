@@ -112,7 +112,7 @@ public class HuntListActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.fab){
-            //fab.startAnimation(rotate_forward);
+            fab.startAnimation(rotate_forward);
             Intent intent = new Intent(this, NewHuntActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.enter, R.anim.exit);
