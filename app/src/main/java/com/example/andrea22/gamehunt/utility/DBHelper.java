@@ -222,12 +222,12 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(UserTable.COLUMN_PHONE, user.isNull("phone") == false ? user.getString("phone") : "");
 
 
-        db.insert(UserTable.TABLE_NAME,null,values);
+        db.insert(UserTable.TABLE_NAME, null, values);
         Log.v("db log", "Insert User eseguito");
         if (user.isNull("hunts") == false) {
             JSONArray hunts_create = user.getJSONArray("hunts");
             JSONObject hunt = null;
-            if (hunts_create != null || hunts_create.length()==0) {
+            if (hunts_create != null) {
                 for (int i = 0; i < hunts_create.length(); i++) {
 
                     hunt = hunts_create.getJSONObject(i);
@@ -245,26 +245,26 @@ public class DBHelper extends SQLiteOpenHelper {
                     Log.v("db log", "Insert Hunt eseguito");
 
                     if (hunt.isNull("stages") == false) {
-                        JSONArray stages_create = user.getJSONArray("hunts");
+                        JSONArray stages_create = hunt.getJSONArray("stages");
                         JSONObject stage = null;
-                        if (hunts_create != null || hunts_create.length()==0) {
-                            for (int j = 0; j < hunts_create.length(); j++) {
+                        if (stages_create != null) {
+                            for (int j = 0; j < stages_create.length(); j++) {
 
                                 stage = stages_create.getJSONObject(j);
                                 values = new ContentValues();
 
 
                                 values.put(StageTable.COLUMN_IDSTAGE, stage.getString("idStage"));
-                                values.put(StageTable.COLUMN_RAY, stage.isNull("ray") == false ? hunt.getString("ray"):"");
-                                values.put(StageTable.COLUMN_NUMSTAGE, hunt.getString("numStage"));
-                                values.put(StageTable.COLUMN_CLUE, stage.isNull("clue") == false ? hunt.getString("clue"):"");
-                                values.put(StageTable.COLUMN_ISLOCATIONREQUIRED, hunt.getString("isLocationRequired"));
-                                values.put(StageTable.COLUMN_ISPHOTOREQUIRED, hunt.getString("isPhotoRequired"));
-                                values.put(StageTable.COLUMN_IDHUNT, user.getString("idHunt"));
-                                values.put(StageTable.COLUMN_AREA_LAT, user.getString("areaLat"));
-                                values.put(StageTable.COLUMN_AREA_LON, user.getString("areaLon"));
-                                values.put(StageTable.COLUMN_LAT, user.getString("lat"));
-                                values.put(StageTable.COLUMN_LON, user.getString("lon"));
+                                values.put(StageTable.COLUMN_RAY, stage.isNull("ray") == false ? stage.getString("ray"):"");
+                                values.put(StageTable.COLUMN_NUMSTAGE, stage.getString("numStage"));
+                                values.put(StageTable.COLUMN_CLUE, stage.isNull("clue") == false ? stage.getString("clue"):"");
+                                values.put(StageTable.COLUMN_ISLOCATIONREQUIRED, stage.getString("isLocationRequired"));
+                                values.put(StageTable.COLUMN_ISPHOTOREQUIRED, stage.getString("isPhotoRequired"));
+                                values.put(StageTable.COLUMN_IDHUNT, stage.getString("idHunt"));
+                                values.put(StageTable.COLUMN_AREA_LAT, stage.getString("areaLat"));
+                                values.put(StageTable.COLUMN_AREA_LON, stage.getString("areaLon"));
+                                values.put(StageTable.COLUMN_LAT, stage.getString("lat"));
+                                values.put(StageTable.COLUMN_LON, stage.getString("lon"));
 
                                 db.insert(StageTable.TABLE_NAME, null, values);
 
@@ -279,11 +279,63 @@ public class DBHelper extends SQLiteOpenHelper {
                 }
             }
         }
-        Log.v("iduser dbheper",user.getString("idUser"));
+        Log.v("iduser dbheper", user.getString("idUser"));
         return Integer.parseInt(user.getString("idUser"));
     }
 
-    public void addStage(SQLiteDatabase db, int idUser, String clue, int ray, double areaLat, double areaLon, double  lat, double lon,boolean isLocationRequired, boolean isCheckRequired, boolean isPhotoRequired, int numUserToFinish)  {
+    public void insertHunt(SQLiteDatabase db, String res) throws JSONException {
+
+        JSONObject hunt = new JSONObject(res);
+
+        ContentValues values = new ContentValues();
+        values.put(HuntTable.COLUMN_IDHUNT, hunt.getString("idHunt"));
+        values.put(HuntTable.COLUMN_NAME, hunt.getString("name"));
+        values.put(HuntTable.COLUMN_MAXTEAM, hunt.getString("maxTeam"));
+        values.put(HuntTable.COLUMN_TIMESTART, hunt.getString("timeStart"));
+        values.put(HuntTable.COLUMN_TIMEEND, hunt.getString("timeEnd"));
+        values.put(HuntTable.COLUMN_DESCRIPTION, hunt.isNull("description") == false ? hunt.getString("description") : "");
+        values.put(HuntTable.COLUMN_ISFINISHED, hunt.getString("isFinished"));
+        values.put(HuntTable.COLUMN_IDUSER, hunt.getString("idUser"));
+
+
+
+        db.insert(HuntTable.TABLE_NAME, null, values);
+        Log.v("db log", "Insert Hunt eseguito");
+
+        if (hunt.isNull("stages") == false) {
+            JSONArray stages_create = hunt.getJSONArray("stages");
+            JSONObject stage = null;
+            for (int i = 0; i < stages_create.length(); i++) {
+
+                stage = stages_create.getJSONObject(i);
+                values = new ContentValues();
+
+
+                values.put(StageTable.COLUMN_IDSTAGE, stage.getString("idStage"));
+                values.put(StageTable.COLUMN_RAY, stage.isNull("ray") == false ? stage.getString("ray"):"");
+                values.put(StageTable.COLUMN_NUMSTAGE, stage.getString("numStage"));
+                values.put(StageTable.COLUMN_CLUE, stage.isNull("clue") == false ? stage.getString("clue"):"");
+                values.put(StageTable.COLUMN_ISLOCATIONREQUIRED, stage.getString("isLocationRequired"));
+                values.put(StageTable.COLUMN_ISPHOTOREQUIRED, stage.getString("isPhotoRequired"));
+                values.put(StageTable.COLUMN_ISCHECKREQUIRED, stage.getString("isCheckRequired"));
+                values.put(StageTable.COLUMN_IDHUNT, hunt.getString("idHunt"));
+                values.put(StageTable.COLUMN_AREA_LAT, stage.getString("areaLat"));
+                values.put(StageTable.COLUMN_AREA_LON, stage.getString("areaLon"));
+                values.put(StageTable.COLUMN_LAT, stage.getString("lat"));
+                values.put(StageTable.COLUMN_LON, stage.getString("lon"));
+                values.put(StageTable.COLUMN_NUMUSERTOFINISH, stage.getString("numUserToFinish"));
+
+                db.insert(StageTable.TABLE_NAME, null, values);
+
+                Log.v("db log", "Insert Stage eseguito");
+
+            }
+        }
+
+    }
+
+
+    public void insertAddStage(SQLiteDatabase db, int idUser, String clue, int ray, double areaLat, double areaLon, double  lat, double lon,boolean isLocationRequired, boolean isCheckRequired, boolean isPhotoRequired, int numUserToFinish)  {
         if (idUser != 0){
             ContentValues values = new ContentValues();
             values.put(AddStageTable.COLUMN_RAY, ray);

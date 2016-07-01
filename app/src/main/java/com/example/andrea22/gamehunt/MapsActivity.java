@@ -304,7 +304,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             SQLiteDatabase db = myHelper.getWritableDatabase();
             SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
 
-            myHelper.addStage(db, pref.getInt("idUser",0),clueText, rayText, areaLat, areaLon, lat, lon, islocreqText, isphotoreqText, ischeckreqText,numberCompleteText);
+            myHelper.insertAddStage(db, pref.getInt("idUser",0),clueText, rayText, areaLat, areaLon, lat, lon, islocreqText, isphotoreqText, ischeckreqText,numberCompleteText);
             onBackPressed();
         }
 

@@ -86,14 +86,14 @@ public class NewHuntActivity extends AppCompatActivity {
             hunt.put("hour", "18");
             hunt.put("minute", "30");
 
-            hunt.put("idUser", 1);
+            hunt.put("idUser", pref.getInt("idUser",0));
             JSONArray stages = new JSONArray();
             JSONObject stage;
             if (c.moveToFirst()) {
                 do {
                         stage = jsonBuilder.getJSONStage(c);
                         stages.put(stage);
-                    Log.v("json","stage inserito nel json");
+                        Log.v("json","stage inserito nel json");
                 } while (c.moveToNext());
 
             }
@@ -102,24 +102,23 @@ public class NewHuntActivity extends AppCompatActivity {
 
             try {
 
-
                 String json = java.net.URLEncoder.encode(hunt.toString(), "UTF-8");
                 String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=addHunt&json=" + json;
                 String res = new RetrieveJson().execute(u).get();
 
                 if (!res.equals("0")) {
-                    db.rawQuery("DELETE FROM ADDSTAGE WHERE idUser = "+pref.getInt("idUser",0), null);
+
+
+                    db.execSQL("DELETE FROM ADDSTAGE WHERE idUser = "+pref.getInt("idUser",0));
+
+                    mDbHelper.insertHunt(db, res);
+
                     CharSequence text = "andiamo spettacolari";
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(this, text, duration);
                     toast.show();
 
-                    /*DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
-                    SQLiteDatabase db = myHelper.getWritableDatabase();
-                    myHelper.createDB(db, res);
-                    Intent intent = new Intent(this, HuntListActivity.class);
-                    startActivity(intent);*/
                 } else {
                     CharSequence text = "c'è stato qualche errore";
                     int duration = Toast.LENGTH_SHORT;
