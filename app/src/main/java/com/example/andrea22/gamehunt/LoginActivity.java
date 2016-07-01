@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.utility.DBHelper;
@@ -25,6 +27,10 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.exceptions.InvalidDataException;
+import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +42,10 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +61,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
     private ProgressBar spinner;
-
+    WebSocketClient mWebSocketClient;
+    int idUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,10 +94,19 @@ public class LoginActivity extends AppCompatActivity {
                 String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=login&username=" + username + "&password=" + password;
                 String res = new RetrieveFeedTask().execute(u).get();
 
+
+
+
                 if (!res.equals("0")) {
+
+
                     DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                     SQLiteDatabase db = myHelper.getWritableDatabase();
-                    int idUser = myHelper.createDB(db, res);
+                    idUser = myHelper.createDB(db, res);
+
+                    connectWebSocket();
+
+
                     SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putInt("idUser", idUser);
@@ -172,7 +191,51 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    private void connectWebSocket() {
+        URI uri;
+        try {
+            uri = new URI("ws://ws-treasurehunto.rhcloud.com:8000");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return;
+        }
 
+        mWebSocketClient = new WebSocketClient(uri) {
+
+            @Override
+            public void onOpen(ServerHandshake serverHandshake) {
+                Log.i("Websocket", "Opened");
+                mWebSocketClient.send("id:"+idUser);
+            }
+
+            @Override
+            public void onMessage(String s) {
+                final String message = s;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        /*TextView textView;
+                        textView = (TextView)findViewById(R.id.messages);
+                        textView.setText(textView.getText() + "\n" + message);*/
+                        Log.i("Websocket", "message:"+message);
+                    }
+                });
+            }
+
+            @Override
+            public void onClose(int i, String s, boolean b) {
+                Log.i("Websocket", "Closed " + s);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.i("Websocket", "Error " + e.getMessage());
+            }
+        };
+
+
+        mWebSocketClient.connect();
+    }
 
 
 

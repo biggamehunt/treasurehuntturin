@@ -108,6 +108,7 @@ public class NewHuntActivity extends AppCompatActivity {
                 String res = new RetrieveJson().execute(u).get();
 
                 if (!res.equals("0")) {
+                    db.rawQuery("DELETE FROM ADDSTAGE WHERE idUser = "+pref.getInt("idUser",0), null);
                     CharSequence text = "andiamo spettacolari";
                     int duration = Toast.LENGTH_SHORT;
 
