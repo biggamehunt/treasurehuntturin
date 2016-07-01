@@ -1,62 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:onClick="goToHunt"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="16dp"
+    >
 
-    android:background="#FFF"
-    android:layout_marginTop="40dp">
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-<!--
-        <ImageView
-            android:id="@+id/circle"
-            android:layout_height="40dp"
-            android:layout_margin="16dp"
-            android:layout_width="40dp"
-            android:src="@drawable/ic_map_white_24dp"
-            />
--->
+        android:id="@+id/cv"
+        >
 
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dp"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="14dp"
-            android:textStyle="bold"
-            android:textColor="@color/concept"
-            android:layout_marginLeft="30dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/number"
-            android:textStyle="bold"
-            android:layout_marginRight="50dp"
-            />
+            android:padding="16dp"
+            >
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/single_image"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="16dp"
+                />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/single_title"
+                android:layout_toRightOf="@+id/single_image"
+                android:layout_alignParentTop="true"
+                android:textSize="25sp"
+                />
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="15dp"
-        android:layout_height="wrap_content"
-        android:progress="40"
-        android:progressTint="@color/progressbar"
-        android:secondaryProgress="250"
-        android:secondaryProgressTint="@color/secondprogressbar"
-        />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/single_date"
+                android:layout_toRightOf="@+id/single_image"
+                android:layout_below="@+id/single_title"
+                />
 
+        </RelativeLayout>
 
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

@@ -1,10 +1,13 @@
 package com.example.andrea22.gamehunt;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,82 +26,61 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.example.andrea22.gamehunt.utility.DBHelper;
+import com.example.andrea22.gamehunt.utility.RVAdapter;
+import com.example.andrea22.gamehunt.utility.SingleHunt;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Simone on 21/06/2016.
  */
 public class HuntListActivity extends AppCompatActivity implements View.OnClickListener {
-
     private FloatingActionButton fab;
     private Animation rotate_forward,rotate_backward;
+    private RecyclerView rv;
+    private List<SingleHunt> singlehunts;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_huntlist);
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_huntlist);
 
-        fab = (FloatingActionButton)findViewById(R.id.fab);
-        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
+            rv=(RecyclerView)findViewById(R.id.rv);
+            LinearLayoutManager llm = new LinearLayoutManager(this);
+            rv.setLayoutManager(llm);
+            rv.setHasFixedSize(true);
 
-        fab.setOnClickListener(this);
+            fab = (FloatingActionButton)findViewById(R.id.fab);
+            rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
+            fab.setOnClickListener(this);
 
-        LinearLayout huntsContainer = (LinearLayout) findViewById(R.id.huntsContainer);
-
-        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-
-        Cursor c = db.rawQuery("SELECT * FROM HUNT ", null);
-        if (c.moveToFirst()) {
-            do {
-                LayoutInflater factory = LayoutInflater.from(this);
-                LinearLayout myView = (LinearLayout) factory.inflate(R.layout.hunt, null);
-                LinearLayout child = (LinearLayout) myView.getChildAt(0);
-                TextView name = (TextView) child.getChildAt(0);
-                TextView timeStart = (TextView) child.getChildAt(1);
-                Log.v("db log", "name db: " + c.getString(0)
-                );
-
-                name.setText(c.getString(c.getColumnIndex("name")));
-                timeStart.setText(c.getString(c.getColumnIndex("timeStart")));
-                myView.setId(Integer.parseInt(c.getString(c.getColumnIndex("idHunt"))));
-
-                if (Integer.parseInt(c.getString(c.getColumnIndex("idHunt")))%2 == 1){
-                    myView.setBackgroundResource(R.color.listcolor);
-                }
-
-
-
-                //toDo: ProgressBar e Matita
-
-                huntsContainer.addView(myView);
-                Log.v("db log", "aggiunta view");
-
-            } while (c.moveToNext());
+            initializeData();
+            initializeAdapter();
         }
 
+        private void initializeData(){
 
-    }
+            DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            singlehunts = new ArrayList<>();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_favorite2:
-                // User chose the "Settings" item, show the app settings UI...
-                return true;
+            Cursor c = db.rawQuery("SELECT * FROM HUNT ", null);
+            if (c.moveToFirst()) {
+                do {
 
-            case R.id.action_favorite:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
+                    singlehunts.add(new SingleHunt(c.getString(c.getColumnIndex("name")),
+                            c.getString(c.getColumnIndex("timeStart")),
+                            R.drawable.she_mini));
+                } while (c.moveToNext());
+            }
         }
-    }
+
+        private void initializeAdapter(){
+            RVAdapter adapter = new RVAdapter(singlehunts);
+            rv.setAdapter(adapter);
+        }
+
 
     public void goToHunt(View view) {
 
@@ -106,17 +88,16 @@ public class HuntListActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = new Intent(this, NewHuntActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.enter, R.anim.exit);
-
     }
 
     @Override
     public void onClick(View v) {
+
         if(v.getId() == R.id.fab){
             fab.startAnimation(rotate_forward);
             Intent intent = new Intent(this, NewHuntActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.enter, R.anim.exit);
-
 
 
 
