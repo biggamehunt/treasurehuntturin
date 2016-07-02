@@ -1,6 +1,7 @@
 package com.example.andrea22.gamehunt;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
@@ -43,34 +44,44 @@ public class TeamManagment extends AppCompatActivity {
     }
     private void initializeData(){
 
-        //DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
-        //SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+
         singleTeam = new ArrayList<>();
+        String[] splitUsers;
 
-        singleTeam.add(new SingleTeam("Team1","maira"));
-        singleTeam.add(new SingleTeam("Team1","maira"));
-        singleTeam.add(new SingleTeam("Team1","maira"));
-        singleTeam.add(new SingleTeam("Team1","maira"));
+        List<String> users = new ArrayList<String>();
 
-        singleTeam.add(new SingleTeam("Team1","maira"));
+        Cursor c = db.rawQuery("SELECT * FROM ADDTEAM WHERE idUser = " + pref.getInt("idUser",0), null);
 
-
-        /**
-            Cursor c = db.rawQuery("SELECT * FROM HUNT ", null);
+        if(c!=null && c.getCount()>0){
             if (c.moveToFirst()) {
                 do {
+                    splitUsers = c.getString(c.getColumnIndex("users")).split("|");
 
-                    singlehunts.add(new SingleHunt(c.getString(c.getColumnIndex("name")),
-                            c.getString(c.getColumnIndex("timeStart")),
-                            R.drawable.she_mini));
+                    for(int i=0; i<splitUsers.length; i++){
+                        users.add(splitUsers[i]);
+                    }
+                    singleTeam.add(new SingleTeam(c.getString(c.getColumnIndex("name")),users));
                 } while (c.moveToNext());
             }
-         **/
+        } else {
+
+            singleTeam.add(new SingleTeam("Team 1",new ArrayList<String>()));
+            singleTeam.add(new SingleTeam("Team 2",new ArrayList<String>()));
+        }
     }
+
 
     private void initializeAdapter(){
         TeamCardsAdapter adapter = new TeamCardsAdapter(singleTeam);
         rv.setAdapter(adapter);
+    }
+
+    private void AddTeam(View view){
+
+
     }
 
 }

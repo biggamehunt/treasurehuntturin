@@ -54,7 +54,7 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
     @Override
     public void onBindViewHolder(SingleCardViewHolder singleCardViewHolder, int i) {
         singleCardViewHolder.teamName.setText(singleTeam.get(i).name);
-        singleCardViewHolder.teamPlayer.setText(singleTeam.get(i).player);
+        //singleCardViewHolder.teamPlayer.setText(singleTeam.get(i).player);
     }
 
     @Override
