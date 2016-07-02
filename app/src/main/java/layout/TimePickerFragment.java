@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.widget.TimePicker;
 
+import com.example.andrea22.gamehunt.NewHuntActivity;
+
 import java.util.Calendar;
 
 /**
@@ -24,7 +26,7 @@ public class TimePickerFragment extends DialogFragment
         int minute = c.get(Calendar.MINUTE);
 
         // Create a new instance of TimePickerDialog and return it
-        return new TimePickerDialog(getActivity(), this, hour, minute,
+        return new TimePickerDialog(getActivity(), (NewHuntActivity) getActivity(), hour, minute,
                 DateFormat.is24HourFormat(getActivity()));
     }
 

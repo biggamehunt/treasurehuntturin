@@ -1,7 +1,9 @@
 package com.example.andrea22.gamehunt;
 
 
+import android.app.DatePickerDialog;
 import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -12,9 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.utility.DBHelper;
@@ -33,10 +37,12 @@ import layout.newstage;
 /**
  * Created by Simone on 21/06/2016.
  */
-public class NewHuntActivity extends AppCompatActivity {
+public class NewHuntActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     EditText name;
     EditText description;
+    int year = 0, month = 0, day = 0, minute = 0, hour = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +64,9 @@ public class NewHuntActivity extends AppCompatActivity {
     public void showDatePickerDialog(View v) {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getFragmentManager(), "datePicker");
+
+
+
     }
 
     public void goToStage(View v) {
@@ -73,20 +82,21 @@ public class NewHuntActivity extends AppCompatActivity {
 
         JSONBuilder jsonBuilder = new JSONBuilder();
         SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
-        Log.v ("iduser",""+pref.getInt("idUser",0));
         Cursor c = db.rawQuery("SELECT * FROM ADDSTAGE WHERE idUser = "+pref.getInt("idUser",0), null);
         try {
             JSONObject hunt = new JSONObject();
             hunt.put("name", name.getText().toString());
             hunt.put("description", description.getText().toString());
             hunt.put("maxTeam", 0);
-            hunt.put("day", "07");
-            hunt.put("month", "07");
-            hunt.put("year", "2016");
-            hunt.put("hour", "18");
-            hunt.put("minute", "30");
+            hunt.put("day", day);
+            hunt.put("month", month);
+            hunt.put("year", year);
+            hunt.put("hour", hour);
+            hunt.put("minute", minute);
+            hunt.put("idUser", pref.getInt("idUser", 0));
 
-            hunt.put("idUser", pref.getInt("idUser",0));
+
+
             JSONArray stages = new JSONArray();
             JSONObject stage;
             if (c.moveToFirst()) {
@@ -147,6 +157,16 @@ public class NewHuntActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+    }
 
-
+    @Override
+    public void onTimeSet(TimePicker view, int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
+    }
 }
