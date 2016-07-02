@@ -14,4 +14,8 @@ public class SingleTeam {
         this.player = player;
 
     }
+
+    public int getCountPlayer(){
+        return player.size();
+    }
 }

@@ -85,7 +85,7 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String COLUMN_IDUSER = "idUser";
 
         private static final String SQL_CREATE_TABLE =
-                "CREATE TABLE " + TABLE_NAME + " (" +
+                "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                         COLUMN_IDSTAGE + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         COLUMN_AREA_LAT + " DOUBLE NOT NULL, " +
                         COLUMN_AREA_LON + " DOUBLE NOT NULL, " +
@@ -176,7 +176,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
         private static final String SQL_CREATE_TABLE =
-                "CREATE TABLE " + TABLE_NAME + " (" +
+                "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                         COLUMN_IDTEAM + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         COLUMN_NAME + " TEXT NOT NULL, " +
                         COLUMN_SLOGAN + " TEXT NOT NULL, " +
@@ -202,6 +202,11 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(UserTable.SQL_CREATE_TABLE);
         db.execSQL(HuntTable.SQL_CREATE_TABLE);
         db.execSQL(StageTable.SQL_CREATE_TABLE);
+
+        db.execSQL(AddStageTable.SQL_CREATE_TABLE);
+
+        db.execSQL(AddTeamTable.SQL_CREATE_TABLE);
+
 
         //context.deleteDatabase(DATABASE_NAME);
 

@@ -68,14 +68,22 @@ public class TeamManagment extends AppCompatActivity {
             }
         } else {
 
-            singleTeam.add(new SingleTeam("Team 1",new ArrayList<String>()));
-            singleTeam.add(new SingleTeam("Team 2",new ArrayList<String>()));
+            ArrayList<String> a = new ArrayList<String>();
+            a.add("hfodajosadnu");
+            a.add("hfodajosadnu");
+            a.add("hfodajosadnu");
+            a.add("hfodajosadnu");
+            a.add("hfodajosadnu");
+
+
+            singleTeam.add(new SingleTeam("Team 1",a));
+            singleTeam.add(new SingleTeam("Team 2",a));
         }
     }
 
 
     private void initializeAdapter(){
-        TeamCardsAdapter adapter = new TeamCardsAdapter(singleTeam);
+        TeamCardsAdapter adapter = new TeamCardsAdapter(singleTeam, this);
         rv.setAdapter(adapter);
     }
 

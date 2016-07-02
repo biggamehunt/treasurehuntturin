@@ -35,11 +35,11 @@
                         android:text="Team0"
                         android:id="@+id/team_name"/>
 
-                    <TextView
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Player1"
-                        android:id="@+id/team_player"/>
+                        android:layout_height="match_parent"
+                        android:id="@+id/team_layout"/>
 
                 </LinearLayout>
 
