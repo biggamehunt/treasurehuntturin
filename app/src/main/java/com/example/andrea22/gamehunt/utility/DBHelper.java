@@ -163,6 +163,34 @@ public class DBHelper extends SQLiteOpenHelper {
         private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 
+    public class AddTeamTable {
+        public static final String TABLE_NAME = "ADDTEAM";
+        public static final String COLUMN_IDTEAM = "idTeam";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_SLOGAN = "slogan";
+        public static final String COLUMN_IDHUNT = "idHunt";
+        public static final String COLUMN_USERS = "users";
+        public static final String COLUMN_IDUSER = "idUser";
+        public static final String HUNTTABLE = "HUNT";
+        public static final String USERTABLE = "USER";
+
+
+        private static final String SQL_CREATE_TABLE =
+                "CREATE TABLE " + TABLE_NAME + " (" +
+                        COLUMN_IDTEAM + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        COLUMN_NAME + " TEXT NOT NULL, " +
+                        COLUMN_SLOGAN + " TEXT NOT NULL, " +
+                        COLUMN_USERS + " TEXT, " +
+                        COLUMN_IDHUNT + " INTEGER NOT NULL, " +
+                        COLUMN_IDUSER + " INTEGER NOT NULL, " +
+                        "FOREIGN KEY(" + COLUMN_IDUSER + ") REFERENCES " + USERTABLE + "(" + COLUMN_IDUSER + "), "+
+
+                        "FOREIGN KEY(" + COLUMN_IDHUNT + ") REFERENCES " + HUNTTABLE + "(" + COLUMN_IDHUNT + "));";
+
+        private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+    }
+
+
 
 
     private DBHelper(Context context) {
@@ -174,6 +202,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(UserTable.SQL_CREATE_TABLE);
         db.execSQL(HuntTable.SQL_CREATE_TABLE);
         db.execSQL(StageTable.SQL_CREATE_TABLE);
+
         //context.deleteDatabase(DATABASE_NAME);
 
     }
@@ -193,9 +222,10 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.v("db log", "Create Table Hunt eseguito");
         db.execSQL(StageTable.SQL_CREATE_TABLE);
         Log.v("db log", "Create Table Stage eseguito");
-
         db.execSQL(AddStageTable.SQL_CREATE_TABLE);
-        Log.v("db log", "Create Table Stage eseguito");
+        Log.v("db log", "Create Table AddStage eseguito");
+        db.execSQL(AddTeamTable.SQL_CREATE_TABLE);
+        Log.v("db log", "Create Table AddTeam eseguito");
 
     }
 
@@ -204,8 +234,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(StageTable.SQL_DROP_TABLE);
         db.execSQL(HuntTable.SQL_DROP_TABLE);
         db.execSQL(UserTable.SQL_DROP_TABLE);
-
-        db.execSQL(AddStageTable.SQL_DROP_TABLE);
 
         onCreate(db);
     }
