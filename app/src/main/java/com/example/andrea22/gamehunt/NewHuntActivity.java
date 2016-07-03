@@ -36,6 +36,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
     EditText name;
     EditText description;
     int year = 0, month = 0, day = 0, minute = 0, hour = 0;
+    private JSONObject stage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +75,11 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        JSONBuilder jsonBuilder = new JSONBuilder();
-        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
-        Cursor c = db.rawQuery("SELECT * FROM ADDSTAGE WHERE idUser = "+pref.getInt("idUser",0), null);
+
         try {
+            JSONBuilder jsonBuilder = new JSONBuilder();
+            SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+            Cursor c = db.rawQuery("SELECT * FROM ADDSTAGE WHERE idUser = "+pref.getInt("idUser",0), null);
             JSONObject hunt = new JSONObject();
             hunt.put("name", name.getText().toString());
             hunt.put("description", description.getText().toString());
@@ -97,44 +99,36 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                 do {
                         stage = jsonBuilder.getJSONStage(c);
                         stages.put(stage);
-                        Log.v("json","stage inserito nel json");
                 } while (c.moveToNext());
 
             }
             hunt.put("stages",stages);
 
 
-            try {
+            String json = java.net.URLEncoder.encode(hunt.toString(), "UTF-8");
 
-                String json = java.net.URLEncoder.encode(hunt.toString(), "UTF-8");
-                String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=addHunt&json=" + json;
-                String res = new RetrieveJson().execute(u).get();
+            String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=addHunt&json=" + json;
+            String res = new RetrieveJson().execute(u).get();
 
-                if (!res.equals("0")) {
-
-
-                    db.execSQL("DELETE FROM ADDSTAGE WHERE idUser = "+pref.getInt("idUser",0));
-
-                    mDbHelper.insertHunt(db, res);
-
-                    CharSequence text = "andiamo spettacolari";
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(this, text, duration);
-                    toast.show();
-
-                } else {
-                    CharSequence text = "c'è stato qualche errore";
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(this, text, duration);
-                    toast.show();
-                }
+            if (!res.equals("0")) {
 
 
-            } catch (Exception e) {
-                Log.d("test debug", "eccezione: " + e.getMessage());
-                e.printStackTrace();
+                db.execSQL("DELETE FROM ADDSTAGE WHERE idUser = "+pref.getInt("idUser",0));
+
+                mDbHelper.insertHunt(db, res);
+
+                CharSequence text = "andiamo spettacolari";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(this, text, duration);
+                toast.show();
+
+            } else {
+                CharSequence text = "c'è stato qualche errore";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(this, text, duration);
+                toast.show();
             }
 
 
@@ -145,7 +139,10 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
 
 
-        } catch (JSONException e) {
+
+
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
