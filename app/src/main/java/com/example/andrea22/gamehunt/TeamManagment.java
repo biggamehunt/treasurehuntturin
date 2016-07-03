@@ -79,7 +79,17 @@ public class TeamManagment extends AppCompatActivity {
         rv.setAdapter(adapter);
     }
 
-    private void AddTeam(View view){
+    private void addTeam(View view){
+
+
+    }
+
+    private void addUser(View view){
+
+
+    }
+
+    private void finish(View view){
 
 
     }

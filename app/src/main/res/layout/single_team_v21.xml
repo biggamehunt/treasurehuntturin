@@ -43,12 +43,17 @@
                         android:layout_height="match_parent"
                         android:id="@+id/team_layout"/>
 
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|right"/>
+
+
                 </LinearLayout>
 
             </ScrollView>
 
         </LinearLayout>
-
 
     </LinearLayout>
 
