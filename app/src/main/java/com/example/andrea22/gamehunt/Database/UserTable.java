@@ -9,7 +9,7 @@ public class UserTable {
         public static final String COLUMN_PHONE = "phone";
 
         public static final String SQL_CREATE_TABLE =
-                "CREATE TABLE " + TABLE_NAME + " (" +
+                "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                         COLUMN_USERNAME + " TEXT NOT NULL, " +
                         COLUMN_IDUSER + " INTEGER PRIMARY KEY NOT NULL, " +
                         COLUMN_EMAIL + " TEXT NOT NULL, " +

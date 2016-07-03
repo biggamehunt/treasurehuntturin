@@ -9,7 +9,7 @@ public class TeamTable {
         public static final String HUNTTABLE = "HUNT";
 
         public static final String SQL_CREATE_TABLE =
-                "CREATE TABLE " + TABLE_NAME + " (" +
+                "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                         COLUMN_IDTEAM + " INTEGER PRIMARY KEY NOT NULL, " +
                         COLUMN_NAME + " TEXT NOT NULL, " +
                         COLUMN_SLOGAN + " TEXT NOT NULL, " +

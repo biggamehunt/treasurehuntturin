@@ -18,7 +18,7 @@ public class StageTable {
         public static final String HUNTTABLE = "HUNT";
 
         public static final String SQL_CREATE_TABLE =
-                "CREATE TABLE " + TABLE_NAME + " (" +
+                "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                         COLUMN_IDSTAGE + " INTEGER PRIMARY KEY NOT NULL, " +
 
                         COLUMN_AREA_LAT + " DOUBLE NOT NULL, " +

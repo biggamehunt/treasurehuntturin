@@ -14,7 +14,7 @@ public class HuntTable {
 
 
         public static final String SQL_CREATE_TABLE =
-                "CREATE TABLE " + TABLE_NAME + " (" +
+                "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                         COLUMN_NAME + " TEXT NOT NULL, " +
                         COLUMN_IDHUNT + " INTEGER PRIMARY KEY NOT NULL, " +
                         COLUMN_MAXTEAM + " TEXT NOT NULL, " +

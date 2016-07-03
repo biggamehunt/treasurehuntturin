@@ -30,45 +30,52 @@ public class HuntListActivity extends AppCompatActivity implements View.OnClickL
     private RecyclerView rv;
     private List<SingleHunt> singlehunts;
 
+
     @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_huntlist);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-            rv=(RecyclerView)findViewById(R.id.rv);
-            LinearLayoutManager llm = new LinearLayoutManager(this);
-            rv.setLayoutManager(llm);
-            rv.setHasFixedSize(true);
+        setContentView(R.layout.activity_huntlist);
 
-            fab = (FloatingActionButton)findViewById(R.id.fab);
-            rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
-            fab.setOnClickListener(this);
+        rv=(RecyclerView)findViewById(R.id.rv);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv.setLayoutManager(llm);
+        rv.setHasFixedSize(true);
 
-            initializeData();
-            initializeAdapter();
+        fab = (FloatingActionButton)findViewById(R.id.fab);
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
+        fab.setOnClickListener(this);
+
+        initializeData();
+        initializeAdapter();
+    }
+
+
+
+
+    private void initializeData(){
+
+        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        singlehunts = new ArrayList<>();
+
+        Cursor c = db.rawQuery("SELECT * FROM HUNT ", null);
+        Log.v("data","numhunt: "+c.getCount());
+
+        if (c.moveToFirst()) {
+            do {
+
+                singlehunts.add(new SingleHunt(c.getString(c.getColumnIndex("name")),
+                        c.getString(c.getColumnIndex("timeStart")),
+                        R.drawable.she_mini));
+            } while (c.moveToNext());
         }
+    }
 
-        private void initializeData(){
-
-            DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
-            SQLiteDatabase db = mDbHelper.getWritableDatabase();
-            singlehunts = new ArrayList<>();
-
-            Cursor c = db.rawQuery("SELECT * FROM HUNT ", null);
-            if (c.moveToFirst()) {
-                do {
-
-                    singlehunts.add(new SingleHunt(c.getString(c.getColumnIndex("name")),
-                            c.getString(c.getColumnIndex("timeStart")),
-                            R.drawable.she_mini));
-                } while (c.moveToNext());
-            }
-        }
-
-        private void initializeAdapter(){
-            RVAdapter adapter = new RVAdapter(singlehunts);
-            rv.setAdapter(adapter);
-        }
+    private void initializeAdapter(){
+        RVAdapter adapter = new RVAdapter(singlehunts);
+        rv.setAdapter(adapter);
+    }
 
 
     public void goToHunt(View view) {

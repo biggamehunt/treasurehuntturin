@@ -10,7 +10,7 @@ public class BeTable {
 
 
         public static final String SQL_CREATE_TABLE =
-                "CREATE TABLE " + TABLE_NAME + " (" +
+                "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                         COLUMN_IDBE + " INTEGER PRIMARY KEY NOT NULL, " +
                         COLUMN_IDUSER + " INTEGER NOT NULL, " +
                         COLUMN_IDTEAM + " INTEGER NOT NULL, " +

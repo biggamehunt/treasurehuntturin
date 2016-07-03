@@ -25,6 +25,19 @@ public class DBHelper extends SQLiteOpenHelper {
     private DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         SQLiteDatabase db = getWritableDatabase();
+
+        db.execSQL(UserTable.SQL_CREATE_TABLE);
+        db.execSQL(HuntTable.SQL_CREATE_TABLE);
+        db.execSQL(StageTable.SQL_CREATE_TABLE);
+        db.execSQL(BeTable.SQL_CREATE_TABLE);
+        db.execSQL(AddStageTable.SQL_CREATE_TABLE);
+        db.execSQL(AddTeamTable.SQL_CREATE_TABLE);
+
+    }
+
+    public void resetDatabase(){
+        SQLiteDatabase db = getWritableDatabase();
+
         db.execSQL(BeTable.SQL_DROP_TABLE);
         db.execSQL(StageTable.SQL_DROP_TABLE);
         db.execSQL(HuntTable.SQL_DROP_TABLE);
@@ -33,9 +46,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(HuntTable.SQL_CREATE_TABLE);
         db.execSQL(StageTable.SQL_CREATE_TABLE);
         db.execSQL(BeTable.SQL_CREATE_TABLE);
-        db.execSQL(AddStageTable.SQL_CREATE_TABLE);
-        db.execSQL(AddTeamTable.SQL_CREATE_TABLE);
-
     }
 
     public static DBHelper getInstance(Context context){
@@ -74,6 +84,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public int createDB(SQLiteDatabase db, String res) throws JSONException {
+
+        resetDatabase();
         JSONObject user = new JSONObject(res);
 
         ContentValues values = new ContentValues();
