@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 
-import com.example.andrea22.gamehunt.utility.DBHelper;
+import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.SingleTeam;
 import com.example.andrea22.gamehunt.utility.TeamCardsAdapter;
 
@@ -75,7 +75,7 @@ public class TeamManagment extends AppCompatActivity {
 
 
     private void initializeAdapter(){
-        TeamCardsAdapter adapter = new TeamCardsAdapter(singleTeam);
+        TeamCardsAdapter adapter = new TeamCardsAdapter(singleTeam, this);
         rv.setAdapter(adapter);
     }
 

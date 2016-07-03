@@ -41,8 +41,6 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
                 playerView = new TextView(context);
                 teamLayout.addView(playerView);
                 //teamPlayer.add(playerView);
-
-
             }
 
         }
