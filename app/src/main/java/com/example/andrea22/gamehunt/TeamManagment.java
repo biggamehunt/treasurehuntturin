@@ -1,19 +1,15 @@
 package com.example.andrea22.gamehunt;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 
-import com.example.andrea22.gamehunt.utility.DBHelper;
+import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.SingleTeam;
 import com.example.andrea22.gamehunt.utility.TeamCardsAdapter;
 

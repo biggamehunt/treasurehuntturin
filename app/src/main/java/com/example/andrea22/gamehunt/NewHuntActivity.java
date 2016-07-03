@@ -10,20 +10,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.andrea22.gamehunt.utility.DBHelper;
+import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.JSONBuilder;
-import com.example.andrea22.gamehunt.utility.RetrieveFeedTask;
 import com.example.andrea22.gamehunt.utility.RetrieveJson;
 
 import org.json.JSONArray;
@@ -32,7 +27,6 @@ import org.json.JSONObject;
 
 import layout.DatePickerFragment;
 import layout.TimePickerFragment;
-import layout.newstage;
 
 /**
  * Created by Simone on 21/06/2016.
