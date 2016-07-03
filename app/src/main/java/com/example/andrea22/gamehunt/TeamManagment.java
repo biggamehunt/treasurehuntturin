@@ -1,15 +1,19 @@
 package com.example.andrea22.gamehunt;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 
-import com.example.andrea22.gamehunt.Database.DBHelper;
+import com.example.andrea22.gamehunt.utility.DBHelper;
 import com.example.andrea22.gamehunt.utility.SingleTeam;
 import com.example.andrea22.gamehunt.utility.TeamCardsAdapter;
 
@@ -64,22 +68,14 @@ public class TeamManagment extends AppCompatActivity {
             }
         } else {
 
-            ArrayList<String> a = new ArrayList<String>();
-            a.add("hfodajosadnu");
-            a.add("hfodajosadnu");
-            a.add("hfodajosadnu");
-            a.add("hfodajosadnu");
-            a.add("hfodajosadnu");
-
-
-            singleTeam.add(new SingleTeam("Team 1",a));
-            singleTeam.add(new SingleTeam("Team 2",a));
+            singleTeam.add(new SingleTeam("Team 1",new ArrayList<String>()));
+            singleTeam.add(new SingleTeam("Team 2",new ArrayList<String>()));
         }
     }
 
 
     private void initializeAdapter(){
-        TeamCardsAdapter adapter = new TeamCardsAdapter(singleTeam, this);
+        TeamCardsAdapter adapter = new TeamCardsAdapter(singleTeam);
         rv.setAdapter(adapter);
     }
 
