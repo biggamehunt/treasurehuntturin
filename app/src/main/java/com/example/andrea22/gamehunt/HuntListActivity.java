@@ -24,9 +24,9 @@ import java.util.List;
 /**
  * Created by Simone on 21/06/2016.
  */
-public class HuntListActivity extends AppCompatActivity implements View.OnClickListener {
+public class HuntListActivity extends AppCompatActivity {
     private FloatingActionButton fab;
-    private Animation rotate_forward,rotate_backward;
+    private Animation rotate_forward, rotate_backward;
     private RecyclerView rv;
     private List<SingleHunt> singlehunts;
 
@@ -37,30 +37,28 @@ public class HuntListActivity extends AppCompatActivity implements View.OnClickL
 
         setContentView(R.layout.activity_huntlist);
 
-        rv=(RecyclerView)findViewById(R.id.rv);
+        rv = (RecyclerView) findViewById(R.id.rv);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        fab = (FloatingActionButton)findViewById(R.id.fab);
-        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
-        fab.setOnClickListener(this);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
+//        fab.setOnClickListener(this);
 
         initializeData();
         initializeAdapter();
     }
 
 
-
-
-    private void initializeData(){
+    private void initializeData() {
 
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         singlehunts = new ArrayList<>();
 
         Cursor c = db.rawQuery("SELECT * FROM HUNT ", null);
-        Log.v("data","numhunt: "+c.getCount());
+        Log.v("data", "numhunt: " + c.getCount());
 
         if (c.moveToFirst()) {
             do {
@@ -72,7 +70,7 @@ public class HuntListActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void initializeAdapter(){
+    private void initializeAdapter() {
         RVAdapter adapter = new RVAdapter(singlehunts);
         rv.setAdapter(adapter);
     }
@@ -81,23 +79,17 @@ public class HuntListActivity extends AppCompatActivity implements View.OnClickL
     public void goToHunt(View view) {
 
         Log.v("db log", "id: " + view.getId());
+        Intent intent = new Intent(this, HuntActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
+
+    public void createHunt(View view){
+        Log.v("db log", "id: " + view.getId());
         Intent intent = new Intent(this, NewHuntActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
-    @Override
-    public void onClick(View v) {
-
-        if(v.getId() == R.id.fab){
-            fab.startAnimation(rotate_forward);
-            Intent intent = new Intent(this, TeamManagment.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.enter, R.anim.exit);
-
-
-
-        }
-    }
 }
 

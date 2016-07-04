@@ -41,5 +41,6 @@
     <string name="descriptionHunt">Descrizione</string>
     <string name="title_activity_maps">Map</string>
     <string name="clueHunt">Suggerimento (Opzionale)</string>
+    <string name="title_activity_hunt">HUNT</string>
 
 </resources>

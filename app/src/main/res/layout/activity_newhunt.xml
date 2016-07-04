@@ -101,13 +101,13 @@
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Apri Fragment"
+                        android:text="Nuovo Stage"
                         android:onClick="goToStage" />
 
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Conferma la caccia"
+                        android:text="Gestisci Squadre"
                         android:onClick="goToTeam" />
 
 

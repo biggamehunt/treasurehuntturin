@@ -163,4 +163,5 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         this.hour = hour;
         this.minute = minute;
     }
+
 }

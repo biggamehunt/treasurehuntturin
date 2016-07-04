@@ -40,44 +40,6 @@
                 android:id="@+id/rv"
                 xmlns:android="http://schemas.android.com/apk/res/android" />
 
-            <!--
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:background="@color/white"
-                >
-
-                <LinearLayout
-                    android:id="@+id/huntsContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:background="#FFF">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/welcome"
-                            android:layout_gravity="center"
-                            android:textColor="@color/metatile"
-                            android:textSize="14dp"
-                            android:layout_marginTop="20dp"/>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </ScrollView>
-            -->
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -87,7 +49,8 @@
         app:backgroundTint="@color/colorAccent"
         app:pressedTranslationZ="12dp"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add_white_24dp" />
+        android:src="@drawable/ic_add_white_24dp"
+        android:onClick="createHunt"/>
 
         </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>
