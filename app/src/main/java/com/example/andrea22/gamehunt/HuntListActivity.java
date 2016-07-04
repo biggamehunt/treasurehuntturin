@@ -63,7 +63,8 @@ public class HuntListActivity extends AppCompatActivity {
         if (c.moveToFirst()) {
             do {
 
-                singlehunts.add(new SingleHunt(c.getString(c.getColumnIndex("name")),
+                singlehunts.add(new SingleHunt(c.getInt(c.getColumnIndex("idHunt")),
+                        c.getString(c.getColumnIndex("name")),
                         c.getString(c.getColumnIndex("timeStart")),
                         R.drawable.she_mini, c.getString(c.getColumnIndex("description"))));
             } while (c.moveToNext());
@@ -75,14 +76,6 @@ public class HuntListActivity extends AppCompatActivity {
         rv.setAdapter(adapter);
     }
 
-
-    public void goToHunt(View view) {
-
-        Log.v("db log", "id: " + view.getId());
-        Intent intent = new Intent(this, HuntActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.enter, R.anim.exit);
-    }
 
     public void createHunt(View view){
         Log.v("db log", "id: " + view.getId());

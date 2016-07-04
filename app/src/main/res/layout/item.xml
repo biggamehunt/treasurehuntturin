@@ -10,8 +10,7 @@
     android:layout_marginRight="@dimen/activity_vertical_margin"
     android:layout_marginTop="2dip"
     android:layout_marginBottom="2dip"
-    card_view:cardUseCompatPadding="true"
-    android:onClick="goToHunt">
+    card_view:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
