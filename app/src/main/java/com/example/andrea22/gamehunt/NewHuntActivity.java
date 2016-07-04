@@ -45,11 +45,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
         name = (EditText) findViewById(R.id.nameHunt);
         description = (EditText) findViewById(R.id.descriptionHunt);
-
-
     }
-
-
 
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
@@ -59,8 +55,6 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
     public void showDatePickerDialog(View v) {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getFragmentManager(), "datePicker");
-
-
 
     }
 
@@ -131,17 +125,6 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                 Toast toast = Toast.makeText(this, text, duration);
                 toast.show();
             }
-
-
-
-
-
-
-
-
-
-
-
 
         } catch (Exception e) {
             e.printStackTrace();

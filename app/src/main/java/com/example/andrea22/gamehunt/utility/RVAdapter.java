@@ -25,6 +25,7 @@ import java.util.List;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHolder> {
 
+
     public static class SingleHuntViewHolder extends RecyclerView.ViewHolder {
 
         CardView cv;
@@ -46,6 +47,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
 
 
 
+
         }
 
 
@@ -53,6 +55,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
 
     List<SingleHunt> singlehunts;
     int dimStart = -1;
+    int targetHeight;
+
 
     TextView description;
     Button goToHunt;
@@ -89,11 +93,18 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
 
         singleHuntViewHolder.description.setText(singlehunts.get(i).description);
         //todo: il testo va in string.xml
+
         singleHuntViewHolder.goToHunt.setText("VAI ALLA CACCIA");
 
 
         extendedCardView=singleHuntViewHolder.cv;
         pos=i;
+
+        singleHuntViewHolder.cv.measure(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
+        targetHeight = singleHuntViewHolder.cv.getMeasuredHeightAndState();
+        Log.v("dim finale",""+targetHeight);
+
+
 
 
         singleHuntViewHolder.description.setVisibility(View.GONE);
@@ -169,7 +180,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
 
 
             ValueAnimator anim = ValueAnimator.ofInt(view.getMeasuredHeightAndState(),
-                    dimStart+250);
+                    targetHeight);
             anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator valueAnimator) {
