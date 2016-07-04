@@ -45,6 +45,20 @@
             android:layout_below="@+id/single_title"
             />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/single_description"
+            android:layout_below="@+id/single_image"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/single_goToHunt"
+            android:layout_below="@+id/single_description"
+            />
+
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

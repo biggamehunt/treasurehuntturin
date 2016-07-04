@@ -7,10 +7,12 @@ public class SingleHunt {
         String title;
         String date;
         int imageId;
+        String description;
 
-        public SingleHunt(String title, String date, int imageId) {
-        this.title = title;
-        this.date = date;
-        this.imageId = imageId;
+        public SingleHunt(String title, String date, int imageId, String description) {
+                this.title = title;
+                this.date = date;
+                this.imageId = imageId;
+                this.description = description;
         }
 }

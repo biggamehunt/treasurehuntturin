@@ -65,13 +65,13 @@ public class HuntListActivity extends AppCompatActivity {
 
                 singlehunts.add(new SingleHunt(c.getString(c.getColumnIndex("name")),
                         c.getString(c.getColumnIndex("timeStart")),
-                        R.drawable.she_mini));
+                        R.drawable.she_mini, c.getString(c.getColumnIndex("description"))));
             } while (c.moveToNext());
         }
     }
 
     private void initializeAdapter() {
-        RVAdapter adapter = new RVAdapter(singlehunts);
+        RVAdapter adapter = new RVAdapter(singlehunts, this);
         rv.setAdapter(adapter);
     }
 

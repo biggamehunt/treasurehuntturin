@@ -125,8 +125,8 @@ public class TeamManagment extends AppCompatActivity {
 
     }
 
-    private void finish(View view){
-
+    public void finish(View view){
+        Log.v(getLocalClassName(),"entro in finish");
 
     }
 
@@ -135,7 +135,7 @@ public class TeamManagment extends AppCompatActivity {
         //controllo se l'username esiste nel db, se sì aggiunge, altrimenti msotra un toast d'errore
             SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
 
-            if (username.equals(pref.getString("username",""))){
+            if (username.equals(pref.getString("username", ""))){
                 //todo: inserire i messaggi dei toasts in string.xml
                 CharSequence text = "Non puoi aggiungere l'utente che ha creato la caccia";
                 int duration = Toast.LENGTH_SHORT;
