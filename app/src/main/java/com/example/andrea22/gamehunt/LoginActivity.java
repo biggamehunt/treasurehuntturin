@@ -70,10 +70,10 @@ public class LoginActivity extends AppCompatActivity {
         try {
 
             try {
-                username = java.net.URLEncoder.encode(username, "UTF-8");
-                password = java.net.URLEncoder.encode(password, "UTF-8");
+                String username_ut8 = java.net.URLEncoder.encode(username, "UTF-8");
+                String password_ut8 = java.net.URLEncoder.encode(password, "UTF-8");
 
-                String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=login&username=" + username + "&password=" + password;
+                String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=login&username=" + username_ut8 + "&password=" + password_ut8;
                 String res = new RetrieveLoginTask().execute(u).get();
 
 
@@ -92,6 +92,8 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putInt("idUser", idUser);
+                    editor.putString("username", username);
+
                     editor.commit();
                     Intent intent = new Intent(this, HuntListActivity.class);
                     startActivity(intent);
@@ -132,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
+    /*@Override
     public void onStart() {
         super.onStart();
 
@@ -170,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
-    }
+    }*/
 
 
     private void connectWebSocket() {

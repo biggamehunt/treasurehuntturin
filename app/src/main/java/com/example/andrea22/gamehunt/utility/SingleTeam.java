@@ -20,4 +20,6 @@ public class SingleTeam {
     public int getCountPlayer(){
         return player.size();
     }
+
+    public List<String> getPlayer () { return player; }
 }

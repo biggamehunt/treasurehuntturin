@@ -133,53 +133,76 @@ public class TeamManagment extends AppCompatActivity {
     public void doPositiveClick(String username) {
         try {
         //controllo se l'username esiste nel db, se sì aggiunge, altrimenti msotra un toast d'errore
+            SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
 
+            if (username.equals(pref.getString("username",""))){
+                //todo: inserire i messaggi dei toasts in string.xml
+                CharSequence text = "Non puoi aggiungere l'utente che ha creato la caccia";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(this, text, duration);
+                toast.show();
+                return;
+            }
+            for (int i = 0; i<singleTeam.size();i++){
+                List<String> players = singleTeam.get(i).getPlayer();
+                for (int j = 0; j < players.size();j++){
+                    if (username.equals(players.get(j))){
+                        CharSequence text = "User già aggiunto!";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(this, text, duration);
+                        toast.show();
+                        return;
+                    }
+                }
+            }
 
             String username_url = java.net.URLEncoder.encode(username, "UTF-8");
 
-
-        String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=checkUser&username=" + username_url;
-        String res = new RetrieveFeedTask().execute(u).get();
-
-
-        Log.v(getLocalClassName(), "res:"+res);
+            String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=checkUser&username=" + username_url;
+            String res = new RetrieveFeedTask().execute(u).get();
 
 
-        if (!res.trim().equals("0")) {
-
-            Log.v(getLocalClassName(),"username inserito:"+username);
-
-            DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
-            SQLiteDatabase db = myHelper.getWritableDatabase();
-            SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
-            if (pref.getInt("idLastHunt",0)!=0) {
-                myHelper.insertUserAddTeam(db, pref.getInt("idLastHunt", 0), numTeam, username);
-
-                TextView playerView = new TextView(this);
-                playerView.setText(username);
-
-                ((LinearLayout)((LinearLayout)lastAddUser.getParent()).getChildAt(1)).addView(playerView);
+            Log.v(getLocalClassName(), "res:"+res);
 
 
+            if (!res.trim().equals("0")) {
+
+                Log.v(getLocalClassName(),"username inserito:"+username);
+
+                DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                SQLiteDatabase db = myHelper.getWritableDatabase();
+                if (pref.getInt("idLastHunt",0)!=0) {
+
+
+                    myHelper.insertUserAddTeam(db, pref.getInt("idLastHunt", 0), numTeam, username);
+
+                    TextView playerView = new TextView(this);
+                    playerView.setText(username);
+
+                    ((LinearLayout)((LinearLayout)lastAddUser.getParent()).getChildAt(1)).addView(playerView);
+
+
+                }
+                //connectWebSocket();
+
+
+            } else {
+                CharSequence text = "Username non esistente";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(this, text, duration);
+                toast.show();
             }
-            //connectWebSocket();
-
-
-        } else {
-            CharSequence text = "Username non esistente";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(this, text, duration);
-            toast.show();
-        }
 
 
 
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 
 
