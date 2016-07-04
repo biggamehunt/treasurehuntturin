@@ -120,11 +120,9 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                 editor.putInt("idLastHunt", idHunt);
                 editor.apply();
 
-                CharSequence text = "andiamo spettacolari";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(this, text, duration);
-                toast.show();
+                Intent intent = new Intent(this, TeamManagment.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
 
             } else {
                 CharSequence text = "c'è stato qualche errore";
