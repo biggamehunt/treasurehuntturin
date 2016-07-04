@@ -74,7 +74,6 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
     @Override
     public SingleCardViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.single_team_v21, viewGroup, false);
-        Log.v("i", "" + i);
 
         SingleCardViewHolder pvh = new SingleCardViewHolder(v,singleTeam.get(cont),context);
         cont++;
@@ -83,13 +82,6 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
     @Override
     public void onBindViewHolder(SingleCardViewHolder singleCardViewHolder, int i) {
         singleCardViewHolder.teamName.setText(singleTeam.get(i).name);
-
-        Log.v("i onBind", "" + i);
-
-
-        Log.v("getChildCount", "" + singleCardViewHolder.teamLayout.getChildCount());
-
-
 
         for(int j=0;j<singleCardViewHolder.teamLayout.getChildCount();j++){
 
@@ -101,7 +93,6 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
         singleCardViewHolder.addUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 ((TeamManagment) context).addUser(view);
             }
         });
