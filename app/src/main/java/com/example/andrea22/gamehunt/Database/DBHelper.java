@@ -157,7 +157,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return Integer.parseInt(user.getString("idUser"));
     }
 
-    public void insertHunt(SQLiteDatabase db, String res) throws JSONException {
+    public int insertHunt(SQLiteDatabase db, String res) throws JSONException {
 
         JSONObject hunt = new JSONObject(res);
 
@@ -205,6 +205,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
             }
         }
+
+        return Integer.parseInt(hunt.getString("idHunt"));
 
     }
 
@@ -288,7 +290,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insertAddTeam(SQLiteDatabase db, int idUser, int idHunt, String name, String users)  {
+    public void insertAddTeam(SQLiteDatabase db, int idUser, int idHunt, String name, int numTeam, String users)  {
         if (idUser != 0){
 
             ContentValues values = new ContentValues();
@@ -297,11 +299,29 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(AddTeamTable.COLUMN_IDHUNT, idHunt);
             values.put(AddTeamTable.COLUMN_NAME, name);
             values.put(AddTeamTable.COLUMN_USERS, users);
+            values.put(AddTeamTable.COLUMN_NUMTEAM, numTeam);
 
 
             db.insert(AddTeamTable.TABLE_NAME,null,values);
 
             Log.v("db log", "Insert AddTeam eseguito");
+
+        }
+    }
+
+    public void insertUserAddTeam(SQLiteDatabase db, int idHunt, int idAddTeam, String username)  {
+        if (idAddTeam != 0){
+            String oldusername = "";
+            Cursor c = db.rawQuery("SELECT users FROM ADDTEAM WHERE numTeam =" + idAddTeam + " AND idHunt = " + idHunt + ";", null);
+            if (c.moveToFirst()) {
+                do {
+                    oldusername = c.getString(c.getColumnIndex("users"));
+                } while (c.moveToNext());
+            }
+
+            db.execSQL("UPDATE ADDTEAM SET users = '"+oldusername + username + "|' WHERE numTeam =" + idAddTeam+" AND idHunt = "+idHunt+";");
+
+            Log.v("db log", "Update AddTeam eseguito");
 
         }
     }

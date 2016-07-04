@@ -42,10 +42,11 @@
                         android:id="@+id/team_layout"/>
 
                     <Button
+                        android:id="@+id/addUser"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom|right"
-                        android:onClick="addUser"/>
+                        />
 
                 </LinearLayout>
 

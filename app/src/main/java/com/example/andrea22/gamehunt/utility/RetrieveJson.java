@@ -26,11 +26,11 @@ public class RetrieveJson extends AsyncTask<String, Void, String> {
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.setRequestProperty("Accept", "application/json");
             urlConnection.setRequestMethod("POST");
-            if(RetrieveFeedTask.msCookieManager.getCookieStore().getCookies().size() > 0)
+            if(RetrieveLoginTask.msCookieManager.getCookieStore().getCookies().size() > 0)
             {
                 //While joining the Cookies, use ',' or ';' as needed. Most of the server are using ';'
                 urlConnection.setRequestProperty("Cookie",
-                        TextUtils.join(";", RetrieveFeedTask.msCookieManager.getCookieStore().getCookies()));
+                        TextUtils.join(";", RetrieveLoginTask.msCookieManager.getCookieStore().getCookies()));
             }
             InputStream in = urlConnection.getInputStream();
             InputStreamReader isw = new InputStreamReader(in);

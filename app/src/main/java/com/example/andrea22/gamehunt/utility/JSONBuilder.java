@@ -11,7 +11,7 @@ public class JSONBuilder {
 
 
 		JSONObject jStage = new JSONObject();
-		jStage.put("numStage", stage.getString(stage.getColumnIndex("idStage")));
+		jStage.put("numStage", stage.getString(stage.getColumnIndex("idAddStage")));
 		jStage.put("ray", stage.getString(stage.getColumnIndex("ray")));
 		jStage.put("areaLat", stage.getString(stage.getColumnIndex("areaLat")));
 		jStage.put("areaLon", stage.getString(stage.getColumnIndex("areaLon")));

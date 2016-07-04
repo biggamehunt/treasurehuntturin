@@ -115,7 +115,10 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
                 db.execSQL("DELETE FROM ADDSTAGE WHERE idUser = "+pref.getInt("idUser",0));
 
-                mDbHelper.insertHunt(db, res);
+                int idHunt = mDbHelper.insertHunt(db, res);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putInt("idLastHunt", idHunt);
+                editor.apply();
 
                 CharSequence text = "andiamo spettacolari";
                 int duration = Toast.LENGTH_SHORT;

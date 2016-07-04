@@ -1,7 +1,6 @@
 package com.example.andrea22.gamehunt.utility;
 
 import android.os.AsyncTask;
-import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.InputStream;
@@ -9,14 +8,15 @@ import java.io.InputStreamReader;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by Andrea22 on 15/06/2016.
  */
-public class RetrieveFeedTask extends AsyncTask<String, Void, String> {
+public class RetrieveLoginTask extends AsyncTask<String, Void, String> {
+    public static java.net.CookieManager msCookieManager = new java.net.CookieManager();
+    static final String COOKIES_HEADER = "Set-Cookie";
 
     private Exception exception;
 
@@ -27,11 +27,14 @@ public class RetrieveFeedTask extends AsyncTask<String, Void, String> {
             urlConnection = (HttpURLConnection) url.openConnection();
 
 
-            if(RetrieveLoginTask.msCookieManager.getCookieStore().getCookies().size() > 0)
+            Map<String, List<String>> headerFields = urlConnection.getHeaderFields();
+            List<String> cookiesHeader = headerFields.get(COOKIES_HEADER);
+            if(cookiesHeader != null)
             {
-                //While joining the Cookies, use ',' or ';' as needed. Most of the server are using ';'
-                urlConnection.setRequestProperty("Cookie",
-                        TextUtils.join(";", RetrieveLoginTask.msCookieManager.getCookieStore().getCookies()));
+                for (String cookie : cookiesHeader)
+                {
+                    msCookieManager.getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
+                }
             }
 
             InputStream in = urlConnection.getInputStream();

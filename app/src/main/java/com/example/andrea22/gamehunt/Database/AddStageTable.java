@@ -2,7 +2,7 @@ package com.example.andrea22.gamehunt.Database;
 
 public class AddStageTable {
         public static final String TABLE_NAME = "ADDSTAGE";
-        public static final String COLUMN_IDADDSTAGE = "idStage";
+        public static final String COLUMN_IDADDSTAGE = "idAddStage";
         public static final String COLUMN_RAY = "ray";
         public static final String COLUMN_AREA_LAT = "areaLat";
         public static final String COLUMN_AREA_LON = "areaLon";

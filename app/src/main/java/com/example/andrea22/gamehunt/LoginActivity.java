@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.RetrieveFeedTask;
+import com.example.andrea22.gamehunt.utility.RetrieveLoginTask;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -69,9 +70,11 @@ public class LoginActivity extends AppCompatActivity {
         try {
 
             try {
+                username = java.net.URLEncoder.encode(username, "UTF-8");
+                password = java.net.URLEncoder.encode(password, "UTF-8");
 
                 String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=login&username=" + username + "&password=" + password;
-                String res = new RetrieveFeedTask().execute(u).get();
+                String res = new RetrieveLoginTask().execute(u).get();
 
 
 

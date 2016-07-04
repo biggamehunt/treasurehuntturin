@@ -8,10 +8,12 @@ import java.util.List;
 public class SingleTeam {
     String name;
     List<String> player;
+    int numTeam;
 
-    public SingleTeam(String name, List<String> player) {
+    public SingleTeam(String name, List<String> player, int numTeam) {
         this.name = name;
         this.player = player;
+        this.numTeam = numTeam;
 
     }
 
