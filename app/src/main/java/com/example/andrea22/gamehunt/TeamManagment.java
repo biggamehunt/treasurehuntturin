@@ -19,10 +19,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
+import com.example.andrea22.gamehunt.utility.JSONBuilder;
 import com.example.andrea22.gamehunt.utility.RetrieveFeedTask;
+import com.example.andrea22.gamehunt.utility.RetrieveJson;
 import com.example.andrea22.gamehunt.utility.SingleTeam;
 import com.example.andrea22.gamehunt.utility.TeamCardsAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.UnsupportedEncodingException;
@@ -125,10 +129,6 @@ public class TeamManagment extends AppCompatActivity {
 
     }
 
-    public void finish(View view){
-        Log.v(getLocalClassName(),"entro in finish");
-
-    }
 
     public void doPositiveClick(String username) {
         try {
@@ -207,6 +207,87 @@ public class TeamManagment extends AppCompatActivity {
 
 
     }
+
+
+    public void finish(View view){
+        Log.v(getLocalClassName(),"entro in finish");
+
+        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+
+        try {
+            JSONBuilder jsonBuilder = new JSONBuilder();
+            SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+            Cursor c = db.rawQuery("SELECT * FROM ADDTEAM WHERE idUser = "+pref.getInt("idUser",0)+" AND idHunt = "+pref.getInt("idLastHunt",0), null);
+
+
+            /*JSONArray teams
+            JSONObject team = new JSONObject();
+            hunt.put("name", name.getText().toString());
+            hunt.put("description", description.getText().toString());
+            hunt.put("maxTeam", 0);
+            hunt.put("day", day);
+            hunt.put("month", month);
+            hunt.put("year", year);
+            hunt.put("hour", hour);
+            hunt.put("minute", minute);
+            hunt.put("idUser", pref.getInt("idUser", 0));
+
+
+
+            JSONArray stages = new JSONArray();
+            JSONObject stage;
+            if (c.moveToFirst()) {
+                do {
+                    stage = jsonBuilder.getJSONStage(c);
+                    stages.put(stage);
+                } while (c.moveToNext());
+
+            }
+            hunt.put("stages",stages);
+
+
+            String json = java.net.URLEncoder.encode(hunt.toString(), "UTF-8");
+
+            String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=addHunt&json=" + json;
+            String res = new RetrieveJson().execute(u).get();
+
+            if (!res.equals("0")) {
+
+
+                db.execSQL("DELETE FROM ADDSTAGE WHERE idUser = "+pref.getInt("idUser",0));
+
+                int idHunt = mDbHelper.insertHunt(db, res);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putInt("idLastHunt", idHunt);
+                editor.apply();
+
+                Intent intent = new Intent(this, TeamManagment.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
+
+            } else {
+                CharSequence text = "c'è stato qualche errore";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(this, text, duration);
+                toast.show();
+            }*/
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+
+
+
+
+
 
     public void doNegativeClick() {
     }

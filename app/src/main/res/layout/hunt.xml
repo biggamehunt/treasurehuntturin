@@ -48,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/single_description"
                 android:layout_below="@+id/single_image"
+                android:textSize="18dp"
                 />
 
             <Button
@@ -55,6 +56,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/single_goToHunt"
                 android:layout_below="@+id/single_description"
+                android:textSize="20dp"
+
                 />
 
         </RelativeLayout>
