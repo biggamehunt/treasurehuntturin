@@ -321,6 +321,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             db.execSQL("UPDATE ADDTEAM SET users = '"+oldusername + username + "|' WHERE numTeam =" + idAddTeam+" AND idHunt = "+idHunt+";");
 
+
             Log.v("db log", "Update AddTeam eseguito");
 
         }
