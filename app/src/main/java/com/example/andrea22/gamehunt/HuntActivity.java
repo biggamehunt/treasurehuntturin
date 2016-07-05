@@ -1,10 +1,13 @@
 package com.example.andrea22.gamehunt;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -16,6 +19,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private int idHunt;
+    private int idStage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +28,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
         Intent intent = getIntent();
         idHunt = Integer.parseInt(intent.getStringExtra("idHunt"));
-        Log.v(getLocalClassName(), "idHunt:" + idHunt);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -51,4 +54,22 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
+
+    public void setStageMap(){
+
+        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        try {
+
+            Cursor c = db.rawQuery("SELECT * FROM ADDSTAGE WHERE idHunt = "+idHunt, null);
+            c.getString(c.getColumnIndex("name"));
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
