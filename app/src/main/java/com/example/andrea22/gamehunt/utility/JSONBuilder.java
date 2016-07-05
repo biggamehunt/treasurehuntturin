@@ -2,6 +2,7 @@ package com.example.andrea22.gamehunt.utility;
 
 import android.database.Cursor;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,6 +26,43 @@ public class JSONBuilder {
 
 		return jStage;
 	}
+
+	public JSONObject getJSONTeam(Cursor team) throws JSONException {
+
+
+		JSONObject jTeam = new JSONObject();
+		jTeam.put("name",team.getString(team.getColumnIndex("name")));
+		jTeam.put("slogan",team.getString(team.getColumnIndex("slogan")));
+
+		String jUsers = team.getString(team.getColumnIndex("users"));
+
+		String[] jUsersSplit = jUsers.split("\\|");
+		JSONArray users = new JSONArray();
+		JSONObject user;
+
+		for (int i = 0; i < jUsersSplit.length; i ++){
+			user = new JSONObject();
+			user.put("username",jUsersSplit[i]);
+
+			users.put(user);
+		}
+		jTeam.put("users",users);
+
+		jTeam.put("users",team.getString(team.getColumnIndex("users")));
+
+
+
+		return jTeam;
+	}
+
+
+
+
+
+
+
+
+
 
 	public JSONObject getJSONHunt(Cursor hunt, int idUser) throws JSONException {
 

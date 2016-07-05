@@ -219,48 +219,39 @@ public class TeamManagment extends AppCompatActivity {
         try {
             JSONBuilder jsonBuilder = new JSONBuilder();
             SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
-            Cursor c = db.rawQuery("SELECT * FROM ADDTEAM WHERE idUser = "+pref.getInt("idUser",0)+" AND idHunt = "+pref.getInt("idLastHunt",0), null);
+            Cursor c = db.rawQuery("SELECT * FROM ADDTEAM WHERE idHunt = " + pref.getInt("idLastHunt", 0), null);
 
+            JSONObject teams = new JSONObject();
 
-            /*JSONArray teams
-            JSONObject team = new JSONObject();
-            hunt.put("name", name.getText().toString());
-            hunt.put("description", description.getText().toString());
-            hunt.put("maxTeam", 0);
-            hunt.put("day", day);
-            hunt.put("month", month);
-            hunt.put("year", year);
-            hunt.put("hour", hour);
-            hunt.put("minute", minute);
-            hunt.put("idUser", pref.getInt("idUser", 0));
+            teams.put("idHunt",pref.getInt("idLastHunt", 0));
 
-
-
-            JSONArray stages = new JSONArray();
-            JSONObject stage;
+            JSONArray jTeams = new JSONArray();
+            int i = 0;
+            JSONObject team;
             if (c.moveToFirst()) {
                 do {
-                    stage = jsonBuilder.getJSONStage(c);
-                    stages.put(stage);
+                    team = jsonBuilder.getJSONTeam(c);
+                    jTeams.put(team);
                 } while (c.moveToNext());
 
             }
-            hunt.put("stages",stages);
 
+            teams.put("teams",jTeams);
 
-            String json = java.net.URLEncoder.encode(hunt.toString(), "UTF-8");
+            String json = java.net.URLEncoder.encode(teams.toString(), "UTF-8");
 
-            String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=addHunt&json=" + json;
+            String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=addTeams&json=" + json;
             String res = new RetrieveJson().execute(u).get();
 
             if (!res.equals("0")) {
+                Log.v(getLocalClassName(), "res:0");
 
 
-                db.execSQL("DELETE FROM ADDSTAGE WHERE idUser = "+pref.getInt("idUser",0));
+                db.execSQL("DELETE FROM ADDTEAMS WHERE idHunt = "+ pref.getInt("idLastHunt", 0));
+                Log.v(getLocalClassName(), "dopo la delete");
 
-                int idHunt = mDbHelper.insertHunt(db, res);
+                mDbHelper.insertTeam(db, res);
                 SharedPreferences.Editor editor = pref.edit();
-                editor.putInt("idLastHunt", idHunt);
                 editor.apply();
 
                 Intent intent = new Intent(this, TeamManagment.class);
@@ -273,7 +264,7 @@ public class TeamManagment extends AppCompatActivity {
 
                 Toast toast = Toast.makeText(this, text, duration);
                 toast.show();
-            }*/
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
