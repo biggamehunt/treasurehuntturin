@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -72,4 +73,18 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    public void float1(View view){
+        Log.v("Hunt Activity", "float 1");
+
+    }
+
+    public void float2(View view){
+        Log.v("Hunt Activity", "float 2");
+
+    }
+
+    public void float3(View view){
+        Log.v("Hunt Activity", "float 3");
+
+    }
 }

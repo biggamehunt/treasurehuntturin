@@ -32,6 +32,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(BeTable.SQL_CREATE_TABLE);
         db.execSQL(AddStageTable.SQL_CREATE_TABLE);
         db.execSQL(AddTeamTable.SQL_CREATE_TABLE);
+        db.execSQL(TeamTable.SQL_CREATE_TABLE);
+
 
     }
 
@@ -39,12 +41,14 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         db.execSQL(BeTable.SQL_DROP_TABLE);
+        db.execSQL(TeamTable.SQL_DROP_TABLE);
         db.execSQL(StageTable.SQL_DROP_TABLE);
         db.execSQL(HuntTable.SQL_DROP_TABLE);
         db.execSQL(UserTable.SQL_DROP_TABLE);
         db.execSQL(UserTable.SQL_CREATE_TABLE);
         db.execSQL(HuntTable.SQL_CREATE_TABLE);
         db.execSQL(StageTable.SQL_CREATE_TABLE);
+        db.execSQL(TeamTable.SQL_CREATE_TABLE);
         db.execSQL(BeTable.SQL_CREATE_TABLE);
     }
 
@@ -63,6 +67,8 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.v("db log", "Create Table Hunt eseguito");
         db.execSQL(StageTable.SQL_CREATE_TABLE);
         Log.v("db log", "Create Table Stage eseguito");
+        db.execSQL(TeamTable.SQL_CREATE_TABLE);
+        Log.v("db log", "Create Table Team eseguito");
         db.execSQL(AddStageTable.SQL_CREATE_TABLE);
         Log.v("db log", "Create Table AddStage eseguito");
         db.execSQL(AddTeamTable.SQL_CREATE_TABLE);
@@ -211,57 +217,67 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insertTeam(SQLiteDatabase db, String res) throws JSONException {
+    public void insertTeams(SQLiteDatabase db, String res) throws JSONException {
 
-        JSONObject team = new JSONObject(res);
+        JSONObject hunt = new JSONObject(res);
 
-        ContentValues values = new ContentValues();
-        values.put(TeamTable.COLUMN_IDTEAM, team.getString("idTeam"));
-        values.put(TeamTable.COLUMN_NAME, team.getString("name"));
-        values.put(TeamTable.COLUMN_SLOGAN, team.getString("slogan"));
-        values.put(TeamTable.COLUMN_IDHUNT, team.getString("idHunt"));
+        JSONArray teams = hunt.getJSONArray("teams");
+
+        ContentValues values;
+
+        for (int i = 0; i < teams.length(); i++) {
+            values = new ContentValues();
+            JSONObject team = teams.getJSONObject(i);
+            values.put(TeamTable.COLUMN_IDTEAM, team.getString("idTeam"));
+            values.put(TeamTable.COLUMN_NAME, team.getString("name"));
+            values.put(TeamTable.COLUMN_SLOGAN, team.getString("slogan"));
+            values.put(TeamTable.COLUMN_IDHUNT, hunt.getString("idHunt"));
 
 
-        db.insert(TeamTable.TABLE_NAME, null, values);
-        Log.v("db log", "Insert Team eseguito");
+            db.insert(TeamTable.TABLE_NAME, null, values);
+            Log.v("db log", "Insert Team eseguito");
 
-        if (team.isNull("users") == false) {
+            if (team.isNull("users") == false) {
 
-            JSONArray users = team.getJSONArray("users");
-            JSONObject user = null;
-            for (int i = 0; i < users.length(); i++) {
+                JSONArray users = team.getJSONArray("users");
+                JSONObject user = null;
+                for (int j = 0; j < users.length(); j++) {
 
-                user = users.getJSONObject(i);
-                Cursor c = db.rawQuery("SELECT idUser FROM USER WHERE idUser = "+user.getString("idUser"), null);
-                if (c.getCount() == 0 ) {
+                    user = users.getJSONObject(j);
+                    Cursor c = db.rawQuery("SELECT idUser FROM USER WHERE idUser = "+user.getString("idUser"), null);
+                    if (c.getCount() == 0 ) {
+
+                        values = new ContentValues();
+
+                        values.put(UserTable.COLUMN_IDUSER, user.getString("idUser"));
+                        values.put(UserTable.COLUMN_USERNAME, user.getString("username"));
+                        values.put(UserTable.COLUMN_EMAIL, user.getString("email"));
+                        values.put(UserTable.COLUMN_PHOTO, user.isNull("photo") == false ? user.getString("photo") : "");
+                        values.put(UserTable.COLUMN_PHONE, user.isNull("phone") == false ? user.getString("phone") : "");
+
+
+                        db.insert(UserTable.TABLE_NAME, null, values);
+
+                        Log.v("db log", "Insert User eseguito");
+
+                    }
 
                     values = new ContentValues();
 
-                    values.put(UserTable.COLUMN_IDUSER, user.getString("idUser"));
-                    values.put(UserTable.COLUMN_USERNAME, user.getString("username"));
-                    values.put(UserTable.COLUMN_EMAIL, user.getString("email"));
-                    values.put(UserTable.COLUMN_PHONE, user.getString("phone"));
-                    values.put(UserTable.COLUMN_PHOTO, user.getString("photo"));
+                    values.put(BeTable.COLUMN_IDTEAM, team.getString("idTeam"));
+                    values.put(BeTable.COLUMN_IDUSER, user.getString("idUser"));
 
-                    db.insert(UserTable.TABLE_NAME, null, values);
+                    db.insert(BeTable.TABLE_NAME, null, values);
 
-                    Log.v("db log", "Insert User eseguito");
+                    Log.v("db log", "Insert Be eseguito");
+
 
                 }
 
-                values = new ContentValues();
-
-                values.put(BeTable.COLUMN_IDTEAM, team.getString("idTeam"));
-                values.put(BeTable.COLUMN_IDUSER, user.getString("idUser"));
-
-                db.insert(BeTable.TABLE_NAME, null, values);
-
-                Log.v("db log", "Insert Be eseguito");
-
-
             }
-
         }
+
+
 
     }
 

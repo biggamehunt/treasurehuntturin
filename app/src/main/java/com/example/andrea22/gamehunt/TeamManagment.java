@@ -244,17 +244,17 @@ public class TeamManagment extends AppCompatActivity {
             String res = new RetrieveJson().execute(u).get();
 
             if (!res.equals("0")) {
-                Log.v(getLocalClassName(), "res:0");
+                Log.v(getLocalClassName(), "idLastHunt"+pref.getInt("idLastHunt", 0));
 
 
-                db.execSQL("DELETE FROM ADDTEAMS WHERE idHunt = "+ pref.getInt("idLastHunt", 0));
+                db.execSQL("DELETE FROM ADDTEAM WHERE idHunt = " + pref.getInt("idLastHunt", 0));
                 Log.v(getLocalClassName(), "dopo la delete");
-
-                mDbHelper.insertTeam(db, res);
+                Log.v(getLocalClassName(), "res: "+res);
+                mDbHelper.insertTeams(db, res);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.apply();
 
-                Intent intent = new Intent(this, TeamManagment.class);
+                Intent intent = new Intent(this, HuntListActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.enter, R.anim.exit);
 

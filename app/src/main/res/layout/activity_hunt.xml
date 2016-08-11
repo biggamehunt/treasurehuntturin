@@ -27,6 +27,8 @@
             app:pressedTranslationZ="12dp"
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/ic_add_white_24dp"
+            android:onClick="float1"
+
             />
 
         <android.support.design.widget.FloatingActionButton
@@ -39,6 +41,7 @@
             app:pressedTranslationZ="12dp"
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/ic_add_white_24dp"
+            android:onClick="float2"
             />
 
         <android.support.design.widget.FloatingActionButton
@@ -51,6 +54,8 @@
             app:pressedTranslationZ="12dp"
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/ic_add_white_24dp"
+            android:onClick="float3"
+
             />
     </fragment>
     </android.support.design.widget.CoordinatorLayout>

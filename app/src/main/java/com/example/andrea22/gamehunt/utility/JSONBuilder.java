@@ -48,9 +48,6 @@ public class JSONBuilder {
 		}
 		jTeam.put("users",users);
 
-		jTeam.put("users",team.getString(team.getColumnIndex("users")));
-
-
 
 		return jTeam;
 	}
