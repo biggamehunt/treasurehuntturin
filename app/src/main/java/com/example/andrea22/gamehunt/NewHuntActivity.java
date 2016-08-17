@@ -89,10 +89,12 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
             JSONArray stages = new JSONArray();
             JSONObject stage;
+            int numStage = 0;
             if (c.moveToFirst()) {
                 do {
-                        stage = jsonBuilder.getJSONStage(c);
+                        stage = jsonBuilder.getJSONStage(c,numStage);
                         stages.put(stage);
+                        numStage++;
                 } while (c.moveToNext());
 
             }

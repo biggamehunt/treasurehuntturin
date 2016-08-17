@@ -231,6 +231,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(TeamTable.COLUMN_IDTEAM, team.getString("idTeam"));
             values.put(TeamTable.COLUMN_NAME, team.getString("name"));
             values.put(TeamTable.COLUMN_SLOGAN, team.getString("slogan"));
+            values.put(TeamTable.COLUMN_IDCURRENTSTAGE, team.getString("idCurrentStage"));
             values.put(TeamTable.COLUMN_IDHUNT, hunt.getString("idHunt"));
 
 

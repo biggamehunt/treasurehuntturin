@@ -8,11 +8,11 @@ import org.json.JSONObject;
 
 public class JSONBuilder {
 
-	public JSONObject getJSONStage(Cursor stage) throws JSONException {
+	public JSONObject getJSONStage(Cursor stage, int numStage) throws JSONException {
 
 
 		JSONObject jStage = new JSONObject();
-		jStage.put("numStage", stage.getString(stage.getColumnIndex("idAddStage")));
+		jStage.put("numStage", numStage);
 		jStage.put("ray", stage.getString(stage.getColumnIndex("ray")));
 		jStage.put("areaLat", stage.getString(stage.getColumnIndex("areaLat")));
 		jStage.put("areaLon", stage.getString(stage.getColumnIndex("areaLon")));
