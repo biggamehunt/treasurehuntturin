@@ -90,7 +90,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public int createDB(SQLiteDatabase db, String res) throws JSONException {
-
+        db.beginTransaction();
         resetDatabase();
         JSONObject user = new JSONObject(res);
 
@@ -101,69 +101,81 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(UserTable.COLUMN_PHOTO, user.isNull("photo") == false ? user.getString("photo") : "");
         values.put(UserTable.COLUMN_PHONE, user.isNull("phone") == false ? user.getString("phone") : "");
 
+        try {
+            db.insert(UserTable.TABLE_NAME, null, values);
+            Log.v("db log", "Insert User eseguito");
+            if (user.isNull("hunts") == false) {
+                JSONArray hunts_create = user.getJSONArray("hunts");
+                JSONObject hunt = null;
+                if (hunts_create != null) {
+                    for (int i = 0; i < hunts_create.length(); i++) {
 
-        db.insert(UserTable.TABLE_NAME, null, values);
-        Log.v("db log", "Insert User eseguito");
-        if (user.isNull("hunts") == false) {
-            JSONArray hunts_create = user.getJSONArray("hunts");
-            JSONObject hunt = null;
-            if (hunts_create != null) {
-                for (int i = 0; i < hunts_create.length(); i++) {
+                        hunt = hunts_create.getJSONObject(i);
+                        values = new ContentValues();
+                        values.put(HuntTable.COLUMN_NAME, hunt.getString("name"));
+                        values.put(HuntTable.COLUMN_IDHUNT, hunt.getString("idHunt"));
+                        values.put(HuntTable.COLUMN_MAXTEAM, hunt.getString("maxTeam"));
+                        values.put(HuntTable.COLUMN_TIMESTART, hunt.getString("timeStart"));
+                        values.put(HuntTable.COLUMN_TIMEEND, hunt.getString("timeEnd"));
+                        values.put(HuntTable.COLUMN_DESCRIPTION, hunt.isNull("description") == false ? hunt.getString("description") : "");
+                        values.put(HuntTable.COLUMN_ISFINISHED, hunt.getString("isFinished"));
+                        values.put(HuntTable.COLUMN_IDUSER, user.getString("idUser"));
 
-                    hunt = hunts_create.getJSONObject(i);
-                    values = new ContentValues();
-                    values.put(HuntTable.COLUMN_NAME, hunt.getString("name"));
-                    values.put(HuntTable.COLUMN_IDHUNT, hunt.getString("idHunt"));
-                    values.put(HuntTable.COLUMN_MAXTEAM, hunt.getString("maxTeam"));
-                    values.put(HuntTable.COLUMN_TIMESTART, hunt.getString("timeStart"));
-                    values.put(HuntTable.COLUMN_TIMEEND, hunt.getString("timeEnd"));
-                    values.put(HuntTable.COLUMN_DESCRIPTION, hunt.isNull("description") == false ? hunt.getString("description") : "");
-                    values.put(HuntTable.COLUMN_ISFINISHED, hunt.getString("isFinished"));
-                    values.put(HuntTable.COLUMN_IDUSER, user.getString("idUser"));
+                        db.insert(HuntTable.TABLE_NAME, null, values);
+                        Log.v("db log", "Insert Hunt eseguito");
 
-                    db.insert(HuntTable.TABLE_NAME, null, values);
-                    Log.v("db log", "Insert Hunt eseguito");
+                        if (hunt.isNull("stages") == false) {
+                            JSONArray stages_create = hunt.getJSONArray("stages");
+                            JSONObject stage = null;
+                            if (stages_create != null) {
+                                for (int j = 0; j < stages_create.length(); j++) {
 
-                    if (hunt.isNull("stages") == false) {
-                        JSONArray stages_create = hunt.getJSONArray("stages");
-                        JSONObject stage = null;
-                        if (stages_create != null) {
-                            for (int j = 0; j < stages_create.length(); j++) {
-
-                                stage = stages_create.getJSONObject(j);
-                                values = new ContentValues();
+                                    stage = stages_create.getJSONObject(j);
+                                    values = new ContentValues();
 
 
-                                values.put(StageTable.COLUMN_IDSTAGE, stage.getString("idStage"));
-                                values.put(StageTable.COLUMN_RAY, stage.isNull("ray") == false ? stage.getString("ray"):"");
-                                values.put(StageTable.COLUMN_NUMSTAGE, stage.getString("numStage"));
-                                values.put(StageTable.COLUMN_CLUE, stage.isNull("clue") == false ? stage.getString("clue"):"");
-                                values.put(StageTable.COLUMN_ISLOCATIONREQUIRED, stage.getString("isLocationRequired"));
-                                values.put(StageTable.COLUMN_ISPHOTOREQUIRED, stage.getString("isPhotoRequired"));
-                                values.put(StageTable.COLUMN_IDHUNT, stage.getString("idHunt"));
-                                values.put(StageTable.COLUMN_AREA_LAT, stage.getString("areaLat"));
-                                values.put(StageTable.COLUMN_AREA_LON, stage.getString("areaLon"));
-                                values.put(StageTable.COLUMN_LAT, stage.getString("lat"));
-                                values.put(StageTable.COLUMN_LON, stage.getString("lon"));
+                                    values.put(StageTable.COLUMN_IDSTAGE, stage.getString("idStage"));
+                                    values.put(StageTable.COLUMN_RAY, stage.isNull("ray") == false ? stage.getString("ray"):"");
+                                    values.put(StageTable.COLUMN_NUMSTAGE, stage.getString("numStage"));
+                                    values.put(StageTable.COLUMN_CLUE, stage.isNull("clue") == false ? stage.getString("clue"):"");
+                                    values.put(StageTable.COLUMN_ISLOCATIONREQUIRED, stage.getString("isLocationRequired"));
+                                    values.put(StageTable.COLUMN_ISPHOTOREQUIRED, stage.getString("isPhotoRequired"));
+                                    values.put(StageTable.COLUMN_ISCHECKREQUIRED, stage.getString("isCheckRequired"));
+                                    values.put(StageTable.COLUMN_NUMUSERTOFINISH, stage.getString("numUserToFinish"));
 
-                                db.insert(StageTable.TABLE_NAME, null, values);
 
-                                Log.v("db log", "Insert Stage eseguito");
+                                    values.put(StageTable.COLUMN_IDHUNT, stage.getString("idHunt"));
+                                    values.put(StageTable.COLUMN_AREA_LAT, stage.getString("areaLat"));
+                                    values.put(StageTable.COLUMN_AREA_LON, stage.getString("areaLon"));
+                                    values.put(StageTable.COLUMN_LAT, stage.getString("lat"));
+                                    values.put(StageTable.COLUMN_LON, stage.getString("lon"));
 
+                                    db.insert(StageTable.TABLE_NAME, null, values);
+
+                                    Log.v("db log", "Insert Stage eseguito");
+
+                                }
                             }
                         }
+
+
+
                     }
-
-
-
                 }
             }
+
+
+            db.setTransactionSuccessful();
+        } catch (Exception e){
+            //Error in between database transaction
+        } finally {
+            db.endTransaction();
         }
         Log.v("iduser dbheper", user.getString("idUser"));
         return Integer.parseInt(user.getString("idUser"));
     }
 
-    public int insertHunt(SQLiteDatabase db, String res) throws JSONException {
+    public int insertCreateHunt(SQLiteDatabase db, String res) throws JSONException {
 
         JSONObject hunt = new JSONObject(res);
 
@@ -217,7 +229,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insertTeams(SQLiteDatabase db, String res) throws JSONException {
+    public void insertCreateTeams(SQLiteDatabase db, String res) throws JSONException {
 
         JSONObject hunt = new JSONObject(res);
 
@@ -236,7 +248,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
             db.insert(TeamTable.TABLE_NAME, null, values);
-            Log.v("db log", "Insert Team eseguito");
+            Log.v("db log", "Insert Team eseguito, con valore idTeam: "+team.getString("idTeam"));
 
             if (team.isNull("users") == false) {
 
@@ -336,12 +348,117 @@ public class DBHelper extends SQLiteOpenHelper {
                 } while (c.moveToNext());
             }
 
-            db.execSQL("UPDATE ADDTEAM SET users = '"+oldusername + username + "|' WHERE numTeam =" + idAddTeam+" AND idHunt = "+idHunt+";");
+            db.execSQL("UPDATE ADDTEAM SET users = '" + oldusername + username + "|' WHERE numTeam =" + idAddTeam + " AND idHunt = " + idHunt + ";");
 
 
             Log.v("db log", "Update AddTeam eseguito");
 
         }
+    }
+
+    public int getHuntIsLoaded(SQLiteDatabase db, int idHunt)  {
+
+        int isLoaded = 0;
+        Cursor c = db.rawQuery("SELECT isLoaded FROM HUNT WHERE idHunt =" + idHunt + ";", null);
+        if (c.moveToFirst()) {
+            do {
+                isLoaded = c.getInt(c.getColumnIndex("isLoaded"));
+            } while (c.moveToNext());
+        }
+
+        Log.v("db log", "get isLoaded = "+ isLoaded);
+
+        return isLoaded;
+    }
+
+    public void setHuntIsLoaded(SQLiteDatabase db, int idHunt)  {
+
+        db.execSQL("UPDATE HUNT SET isLoaded = 1 WHERE idHunt =" + idHunt + ";");
+
+        Log.v("db log", "set isLoaded!");
+
+    }
+
+    public void insertHuntDetail(SQLiteDatabase db, String res) throws JSONException {
+
+
+
+
+        ContentValues values;
+        JSONObject hunt = new JSONObject(res);
+        JSONArray stages = hunt.getJSONArray("stages");
+        JSONObject stage = null;
+
+        for (int i = 0; i < stages.length(); i++) {
+
+            stage = stages.getJSONObject(i);
+            values = new ContentValues();
+
+            values.put(StageTable.COLUMN_IDSTAGE, stage.getString("idStage"));
+            values.put(StageTable.COLUMN_RAY, stage.isNull("ray") == false ? stage.getString("ray"):"");
+            values.put(StageTable.COLUMN_NUMSTAGE, stage.getString("numStage"));
+            values.put(StageTable.COLUMN_CLUE, stage.isNull("clue") == false ? stage.getString("clue"):"");
+            values.put(StageTable.COLUMN_ISLOCATIONREQUIRED, stage.getString("isLocationRequired"));
+            values.put(StageTable.COLUMN_ISPHOTOREQUIRED, stage.getString("isPhotoRequired"));
+            values.put(StageTable.COLUMN_ISCHECKREQUIRED, stage.getString("isCheckRequired"));
+            values.put(StageTable.COLUMN_AREA_LAT, stage.getString("areaLat"));
+            values.put(StageTable.COLUMN_AREA_LON, stage.getString("areaLon"));
+            values.put(StageTable.COLUMN_LAT, stage.getString("lat"));
+            values.put(StageTable.COLUMN_LON, stage.getString("lon"));
+            values.put(StageTable.COLUMN_NUMUSERTOFINISH, stage.getString("numUserToFinish"));
+            values.put(StageTable.COLUMN_IDHUNT, hunt.getString("idHunt"));
+
+            db.insert(StageTable.TABLE_NAME, null, values);
+
+            Log.v("db log", "Insert Stage eseguito");
+
+        }
+
+
+        JSONObject team = hunt.getJSONObject("team");
+
+        values = new ContentValues();
+
+        values.put(TeamTable.COLUMN_IDTEAM, team.getString("idTeam"));
+        values.put(TeamTable.COLUMN_NAME, team.getString("name"));
+        values.put(TeamTable.COLUMN_SLOGAN, team.getString("slogan"));
+        values.put(TeamTable.COLUMN_IDCURRENTSTAGE, team.getString("idCurrentStage"));
+        values.put(TeamTable.COLUMN_IDHUNT, hunt.getString("idHunt"));
+
+
+        db.insert(TeamTable.TABLE_NAME, null, values);
+        Log.v("db log", "Insert Team eseguito");
+
+        JSONArray users = team.getJSONArray("users");
+        JSONObject user;
+
+        for (int i = 0; i < users.length(); i++) {
+
+            user = users.getJSONObject(i);
+            values = new ContentValues();
+
+            values.put(UserTable.COLUMN_IDUSER, user.getString("idUser"));
+            values.put(UserTable.COLUMN_USERNAME, user.getString("username"));
+            values.put(UserTable.COLUMN_EMAIL, user.getString("email"));
+
+            db.insertWithOnConflict(UserTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+
+            Log.v("db log", "Insert User eseguito");
+
+            values = new ContentValues();
+
+            values.put(BeTable.COLUMN_IDTEAM, team.getString("idTeam"));
+            values.put(BeTable.COLUMN_IDUSER, user.getString("idUser"));
+
+            db.insert(BeTable.TABLE_NAME, null, values);
+
+            Log.v("db log", "Insert Be eseguito");
+
+
+        }
+
+
+
     }
 
 

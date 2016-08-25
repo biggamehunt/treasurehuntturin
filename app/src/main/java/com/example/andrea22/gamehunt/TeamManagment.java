@@ -250,7 +250,7 @@ public class TeamManagment extends AppCompatActivity {
                 db.execSQL("DELETE FROM ADDTEAM WHERE idHunt = " + pref.getInt("idLastHunt", 0));
                 Log.v(getLocalClassName(), "dopo la delete");
                 Log.v(getLocalClassName(), "res: "+res);
-                mDbHelper.insertTeams(db, res);
+                mDbHelper.insertCreateTeams(db, res);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.apply();
 

@@ -1,6 +1,7 @@
 package com.example.andrea22.gamehunt;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -13,9 +14,13 @@ import android.view.View;
 import android.support.design.widget.FloatingActionButton;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.RVAdapter;
+import com.example.andrea22.gamehunt.utility.RetrieveJson;
+import com.example.andrea22.gamehunt.utility.RetrieveLoginTask;
 import com.example.andrea22.gamehunt.utility.SingleHunt;
 
 import java.util.ArrayList;
@@ -82,6 +87,76 @@ public class HuntListActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NewHuntActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
+
+    public void goToHunt(String idHunt){
+        Intent intent = new Intent(this, HuntActivity.class);
+        intent.putExtra("idHunt",idHunt);
+        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+
+        //Task spinnerTask;
+        try {
+
+            try {
+                DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                SQLiteDatabase db = myHelper.getWritableDatabase();
+
+                int isLoaded = myHelper.getHuntIsLoaded(db, Integer.parseInt(idHunt));
+
+                if (isLoaded == 0) {
+                    Log.d("test debug", "info da caricare!");
+                    String username_ut8 = java.net.URLEncoder.encode(pref.getString("username", null), "UTF-8");
+                    String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=goToHunt&username=" + username_ut8 + "&idHunt=" + idHunt;
+                    String res = new RetrieveJson().execute(u).get();
+
+
+                    if (!res.equals("0")) { //toDO sto if non funziona... entra anche con 0
+
+
+                        Log.d("test debug", "if. res = " + res);
+
+                        myHelper.insertHuntDetail(db,res);
+                        myHelper.setHuntIsLoaded(db, Integer.parseInt(idHunt));
+                        /*idUser = myHelper.createDB(db, res);
+
+                        connectWebSocket();
+
+
+                        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putInt("idUser", idUser);
+                        editor.putString("username", username);
+
+                        editor.commit();
+                        Intent intent = new Intent(this, HuntListActivity.class);
+                        startActivity(intent);*/
+                    } else {
+                        /*CharSequence text = getString(R.string.login_error);
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(this, text, duration);
+                        toast.show();*/
+                        Log.d("test debug", "else");
+                    }
+                } else {
+                    Log.d("test debug", "info già caricate!");
+                }
+
+
+            } catch (Exception e) {
+                Log.d("test debug", "eccezione: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+
+        } catch (Exception e) {
+            Log.d("test debug", "eccezione: " + e.getMessage());
+            e.printStackTrace();
+
+        }
+
+
+        startActivity(intent);
     }
 
 }

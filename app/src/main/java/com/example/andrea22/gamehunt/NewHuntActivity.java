@@ -111,7 +111,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
                 db.execSQL("DELETE FROM ADDSTAGE WHERE idUser = "+pref.getInt("idUser",0));
 
-                int idHunt = mDbHelper.insertHunt(db, res);
+                int idHunt = mDbHelper.insertCreateHunt(db, res);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putInt("idLastHunt", idHunt);
                 editor.apply();

@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.andrea22.gamehunt.HuntActivity;
+import com.example.andrea22.gamehunt.HuntListActivity;
 import com.example.andrea22.gamehunt.R;
 import java.util.List;
 
@@ -131,9 +132,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
                 // ((TeamManagment) context).addUser(view);
                 Log.v("RVAdapter", "idHunt:"+view.getTag());
                 Log.v("db log", "id: " + view.getId());
-                Intent intent = new Intent(context, HuntActivity.class);
-                intent.putExtra("idHunt",view.getTag().toString());
-                context.startActivity(intent);
+
+                ((HuntListActivity)context).goToHunt(view.getTag().toString());
+
+
 
             }
         });
