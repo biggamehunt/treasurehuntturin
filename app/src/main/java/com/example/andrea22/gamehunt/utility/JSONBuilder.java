@@ -1,6 +1,7 @@
 package com.example.andrea22.gamehunt.utility;
 
 import android.database.Cursor;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +24,7 @@ public class JSONBuilder {
 		jStage.put("isPhotoRequired", stage.getString(stage.getColumnIndex("isPhotoRequired")));
 		jStage.put("isCheckRequired", stage.getString(stage.getColumnIndex("isCheckRequired")));
 		jStage.put("numUserToFinish", stage.getString(stage.getColumnIndex("numUserToFinish")));
+		Log.v("JSONBuilder", "isLocationRequired:"+ stage.getString(stage.getColumnIndex("isLocationRequired")));
 
 		return jStage;
 	}

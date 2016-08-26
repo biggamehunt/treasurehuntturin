@@ -28,9 +28,9 @@ public class StageTable {
                         COLUMN_LON + " DOUBLE NOT NULL, " +
                         COLUMN_NUMSTAGE + " INTEGER NOT NULL, " +
                         COLUMN_CLUE + " TEXT, " +
-                        COLUMN_ISLOCATIONREQUIRED + " BOOLEAN NOT NULL, " +
-                        COLUMN_ISPHOTOREQUIRED + " BOOLEAN NOT NULL, " +
-                        COLUMN_ISCHECKREQUIRED + " BOOLEAN NOT NULL, " +
+                        COLUMN_ISLOCATIONREQUIRED + " INTEGER NOT NULL DEFAULT 0, " +
+                        COLUMN_ISPHOTOREQUIRED + " INTEGER NOT NULL DEFAULT 0, " +
+                        COLUMN_ISCHECKREQUIRED + " INTEGER NOT NULL DEFAULT 0, " +
                         COLUMN_NUMUSERTOFINISH + " INTEGER NOT NULL, " +
 
                         COLUMN_IDHUNT + " INTEGER NOT NULL, " +

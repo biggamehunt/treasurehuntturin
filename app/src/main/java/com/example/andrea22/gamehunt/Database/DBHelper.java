@@ -295,7 +295,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insertAddStage(SQLiteDatabase db, int idUser, String clue, int ray, double areaLat, double areaLon, double  lat, double lon,boolean isLocationRequired, boolean isCheckRequired, boolean isPhotoRequired, int numUserToFinish)  {
+    public void insertAddStage(SQLiteDatabase db, int idUser, String clue, int ray, double areaLat, double areaLon, double  lat, double lon, int isLocationRequired, int isCheckRequired, int isPhotoRequired, int numUserToFinish)  {
         if (idUser != 0){
             ContentValues values = new ContentValues();
             values.put(AddStageTable.COLUMN_RAY, ray);

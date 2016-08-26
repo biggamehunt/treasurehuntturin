@@ -21,6 +21,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -31,7 +32,12 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private int idHunt;
-    private int idStage;
+
+
+
+    private String clue;
+    private int numStage, ray, isLocationRequired, isCheckRequired, isPhotoRequired;
+    private float areaLat, areaLon, lat, lon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +78,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         // Create a criteria object to retrieve provider
-        Criteria criteria = new Criteria();
 
         LocationManager mLocationManager = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
         List<String> providers = mLocationManager.getProviders(true);
@@ -98,16 +103,33 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             // Get longitude of the current location
             double longitude = bestLocation.getLongitude();
 
-            // Create a LatLng object for the current location
-            LatLng latLng = new LatLng(latitude, longitude);
 
-            // Show the current location in Google Map
+
+
+            //TODO: aggiungere su R.string titolo e snippet dei marker
+            mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
+            //marker.setVisible(false);
+            LatLng latLng = new LatLng(areaLat, areaLon);
+            // Show the current goal in Google Map
+            mMap.addCircle(new CircleOptions()
+                    .center(latLng)
+                            //// TODO: fare il get dalla textbox
+                            // TODO: METTERE IL 50 TRA LE COSTANTI
+                    .radius(ray)
+                    .strokeColor(0x3500ff00)
+                    .strokeWidth(3)
+                            //// TODO: inserire sta roba in colors.xml
+                            // 0x represents, this is an hexadecimal code
+                            // 55 represents percentage of transparency. For 100% transparency, specify 00.
+                            // For 0% transparency ( ie, opaque ) , specify ff
+                            // The remaining 6 characters(00ff00) specify the fill color
+                    .fillColor(0x2500ff00));
+
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
 
-            //TODO: aggiungere su R.string titolo e snippet dei marker
-            Marker marker =  mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
-            marker.setVisible(false);
+
+
         }
     }
 
@@ -157,16 +179,16 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
             if (c.moveToFirst()) {
                 do {
-                    Log.v("Hunt Activity", c.getString(c.getColumnIndex("numStage")));
-                    Log.v("Hunt Activity", c.getString(c.getColumnIndex("areaLat")));
-                    Log.v("Hunt Activity", c.getString(c.getColumnIndex("areaLon")));
-                    Log.v("Hunt Activity", c.getString(c.getColumnIndex("lat")));
-                    Log.v("Hunt Activity", c.getString(c.getColumnIndex("lon")));
-                    Log.v("Hunt Activity", c.getString(c.getColumnIndex("ray")));
-                    Log.v("Hunt Activity", c.getString(c.getColumnIndex("clue")));
-                    Log.v("Hunt Activity", c.getString(c.getColumnIndex("isLocationRequired")));
-                    Log.v("Hunt Activity", c.getString(c.getColumnIndex("isCheckRequired")));
-                    Log.v("Hunt Activity", c.getString(c.getColumnIndex("isPhotoRequired")));
+                    numStage = c.getInt(c.getColumnIndex("numStage"));
+                    areaLat = c.getFloat(c.getColumnIndex("areaLat"));
+                    areaLon = c.getFloat(c.getColumnIndex("areaLon"));
+                    lat = c.getFloat(c.getColumnIndex("lat"));
+                    lon = c.getFloat(c.getColumnIndex("lon"));
+                    ray = c.getInt(c.getColumnIndex("ray"));
+                    clue =  c.getString(c.getColumnIndex("clue"));
+                    isLocationRequired = c.getInt(c.getColumnIndex("isLocationRequired"));
+                    isCheckRequired = c.getInt(c.getColumnIndex("isCheckRequired"));
+                    isPhotoRequired = c.getInt(c.getColumnIndex("isPhotoRequired"));
 
 
 

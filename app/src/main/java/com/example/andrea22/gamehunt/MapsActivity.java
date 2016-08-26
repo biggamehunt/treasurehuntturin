@@ -277,13 +277,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             String clueText =clue.getText().toString();
 
             Switch islocreq = (Switch) findViewById(R.id.islocreq);
-            boolean islocreqText =islocreq.isChecked();
-
             Switch isphotoreq = (Switch) findViewById(R.id.isphotoreq);
-            boolean isphotoreqText =isphotoreq.isChecked();
-
             Switch ischeckreq = (Switch) findViewById(R.id.ischeckreq);
-            boolean ischeckreqText =ischeckreq.isChecked();
+
+            int islocreqText = 0;
+            if (islocreq.isChecked()){
+                islocreqText = 1;
+                Log.v("maps","location a 1");
+
+
+            }
+
+            int isphotoreqText = 0;
+            if (isphotoreq.isChecked()){
+                isphotoreqText = 1;
+            }
+
+            int ischeckreqText = 0;
+            if (ischeckreq.isChecked()){
+                ischeckreqText = 1;
+            }
+
 
             EditText numberComplete = (EditText) findViewById(R.id.numberComplete);
             int numberCompleteText =Integer.parseInt(numberComplete.getText().toString());
