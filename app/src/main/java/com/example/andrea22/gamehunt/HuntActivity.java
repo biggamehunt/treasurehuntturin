@@ -1,21 +1,27 @@
 package com.example.andrea22.gamehunt;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Criteria;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
-
+import android.widget.ImageView;
+import android.widget.Toast;
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,21 +29,28 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import java.util.List;
 
 public class HuntActivity extends FragmentActivity implements OnMapReadyCallback {
-
+    private Uri mImageUri;
     private GoogleMap mMap;
     private int idHunt;
 
 
+    final int TAKE_PHOTO_REQ = 100;
 
     private String clue;
     private int numStage, ray, isLocationRequired, isCheckRequired, isPhotoRequired;
     private float areaLat, areaLon, lat, lon;
+    FloatingActionButton photoButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,29 +117,37 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             double longitude = bestLocation.getLongitude();
 
 
-
-
             //TODO: aggiungere su R.string titolo e snippet dei marker
             mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
             //marker.setVisible(false);
-            LatLng latLng = new LatLng(areaLat, areaLon);
-            // Show the current goal in Google Map
-            mMap.addCircle(new CircleOptions()
-                    .center(latLng)
-                            //// TODO: fare il get dalla textbox
-                            // TODO: METTERE IL 50 TRA LE COSTANTI
-                    .radius(ray)
-                    .strokeColor(0x3500ff00)
-                    .strokeWidth(3)
-                            //// TODO: inserire sta roba in colors.xml
-                            // 0x represents, this is an hexadecimal code
-                            // 55 represents percentage of transparency. For 100% transparency, specify 00.
-                            // For 0% transparency ( ie, opaque ) , specify ff
-                            // The remaining 6 characters(00ff00) specify the fill color
-                    .fillColor(0x2500ff00));
 
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+            if (isLocationRequired == 1) {
+                LatLng latLng = new LatLng(areaLat, areaLon);
+                // Show the current goal in Google Map
+                mMap.addCircle(new CircleOptions()
+                        .center(latLng)
+                                //// TODO: fare il get dalla textbox
+                                // TODO: METTERE IL 50 TRA LE COSTANTI
+                        .radius(ray)
+                        .strokeColor(0x3500ff00)
+                        .strokeWidth(3)
+                                //// TODO: inserire sta roba in colors.xml
+                                // 0x represents, this is an hexadecimal code
+                                // 55 represents percentage of transparency. For 100% transparency, specify 00.
+                                // For 0% transparency ( ie, opaque ) , specify ff
+                                // The remaining 6 characters(00ff00) specify the fill color
+                        .fillColor(0x2500ff00));
+
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+            } else {
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+            }
+            photoButton = (FloatingActionButton) findViewById(R.id.photo);
+            if (isPhotoRequired == 0) {
+                photoButton.setVisibility(View.INVISIBLE);
+            }
 
 
 
@@ -206,9 +227,69 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == TAKE_PHOTO_REQ && resultCode == RESULT_OK) {
+
+
+            uploadImage();
+
+
+
+        }
+
+    }
+
+    public void uploadImage()
+    {
+        this.getContentResolver().notifyChange(mImageUri, null);
+        ContentResolver cr = this.getContentResolver();
+        Bitmap bitmap;
+        try
+        {
+            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
+
+            int width = bitmap.getWidth();
+            int height = bitmap.getHeight();
+            while (width > 1000 || height > 1000) {
+                width = (int)(width * 0.5);
+                height = (int) (height * 0.5);
+            }
+            Bitmap resized = Bitmap.createScaledBitmap(bitmap, width, height, true);
+
+            Log.d("Hunt Activity", "width: " + width);
+            Log.d("Hunt Activity", "height: " + height);
+
+
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
+            Log.d("Hunt Activity", "Failed to load", e);
+        }
+    }
+
     public void float1(View view){
         Log.v("Hunt Activity", "float 1");
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File photo;
+        photo = null;
+        try
+        {
+            // place where to store camera taken picture
+            photo =  createTemporaryFile("picture", ".jpg");
+            photo.delete();
+        }
+        catch(Exception e)
+        {
+            Log.v("hunt", "Can't create file to take picture!");
 
+        }
+        mImageUri = Uri.fromFile(photo);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+        // start camera activity
+        startActivityForResult(intent, TAKE_PHOTO_REQ);
     }
 
     public void float2(View view){
@@ -220,4 +301,18 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         Log.v("Hunt Activity", "float 3");
 
     }
+
+    private File createTemporaryFile(String part, String ext) throws Exception
+    {
+        File tempDir= Environment.getExternalStorageDirectory();
+        tempDir=new File(tempDir.getAbsolutePath()+"/.temp/");
+        if(!tempDir.exists())
+        {
+            tempDir.mkdirs();
+        }
+        Log.v("Hunt Activity", "File.createTempFile(part, ext, tempDir) : "+File.createTempFile(part, ext, tempDir).toString());
+
+        return File.createTempFile(part, ext, tempDir);
+    }
+
 }
