@@ -12,7 +12,7 @@
 
     <!-- LOGIN -->
     <string name="action_sign_in">Login</string>
-    <string name="action_registration">Non hai un nuovo account? Creane uno!</string>
+    <string name="action_registration">Don\'t you have an account yet? Sign up!</string>
     <string name="action_sign_in2">Hai già un account? Effettua il Login!</string>
     <string name="create_account">CREA ACCOUNT</string>
     <string name="continue_reg">Continua</string>

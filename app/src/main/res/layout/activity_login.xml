@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.andrea22.gamehunt.LoginActivity"
-    android:background="@drawable/bg1">
+    android:background="@color/colorPrimary">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bgrect">
-    </FrameLayout>
+
 
     <RelativeLayout
         android:id="@+id/email_login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
-        >
+        android:padding="16dp">
 
         <RelativeLayout
             android:id="@+id/loadingPanel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center" >
+            android:gravity="center">
 
+            <!-- da cancellare-->
             <ProgressBar
                 android:id="@+id/spinner"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:indeterminate="true" />
+                android:indeterminate="true"/>
+            <!--               -->
+
         </RelativeLayout>
 
 
@@ -42,10 +41,10 @@
             android:textColor="#ffffff"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:onClick="registration"
-            />
+            android:onClick="registration"/>
 
         <TextView
+
             android:id="@+id/wolf"
             android:layout_width="80dp"
             android:layout_height="85dp"
@@ -55,66 +54,65 @@
             android:layout_centerHorizontal="true"/>
 
 
-        <TextView
-            android:id="@+id/sign_in"
+
+
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/action_sign_in"
-            android:textColor="#ffffff"
-            android:textSize="19dp"
-            android:padding="16dp"
-            android:gravity="center"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/rect"
-
-            android:layout_marginBottom="35dp"
-            android:onClick="login"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="-05dp">
 
+            <Button
+                android:id="@+id/sign_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_sign_in"
+                android:background="@drawable/button_style"
+                android:textColor="#ffffff"
+                android:layout_below="@+id/password"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="25dp"
+                android:layout_alignParentEnd="true"
+                android:onClick="login"/>
+
+
 
             <EditText
-                android:textColor="#fff"
-                android:id="@+id/username"
-                android:layout_height="wrap_content"
+                android:theme="@style/Theme.App.Base"
                 android:layout_width="match_parent"
-                android:background="@drawable/rect1"
-                android:layout_marginTop="220dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
                 android:hint="@string/username"
-                android:textColorHint="#ffffff"
+                android:ems="10"
+                android:id="@+id/username"
                 android:paddingLeft="20dp"
-                android:drawableLeft="@drawable/email"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
-                android:drawablePadding="16dp">
-            </EditText>
-
-
-<!--                android:imeActionId="@+id/login" -->
-
+                android:drawablePadding="16dp"
+                android:layout_marginTop="230dp"
+                android:textColor="@color/colorA100"
+                android:textColorHint="@color/colorA100"/>
 
             <EditText
-                android:textColor="#fff"
-                android:id="@+id/password"
-                android:layout_height="wrap_content"
+                android:theme="@style/Theme.App.Base"
                 android:layout_width="match_parent"
-                android:background="@drawable/rect1"
-                android:layout_marginTop="20dp"
-                android:hint="@string/password"
+                android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:textColorHint="#ffffff"
-                android:drawableLeft="@drawable/pass"
+                android:ems="10"
+                android:id="@+id/password"
+                android:hint="@string/password"
                 android:paddingLeft="20dp"
-                android:drawablePadding="16dp"
                 android:paddingTop="16dp"
-                android:paddingBottom="16dp">
-            </EditText>
-        </LinearLayout>
+                android:paddingBottom="16dp"
+                android:drawablePadding="16dp"
+                android:textColor="@color/colorA100"
+                android:fontFamily="sans-serif"
+                android:singleLine="false"
+                android:contextClickable="false"
+                android:textColorHint="@color/colorA100"
+                android:layout_below="@+id/username"/>
+
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>
 
