@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Login</string>
+    <string name="app_name">Game Hunt</string>
     <string name="title_activity_registration">Registration</string>
 
 
@@ -7,29 +7,27 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
-    <string name="phone">Numero di Telefono</string>
 
 
     <!-- LOGIN -->
     <string name="action_sign_in">Login</string>
     <string name="action_registration">Don\'t you have an account yet? Sign up!</string>
-    <string name="action_sign_in2">Hai già un account? Effettua il Login!</string>
-    <string name="create_account">CREA ACCOUNT</string>
-    <string name="continue_reg">Continua</string>
-    <string name="login_error">Errore: credenziali non valide</string>
+    <string name="action_sign_in2">Already a member? Login</string>
+    <string name="continue_reg">Create Account</string>
+    <string name="login_error">Error: Invalid Credential</string>
 
 
     <!-- REGISTRATION -->
     <string name="reg_username">Username</string>
     <string name="reg_email">Email</string>
     <string name="reg_password">Password</string>
-    <string name="reg_phone">Telefono (opzionale)</string>
-    <string name="reg_error">Errore: username o email non disponibile</string>
+    <string name="reg_error">Error: Username or Email already exists</string>
 
 
     <!-- HOME -->
     <string name="title_activity_huntlist">Hunt List</string>
     <string name="welcome">Scegli la caccia a cui partecipare</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
@@ -24,7 +26,12 @@ import com.example.andrea22.gamehunt.utility.RetrieveLoginTask;
 import com.example.andrea22.gamehunt.utility.SingleHunt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Random;
 
 /**
  * Created by Simone on 21/06/2016.
@@ -33,8 +40,9 @@ public class HuntListActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private Animation rotate_forward, rotate_backward;
     private RecyclerView rv;
+    private TextView tv;
     private List<SingleHunt> singlehunts;
-
+    List<String> slogans = Arrays.asList("Choose your hunt and JOIN!", "Play Now! Choose your hunt. ", "I don't now what I'm doing");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +59,17 @@ public class HuntListActivity extends AppCompatActivity {
         rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
 //        fab.setOnClickListener(this);
 
+        initializeSlogan();
         initializeData();
         initializeAdapter();
+    }
+
+    private void initializeSlogan(){
+
+        String random_string = slogans.get(new Random().nextInt(slogans.size()));
+        tv = (TextView) findViewById(R.id.slogan);
+        tv.setText(random_string);
+
     }
 
 

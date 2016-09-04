@@ -1,12 +1,15 @@
 package com.example.andrea22.gamehunt;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -38,8 +41,10 @@ public class RegistrationActivity extends AppCompatActivity {
         String password = passwordview.getText().toString();
         EditText emailview = (EditText) findViewById(R.id.registration_email);
         String email = emailview.getText().toString();
-        EditText phoneview = (EditText) findViewById(R.id.registration_phone);
-        String phone = phoneview.getText().toString();
+        //EditText phoneview = (EditText) findViewById(R.id.registration_phone);
+        //String phone = phoneview.getText().toString();
+        String phone = "***";
+
         try {
 
             try {
@@ -67,9 +72,18 @@ public class RegistrationActivity extends AppCompatActivity {
             Log.d("test debug", "eccezione: "+e.getMessage());
         }
     }
-    public void turn_back_login (View view) {
-        finish();
 
+    public void turn_back_login (View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        return true;
     }
 
 

@@ -1,29 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.andrea22.gamehunt.RegistrationActivity"
-    android:background="@drawable/bg">
-
-
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bgrect"
-        >
-
-
-
-    </FrameLayout>
-
+    android:background="@color/colorPrimary">
 
     <RelativeLayout
         android:id="@+id/email_login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
+
+        <EditText
+            android:theme="@style/Theme.App.Base"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/username"
+            android:ems="10"
+            android:id="@+id/registration_username"
+            android:paddingLeft="20dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:drawablePadding="16dp"
+            android:layout_marginTop="230dp"
+            android:textColor="@color/colorA100"
+            android:textColorHint="@color/colorA100"/>
+
+        <EditText
+            android:theme="@style/Theme.App.Base"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/registration_password"
+            android:hint="@string/reg_password"
+            android:paddingLeft="20dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:drawablePadding="16dp"
+            android:textColor="@color/colorA100"
+            android:fontFamily="sans-serif"
+            android:singleLine="false"
+            android:contextClickable="false"
+            android:textColorHint="@color/colorA100"
+            android:layout_below="@+id/registration_username"/>
+
+        <EditText
+            android:theme="@style/Theme.App.Base"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/registration_email"
+            android:layout_below="@+id/registration_password"
+            android:layout_alignParentStart="true"
+            android:hint="@string/reg_email"
+            android:paddingLeft="20dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:drawablePadding="16dp"
+            android:textColor="@color/colorA100"
+            android:singleLine="false"
+            android:contextClickable="false"
+            android:textColorHint="@color/colorA100"/>
+
 
         <TextView
             android:id="@+id/terms"
@@ -35,115 +78,32 @@
             android:layout_centerHorizontal="true"
             android:onClick="turn_back_login"/>
 
-        />
-
         <TextView
-            android:id="@+id/create"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_account"
+            android:id="@+id/wolf"
+            android:layout_width="80dp"
+            android:layout_height="85dp"
             android:textColor="#ffffff"
+            android:background="@drawable/wsdesignlogo"
             android:layout_marginTop="70dp"
-            android:textSize="23dp"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"/>
 
 
-
-
-
-        <TextView
+        <Button
             android:id="@+id/registration_regitration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/continue_reg"
+            android:background="@drawable/button_style"
             android:textColor="#ffffff"
-            android:textSize="19dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="25dp"
+            android:layout_alignParentEnd="true"
             android:layout_above="@+id/terms"
             android:padding="16dp"
             android:gravity="center"
-            android:background="@drawable/rect"
             android:layout_marginBottom="16dp"
             android:onClick="registration"/>
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="-05dp">
-
-            <EditText
-                android:textColor="#fff"
-                android:id="@+id/registration_username"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:background="@drawable/rect1"
-                android:layout_marginTop="180dp"
-                android:hint="@string/reg_username"
-                android:textColorHint="#ffffff"
-                android:paddingLeft="20dp"
-                android:drawableLeft="@drawable/user"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:drawablePadding="16dp">
-            </EditText>
-
-            <EditText
-                android:textColor="#fff"
-                android:id="@+id/registration_email"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:background="@drawable/rect1"
-                android:layout_marginTop="20dp"
-                android:hint="@string/reg_email"
-                android:textColorHint="#ffffff"
-                android:drawableLeft="@drawable/email"
-                android:paddingLeft="20dp"
-                android:drawablePadding="16dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-
-                >
-            </EditText>
-
-            <EditText
-                android:textColor="#fff"
-                android:id="@+id/registration_password"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:background="@drawable/rect1"
-                android:layout_marginTop="20dp"
-                android:hint="@string/reg_password"
-                android:textColorHint="#ffffff"
-                android:inputType="textPassword"
-                android:drawableLeft="@drawable/pass"
-                android:paddingLeft="20dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:drawablePadding="16dp">
-            </EditText>
-
-            <EditText
-                android:textColor="#fff"
-                android:id="@+id/registration_phone"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:background="@drawable/rect1"
-                android:layout_marginTop="20dp"
-                android:hint="@string/reg_phone"
-                android:textColorHint="#ffffff"
-                android:inputType="textPassword"
-                android:drawableLeft="@drawable/pass"
-                android:paddingLeft="20dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:drawablePadding="16dp">
-            </EditText>
-
-        </LinearLayout>
-
     </RelativeLayout>
-
-
 </RelativeLayout>
 
