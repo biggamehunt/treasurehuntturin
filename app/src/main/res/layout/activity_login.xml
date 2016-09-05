@@ -8,7 +8,6 @@
     android:background="@color/colorPrimary">
 
 
-
     <RelativeLayout
         android:id="@+id/email_login_form"
         android:layout_width="match_parent"
@@ -32,7 +31,6 @@
 
         </RelativeLayout>
 
-
         <TextView
             android:id="@+id/registration"
             android:layout_width="wrap_content"
@@ -44,7 +42,6 @@
             android:onClick="registration"/>
 
         <TextView
-
             android:id="@+id/wolf"
             android:layout_width="80dp"
             android:layout_height="85dp"
@@ -52,10 +49,6 @@
             android:background="@drawable/wsdesignlogo"
             android:layout_marginTop="50dp"
             android:layout_centerHorizontal="true"/>
-
-
-
-
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -74,8 +67,6 @@
                 android:layout_marginTop="25dp"
                 android:layout_alignParentEnd="true"
                 android:onClick="login"/>
-
-
 
             <EditText
                 android:theme="@style/Theme.App.Base"
@@ -113,7 +104,9 @@
                 android:layout_below="@+id/username"/>
 
         </RelativeLayout>
+
     </RelativeLayout>
+
 </RelativeLayout>
 
 
