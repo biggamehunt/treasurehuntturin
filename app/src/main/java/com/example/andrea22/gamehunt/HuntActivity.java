@@ -20,9 +20,16 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.andrea22.gamehunt.Database.DBHelper;
+import com.example.andrea22.gamehunt.utility.SendPhoto;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,30 +40,33 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HuntActivity extends FragmentActivity implements OnMapReadyCallback {
     private Uri mImageUri;
     private GoogleMap mMap;
-    private int idHunt;
+    private int idHunt, idTeam;
+    private static HuntActivity parent;
 
-
+    File photo;
     final int TAKE_PHOTO_REQ = 100;
 
     private String clue;
     private int numStage, ray, isLocationRequired, isCheckRequired, isPhotoRequired;
     private float areaLat, areaLon, lat, lon;
     FloatingActionButton photoButton;
-
+    Bitmap resized;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hunt);
-
+        parent = this;
         Intent intent = getIntent();
         idHunt = Integer.parseInt(intent.getStringExtra("idHunt"));
 
@@ -121,6 +131,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
             //marker.setVisible(false);
 
+
             if (isLocationRequired == 1) {
                 LatLng latLng = new LatLng(areaLat, areaLon);
                 // Show the current goal in Google Map
@@ -155,7 +166,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void setStageMap(){
-
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
@@ -189,7 +199,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                             "STAGE.clue, " +
                             "STAGE.isLocationRequired, " +
                             "STAGE.isCheckRequired, " +
-                            "STAGE.isPhotoRequired " +
+                            "STAGE.isPhotoRequired, " +
+                            "TEAM.idTeam " +
 
                     "FROM    TEAM LEFT JOIN BE ON TEAM.idTeam = BE.idTeam " +
                             "LEFT JOIN USER ON USER.idUser = BE.idUser " +
@@ -210,7 +221,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     isLocationRequired = c.getInt(c.getColumnIndex("isLocationRequired"));
                     isCheckRequired = c.getInt(c.getColumnIndex("isCheckRequired"));
                     isPhotoRequired = c.getInt(c.getColumnIndex("isPhotoRequired"));
-
+                    idTeam = c.getInt(c.getColumnIndex("idTeam"));
 
 
                 } while (c.moveToNext());
@@ -241,30 +252,60 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void uploadImage()
-    {
+    public void uploadImage() {
         this.getContentResolver().notifyChange(mImageUri, null);
         ContentResolver cr = this.getContentResolver();
         Bitmap bitmap;
-        try
-        {
+        try {
             bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
 
             int width = bitmap.getWidth();
             int height = bitmap.getHeight();
             while (width > 1000 || height > 1000) {
-                width = (int)(width * 0.5);
+                width = (int) (width * 0.5);
                 height = (int) (height * 0.5);
             }
-            Bitmap resized = Bitmap.createScaledBitmap(bitmap, width, height, true);
+            resized = Bitmap.createScaledBitmap(bitmap, width, height, true);
+
+            //Convert bitmap to byte array
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            resized.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+
+
+            //write the bytes in file
+            FileOutputStream fos = null;
+
+            byte[] bitmapdata = bos.toByteArray();
+            fos = new FileOutputStream(photo);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+            SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+
+            String path = idHunt+"/"+idTeam+"/"+pref.getInt("idUser", 0);
+            ArrayList<Object> list = new ArrayList<Object>();
+            list.add(photo);
+            list.add(path);
+
+            Log.d("Hunt Activity", "list size: " + list.size());
+
+            int res = new SendPhoto().execute(list).get();
+
+            if (res == 1) {
+                Toast.makeText(this, "Image Upload!", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
+
+            }
+
+
+            Log.d("Hunt Activity", "res: " + res);
 
             Log.d("Hunt Activity", "width: " + width);
             Log.d("Hunt Activity", "height: " + height);
 
-
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
             Log.d("Hunt Activity", "Failed to load", e);
         }
@@ -273,13 +314,13 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     public void float1(View view){
         Log.v("Hunt Activity", "float 1");
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File photo;
+
         photo = null;
         try
         {
             // place where to store camera taken picture
             photo =  createTemporaryFile("picture", ".jpg");
-            photo.delete();
+
         }
         catch(Exception e)
         {
