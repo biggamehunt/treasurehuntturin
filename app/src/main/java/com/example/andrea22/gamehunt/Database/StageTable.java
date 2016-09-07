@@ -14,6 +14,9 @@ public class StageTable {
         public static final String COLUMN_ISCHECKREQUIRED = "isCheckRequired";
         public static final String COLUMN_ISPHOTOREQUIRED = "isPhotoRequired";
         public static final String COLUMN_NUMUSERTOFINISH = "numUserToFinish";
+        public static final String COLUMN_ISCOMPLETED = "isCompleted";
+        public static final String COLUMN_ISPHOTOSENDED = "isPhotoSended";
+        public static final String COLUMN_ISPHOTOCHECKED = "isPhotoChecked";
         public static final String COLUMN_IDHUNT = "idHunt";
         public static final String HUNTTABLE = "HUNT";
 
@@ -32,6 +35,11 @@ public class StageTable {
                         COLUMN_ISPHOTOREQUIRED + " INTEGER NOT NULL DEFAULT 0, " +
                         COLUMN_ISCHECKREQUIRED + " INTEGER NOT NULL DEFAULT 0, " +
                         COLUMN_NUMUSERTOFINISH + " INTEGER NOT NULL, " +
+
+                        COLUMN_ISCOMPLETED + " INTEGER NOT NULL DEFAULT 0, " +
+                        COLUMN_ISPHOTOSENDED + " INTEGER NOT NULL DEFAULT 0, " +
+                        COLUMN_ISPHOTOCHECKED + " INTEGER NOT NULL DEFAULT 0, " +
+
 
                         COLUMN_IDHUNT + " INTEGER NOT NULL, " +
                         "FOREIGN KEY(" + COLUMN_IDHUNT + ") REFERENCES " + HUNTTABLE + "(" + COLUMN_IDHUNT + "));";
