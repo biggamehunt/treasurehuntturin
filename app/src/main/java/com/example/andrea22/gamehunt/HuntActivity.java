@@ -29,6 +29,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.andrea22.gamehunt.Database.DBHelper;
+import com.example.andrea22.gamehunt.utility.RetrieveJson;
 import com.example.andrea22.gamehunt.utility.SendPhoto;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -47,11 +48,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class HuntActivity extends FragmentActivity implements OnMapReadyCallback {
     private Uri mImageUri;
     private GoogleMap mMap;
-    private int idHunt, idTeam;
+    private int idHunt, idTeam, idStage, idUser;
     private static HuntActivity parent;
 
     File photo;
@@ -69,6 +71,9 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         parent = this;
         Intent intent = getIntent();
         idHunt = Integer.parseInt(intent.getStringExtra("idHunt"));
+
+        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+        idUser = pref.getInt("idUser", 0);
 
         setStageMap();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -168,7 +173,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     public void setStageMap(){
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
 
         try {
 
@@ -189,8 +193,9 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             cu = db.rawQuery("SELECT * FROM STAGE;", null);
             Log.v("Hunt Activity", "numStage: " + cu.getCount());
 
-            Cursor c = db.rawQuery("" +
-                    "SELECT  STAGE.numStage, " +
+            Cursor c = db.rawQuery(
+                    "SELECT  STAGE.idStage, " +
+                            "STAGE.numStage, " +
                             "STAGE.areaLat, " +
                             "STAGE.areaLon, " +
                             "STAGE.lat, " +
@@ -206,11 +211,12 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                             "LEFT JOIN USER ON USER.idUser = BE.idUser " +
                             "LEFT JOIN STAGE ON STAGE.idStage = TEAM.idCurrentStage " +
 
-                    "WHERE   TEAM.idHunt = "+idHunt+" AND USER.idUser = " + pref.getInt("idUser", 0)+";", null);
+                    "WHERE   TEAM.idHunt = "+idHunt+" AND USER.idUser = " + idUser, null);
             Log.v("Hunt Activity", "info prelevate: " + c.getCount());
 
             if (c.moveToFirst()) {
                 do {
+                    idStage = c.getInt(c.getColumnIndex("idStage"));
                     numStage = c.getInt(c.getColumnIndex("numStage"));
                     areaLat = c.getFloat(c.getColumnIndex("areaLat"));
                     areaLon = c.getFloat(c.getColumnIndex("areaLon"));
@@ -244,7 +250,39 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         if (requestCode == TAKE_PHOTO_REQ && resultCode == RESULT_OK) {
 
 
-            uploadImage();
+            boolean upload = uploadImage();
+
+            if (upload) {
+                String u = "http://jbossews-treasurehunto.rhcloud.com/StageOperation?action=setIsPhotoSended&idStage=" + idStage + "&idUser=" + idUser;
+                String res = null;
+                try {
+                    res = new RetrieveJson().execute(u).get();
+                    if (!res.trim().equals("0")) {
+                        Log.d("Hunt Activity", "res: " + res);
+
+                        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+                        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+                        db.execSQL("UPDATE STAGE SET isSended = 1 WHERE idStage = " + idStage + ";");
+                        Log.d("Hunt Activity", "dopo l'upload");
+
+                    } else {
+                        //toDo mettere il text di tutti i toast nelle variabili
+                        Toast toast = Toast.makeText(this, "Si è verificato un errore. Prova a ricarare la foto.", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+
 
 
 
@@ -252,7 +290,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void uploadImage() {
+    public boolean uploadImage() {
         this.getContentResolver().notifyChange(mImageUri, null);
         ContentResolver cr = this.getContentResolver();
         Bitmap bitmap;
@@ -273,17 +311,16 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
 
             //write the bytes in file
-            FileOutputStream fos = null;
+            FileOutputStream fos;
 
             byte[] bitmapdata = bos.toByteArray();
             fos = new FileOutputStream(photo);
             fos.write(bitmapdata);
             fos.flush();
             fos.close();
-            SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
 
-            String path = idHunt+"/"+idTeam+"/"+pref.getInt("idUser", 0);
-            ArrayList<Object> list = new ArrayList<Object>();
+            String path = idHunt+"/"+idTeam+"/"+idUser;
+            ArrayList<Object> list = new ArrayList<>();
             list.add(photo);
             list.add(path);
 
@@ -293,21 +330,18 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
             if (res == 1) {
                 Toast.makeText(this, "Image Upload!", Toast.LENGTH_SHORT).show();
+                return true;
 
             } else {
+
                 Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
-
+                return false;
             }
-
-
-            Log.d("Hunt Activity", "res: " + res);
-
-            Log.d("Hunt Activity", "width: " + width);
-            Log.d("Hunt Activity", "height: " + height);
 
         } catch (Exception e) {
             Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
             Log.d("Hunt Activity", "Failed to load", e);
+            return false;
         }
     }
 
