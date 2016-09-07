@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#f57c00</color>
     <color name="navigationBarColor">#FB8C00</color>
     <color name="colorAccent">#29B6F6</color>
+    <color name="colorGray">#c5c5c5</color>
 
 
     <color name="colorA100">#FFD180</color>
