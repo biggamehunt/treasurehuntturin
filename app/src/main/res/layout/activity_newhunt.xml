@@ -72,16 +72,18 @@
                 android:layout_marginStart="20dp"
                 android:layout_centerVertical="true"
                 android:id="@+id/dateStartPick"
-                android:onClick="showDatePickerDialog"/>
+                android:onClick="showDatePickerDialog"
+                android:textSize="16dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/timeInitHunt"
-                android:paddingLeft="200dp"
+                android:layout_marginLeft="200dp"
                 android:layout_centerVertical="true"
                 android:id="@+id/timeStartPick"
-                android:onClick="showTimePickerDialog"/>
+                android:onClick="showTimePickerDialog"
+                android:textSize="16dp" />
 
         </RelativeLayout>
 
@@ -96,16 +98,18 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="60dp"
                 android:id="@+id/dateEndPick"
-                android:onClick="showDatePickerDialog"/>
+                android:onClick="showDatePickerDialog"
+                android:textSize="16dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/timeEndHunt"
-                android:paddingLeft="200dp"
+                android:layout_marginLeft="200dp"
                 android:layout_centerVertical="true"
                 android:id="@+id/timeEndPick"
-                android:onClick="showTimePickerDialog"/>
+                android:onClick="showTimePickerDialog"
+                android:textSize="16dp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -124,18 +128,21 @@
                 android:id="@+id/descrNewHunt" />
 
             <EditText
-                android:textColor="@color/colorGray"
+                android:ems="10"
+                android:textColorHint="@color/colorGray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Descrizione"
+                android:inputType="textMultiLine"
+                android:hint="Description"
                 android:layout_toEndOf="@+id/descrNewHunt"
                 android:layout_marginStart="20dp"
                 android:layout_centerVertical="true"
                 android:id="@+id/descriptionHunt"
-                android:onClick="showDatePickerDialog"
                 android:background="@null"
                 android:elegantTextHeight="false"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:autoText="false" />
+
 
         </RelativeLayout>
 
@@ -143,7 +150,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="goToTeam"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="30dp">
 
             <ImageButton
                 android:alpha="0.3"
@@ -162,7 +169,7 @@
                 android:layout_toEndOf="@+id/groupNewHunt"
                 android:layout_marginStart="20dp"
                 android:layout_centerVertical="true"
-                android:onClick="showDatePickerDialog"/>
+                android:textSize="16dp" />
 
         </RelativeLayout>
 
@@ -170,7 +177,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="goToStage"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="30dp">
 
             <ImageButton
                 android:alpha="0.3"
@@ -189,150 +196,13 @@
                 android:layout_toEndOf="@+id/stageNewHunt"
                 android:layout_marginStart="20dp"
                 android:layout_centerVertical="true"
-                android:onClick="showDatePickerDialog"/>
+                android:textSize="16dp" />
 
         </RelativeLayout>
 
     </LinearLayout>
 
 
-
-
-    <!--
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white">
-
-
-        <include layout="@layout/toolbar"/>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:background="@color/white"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-
-                >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="#FFF">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/newhunt"
-                        android:layout_gravity="center"
-                        android:textColor="@color/metatile"
-                        android:textSize="14dp"
-                        android:layout_marginTop="20dp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="#FFF"
-                    android:weightSum="1">
-
-                    <EditText
-                        android:id="@+id/nameHunt"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="20dp"
-                        android:hint="@string/nameHunt"
-                        android:textColorHint="#bfb4b4"
-                        android:paddingLeft="20dp"
-                        android:drawablePadding="16dp"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="16dp">
-                    </EditText>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/pick_time"
-                        android:onClick="showTimePickerDialog" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="date"
-                        android:ems="10"
-                        android:id="@+id/editText"
-                        android:onClick="showDatePickerDialog"
-                        />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="time"
-                        android:ems="10"
-                        android:id="@+id/editText2"
-                        android:hint="xxx"
-                        android:onClick="showTimePickerDialog"/>
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/pick_date"
-                        android:onClick="showDatePickerDialog" />
-
-                    <EditText
-                        android:textColor="#544f4f"
-                        android:id="@+id/descriptionHunt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:hint="@string/descriptionHunt"
-                        android:textColorHint="#bfb4b4"
-                        android:paddingLeft="20dp"
-                        android:drawablePadding="16dp"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="16dp"
-                        android:maxLength="300"
-                        />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Nuovo Stage"
-                        android:onClick="goToStage" />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Gestisci Squadre"
-                        android:onClick="goToTeam" />
-
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-
-
-
-        </ScrollView>
-
-
-    </LinearLayout>
-
-     <include layout="@layout/navbar"/> -->
+     <!-- <include layout="@layout/navbar"/> -->
 
 </android.support.v4.widget.DrawerLayout>

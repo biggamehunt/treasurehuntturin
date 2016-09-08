@@ -79,13 +79,14 @@
             android:onClick="turn_back_login"/>
 
         <TextView
-            android:id="@+id/wolf"
-            android:layout_width="80dp"
-            android:layout_height="85dp"
+            android:id="@+id/logo"
+            android:layout_width="110dp"
+            android:layout_height="150dp"
             android:textColor="#ffffff"
-            android:background="@drawable/wsdesignlogo"
-            android:layout_marginTop="70dp"
-            android:layout_centerHorizontal="true"/>
+            android:background="@drawable/ghlogov2"
+            android:layout_marginTop="40dp"
+            android:layout_centerHorizontal="true"
+            />
 
 
         <Button
