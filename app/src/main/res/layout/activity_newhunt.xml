@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:background="@color/white">
 
-        <include layout="@layout/toolbar"/>
+        <include layout="@layout/toolbar_newhunt"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -141,7 +141,8 @@
                 android:background="@null"
                 android:elegantTextHeight="false"
                 android:textSize="16dp"
-                android:autoText="false" />
+                android:autoText="false"
+                android:maxLength="300"/>
 
 
         </RelativeLayout>
