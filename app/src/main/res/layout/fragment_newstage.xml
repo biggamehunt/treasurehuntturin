@@ -143,7 +143,8 @@
                     android:elegantTextHeight="false"
                     android:textSize="16dp"
                     android:autoText="false"
-                    android:maxLength="300"/>
+                    android:maxLength="300"
+                    android:maxLines="10"/>
 
             </RelativeLayout>
 
