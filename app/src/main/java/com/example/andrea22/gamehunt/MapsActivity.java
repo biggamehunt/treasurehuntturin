@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -276,9 +277,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             EditText clue = (EditText) findViewById(R.id.clueHunt);
             String clueText =clue.getText().toString();
 
-            Switch islocreq = (Switch) findViewById(R.id.islocreq);
-            Switch isphotoreq = (Switch) findViewById(R.id.isphotoreq);
-            Switch ischeckreq = (Switch) findViewById(R.id.ischeckreq);
+            CheckBox islocreq = (CheckBox) findViewById(R.id.islocreq);
+            CheckBox isphotoreq = (CheckBox) findViewById(R.id.isphotoreq);
+            CheckBox ischeckreq = (CheckBox) findViewById(R.id.ischeckreq);
 
             int islocreqText = 0;
             if (islocreq.isChecked()){
