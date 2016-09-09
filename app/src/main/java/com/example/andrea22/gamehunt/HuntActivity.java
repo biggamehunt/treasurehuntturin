@@ -29,14 +29,17 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.andrea22.gamehunt.Database.DBHelper;
+import com.example.andrea22.gamehunt.utility.DistanceCalculator;
 import com.example.andrea22.gamehunt.utility.RetrieveJson;
 import com.example.andrea22.gamehunt.utility.SendPhoto;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.ByteArrayOutputStream;
@@ -263,7 +266,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
                         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-                        db.execSQL("UPDATE STAGE SET isSended = 1 WHERE idStage = " + idStage + ";");
+                        db.execSQL("UPDATE STAGE SET isPhotoSended = 1 WHERE idStage = " + idStage + ";");
                         Log.d("Hunt Activity", "dopo l'upload");
 
                     } else {
@@ -346,7 +349,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void float1(View view){
-        Log.v("Hunt Activity", "float 1");
+        Log.v("Hunt Activity", "open camera");
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         photo = null;
@@ -368,12 +371,63 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void float2(View view){
-        Log.v("Hunt Activity", "float 2");
+
 
     }
 
     public void float3(View view){
-        Log.v("Hunt Activity", "float 3");
+        Log.v("Hunt Activity", "check location");
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+
+        } else {
+            // Show rationale and request permission.
+        }
+
+
+        LocationManager mLocationManager = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+
+        for (String provider : providers) {
+            Location l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+
+            }
+        }
+
+        if (bestLocation != null) {
+            // Get latitude of the current location
+            double actualLatitude = bestLocation.getLatitude();
+
+            // Get longitude of the current location
+            double actualLongitude = bestLocation.getLongitude();
+
+            double distance = DistanceCalculator.distance(actualLatitude, actualLongitude, lat, lon, "K");
+
+            Log.v("Hunt Activity", "actualLatitude: "+actualLatitude);
+            Log.v("Hunt Activity", "actualLongitude: "+actualLongitude);
+            Log.v("Hunt Activity", "lat: "+lat);
+            Log.v("Hunt Activity", "lon: "+lon);
+
+
+            //toDo mettere 50 tra i costants
+            if (distance <= 50){
+                Toast.makeText(this, "Sono arrivato!", Toast.LENGTH_SHORT).show();
+            } else  {
+                Toast.makeText(this, "Ne devo fare di strada ancora! "+distance, Toast.LENGTH_SHORT).show();
+            }
+
+
+
+        }
 
     }
 
