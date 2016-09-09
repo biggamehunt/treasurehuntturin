@@ -51,7 +51,6 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         output = (TextView) findViewById(R.id.dateStartPick);
 
         // Get current date by calender
-
         final Calendar c = Calendar.getInstance();
         year  = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);
@@ -103,8 +102,6 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
             hunt.put("minute", minute);
             hunt.put("idUser", pref.getInt("idUser", 0));
 
-
-
             JSONArray stages = new JSONArray();
             JSONObject stage;
             int numStage = 0;
@@ -150,7 +147,6 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {

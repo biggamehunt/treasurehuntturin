@@ -229,6 +229,19 @@
 
             </RelativeLayout>
 
+
+            <Button
+                android:layout_marginTop="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Maira succhia"
+                android:textColor="#fff"
+                android:textSize="18dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="15dp"
+                android:id="@+id/donestage"
+                android:onClick="TurnToHunt"/>
+
         </LinearLayout>
 
     </ScrollView>
