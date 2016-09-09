@@ -40,9 +40,6 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
     int year = 0, month = 0, day = 0, minute = 0, hour = 0;
     private JSONObject stage;
 
-    static final int DATE_PICKER_ID = 1111;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +60,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         // Show current date
         output.setText(new StringBuilder()
                 // Month is 0 based, just add 1
-                .append(month + 1).append("-").append(day).append("-")
+                .append(day).append("-").append(month + 1).append("-")
                 .append(year).append(" "));
 
     }
@@ -161,8 +158,8 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         this.month = month;
         this.day = day;
 
-        output.setText(new StringBuilder().append(month + 1)
-                .append("-").append(day).append("-").append(year)
+        output.setText(new StringBuilder().append(day)
+                .append("-").append(month + 1).append("-").append(year)
                 .append(" "));
     }
 
