@@ -1,6 +1,5 @@
 package com.example.andrea22.gamehunt;
 
-
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
@@ -12,31 +11,37 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.JSONBuilder;
 import com.example.andrea22.gamehunt.utility.RetrieveJson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import layout.DatePickerFragment;
 import layout.TimePickerFragment;
+import java.util.Calendar;
+
 
 /**
  * Created by Simone on 21/06/2016.
  */
 public class NewHuntActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
+    TextView output;
+
     EditText name;
     EditText description;
     int year = 0, month = 0, day = 0, minute = 0, hour = 0;
     private JSONObject stage;
+
+    static final int DATE_PICKER_ID = 1111;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,22 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
         name = (EditText) findViewById(R.id.nameHunt);
         description = (EditText) findViewById(R.id.descriptionHunt);
+
+        output = (TextView) findViewById(R.id.dateStartPick);
+
+        // Get current date by calender
+
+        final Calendar c = Calendar.getInstance();
+        year  = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day   = c.get(Calendar.DAY_OF_MONTH);
+
+        // Show current date
+        output.setText(new StringBuilder()
+                // Month is 0 based, just add 1
+                .append(month + 1).append("-").append(day).append("-")
+                .append(year).append(" "));
+
     }
 
     public void showTimePickerDialog(View v) {
@@ -139,6 +160,10 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         this.year = year;
         this.month = month;
         this.day = day;
+
+        output.setText(new StringBuilder().append(month + 1)
+                .append("-").append(day).append("-").append(year)
+                .append(" "));
     }
 
     @Override
