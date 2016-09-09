@@ -35,6 +35,17 @@
     <string name="dateEndHunt">Finish date</string>
     <string name="timeEndHunt">Finish time</string>
 
+    <!-- FRAGMENT_NEWSTAGE -->
+    <string name="areaStage">Stage area</string>
+    <string name="memberStage">Members in goal</string>
+    <string name="hintStage">Hint (Optional)</string>
+    <string name="reqLocStage">Required Location</string>
+    <string name="reqPhotoStage">Required Photo</string>
+    <string name="reqCheckStage">Photo Check</string>
+
+
+
+
 
 
 

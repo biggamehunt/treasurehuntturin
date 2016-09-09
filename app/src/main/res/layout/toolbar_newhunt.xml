@@ -12,7 +12,9 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:background="@drawable/ic_clear_white_24dp"
-        android:onClick="turnBack"/>
+        android:onClick="TurnToHunt"
+        android:id="@+id/donestage"
+        />
 
 
     <TextView
@@ -20,7 +22,7 @@
         android:layout_height="wrap_content"
         android:text="Crea"
         android:textColor="#fff"
-        android:textSize="18dp"
+        android:textSize="20dp"
         android:layout_gravity="right"
         android:layout_marginRight="15dp"/>
 
