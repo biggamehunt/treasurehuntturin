@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.widget.TimePicker;
 
-import com.example.andrea22.gamehunt.NewHuntActivity;
-
 import java.util.Calendar;
 
 /**

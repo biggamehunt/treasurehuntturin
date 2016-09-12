@@ -43,9 +43,6 @@
         <activity
             android:name=".HuntListActivity"
             android:label="@string/title_activity_huntlist" />
-        <activity
-            android:name=".NewHuntActivity"
-            android:label="@string/title_activity_newhunt" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
