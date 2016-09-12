@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
     private ProgressBar spinner;
-    WebSocketClient mWebSocketClient;
+    public static WebSocketClient mWebSocketClient;
     int idUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

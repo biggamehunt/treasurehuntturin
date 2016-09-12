@@ -42,18 +42,27 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 public class HuntActivity extends FragmentActivity implements OnMapReadyCallback {
+
     private Uri mImageUri;
     private GoogleMap mMap;
     private int idHunt, idTeam, idStage, idUser;
@@ -67,6 +76,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     private float areaLat, areaLon, lat, lon;
     FloatingActionButton photoButton;
     Bitmap resized;
+    //WebSocketClient mWebSocketClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +108,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -260,14 +272,24 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                 String res = null;
                 try {
                     res = new RetrieveJson().execute(u).get();
+                    Log.d("Hunt Activity", "res:"+res);
                     if (!res.trim().equals("0")) {
-                        Log.d("Hunt Activity", "res: " + res);
+                        DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                        SQLiteDatabase db = myHelper.getWritableDatabase();
 
-                        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
-                        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                        myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser);
 
-                        db.execSQL("UPDATE STAGE SET isPhotoSended = 1 WHERE idStage = " + idStage + ";");
-                        Log.d("Hunt Activity", "dopo l'upload");
+                        JSONObject jsonRes = new JSONObject(res);
+                        JSONArray jsonUsers = jsonRes.getJSONArray("users");
+
+                        String users ="";
+                        for (int i=0; i<jsonUsers.length();i++){
+                            if (jsonUsers.getInt(i)!=idUser) {
+                                users += jsonUsers.getInt(i)+"&";
+                            }
+                        }
+                        Log.d("Hunt Activity", "users"+users);
+                        updateTeamWebSocket(users);
 
                     } else {
                         //toDo mettere il text di tutti i toast nelle variabili
@@ -280,8 +302,9 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
             }
 
 
@@ -329,7 +352,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
             Log.d("Hunt Activity", "list size: " + list.size());
 
-            int res = new SendPhoto().execute(list).get();
+            /*int res = new SendPhoto().execute(list).get();
 
             if (res == 1) {
                 Toast.makeText(this, "Image Upload!", Toast.LENGTH_SHORT).show();
@@ -339,7 +362,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                 Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
                 return false;
-            }
+            }*/
+            return true;
 
         } catch (Exception e) {
             Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
@@ -443,5 +467,49 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
         return File.createTempFile(part, ext, tempDir);
     }
+
+
+    private void updateTeamWebSocket(String users) {
+
+        LoginActivity.mWebSocketClient.send("up:" + users+"-"+idStage);
+
+
+        /*mWebSocketClient = new WebSocketClient(uri) {
+
+            @Override
+            public void onOpen(ServerHandshake serverHandshake) {
+                Log.i("Websocket", "Opened");
+                mWebSocketClient.send("up:" + users+"-"+idStage);
+
+            }
+
+            @Override
+            public void onMessage(String s) {
+                final String message = s;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Log.i("Websocket", "message:"+message);
+                    }
+                });
+            }
+
+            @Override
+            public void onClose(int i, String s, boolean b) {
+                Log.i("Websocket", "Closed " + s);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.i("Websocket", "Error " + e.getMessage());
+            }
+        };
+
+
+        mWebSocketClient.connect();*/
+    }
+
+
 
 }

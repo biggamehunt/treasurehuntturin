@@ -461,7 +461,80 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    public void setAfterPhotoSended(SQLiteDatabase db, String out, int idStage, int idTeam, int idUser)  {
 
+        try {
+            //todo : devo sistemare i parametri come "isCompleted" su Team o "isPhotoSended" su Stage al login, perché per ora sono tutti in default = 0
+
+
+            JSONObject json = new JSONObject(out);
+
+            if (json.has("userIsPhotoSended") && json.get("userIsPhotoSended").equals("1")){
+                db.execSQL("UPDATE STAGE SET isPhotoSended = 1 WHERE idStage =" + idStage + ";");
+                Log.v("db log", "idPhotoSended = 1");
+            }
+
+            if (json.has("userIsCompleted") && json.get("userIsCompleted").equals("1")){
+                db.execSQL("UPDATE STAGE SET userCompleted = 1 WHERE idStage =" + idStage + ";");
+                Log.v("db log", "userCompleted = 1");
+
+            }
+            if (json.has("teamIsCompleted") && json.get("teamIsCompleted").equals("1")){
+                db.execSQL("UPDATE STAGE SET teamCompleted = 1 WHERE idStage =" + idStage + ";");
+                Log.v("db log", "teamCompleted = 1");
+
+                if (json.has("nextStage")){
+                    //la caccia al tesoro non è ancora finita!
+                    db.execSQL("UPDATE TEAM SET idCurrentStage = "+json.get("nextStage")+" WHERE idTeam =" + idTeam + ";");
+                    Log.v("db log", "nextstage = "+json.get("nextStage"));
+                    if (json.has("users")){
+                        JSONArray users = json.getJSONArray("users");
+                        JSONObject user;
+                        for (int i = 0; i < users.length(); i++){
+                            //notificare agli altri utenti che lo stage è terminato!
+
+                            if (users.getInt(i)==idUser){
+                                Log.v("db log", "id = "+users.getInt(i)+" - sono io!");
+                            } else {
+                                Log.v("db log", "id = "+users.getInt(i));
+                            }
+
+                        }
+
+                    }
+                } else {
+                    //la caccia al tesoro è finita!
+                    db.execSQL("UPDATE TEAM SET idCurrentStage = null WHERE idTeam =" + idTeam + ";");
+                    db.execSQL("UPDATE TEAM SET isCompleted = 1 WHERE idTeam =" + idTeam + ";");
+
+                    if (json.has("users")){
+                        //notificare agli altri utenti che la caccia è terminata!
+                        JSONArray users = json.getJSONArray("users");
+                        JSONObject user;
+                        for (int i = 0; i < users.length(); i++){
+                            if (users.getInt(i)==idUser){
+                                Log.v("db log", "id = "+users.getInt(i)+" - sono io!");
+                            } else {
+                                Log.v("db log", "id = "+users.getInt(i));
+                            }
+
+                        }
+
+                    }
+                }
+
+
+
+            }
+
+
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

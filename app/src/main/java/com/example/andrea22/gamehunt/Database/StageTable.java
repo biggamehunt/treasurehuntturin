@@ -14,7 +14,8 @@ public class StageTable {
         public static final String COLUMN_ISCHECKREQUIRED = "isCheckRequired";
         public static final String COLUMN_ISPHOTOREQUIRED = "isPhotoRequired";
         public static final String COLUMN_NUMUSERTOFINISH = "numUserToFinish";
-        public static final String COLUMN_ISCOMPLETED = "isCompleted";
+        public static final String COLUMN_USERCOMPLETED = "userCompleted";
+        public static final String COLUMN_TEAMCOMPLETED = "teamCompleted";
         public static final String COLUMN_ISPHOTOSENDED = "isPhotoSended";
         public static final String COLUMN_ISPHOTOCHECKED = "isPhotoChecked";
         public static final String COLUMN_IDHUNT = "idHunt";
@@ -36,7 +37,8 @@ public class StageTable {
                         COLUMN_ISCHECKREQUIRED + " INTEGER NOT NULL DEFAULT 0, " +
                         COLUMN_NUMUSERTOFINISH + " INTEGER NOT NULL, " +
 
-                        COLUMN_ISCOMPLETED + " INTEGER NOT NULL DEFAULT 0, " +
+                        COLUMN_USERCOMPLETED + " INTEGER NOT NULL DEFAULT 0, " +
+                        COLUMN_TEAMCOMPLETED + " INTEGER NOT NULL DEFAULT 0, " +
                         COLUMN_ISPHOTOSENDED + " INTEGER NOT NULL DEFAULT 0, " +
                         COLUMN_ISPHOTOCHECKED + " INTEGER NOT NULL DEFAULT 0, " +
 

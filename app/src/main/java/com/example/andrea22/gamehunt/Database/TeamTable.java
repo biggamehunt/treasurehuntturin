@@ -7,6 +7,7 @@ public class TeamTable {
         public static final String COLUMN_SLOGAN = "slogan";
         public static final String COLUMN_IDHUNT = "idHunt";
         public static final String COLUMN_IDCURRENTSTAGE = "idCurrentStage";
+        public static final String ISCOMPLETED = "isCompleted";
         public static final String HUNTTABLE = "HUNT";
         public static final String STAGETABLE = "STAGE";
         public static final String COLUMN_IDSTAGE = "idStage";
@@ -17,8 +18,10 @@ public class TeamTable {
                         COLUMN_IDTEAM + " INTEGER PRIMARY KEY NOT NULL, " +
                         COLUMN_NAME + " TEXT NOT NULL, " +
                         COLUMN_SLOGAN + " TEXT NOT NULL, " +
-                        COLUMN_IDCURRENTSTAGE + " INTEGER NOT NULL, " +
+                        COLUMN_IDCURRENTSTAGE + " INTEGER, " +
                         COLUMN_IDHUNT + " INTEGER NOT NULL, " +
+                        ISCOMPLETED + " INTEGER NOT NULL DEFAULT 0, " +
+
                         "FOREIGN KEY(" + COLUMN_IDCURRENTSTAGE + ") REFERENCES " + STAGETABLE + "(" + COLUMN_IDSTAGE + "), " +
                         "FOREIGN KEY(" + COLUMN_IDHUNT + ") REFERENCES " + HUNTTABLE + "(" + COLUMN_IDHUNT + "));";
 
