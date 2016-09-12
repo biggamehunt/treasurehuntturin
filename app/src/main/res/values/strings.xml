@@ -25,6 +25,8 @@
 
     <string name="reg_error">Error: Username or Email already exists</string>
     <string name="userLength_error">Error: Username too short</string>
+    <string name="passLength_error">Error: Password too short</string>
+    <string name="emailLength_error">Error: Email too short</string>
 
 
 

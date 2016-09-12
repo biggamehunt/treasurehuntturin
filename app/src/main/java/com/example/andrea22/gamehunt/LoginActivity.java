@@ -69,55 +69,64 @@ public class LoginActivity extends AppCompatActivity {
         EditText passwordview = (EditText) findViewById(R.id.password);
         String password = passwordview.getText().toString();
         //Task spinnerTask;
-        try {
 
+        if(username.length() < 4){
+            CharSequence text = getString(R.string.userLength_error);
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+        } else if(password.length() < 7){
+            CharSequence text = getString(R.string.passLength_error);
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
             try {
-                String username_ut8 = java.net.URLEncoder.encode(username, "UTF-8");
-                String password_ut8 = java.net.URLEncoder.encode(password, "UTF-8");
 
-                String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=login&username=" + username_ut8 + "&password=" + password_ut8;
-                String res = new RetrieveLoginTask().execute(u).get();
+                try {
+                    String username_ut8 = java.net.URLEncoder.encode(username, "UTF-8");
+                    String password_ut8 = java.net.URLEncoder.encode(password, "UTF-8");
 
-
-
-
-                if (!res.equals("0")) {
+                    String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=login&username=" + username_ut8 + "&password=" + password_ut8;
+                    String res = new RetrieveLoginTask().execute(u).get();
 
 
-                    DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
-                    SQLiteDatabase db = myHelper.getWritableDatabase();
-                    idUser = myHelper.createDB(db, res);
-
-                    connectWebSocket();
+                    if (!res.equals("0")) {
 
 
-                    SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putInt("idUser", idUser);
-                    editor.putString("username", username);
+                        DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                        SQLiteDatabase db = myHelper.getWritableDatabase();
+                        idUser = myHelper.createDB(db, res);
 
-                    editor.commit();
-                    Intent intent = new Intent(this, HuntListActivity.class);
-                    startActivity(intent);
-                } else {
-                    CharSequence text = getString(R.string.login_error);
-                    int duration = Toast.LENGTH_SHORT;
+                        connectWebSocket();
 
-                    Toast toast = Toast.makeText(this, text, duration);
-                    toast.show();
+
+                        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putInt("idUser", idUser);
+                        editor.putString("username", username);
+
+                        editor.commit();
+                        Intent intent = new Intent(this, HuntListActivity.class);
+                        startActivity(intent);
+                    } else {
+                        CharSequence text = getString(R.string.login_error);
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(this, text, duration);
+                        toast.show();
+                    }
+
+
+                } catch (Exception e) {
+                    Log.d("test debug", "eccezione: " + e.getMessage());
+                    e.printStackTrace();
                 }
 
 
             } catch (Exception e) {
                 Log.d("test debug", "eccezione: " + e.getMessage());
                 e.printStackTrace();
+
             }
-
-
-        } catch (Exception e) {
-            Log.d("test debug", "eccezione: " + e.getMessage());
-            e.printStackTrace();
-
         }
 
     }

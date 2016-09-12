@@ -43,39 +43,45 @@ public class RegistrationActivity extends AppCompatActivity {
         String email = emailview.getText().toString();
 
         if(username.length() < 4){
-
             CharSequence text = getString(R.string.userLength_error);
-
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.show();
-
-        }
-
-        try {
+        } else if(password.length() < 7){
+            CharSequence text = getString(R.string.passLength_error);
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+        } else if(email.length() < 4){
+            CharSequence text = getString(R.string.emailLength_error);
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
 
             try {
-                String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=registration&username=" + username + "&password=" + password + "&email=" + email;
-                String res = new RetrieveFeedTask().execute(u).get();
-                if (!res.equals("0")){
-                    DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
-                    SQLiteDatabase db = myHelper.getWritableDatabase();
-                    myHelper.createDB(db, res);
-                    Intent intent = new Intent(this, HuntListActivity.class);
-                    startActivity(intent);
-                } else {
-                    CharSequence text = getString(R.string.reg_error);
-                    int duration = Toast.LENGTH_SHORT;
 
-                    Toast toast = Toast.makeText(this, text, duration);
-                    toast.show();
+                try {
+                    String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=registration&username=" + username + "&password=" + password + "&email=" + email;
+                    String res = new RetrieveFeedTask().execute(u).get();
+                    if (!res.equals("0")) {
+                        DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                        SQLiteDatabase db = myHelper.getWritableDatabase();
+                        myHelper.createDB(db, res);
+                        Intent intent = new Intent(this, HuntListActivity.class);
+                        startActivity(intent);
+                    } else {
+                        CharSequence text = getString(R.string.reg_error);
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(this, text, duration);
+                        toast.show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+
+
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d("test debug", "eccezione: " + e.getMessage());
             }
-
-
-        } catch (Exception e) {
-            Log.d("test debug", "eccezione: "+e.getMessage());
         }
     }
 
