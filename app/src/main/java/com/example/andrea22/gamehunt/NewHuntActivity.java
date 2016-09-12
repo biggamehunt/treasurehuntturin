@@ -55,8 +55,6 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         year  = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);
         day   = c.get(Calendar.DAY_OF_MONTH);
-        hour = c.get(Calendar.HOUR_OF_DAY);
-        minute = c.get(Calendar.MINUTE);
 
         // Show current date
         output.setText(new StringBuilder()
@@ -67,13 +65,16 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
     }
 
     public void showTimePickerDialog(View v) {
+        output = (TextView)v;
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getFragmentManager(), "timePicker");
     }
 
-    public void showDatePickerDialog(TextView v) {
+    public void showDatePickerDialog(View v) {
+        output = (TextView)v;
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getFragmentManager(), "datePicker");
+
     }
 
     public void goToStage(View v) {
@@ -164,6 +165,9 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
     public void onTimeSet(TimePicker view, int hour, int minute) {
         this.hour = hour;
         this.minute = minute;
+
+        output.setText(new StringBuilder().append(hour)
+                .append(":").append(minute).append(" "));
     }
 
 }
