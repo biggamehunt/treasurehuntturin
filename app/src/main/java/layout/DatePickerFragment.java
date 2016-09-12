@@ -6,6 +6,8 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.widget.DatePicker;
 
+import com.example.andrea22.gamehunt.NewHuntActivity;
+
 import java.util.Calendar;
 
 /**
