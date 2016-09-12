@@ -117,6 +117,8 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
             hunt.put("stages",stages);
 
 
+
+
             String json = java.net.URLEncoder.encode(hunt.toString(), "UTF-8");
 
             String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=addHunt&json=" + json;
