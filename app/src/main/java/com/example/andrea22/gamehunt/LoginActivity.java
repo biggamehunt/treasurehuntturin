@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         EditText passwordview = (EditText) findViewById(R.id.password);
         String password = passwordview.getText().toString();
         //Task spinnerTask;
-
+/*
         if(username.length() < 4){
             CharSequence text = getString(R.string.userLength_error);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             CharSequence text = getString(R.string.passLength_error);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.show();
-        } else {
+        } else { */
             try {
 
                 try {
@@ -129,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
 
-    }
+  //  }
 //TODO: inserire questa funzione in tutte le activity che usano tastiera
     @Override
     public boolean onTouchEvent(MotionEvent event) {

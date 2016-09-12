@@ -34,7 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
                     android:id="@+id/map"
-                    tools:context="com.example.andrea22.gamehunt.MapsActivity"
+                    tools:context=".NewStageActivity"
                     android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
                 <ImageView

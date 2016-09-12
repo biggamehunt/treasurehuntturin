@@ -9,9 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,7 +19,6 @@ import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.JSONBuilder;
 import com.example.andrea22.gamehunt.utility.RetrieveJson;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import layout.DatePickerFragment;
 import layout.TimePickerFragment;
@@ -78,7 +75,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
     }
 
     public void goToStage(View v) {
-        Intent intent = new Intent(this, MapsActivity.class);
+        Intent intent = new Intent(this, NewStageActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.enter, R.anim.exit);
 

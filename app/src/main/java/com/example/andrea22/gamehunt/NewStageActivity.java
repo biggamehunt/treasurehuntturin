@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
@@ -36,7 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class NewStageActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int MY_LOCATION_REQUEST_CODE = 1;
     private GoogleMap mMap;
@@ -58,7 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_newstage);
+        setContentView(R.layout.activity_newstage);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
 
