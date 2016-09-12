@@ -27,7 +27,8 @@
             android:drawablePadding="16dp"
             android:layout_marginTop="230dp"
             android:textColor="@color/colorA100"
-            android:textColorHint="@color/colorA100"/>
+            android:textColorHint="@color/colorA100"
+            android:maxLength="30"/>
 
         <EditText
             android:theme="@style/Theme.App.Base"
@@ -46,7 +47,8 @@
             android:singleLine="false"
             android:contextClickable="false"
             android:textColorHint="@color/colorA100"
-            android:layout_below="@+id/registration_username"/>
+            android:layout_below="@+id/registration_username"
+            android:maxLength="20"/>
 
         <EditText
             android:theme="@style/Theme.App.Base"
@@ -65,7 +67,8 @@
             android:textColor="@color/colorA100"
             android:singleLine="false"
             android:contextClickable="false"
-            android:textColorHint="@color/colorA100"/>
+            android:textColorHint="@color/colorA100"
+            android:maxLength="110"/>
 
 
         <TextView

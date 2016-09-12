@@ -14,6 +14,7 @@
     <string name="action_registration">Don\'t you have an account yet? Sign up!</string>
     <string name="action_sign_in2">Already a member? Login</string>
     <string name="continue_reg">Create Account</string>
+
     <string name="login_error">Error: Invalid Credential</string>
 
 
@@ -21,7 +22,10 @@
     <string name="reg_username">Username</string>
     <string name="reg_email">Email</string>
     <string name="reg_password">Password</string>
+
     <string name="reg_error">Error: Username or Email already exists</string>
+    <string name="userLength_error">Error: Username too short</string>
+
 
 
     <!-- HOME -->

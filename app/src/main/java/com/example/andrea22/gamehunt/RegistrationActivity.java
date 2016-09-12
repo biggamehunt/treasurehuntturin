@@ -41,14 +41,20 @@ public class RegistrationActivity extends AppCompatActivity {
         String password = passwordview.getText().toString();
         EditText emailview = (EditText) findViewById(R.id.registration_email);
         String email = emailview.getText().toString();
-        //EditText phoneview = (EditText) findViewById(R.id.registration_phone);
-        //String phone = phoneview.getText().toString();
-        String phone = "***";
+
+        if(username.length() < 4){
+
+            CharSequence text = getString(R.string.userLength_error);
+
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+
+        }
 
         try {
 
             try {
-                String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=registration&username=" + username + "&password=" + password + "&email=" + email + "&phone=" + phone;
+                String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=registration&username=" + username + "&password=" + password + "&email=" + email;
                 String res = new RetrieveFeedTask().execute(u).get();
                 if (!res.equals("0")){
                     DBHelper myHelper = DBHelper.getInstance(getApplicationContext());

@@ -9,7 +9,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/email_login_form"
+        android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
@@ -83,7 +83,8 @@
                 android:drawablePadding="16dp"
                 android:layout_marginTop="230dp"
                 android:textColor="@color/colorA100"
-                android:textColorHint="@color/colorA100"/>
+                android:textColorHint="@color/colorA100"
+                android:maxLength="30"/>
 
             <EditText
                 android:theme="@style/Theme.App.Base"
@@ -102,7 +103,8 @@
                 android:singleLine="false"
                 android:contextClickable="false"
                 android:textColorHint="@color/colorA100"
-                android:layout_below="@+id/username"/>
+                android:layout_below="@+id/username"
+                android:maxLength="20"/>
 
         </RelativeLayout>
 
