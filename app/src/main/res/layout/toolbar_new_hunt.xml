@@ -12,7 +12,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:background="@drawable/ic_clear_white_24dp"
-        android:onClick="TurnToHunt"
+        android:onClick="turnBack"
         android:id="@+id/donestage"
         />
 
@@ -20,7 +20,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Crea"
+        android:text="@string/crateHunt"
         android:textColor="#fff"
         android:textSize="20dp"
         android:layout_gravity="right"

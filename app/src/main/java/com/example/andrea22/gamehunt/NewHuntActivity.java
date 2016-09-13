@@ -40,7 +40,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_newhunt);
+        setContentView(R.layout.activity_new_hunt);
 
         name = (EditText) findViewById(R.id.nameHunt);
         description = (EditText) findViewById(R.id.descriptionHunt);
@@ -61,6 +61,10 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
     }
 
+    public void turnBack(View v){
+        finish();
+    }
+
     public void showTimePickerDialog(View v) {
         output = (TextView)v;
         DialogFragment newFragment = new TimePickerFragment();
@@ -74,17 +78,35 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
     }
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+
+        output.setText(new StringBuilder().append(day)
+                .append("-").append(month + 1).append("-").append(year)
+                .append(" "));
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
+
+        output.setText(new StringBuilder().append(hour)
+                .append(":").append(minute).append(" "));
+    }
+
     public void goToStage(View v) {
         Intent intent = new Intent(this, NewStageActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.enter, R.anim.exit);
-
     }
 
     public void goToTeam (View v) {
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
 
         try {
             JSONBuilder jsonBuilder = new JSONBuilder();
@@ -106,16 +128,13 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
             int numStage = 0;
             if (c.moveToFirst()) {
                 do {
-                        stage = jsonBuilder.getJSONStage(c,numStage);
-                        stages.put(stage);
-                        numStage++;
+                    stage = jsonBuilder.getJSONStage(c,numStage);
+                    stages.put(stage);
+                    numStage++;
                 } while (c.moveToNext());
 
             }
             hunt.put("stages",stages);
-
-
-
 
             String json = java.net.URLEncoder.encode(hunt.toString(), "UTF-8");
 
@@ -123,7 +142,6 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
             String res = new RetrieveJson().execute(u).get();
 
             if (!res.equals("0")) {
-
 
                 db.execSQL("DELETE FROM ADDSTAGE WHERE idUser = "+pref.getInt("idUser",0));
 
@@ -147,26 +165,6 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int day) {
-        this.year = year;
-        this.month = month;
-        this.day = day;
-
-        output.setText(new StringBuilder().append(day)
-                .append("-").append(month + 1).append("-").append(year)
-                .append(" "));
-    }
-
-    @Override
-    public void onTimeSet(TimePicker view, int hour, int minute) {
-        this.hour = hour;
-        this.minute = minute;
-
-        output.setText(new StringBuilder().append(hour)
-                .append(":").append(minute).append(" "));
     }
 
 }

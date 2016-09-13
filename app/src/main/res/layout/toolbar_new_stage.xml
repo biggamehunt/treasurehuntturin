@@ -11,13 +11,13 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:background="@drawable/ic_clear_white_24dp"
-        android:onClick="TurnBack"/>
+        android:onClick="turnBack"/>
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Conferma"
+        android:text="@string/confirmStage"
         android:textColor="#fff"
         android:textSize="18dp"
         android:layout_gravity="right"

@@ -57,7 +57,7 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_newstage);
+        setContentView(R.layout.activity_new_stage);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
 
@@ -254,6 +254,10 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
         });
 
 
+    }
+
+    public void turnBack(View v){
+        finish();
     }
 
     public void TurnToHunt (View view) {
