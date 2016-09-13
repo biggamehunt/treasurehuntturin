@@ -5,12 +5,9 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.andrea22.gamehunt.TeamManagment;
+import com.example.andrea22.gamehunt.TeamManagementActivity;
 
 public class UsernamePickerFragment extends DialogFragment {
 
@@ -26,14 +23,14 @@ public class UsernamePickerFragment extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int whichButton) {
-                                ((TeamManagment) getActivity()).doPositiveClick(username.getText().toString());
+                                ((TeamManagementActivity) getActivity()).doPositiveClick(username.getText().toString());
                             }
                         })
                 .setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int whichButton) {
-                                ((TeamManagment) getActivity()).doNegativeClick();
+                                ((TeamManagementActivity) getActivity()).doNegativeClick();
                             }
                         }).create();
     }

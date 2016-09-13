@@ -1,18 +1,15 @@
 package com.example.andrea22.gamehunt;
 
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,17 +24,13 @@ import com.example.andrea22.gamehunt.utility.TeamCardsAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import layout.UsernamePickerFragment;
 
-public class TeamManagment extends AppCompatActivity {
+public class TeamManagementActivity extends AppCompatActivity {
 
     private RecyclerView rv;
     private List<SingleTeam> singleTeam;
@@ -48,7 +41,7 @@ public class TeamManagment extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_team_managment);
+        setContentView(R.layout.activity_teammanagement);
 
         rv=(RecyclerView)findViewById(R.id.rv);
         LinearLayoutManager llm = new LinearLayoutManager(this);

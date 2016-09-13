@@ -2,14 +2,12 @@ package com.example.andrea22.gamehunt.utility;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.Button;
@@ -17,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.andrea22.gamehunt.HuntActivity;
 import com.example.andrea22.gamehunt.HuntListActivity;
 import com.example.andrea22.gamehunt.R;
 import java.util.List;
@@ -74,7 +71,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
 
     @Override
     public SingleHuntViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.hunt_v21, viewGroup, false);
         SingleHuntViewHolder pvh = new SingleHuntViewHolder(v);
         return pvh;
     }
@@ -118,7 +115,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         singleHuntViewHolder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // ((TeamManagment) context).addUser(view);
+                // ((TeamManagementActivity) context).addUser(view);
                 Log.v("RVAdapter", "nell'onCLick");
 
                 toggleProductDescriptionHeight(view);
@@ -129,7 +126,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         singleHuntViewHolder.goToHunt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // ((TeamManagment) context).addUser(view);
+                // ((TeamManagementActivity) context).addUser(view);
                 Log.v("RVAdapter", "idHunt:"+view.getTag());
                 Log.v("db log", "id: " + view.getId());
 

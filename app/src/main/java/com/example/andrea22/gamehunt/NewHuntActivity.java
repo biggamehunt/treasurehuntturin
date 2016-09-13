@@ -132,7 +132,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                 editor.putInt("idLastHunt", idHunt);
                 editor.apply();
 
-                Intent intent = new Intent(this, TeamManagment.class);
+                Intent intent = new Intent(this, TeamManagementActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.enter, R.anim.exit);
 

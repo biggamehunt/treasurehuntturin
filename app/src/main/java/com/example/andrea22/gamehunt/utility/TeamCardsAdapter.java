@@ -1,7 +1,5 @@
 package com.example.andrea22.gamehunt.utility;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -10,17 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.andrea22.gamehunt.R;
-import com.example.andrea22.gamehunt.TeamManagment;
+import com.example.andrea22.gamehunt.TeamManagementActivity;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import layout.UsernamePickerFragment;
 
 /**
  * Created by Simone on 29/06/2016.
@@ -93,7 +87,7 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
         singleCardViewHolder.addUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((TeamManagment) context).addUser(view);
+                ((TeamManagementActivity) context).addUser(view);
             }
         });
 

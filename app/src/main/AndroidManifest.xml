@@ -59,7 +59,7 @@
         <activity
             android:name=".NewStageActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".TeamManagment" />
+        <activity android:name=".TeamManagementActivity" />
         <activity
             android:name=".HuntActivity"
             android:label="@string/title_activity_hunt"></activity>
