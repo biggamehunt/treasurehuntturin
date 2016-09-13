@@ -22,7 +22,7 @@
             android:background="@color/white"
             android:id="@+id/linearLayoutNewStage">
 
-            <include layout="@layout/toolbar_new_stage"/>
+            <include layout="@layout/toolbar_newstage"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
