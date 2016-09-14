@@ -105,11 +105,11 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
     }
 
     public void goToTeam (View v) {
-        Intent intent = new Intent(this, NewStageActivity.class);
+        /*Intent intent = new Intent(this, NewStageActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.enter, R.anim.exit);
+        overridePendingTransition(R.anim.enter, R.anim.exit);*/
 
-        /*
+
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
@@ -169,7 +169,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
 }

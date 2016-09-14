@@ -5,11 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,6 +45,9 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleApiClient client;
     private ProgressBar spinner;
     public static WebSocketClient mWebSocketClient;
+
+    public Context context;
+
     int idUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         spinner=(ProgressBar)findViewById(R.id.spinner);
         spinner.setVisibility(View.GONE);
+
+        context = this;
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -213,17 +219,54 @@ public class LoginActivity extends AppCompatActivity {
                         textView = (TextView)findViewById(R.id.messages);
                         textView.setText(textView.getText() + "\n" + message);*/
                         Log.i("Websocket", "message:"+message);
-                        /*if (message==""){
-                            NotificationCompat.Builder n  = new NotificationCompat.Builder(this)
-                                    .setContentTitle("Arrivato nuovo messaggio!!")
-                                    .setContentText("Autore: Nicola Rossi")
-                                    .setSmallIcon(android.R.drawable.ic_dialog_email);
+                        if (message.substring(0,2).equals("up")){ //up=update
+                            Log.i("Websocket", "up");
 
-                            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                            notificationManager.notify(0, n.build());
-                        }*/
+                            String[] firstSplit = message.substring(3).split("-");
+                            int idStage = Integer.parseInt(firstSplit[0]);
+                            int nextSage = Integer.parseInt(firstSplit[1]);
+                            int idTeam = Integer.parseInt(firstSplit[2]);
+                            DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                            SQLiteDatabase db = myHelper.getWritableDatabase();
 
+                            String res = myHelper.notifyFromTeamStageCompleted(db,idStage,nextSage,idTeam); //todo: questo deve andare PRIMA del notificationcompat builder!
 
+                            if (res!=null) {
+                                NotificationCompat.Builder n = new NotificationCompat.Builder(context)
+                                        .setContentTitle("Stage Completato!")
+                                        .setContentText(res)
+                                        .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}) //Vibrazione
+                                        .setLights(Color.RED, 3000, 3000) //Led
+                                        .setSmallIcon(android.R.drawable.ic_dialog_info);
+
+                                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                notificationManager.notify(0, n.build());
+                                Log.i("Websocket", "dopo il notification");
+                            }
+                        } else if (message.substring(0,2).equals("eh")){ //eh=endhunt
+                            Log.i("Websocket", "eh");
+
+                            String[] firstSplit = message.substring(3).split("-");
+                            int idStage = Integer.parseInt(firstSplit[0]);
+                            int idTeam = Integer.parseInt(firstSplit[1]);
+                            DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                            SQLiteDatabase db = myHelper.getWritableDatabase();
+
+                            String res = myHelper.notifyFromTeamHuntCompleted(db,idStage,idTeam); //todo: questo deve andare PRIMA del notificationcompat builder!
+
+                            if (res!=null) {
+                                NotificationCompat.Builder n = new NotificationCompat.Builder(context)
+                                        .setContentTitle("Caccia Completata!")
+                                        .setContentText(res)
+                                        .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}) //Vibrazione
+                                        .setLights(Color.RED, 3000, 3000) //Led
+                                        .setSmallIcon(android.R.drawable.ic_dialog_info);
+
+                                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                notificationManager.notify(0, n.build());
+                                Log.i("Websocket", "dopo il notification");
+                            }
+                        }
 
                     }
                 });

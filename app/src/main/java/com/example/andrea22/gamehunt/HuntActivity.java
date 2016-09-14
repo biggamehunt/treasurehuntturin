@@ -279,7 +279,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                         myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser);
 
-                        JSONObject jsonRes = new JSONObject(res);
+                       /* JSONObject jsonRes = new JSONObject(res);
                         JSONArray jsonUsers = jsonRes.getJSONArray("users");
 
                         String users ="";
@@ -289,7 +289,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                             }
                         }
                         Log.d("Hunt Activity", "users"+users);
-                        updateTeamWebSocket(users);
+                        updateTeamWebSocket(users);*/
 
                     } else {
                         //toDo mettere il text di tutti i toast nelle variabili
@@ -301,8 +301,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }

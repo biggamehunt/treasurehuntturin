@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.andrea22.gamehunt.LoginActivity;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -488,18 +490,18 @@ public class DBHelper extends SQLiteOpenHelper {
                     db.execSQL("UPDATE TEAM SET idCurrentStage = "+json.get("nextStage")+" WHERE idTeam =" + idTeam + ";");
                     Log.v("db log", "nextstage = "+json.get("nextStage"));
                     if (json.has("users")){
-                        JSONArray users = json.getJSONArray("users");
-                        JSONObject user;
-                        for (int i = 0; i < users.length(); i++){
-                            //notificare agli altri utenti che lo stage è terminato!
+                        JSONArray jUsers = json.getJSONArray("users");
+                        String users="";
 
-                            if (users.getInt(i)==idUser){
-                                Log.v("db log", "id = "+users.getInt(i)+" - sono io!");
-                            } else {
-                                Log.v("db log", "id = "+users.getInt(i));
+                        for (int i=0; i<jUsers.length();i++){
+                            if (jUsers.getInt(i)!=idUser) {
+                                users += jUsers.getInt(i)+"&";
                             }
-
                         }
+
+                        LoginActivity.mWebSocketClient.send("up:" + users+"-"+idStage+"-"+json.get("nextStage")+"-"+idTeam);
+
+                        //
 
                     }
                 } else {
@@ -508,19 +510,19 @@ public class DBHelper extends SQLiteOpenHelper {
                     db.execSQL("UPDATE TEAM SET isCompleted = 1 WHERE idTeam =" + idTeam + ";");
 
                     if (json.has("users")){
-                        //notificare agli altri utenti che la caccia è terminata!
-                        JSONArray users = json.getJSONArray("users");
-                        JSONObject user;
-                        for (int i = 0; i < users.length(); i++){
-                            if (users.getInt(i)==idUser){
-                                Log.v("db log", "id = "+users.getInt(i)+" - sono io!");
-                            } else {
-                                Log.v("db log", "id = "+users.getInt(i));
-                            }
+                        JSONArray jUsers = json.getJSONArray("users");
+                        String users="";
 
+                        for (int i=0; i<jUsers.length();i++){
+                            if (jUsers.getInt(i)!=idUser) {
+                                users += jUsers.getInt(i)+"&";
+                            }
                         }
+                        LoginActivity.mWebSocketClient.send("eh:" + users+"-"+idStage+"-"+idTeam);
 
                     }
+
+
                 }
 
 
@@ -536,6 +538,60 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    public String notifyFromTeamStageCompleted(SQLiteDatabase db, int idStage, int idNextStage, int idTeam)  {
+        String name=null;
+        try {
+                Log.v("db log", "prima del set teamCompleted");
+                db.execSQL("UPDATE STAGE SET teamCompleted = 1 WHERE idStage =" + idStage + ";");
+                Log.v("db log", "prima del set idCurrentStage");
+
+                db.execSQL("UPDATE TEAM SET idCurrentStage = " + idNextStage + " WHERE idTeam =" + idTeam + ";");
+
+
+                Cursor c = db.rawQuery( "SELECT HUNT.name " +
+                                        "FROM HUNT LEFT JOIN HUNT ON HUNT.idHunt = STAGE.idHunt WHERE STAGE.idStage =" + idStage + ";", null);
+
+
+                if (c.moveToFirst()) {
+                    do {
+                        name = c.getString(c.getColumnIndex("name"));
+                    } while (c.moveToNext());
+                }
+
+
+            } catch (Exception e){
+                e.printStackTrace();
+                return null;
+            }
+        return name;
+    }
+
+    public String notifyFromTeamHuntCompleted(SQLiteDatabase db, int idStage, int idTeam)  {
+        String name=null;
+
+        try {
+            Log.v("db log", "prima del set teamCompleted");
+            db.execSQL("UPDATE STAGE SET teamCompleted = 1 WHERE idStage =" + idStage + ";");
+            Log.v("db log", "prima del set idCurrentStage");
+
+            db.execSQL("UPDATE TEAM SET idCurrentStage = null, isCompleted = 1 WHERE idTeam =" + idTeam + ";");
+
+            Cursor c = db.rawQuery( "SELECT HUNT.name " +
+                    "FROM HUNT LEFT JOIN HUNT ON HUNT.idHunt = STAGE.idHunt WHERE STAGE.idStage =" + idStage + ";", null);
+
+
+            if (c.moveToFirst()) {
+                do {
+                    name = c.getString(c.getColumnIndex("name"));
+                } while (c.moveToNext());
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return name;
+    }
 
 
 }
