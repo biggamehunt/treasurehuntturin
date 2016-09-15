@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/cvteam"
+        android:onClick="goToSingleTeam"
         >
 
         <LinearLayout

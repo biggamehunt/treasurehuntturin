@@ -110,6 +110,12 @@ public class TeamManagementActivity extends AppCompatActivity {
 
     }
 
+    public void goToSingleTeam(View view){
+        Intent intent = new Intent(this, SingleTeamActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
+
     public void addUser(View view){
         Log.v(getLocalClassName(), "addUser");
 
