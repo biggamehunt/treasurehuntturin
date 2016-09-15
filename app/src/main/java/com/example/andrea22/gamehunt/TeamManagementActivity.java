@@ -101,7 +101,6 @@ public class TeamManagementActivity extends AppCompatActivity {
 
         TeamCardsAdapter adapter = new TeamCardsAdapter(singleTeam, this);
         rv.setAdapter(adapter);
-        rv.setAdapter(adapter);
 
     }
 
@@ -121,10 +120,21 @@ public class TeamManagementActivity extends AppCompatActivity {
 
         UsernamePickerFragment u = new UsernamePickerFragment();
 
-        u.show(getFragmentManager(),"add username");
+
         numTeam = Integer.parseInt(((Button) view).getTag().toString());
 
-        lastAddUser = (Button)view;
+        //<todo inserire 30 nelle costanti, e ovviamente anche le string dei toast...
+        if (singleTeam.get(numTeam-1).getPlayer().size() >= 30){
+            CharSequence text = "Ragiunto il numero massimo di utenti per il team!";
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            u.show(getFragmentManager(),"add username");
+            lastAddUser = (Button)view;
+
+        }
+
+
 
     }
 
@@ -137,16 +147,19 @@ public class TeamManagementActivity extends AppCompatActivity {
             if (username.equals(pref.getString("username", ""))){
                 //todo: inserire i messaggi dei toasts in string.xml
                 CharSequence text = "Non puoi aggiungere l'utente che ha creato la caccia";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(this, text, duration);
+                Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
                 toast.show();
                 return;
             }
             for (int i = 0; i<singleTeam.size();i++){
                 List<String> players = singleTeam.get(i).getPlayer();
+                Log.v(getLocalClassName(), "esterno:num player nel team:"+singleTeam.get(i).getCountPlayer());
+
+
                 for (int j = 0; j < players.size();j++){
-                    if (username.equals(players.get(j))){
+                    Log.v(getLocalClassName(), "interno:"+players.get(j));
+
+                    if (username.trim().equals((players.get(j)).trim())){
                         CharSequence text = "User già aggiunto!";
                         int duration = Toast.LENGTH_SHORT;
 
@@ -179,7 +192,7 @@ public class TeamManagementActivity extends AppCompatActivity {
 
                     TextView playerView = new TextView(this);
                     playerView.setText(username);
-
+                    singleTeam.get(numTeam-1).getPlayer().add(username.trim());
                     ((LinearLayout)((LinearLayout)lastAddUser.getParent()).getChildAt(1)).addView(playerView);
 
 
@@ -210,6 +223,16 @@ public class TeamManagementActivity extends AppCompatActivity {
 
     public void finish(View view){
         Log.v(getLocalClassName(),"entro in finish");
+
+        for (int i = 0; i<singleTeam.size();i++) {
+            //todo inserire 1 tra le costanti (minimi user nel team)
+            if (singleTeam.get(i).getPlayer().size() < 1) {
+                CharSequence text = "Non puoi lasciare dei team vuoti!";
+                Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }
+        }
 
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();

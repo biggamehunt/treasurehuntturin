@@ -117,6 +117,21 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
             JSONBuilder jsonBuilder = new JSONBuilder();
             SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
             Cursor c = db.rawQuery("SELECT * FROM ADDSTAGE WHERE idUser = "+pref.getInt("idUser",0), null);
+
+            //todo: inserire 1 tra le costanti, come minimi stage
+            if (c.getCount() < 1){
+                CharSequence text = "Devi inseire almeno uno stage!";
+                Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            } else if (name.getText().toString().equals("")){
+                CharSequence text = "Inserire un nome della caccia!";
+                Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }
+
+
             JSONObject hunt = new JSONObject();
             hunt.put("name", name.getText().toString());
             hunt.put("description", description.getText().toString());
