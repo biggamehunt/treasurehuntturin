@@ -226,18 +226,25 @@ public class LoginActivity extends AppCompatActivity {
                             int idStage = Integer.parseInt(firstSplit[0]);
                             int nextSage = Integer.parseInt(firstSplit[1]);
                             int idTeam = Integer.parseInt(firstSplit[2]);
+                            int idHunt = Integer.parseInt(firstSplit[3]);
+                            String name = firstSplit[4];
+                            name=name.replace("___","-");
+                            name=name.replace("£$%","&");
+                            boolean res;
                             DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                             SQLiteDatabase db = myHelper.getWritableDatabase();
-
-                            String res = myHelper.notifyFromTeamStageCompleted(db,idStage,nextSage,idTeam); //todo: questo deve andare PRIMA del notificationcompat builder!
-
-                            if (res!=null) {
+                            if (myHelper.getHuntIsLoaded(db,idHunt)==1) {
+                                res = myHelper.notifyFromTeamStageCompleted(db, idStage, nextSage, idTeam); //todo: questo deve andare PRIMA del notificationcompat builder!
+                            } else {
+                                res = true;
+                            }
+                            if (res) {
                                 NotificationCompat.Builder n = new NotificationCompat.Builder(context)
                                         .setContentTitle("Stage Completato!")
-                                        .setContentText(res)
+                                        .setContentText(name)
                                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}) //Vibrazione
                                         .setLights(Color.RED, 3000, 3000) //Led
-                                        .setSmallIcon(android.R.drawable.ic_dialog_info);
+                                        .setSmallIcon(R.mipmap.ic_launcher);
 
                                 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                                 notificationManager.notify(0, n.build());
@@ -249,18 +256,25 @@ public class LoginActivity extends AppCompatActivity {
                             String[] firstSplit = message.substring(3).split("-");
                             int idStage = Integer.parseInt(firstSplit[0]);
                             int idTeam = Integer.parseInt(firstSplit[1]);
+                            int idHunt = Integer.parseInt(firstSplit[2]);
+                            String name = firstSplit[3];
+                            name=name.replace("___","-");
+                            name=name.replace("£$%","&");
                             DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                             SQLiteDatabase db = myHelper.getWritableDatabase();
-
-                            String res = myHelper.notifyFromTeamHuntCompleted(db,idStage,idTeam); //todo: questo deve andare PRIMA del notificationcompat builder!
-
-                            if (res!=null) {
+                            boolean res;
+                            if (myHelper.getHuntIsLoaded(db,idHunt)==1) {
+                                res = myHelper.notifyFromTeamHuntCompleted(db,idStage,idTeam);
+                            } else {
+                                res = true;
+                            }
+                            if (res) {
                                 NotificationCompat.Builder n = new NotificationCompat.Builder(context)
                                         .setContentTitle("Caccia Completata!")
-                                        .setContentText(res)
+                                        .setContentText(name)
                                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}) //Vibrazione
                                         .setLights(Color.RED, 3000, 3000) //Led
-                                        .setSmallIcon(android.R.drawable.ic_dialog_info);
+                                        .setSmallIcon(R.mipmap.ic_launcher);
 
                                 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                                 notificationManager.notify(0, n.build());

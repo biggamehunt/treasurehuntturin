@@ -71,8 +71,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     File photo;
     final int TAKE_PHOTO_REQ = 100;
 
-    private String clue;
-    private int numStage, ray, isLocationRequired, isCheckRequired, isPhotoRequired;
+    private String clue, name;
+    private int numStage, ray, isLocationRequired, isCheckRequired, isPhotoRequired, isCompleted;
     private float areaLat, areaLon, lat, lon;
     FloatingActionButton photoButton;
     Bitmap resized;
@@ -81,7 +81,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hunt);
         parent = this;
         Intent intent = getIntent();
         idHunt = Integer.parseInt(intent.getStringExtra("idHunt"));
@@ -89,7 +88,18 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
         idUser = pref.getInt("idUser", 0);
 
-        setStageMap();
+
+        if (isCompleted == 0){
+            setContentView(R.layout.activity_hunt);
+            setStageMap();
+
+
+        } else {
+            //todo:mettere un altro layout...?
+            setContentView(R.layout.activity_hunt);
+            Toast toast = Toast.makeText(this, "La caccia è completa!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -152,7 +162,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             //marker.setVisible(false);
 
 
-            if (isLocationRequired == 1) {
+            if (isLocationRequired == 1  && isCompleted == 0) {
                 LatLng latLng = new LatLng(areaLat, areaLon);
                 // Show the current goal in Google Map
                 mMap.addCircle(new CircleOptions()
@@ -176,7 +186,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
             }
             photoButton = (FloatingActionButton) findViewById(R.id.photo);
-            if (isPhotoRequired == 0) {
+            if (isPhotoRequired == 0 || isCompleted == 1) {
                 photoButton.setVisibility(View.INVISIBLE);
             }
 
@@ -192,22 +202,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         try {
 
 
-            Cursor cu = db.rawQuery("SELECT * FROM TEAM;", null);
-            Log.v("Hunt Activity", "numteam: " + cu.getCount());
-            if (cu.moveToFirst()) {
-                do {
-                    Log.v("Hunt Activity", cu.getString(cu.getColumnIndex("idTeam")));
-
-                } while (cu.moveToNext());
-
-            }
-
-            cu = db.rawQuery("SELECT * FROM HUNT;", null);
-            Log.v("Hunt Activity", "numhunt: " + cu.getCount());
-
-            cu = db.rawQuery("SELECT * FROM STAGE;", null);
-            Log.v("Hunt Activity", "numStage: " + cu.getCount());
-
             Cursor c = db.rawQuery(
                     "SELECT  STAGE.idStage, " +
                             "STAGE.numStage, " +
@@ -220,11 +214,14 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                             "STAGE.isLocationRequired, " +
                             "STAGE.isCheckRequired, " +
                             "STAGE.isPhotoRequired, " +
+                            "HUNT.name, " +
+                            "TEAM.isCompleted, " +
                             "TEAM.idTeam " +
 
                     "FROM    TEAM LEFT JOIN BE ON TEAM.idTeam = BE.idTeam " +
                             "LEFT JOIN USER ON USER.idUser = BE.idUser " +
                             "LEFT JOIN STAGE ON STAGE.idStage = TEAM.idCurrentStage " +
+                            "LEFT JOIN HUNT ON HUNT.idHunt = TEAM.idHunt " +
 
                     "WHERE   TEAM.idHunt = "+idHunt+" AND USER.idUser = " + idUser, null);
             Log.v("Hunt Activity", "info prelevate: " + c.getCount());
@@ -243,6 +240,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     isCheckRequired = c.getInt(c.getColumnIndex("isCheckRequired"));
                     isPhotoRequired = c.getInt(c.getColumnIndex("isPhotoRequired"));
                     idTeam = c.getInt(c.getColumnIndex("idTeam"));
+                    isCompleted = c.getInt(c.getColumnIndex("isCompleted"));
+                    name = c.getString(c.getColumnIndex("name"));
 
 
                 } while (c.moveToNext());
@@ -277,7 +276,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                         DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                         SQLiteDatabase db = myHelper.getWritableDatabase();
 
-                        myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser);
+                        myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser,idHunt,name);
 
                        /* JSONObject jsonRes = new JSONObject(res);
                         JSONArray jsonUsers = jsonRes.getJSONArray("users");

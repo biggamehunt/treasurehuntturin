@@ -333,7 +333,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(AddTeamTable.COLUMN_NUMTEAM, numTeam);
 
 
-            db.insert(AddTeamTable.TABLE_NAME,null,values);
+            db.insert(AddTeamTable.TABLE_NAME, null, values);
 
             Log.v("db log", "Insert AddTeam eseguito");
 
@@ -463,7 +463,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void setAfterPhotoSended(SQLiteDatabase db, String out, int idStage, int idTeam, int idUser)  {
+    public void setAfterPhotoSended(SQLiteDatabase db, String out, int idStage, int idTeam, int idUser, int idHunt, String name)  {
 
         try {
             //todo : devo sistemare i parametri come "isCompleted" su Team o "isPhotoSended" su Stage al login, perché per ora sono tutti in default = 0
@@ -498,8 +498,9 @@ public class DBHelper extends SQLiteOpenHelper {
                                 users += jUsers.getInt(i)+"&";
                             }
                         }
-
-                        LoginActivity.mWebSocketClient.send("up:" + users+"-"+idStage+"-"+json.get("nextStage")+"-"+idTeam);
+                        name=name.replace("-","___");
+                        name=name.replace("&","£$%");
+                        LoginActivity.mWebSocketClient.send("up:" + users+"-"+idStage+"-"+json.get("nextStage")+"-"+idTeam+"-"+idHunt+"-"+name);
 
                         //
 
@@ -518,7 +519,9 @@ public class DBHelper extends SQLiteOpenHelper {
                                 users += jUsers.getInt(i)+"&";
                             }
                         }
-                        LoginActivity.mWebSocketClient.send("eh:" + users+"-"+idStage+"-"+idTeam);
+                        name=name.replace("-","___");
+                        name=name.replace("&","£$%");
+                        LoginActivity.mWebSocketClient.send("eh:" + users+"-"+idStage+"-"+idTeam+"-"+idHunt+"-"+name);
 
                     }
 
@@ -538,8 +541,8 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public String notifyFromTeamStageCompleted(SQLiteDatabase db, int idStage, int idNextStage, int idTeam)  {
-        String name=null;
+    public boolean notifyFromTeamStageCompleted(SQLiteDatabase db, int idStage, int idNextStage, int idTeam)  {
+
         try {
                 Log.v("db log", "prima del set teamCompleted");
                 db.execSQL("UPDATE STAGE SET teamCompleted = 1 WHERE idStage =" + idStage + ";");
@@ -548,26 +551,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL("UPDATE TEAM SET idCurrentStage = " + idNextStage + " WHERE idTeam =" + idTeam + ";");
 
 
-                Cursor c = db.rawQuery( "SELECT HUNT.name " +
-                                        "FROM HUNT LEFT JOIN HUNT ON HUNT.idHunt = STAGE.idHunt WHERE STAGE.idStage =" + idStage + ";", null);
-
-
-                if (c.moveToFirst()) {
-                    do {
-                        name = c.getString(c.getColumnIndex("name"));
-                    } while (c.moveToNext());
-                }
-
-
             } catch (Exception e){
                 e.printStackTrace();
-                return null;
+                return false;
             }
-        return name;
+        return true;
     }
 
-    public String notifyFromTeamHuntCompleted(SQLiteDatabase db, int idStage, int idTeam)  {
-        String name=null;
+    public boolean notifyFromTeamHuntCompleted(SQLiteDatabase db, int idStage, int idTeam)  {
 
         try {
             Log.v("db log", "prima del set teamCompleted");
@@ -576,21 +567,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
             db.execSQL("UPDATE TEAM SET idCurrentStage = null, isCompleted = 1 WHERE idTeam =" + idTeam + ";");
 
-            Cursor c = db.rawQuery( "SELECT HUNT.name " +
-                    "FROM HUNT LEFT JOIN HUNT ON HUNT.idHunt = STAGE.idHunt WHERE STAGE.idStage =" + idStage + ";", null);
-
-
-            if (c.moveToFirst()) {
-                do {
-                    name = c.getString(c.getColumnIndex("name"));
-                } while (c.moveToNext());
-            }
 
         } catch (Exception e){
             e.printStackTrace();
-            return null;
+            return false;
         }
-        return name;
+        return true;
     }
 
 
