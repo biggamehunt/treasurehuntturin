@@ -47,6 +47,7 @@
     <string name="reqLocStage">Required Location</string>
     <string name="reqPhotoStage">Required Photo</string>
     <string name="reqCheckStage">Photo Check</string>
+    <string name="descr_overflow_button">blabla bla</string>
 
     <!-- TOOLBARS -->
     <string name="confirmStage">Confirm</string>

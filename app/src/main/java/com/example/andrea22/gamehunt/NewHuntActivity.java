@@ -62,6 +62,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
     }
 
     public void turnBack(View v){
+
         finish();
     }
 
@@ -96,6 +97,12 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
         output.setText(new StringBuilder().append(hour)
                 .append(":").append(minute).append(" "));
+    }
+
+    public void goToTeamDirect(View view){
+        Intent intent = new Intent(this, SingleTeamActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
     public void goToStage(View v) {
