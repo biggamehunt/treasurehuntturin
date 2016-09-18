@@ -340,17 +340,53 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void insertUserAddTeam(SQLiteDatabase db, int idHunt, int idAddTeam, String username)  {
-        if (idAddTeam != 0){
+    public String selectUserAddTeam(SQLiteDatabase db, int idHunt, int numTeam)  {
+        if (idHunt != 0 && numTeam != 0){
+            String users = "";
+            Cursor c = db.rawQuery("SELECT users FROM ADDTEAM WHERE numTeam =" + numTeam + " AND idHunt = " + idHunt + ";", null);
+            if (c.moveToFirst()) {
+                do {
+                    users = c.getString(c.getColumnIndex("users"));
+                } while (c.moveToNext());
+            }
+
+            Log.v("db log", "Select users eseguito");
+
+            return users;
+
+        }
+        return null;
+    }
+
+    public String selectAllUserAddTeam(SQLiteDatabase db, int idHunt)  {
+        if (idHunt != 0){
+            String users = "";
+            Cursor c = db.rawQuery("SELECT users FROM ADDTEAM WHERE idHunt = " + idHunt + ";", null);
+            if (c.moveToFirst()) {
+                do {
+                    users += c.getString(c.getColumnIndex("users"))+"|";
+                } while (c.moveToNext());
+            }
+
+            Log.v("db log", "Select all users eseguito");
+
+            return users;
+
+        }
+        return null;
+    }
+
+    public void insertUserAddTeam(SQLiteDatabase db, int idHunt, int numTeam, String username)  {
+        if (numTeam != 0){
             String oldusername = "";
-            Cursor c = db.rawQuery("SELECT users FROM ADDTEAM WHERE numTeam =" + idAddTeam + " AND idHunt = " + idHunt + ";", null);
+            Cursor c = db.rawQuery("SELECT users FROM ADDTEAM WHERE numTeam =" + numTeam + " AND idHunt = " + idHunt + ";", null);
             if (c.moveToFirst()) {
                 do {
                     oldusername = c.getString(c.getColumnIndex("users"));
                 } while (c.moveToNext());
             }
 
-            db.execSQL("UPDATE ADDTEAM SET users = '" + oldusername + username + "|' WHERE numTeam =" + idAddTeam + " AND idHunt = " + idHunt + ";");
+            db.execSQL("UPDATE ADDTEAM SET users = '" + oldusername + username + "|' WHERE numTeam =" + numTeam + " AND idHunt = " + idHunt + ";");
 
 
             Log.v("db log", "Update AddTeam eseguito");
