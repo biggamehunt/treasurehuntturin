@@ -104,10 +104,20 @@ public class TeamManagementActivity extends AppCompatActivity {
 
     }
 
+    public void turnBack(View v){
+        finish();
+    }
+
     public void addTeam(View view){
 
+    }
+
+    public void deleteTeam(View view){
 
     }
+
+
+
 
     public void goToSingleTeam(View view){
         Intent intent = new Intent(this, SingleTeamActivity.class);
@@ -115,11 +125,12 @@ public class TeamManagementActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
+
+
     public void addUser(View view){
         Log.v(getLocalClassName(), "addUser");
 
         UsernamePickerFragment u = new UsernamePickerFragment();
-
 
         numTeam = Integer.parseInt(((Button) view).getTag().toString());
 
@@ -134,10 +145,7 @@ public class TeamManagementActivity extends AppCompatActivity {
 
         }
 
-
-
     }
-
 
     public void doPositiveClick(String username) {
         try {
@@ -219,7 +227,6 @@ public class TeamManagementActivity extends AppCompatActivity {
 
 
     }
-
 
     public void finish(View view){
         Log.v(getLocalClassName(),"entro in finish");

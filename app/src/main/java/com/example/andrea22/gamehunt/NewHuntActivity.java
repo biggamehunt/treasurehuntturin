@@ -62,7 +62,6 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
     }
 
     public void turnBack(View v){
-
         finish();
     }
 
@@ -100,7 +99,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
     }
 
     public void goToTeamDirect(View view){
-        Intent intent = new Intent(this, SingleTeamActivity.class);
+        Intent intent = new Intent(this, TeamManagementActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
