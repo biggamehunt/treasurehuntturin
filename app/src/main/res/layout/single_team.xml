@@ -1,4 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:padding="16dp"
+android:orientation="vertical">
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="145dp"
+    android:padding="32dp"
+    android:onClick="goToSingleTeam"
+    android:layout_marginBottom="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            >
+
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/she"/>
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:padding="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rate this dsasfsgswqewgfewtwf"
+                android:maxLines="2"
+                android:textColor="@android:color/black"
+                android:textSize="22dp"/>
+
+            <TextView
+                android:paddingTop="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mac Miller is the best"/>
+
+            <LinearLayout
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/addUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:onClick="goToSingleTeam"
+
+                    />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>
+
+</LinearLayout>
+
+
+
+
+
+
+
+    <!--
+
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -63,42 +156,42 @@
 
 
 
-<!--
 
 
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:elevation="6dp"
-            app:backgroundTint="@color/colorAccent"
-            app:pressedTranslationZ="12dp"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_person_add_white_24dp"
-            app:layout_anchor="@id/cvteam"
-            app:layout_anchorGravity="bottom|right|end"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:elevation="6dp"
-            app:backgroundTint="@color/colorAccent"
-            app:pressedTranslationZ="12dp"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_person_add_white_24dp"
-            app:layout_anchor="@id/viewB"
-            app:layout_anchorGravity="bottom|right|end"/>
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:elevation="6dp"
+                app:backgroundTint="@color/colorAccent"
+                app:pressedTranslationZ="12dp"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@drawable/ic_person_add_white_24dp"
+                app:layout_anchor="@id/cvteam"
+                app:layout_anchorGravity="bottom|right|end"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            app:elevation="6dp"
-            app:backgroundTint="@color/colorAccent"
-            app:pressedTranslationZ="12dp"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_add_white_24dp"
-            android:onClick="AddTeam"
-            />
--->
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:elevation="6dp"
+                app:backgroundTint="@color/colorAccent"
+                app:pressedTranslationZ="12dp"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@drawable/ic_person_add_white_24dp"
+                app:layout_anchor="@id/viewB"
+                app:layout_anchorGravity="bottom|right|end"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                app:elevation="6dp"
+                app:backgroundTint="@color/colorAccent"
+                app:pressedTranslationZ="12dp"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@drawable/ic_add_white_24dp"
+                android:onClick="AddTeam"
+                />
+    -->
