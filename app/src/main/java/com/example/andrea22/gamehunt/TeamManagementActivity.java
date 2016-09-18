@@ -32,7 +32,6 @@ import layout.UsernamePickerFragment;
 
 public class TeamManagementActivity extends AppCompatActivity {
 
-    private RecyclerView rv;
     private List<SingleTeam> singleTeam;
     private int numTeam;
 
@@ -43,17 +42,14 @@ public class TeamManagementActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_management);
 
-        rv=(RecyclerView)findViewById(R.id.rv);
         LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
-        rv.setHasFixedSize(true);
 
         //fab = (FloatingActionButton)findViewById(R.id.fab);
         //rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
         //fab.setOnClickListener(this);
 
         initializeData();
-        initializeAdapter();
+       // initializeAdapter();
     }
     private void initializeData(){
 
@@ -100,7 +96,6 @@ public class TeamManagementActivity extends AppCompatActivity {
     public void initializeAdapter(){
 
         TeamCardsAdapter adapter = new TeamCardsAdapter(singleTeam, this);
-        rv.setAdapter(adapter);
 
     }
 
@@ -121,6 +116,12 @@ public class TeamManagementActivity extends AppCompatActivity {
 
     public void goToSingleTeam(View view){
         Intent intent = new Intent(this, SingleTeamActivity.class);
+        numTeam = Integer.parseInt(view.getTag().toString());
+        Log.v(getLocalClassName(), "numTeam:"+view.getTag().toString());
+        intent.putExtra("numTeam", numTeam);
+        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+        intent.putExtra("idHunt", pref.getInt("idLastHunt", 0));
+
         startActivity(intent);
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
