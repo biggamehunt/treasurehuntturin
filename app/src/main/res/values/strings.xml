@@ -64,5 +64,6 @@
     <string name="clueHunt">Suggerimento (Opzionale)</string>
     <string name="title_activity_hunt">HUNT</string>
     <string name="title_activity_activity_single_team">ActivitySingleTeam</string>
+    <string name="action_settings">boooh</string>
 
 </resources>
