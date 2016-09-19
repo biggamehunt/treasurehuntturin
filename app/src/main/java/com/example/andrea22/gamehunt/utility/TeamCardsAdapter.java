@@ -77,12 +77,12 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
     public void onBindViewHolder(SingleCardViewHolder singleCardViewHolder, int i) {
         singleCardViewHolder.teamName.setText(singleTeam.get(i).name);
 
-        for(int j=0;j<singleCardViewHolder.teamLayout.getChildCount();j++){
+        /*for(int j=0;j<singleCardViewHolder.teamLayout.getChildCount();j++){
 
             ((TextView)singleCardViewHolder.teamLayout.getChildAt(j)).setText(singleTeam.get(i).player.get(j));
-        }
+        }*/
         numTeam  = singleTeam.get(i).numTeam;
-        singleCardViewHolder.addUser.setTag(singleTeam.get(i).numTeam);
+        singleCardViewHolder.cv.setTag(singleTeam.get(i).numTeam);
 
         singleCardViewHolder.addUser.setOnClickListener(new View.OnClickListener() {
             @Override
