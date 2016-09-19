@@ -35,7 +35,7 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
             cv = (CardView)itemView.findViewById(R.id.cvteam);
             teamName = (TextView)itemView.findViewById(R.id.team_name);
             teamLayout = (LinearLayout) itemView.findViewById(R.id.team_layout);
-            addUser = (Button) itemView.findViewById(R.id.addUser);
+            //addUser = (Button) itemView.findViewById(R.id.addUser);
 
             TextView playerView;
             //teamPlayer = new ArrayList<TextView>();
@@ -83,14 +83,14 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
         }*/
         numTeam  = singleTeam.get(i).numTeam;
         singleCardViewHolder.cv.setTag(singleTeam.get(i).numTeam);
-
+/*
         singleCardViewHolder.addUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((TeamManagementActivity) context).addUser(view);
             }
         });
-
+*/
         //for(int j=0;j<singleCardViewHolder.teamPlayer.size();j++){
         //    singleCardViewHolder.teamPlayer.get(j).setText(singleTeam.get(i).player.get(j));
         //}
