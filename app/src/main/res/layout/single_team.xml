@@ -8,7 +8,7 @@ android:orientation="vertical">
 
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="330dp"
+    android:layout_width="match_parent"
     android:layout_height="145dp"
     android:padding="32dp"
     android:layout_marginBottom="8dp"
@@ -37,6 +37,8 @@ android:orientation="vertical">
 
         </RelativeLayout>
 
+
+
         <LinearLayout
             android:paddingTop="16dp"
             android:paddingLeft="16dp"
@@ -45,6 +47,7 @@ android:orientation="vertical">
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
 
             <TextView
                 android:id="@+id/team_name"
@@ -110,15 +113,23 @@ android:orientation="vertical">
 
                     </LinearLayout>
 
-                    <Button
-                        android:layout_marginTop="20dp"
-                        android:layout_marginLeft="35dp"
-                        android:layout_width="100dp"
-                        android:layout_height="25dp"
-                        android:text="go to team"
-                        android:background="@drawable/button_style"
-                        android:textColor="#ffffff"
-                        android:onClick="goToSingleTeam"/>
+                    <LinearLayout
+                        android:layout_gravity="bottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:text="go to team"
+                            android:background="@drawable/button_style"
+                            android:textColor="#ffffff"
+                            android:layout_gravity="bottom|right"
+                            android:onClick="goToSingleTeam"/>
+
+                    </LinearLayout>
+
 
 
 
