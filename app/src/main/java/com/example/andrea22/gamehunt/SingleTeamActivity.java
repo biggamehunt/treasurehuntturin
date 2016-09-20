@@ -4,28 +4,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.RetrieveFeedTask;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
-import layout.UsernamePickerFragment;
 
 public class SingleTeamActivity extends AppCompatActivity {
 
@@ -39,16 +32,22 @@ public class SingleTeamActivity extends AppCompatActivity {
         setContentView(R.layout.activity_single_team);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.singleTeamToolbar);
+        TextView slogan = (TextView) findViewById(R.id.teamSub);
+
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Nome Team");
         Intent intent = getIntent();
 
-        numTeam = intent.getIntExtra("numTeam",0);
+
+        numTeam = intent.getIntExtra("numTeam", 0);
         idHunt = intent.getIntExtra("idHunt", 0);
         Log.v(getLocalClassName(), "numTeam:" + numTeam);
         Log.v(getLocalClassName(), "idHunt:" + idHunt);
 
 
+        String[] nameTeam = getNameSloganTeam();
+
+        getSupportActionBar().setTitle(nameTeam[0]);
+        slogan.setText(nameTeam[1]);
         usersTeam = getUsersTeam();
         users = getUsers();
 
@@ -61,7 +60,10 @@ public class SingleTeamActivity extends AppCompatActivity {
         SQLiteDatabase db = myHelper.getWritableDatabase();
 
         String stringUsers = myHelper.selectUserAddTeam(db, idHunt, numTeam);
-        String[] splitUsers = stringUsers.split("|");
+
+        Log.v(getLocalClassName(), "users Team:"+stringUsers);
+
+        String[] splitUsers = stringUsers.split("\\|");
         List<String> users = new ArrayList<String>();
 
         for (int i = 0; i<splitUsers.length; i++){
@@ -81,7 +83,11 @@ public class SingleTeamActivity extends AppCompatActivity {
         SQLiteDatabase db = myHelper.getWritableDatabase();
 
         String stringUsers = myHelper.selectAllUserAddTeam(db, idHunt);
-        String[] splitUsers = stringUsers.split("|");
+
+        Log.v(getLocalClassName(), "users:"+stringUsers);
+
+
+        String[] splitUsers = stringUsers.split("\\|");
         List<String> users = new ArrayList<String>();
 
         for (int i = 0; i<splitUsers.length; i++){
@@ -91,6 +97,20 @@ public class SingleTeamActivity extends AppCompatActivity {
         }
 
         return users;
+
+
+    }
+
+
+    public String[] getNameSloganTeam(){
+
+        DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+        SQLiteDatabase db = myHelper.getWritableDatabase();
+
+        String infoTeam[] = myHelper.selectNameSloganTeam(db, idHunt, numTeam);
+
+
+        return infoTeam;
 
 
     }
@@ -200,5 +220,7 @@ public class SingleTeamActivity extends AppCompatActivity {
         }
 
     }
+
+
 
 }

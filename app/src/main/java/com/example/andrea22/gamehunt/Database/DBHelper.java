@@ -376,6 +376,26 @@ public class DBHelper extends SQLiteOpenHelper {
         return null;
     }
 
+    public String[] selectNameSloganTeam(SQLiteDatabase db, int idHunt, int numTeam)  {
+        if (idHunt != 0 && numTeam != 0){
+            String[] users = new String[2];
+            Cursor c = db.rawQuery("SELECT name, slogan FROM ADDTEAM WHERE numTeam =" + numTeam + " AND idHunt = " + idHunt + ";", null);
+            if (c.moveToFirst()) {
+                do {
+                    users[0] = c.getString(c.getColumnIndex("name"));
+                    users[1] = c.getString(c.getColumnIndex("slogan"));
+
+                } while (c.moveToNext());
+            }
+
+            Log.v("db log", "Select name e slogan eseguito");
+
+            return users;
+
+        }
+        return null;
+    }
+
     public void insertUserAddTeam(SQLiteDatabase db, int idHunt, int numTeam, String username)  {
         if (numTeam != 0){
             String oldusername = "";

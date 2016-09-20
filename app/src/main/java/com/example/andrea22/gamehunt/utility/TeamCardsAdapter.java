@@ -26,26 +26,31 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
 
         CardView cv;
         TextView teamName;
-        LinearLayout teamLayout;
-        Button addUser;
+        TextView slogan;
+
+        //LinearLayout teamLayout;
+        Button goToTeam;
         //ArrayList<TextView> teamPlayer;
 
         SingleCardViewHolder(View itemView, SingleTeam singleTeam, Context context) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cvteam);
             teamName = (TextView)itemView.findViewById(R.id.team_name);
-            teamLayout = (LinearLayout) itemView.findViewById(R.id.team_layout);
+            slogan = (TextView)itemView.findViewById(R.id.slogan);
+            goToTeam = (Button)itemView.findViewById(R.id.goToTeam);
+
+            //teamLayout = (LinearLayout) itemView.findViewById(R.id.team_layout);
             //addUser = (Button) itemView.findViewById(R.id.addUser);
 
-            TextView playerView;
+            //TextView playerView;
             //teamPlayer = new ArrayList<TextView>();
-            Log.v("",""+singleTeam.getCountPlayer());
+            /*Log.v("",""+singleTeam.getCountPlayer());
             Log.v("playercount",""+singleTeam.getCountPlayer());
             for(int i=0; i<singleTeam.getCountPlayer(); i++){
                 playerView = new TextView(context);
                 teamLayout.addView(playerView);
                 //teamPlayer.add(playerView);
-            }
+            }*/
 
         }
     }
@@ -82,7 +87,7 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
             ((TextView)singleCardViewHolder.teamLayout.getChildAt(j)).setText(singleTeam.get(i).player.get(j));
         }*/
         numTeam  = singleTeam.get(i).numTeam;
-        singleCardViewHolder.cv.setTag(singleTeam.get(i).numTeam);
+        singleCardViewHolder.goToTeam.setTag(singleTeam.get(i).numTeam);
 /*
         singleCardViewHolder.addUser.setOnClickListener(new View.OnClickListener() {
             @Override

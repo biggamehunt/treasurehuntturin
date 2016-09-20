@@ -26,9 +26,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-
-import layout.UsernamePickerFragment;
 
 public class TeamManagementActivity extends AppCompatActivity {
 
@@ -37,6 +36,11 @@ public class TeamManagementActivity extends AppCompatActivity {
     private int numTeam;
 
     Button lastAddUser;
+    List<String> teamNamesFree;
+    List<String> teamNamesHold;
+    TeamCardsAdapter adapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,22 @@ public class TeamManagementActivity extends AppCompatActivity {
 
         initializeData();
         initializeAdapter();
+        teamNamesFree= new ArrayList<String>();
+        teamNamesHold= new ArrayList<String>();
+
+
+        teamNamesHold.add("Team Red");
+        teamNamesHold.add("Team Blue");
+
+        teamNamesFree.add("Team Green");
+        teamNamesFree.add("Team Yellow");
+        teamNamesFree.add("Team Orange");
+        teamNamesFree.add("Team Purple");
+        teamNamesFree.add("Team Pink");
+        teamNamesFree.add("Team Brown");
+
+
+
         //fab = (FloatingActionButton)findViewById(R.id.fab);
         //rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
         //fab.setOnClickListener(this);
@@ -88,11 +108,11 @@ public class TeamManagementActivity extends AppCompatActivity {
             }
         } else {
             if (pref.getInt("idLastHunt", 0)!=0) {
-                singleTeam.add(new SingleTeam("Team 1", new ArrayList<String>(), 1));
-                singleTeam.add(new SingleTeam("Team 2", new ArrayList<String>(), 2));
+                singleTeam.add(new SingleTeam("Team Red", new ArrayList<String>(), 1));
+                singleTeam.add(new SingleTeam("Team Blue", new ArrayList<String>(), 2));
 
-                mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), "alpha", 1, "");
-                mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), "beta", 2, "");
+                mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), "Team Red", 1, "");
+                mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), "Team Blue", 2, "");
             }
         }
     }
@@ -100,8 +120,9 @@ public class TeamManagementActivity extends AppCompatActivity {
 
     public void initializeAdapter(){
 
-        TeamCardsAdapter adapter = new TeamCardsAdapter(singleTeam, this);
+        adapter = new TeamCardsAdapter(singleTeam, this);
         rv.setAdapter(adapter);
+
 
     }
 
@@ -110,6 +131,30 @@ public class TeamManagementActivity extends AppCompatActivity {
     }
 
     public void addTeam(View view){
+
+        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+
+        if (teamNamesFree.size()>0) {
+            String name = teamNamesFree.remove(0);
+            teamNamesHold.add(name);
+
+            int numTeam = singleTeam.size() + 1;
+            SingleTeam newTeam = new SingleTeam(name, new ArrayList<String>(), numTeam);
+            singleTeam.add(newTeam);
+
+            mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), name, numTeam, "");
+
+
+            adapter = new TeamCardsAdapter(singleTeam, this);
+            rv.setAdapter(adapter);
+        } else {
+            CharSequence text = "Massimo numero dei team raggiunto!";
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
 
     }
 
@@ -138,108 +183,6 @@ public class TeamManagementActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
-
-
-    public void addUser(View view){
-        Log.v(getLocalClassName(), "addUser");
-
-        UsernamePickerFragment u = new UsernamePickerFragment();
-
-        numTeam = Integer.parseInt(((Button) view).getTag().toString());
-
-        //<todo inserire 30 nelle costanti, e ovviamente anche le string dei toast...
-        if (singleTeam.get(numTeam-1).getPlayer().size() >= 30){
-            CharSequence text = "Ragiunto il numero massimo di utenti per il team!";
-            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-            toast.show();
-        } else {
-            u.show(getFragmentManager(),"add username");
-            lastAddUser = (Button)view;
-
-        }
-
-    }
-
-    public void doPositiveClick(String username) {
-        try {
-        //controllo se l'username esiste nel db, se sì aggiunge, altrimenti msotra un toast d'errore
-            SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
-
-            if (username.equals(pref.getString("username", ""))){
-                //todo: inserire i messaggi dei toasts in string.xml
-                CharSequence text = "Non puoi aggiungere l'utente che ha creato la caccia";
-                Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-                toast.show();
-                return;
-            }
-            for (int i = 0; i<singleTeam.size();i++){
-                List<String> players = singleTeam.get(i).getPlayer();
-                Log.v(getLocalClassName(), "esterno:num player nel team:"+singleTeam.get(i).getCountPlayer());
-
-
-                for (int j = 0; j < players.size();j++){
-                    Log.v(getLocalClassName(), "interno:"+players.get(j));
-
-                    if (username.trim().equals((players.get(j)).trim())){
-                        CharSequence text = "User già aggiunto!";
-                        int duration = Toast.LENGTH_SHORT;
-
-                        Toast toast = Toast.makeText(this, text, duration);
-                        toast.show();
-                        return;
-                    }
-                }
-            }
-
-            String username_url = java.net.URLEncoder.encode(username, "UTF-8");
-
-            String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=checkUser&username=" + username_url;
-            String res = new RetrieveFeedTask().execute(u).get();
-
-
-            Log.v(getLocalClassName(), "res:"+res);
-
-
-            if (!res.trim().equals("0")) {
-
-                Log.v(getLocalClassName(),"username inserito:"+username);
-
-                DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
-                SQLiteDatabase db = myHelper.getWritableDatabase();
-                if (pref.getInt("idLastHunt",0)!=0) {
-
-
-                    myHelper.insertUserAddTeam(db, pref.getInt("idLastHunt", 0), numTeam, username);
-
-                    TextView playerView = new TextView(this);
-                    playerView.setText(username);
-                    singleTeam.get(numTeam-1).getPlayer().add(username.trim());
-                    ((LinearLayout)((LinearLayout)lastAddUser.getParent()).getChildAt(1)).addView(playerView);
-
-
-                }
-                //connectWebSocket();
-
-
-            } else {
-                CharSequence text = "Username non esistente";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(this, text, duration);
-                toast.show();
-            }
-
-
-
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-
-    }
 
     public void finish(View view){
         Log.v(getLocalClassName(),"entro in finish");
@@ -316,12 +259,15 @@ public class TeamManagementActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, HuntListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
 
-
-
-
-
-
-    public void doNegativeClick() {
+        overridePendingTransition(R.anim.back_enter, R.anim.back_exit);
     }
+
+
 }
