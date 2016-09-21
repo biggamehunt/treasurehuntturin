@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
@@ -81,7 +83,6 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_marginRight="2dp"
                             android:layout_marginTop="20dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -117,7 +118,6 @@
                             android:orientation="vertical">
 
                             <Button
-                                android:textSize="12dp"
                                 android:id="@+id/goToTeam"
                                 android:layout_width="wrap_content"
                                 android:layout_height="25dp"
@@ -139,8 +139,25 @@
 
         </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            >
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_clear_white_24dp"
+                android:background="@android:color/holo_red_dark"
+                android:onClick="deleteTeam"/>
+
+        </RelativeLayout>
+
+
 
     </android.support.v7.widget.CardView>
+
 
 </LinearLayout>
 
