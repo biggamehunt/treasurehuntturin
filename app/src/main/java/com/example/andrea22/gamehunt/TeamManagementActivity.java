@@ -68,8 +68,6 @@ public class TeamManagementActivity extends AppCompatActivity {
         teamNamesFree.add("Team Pink");
         teamNamesFree.add("Team Brown");
 
-
-
         //fab = (FloatingActionButton)findViewById(R.id.fab);
         //rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
         //fab.setOnClickListener(this);
