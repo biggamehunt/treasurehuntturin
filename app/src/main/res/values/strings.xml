@@ -22,10 +22,12 @@
     <string name="reg_username">Username</string>
     <string name="reg_email">Email</string>
     <string name="reg_password">Password</string>
+    <string name="reg_conf_password">Confirm Password</string>
 
     <string name="reg_error">Error: Username or Email already exists</string>
     <string name="userLength_error">Error: Username too short</string>
     <string name="passLength_error">Error: Password too short</string>
+    <string name="confirmpass_error">Error: Password don\'t match</string>
     <string name="emailLength_error">Error: Email too short</string>
 
 

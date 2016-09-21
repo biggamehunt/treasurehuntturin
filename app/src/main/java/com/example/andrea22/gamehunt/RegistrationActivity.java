@@ -39,6 +39,8 @@ public class RegistrationActivity extends AppCompatActivity {
         String username =usernameview.getText().toString();
         EditText passwordview = (EditText) findViewById(R.id.registration_password);
         String password = passwordview.getText().toString();
+        EditText confirmview = (EditText) findViewById(R.id.confirm_password);
+        String confirm = confirmview.getText().toString();
         EditText emailview = (EditText) findViewById(R.id.registration_email);
         String email = emailview.getText().toString();
 
@@ -50,8 +52,12 @@ public class RegistrationActivity extends AppCompatActivity {
             CharSequence text = getString(R.string.passLength_error);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.show();
-        } else if(email.length() < 4){
+        } else if(email.length() < 4) {
             CharSequence text = getString(R.string.emailLength_error);
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+        } else if (!password.equals(confirm)) {
+            CharSequence text = getString(R.string.confirmpass_error);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.show();
         } else {
