@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,13 +26,15 @@ public class SingleTeamActivity extends AppCompatActivity {
     int numTeam, idHunt;
     List<String> usersTeam;
     List<String> users;
-
+    LinearLayout conteinerUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_team);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.singleTeamToolbar);
+        conteinerUser = (LinearLayout) findViewById(R.id.containerUser);
+
         TextView slogan = (TextView) findViewById(R.id.teamSub);
 
         setSupportActionBar(toolbar);
@@ -49,6 +52,14 @@ public class SingleTeamActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(nameTeam[0]);
         slogan.setText(nameTeam[1]);
         usersTeam = getUsersTeam();
+
+        for (int i = 0; i < usersTeam.size(); i++){
+            LinearLayout ll = (LinearLayout)getLayoutInflater().inflate(R.layout.content_activity_single_team, null, true);
+            ((TextView)ll.getChildAt(1)).setText(usersTeam.get(i));
+            conteinerUser.addView(ll);
+        }
+
+
         users = getUsers();
 
 
@@ -195,6 +206,10 @@ public class SingleTeamActivity extends AppCompatActivity {
                         usersTeam.add(username);
 
                         //aggiungere alla grafica
+
+                        LinearLayout ll = (LinearLayout)getLayoutInflater().inflate(R.layout.content_activity_single_team, null, true);
+                        ((TextView)ll.getChildAt(1)).setText(username);
+                        conteinerUser.addView(ll);
 
                         /*TextView playerView = new TextView(this);
                         playerView.setText(username);

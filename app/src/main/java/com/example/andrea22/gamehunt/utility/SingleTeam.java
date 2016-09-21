@@ -21,5 +21,16 @@ public class SingleTeam {
         return player.size();
     }
 
+    public int getNumTeam(){
+        return numTeam;
+    }
+    public void setNumTeam(int numTeam){
+        this.numTeam=numTeam;
+    }
+
+    public String getName(){
+        return name;
+    }
+
     public List<String> getPlayer () { return player; }
 }

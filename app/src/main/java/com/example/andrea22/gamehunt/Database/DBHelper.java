@@ -340,6 +340,30 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    public boolean deleteAddTeam(SQLiteDatabase db, int idUser, int idHunt, int numTeam)  {
+        if (idUser != 0){
+            try{
+
+                db.execSQL("DELETE FROM ADDTEAM WHERE numTeam =" + numTeam + " AND idUser = "+idUser+" AND idHunt = " + idHunt + ";");
+
+                Log.v("db log", "Delete AddTeam eseguito");
+
+                db.execSQL("UPDATE ADDTEAM SET numTeam = (numTeam - 1) WHERE numTeam > " + numTeam + ";");
+
+                Log.v("db log", "Update numTeams eseguito");
+
+
+            } catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+
+        }
+        return false;
+
+    }
+
     public String selectUserAddTeam(SQLiteDatabase db, int idHunt, int numTeam)  {
         if (idHunt != 0 && numTeam != 0){
             String users = "";
@@ -607,10 +631,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL("UPDATE TEAM SET idCurrentStage = " + idNextStage + " WHERE idTeam =" + idTeam + ";");
 
 
-            } catch (Exception e){
-                e.printStackTrace();
-                return false;
-            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 

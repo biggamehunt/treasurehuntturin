@@ -52,22 +52,18 @@ public class TeamManagementActivity extends AppCompatActivity {
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        initializeData();
-        initializeAdapter();
         teamNamesFree= new ArrayList<String>();
         teamNamesHold= new ArrayList<String>();
 
+        String[] teamNames = {"Team Red","Team Blue","Team Green","Team Yellow","Team Orange","Team Purple","Team Pink","Team Brown"};
 
-        teamNamesHold.add("Team Red");
-        teamNamesHold.add("Team Blue");
+        for (int i =0; i<teamNames.length;i++){
+            teamNamesFree.add(teamNames[i]);
 
-        teamNamesFree.add("Team Green");
-        teamNamesFree.add("Team Yellow");
-        teamNamesFree.add("Team Orange");
-        teamNamesFree.add("Team Purple");
-        teamNamesFree.add("Team Pink");
-        teamNamesFree.add("Team Brown");
+        }
 
+        initializeData();
+        initializeAdapter();
         //fab = (FloatingActionButton)findViewById(R.id.fab);
         //rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
         //fab.setOnClickListener(this);
@@ -106,11 +102,19 @@ public class TeamManagementActivity extends AppCompatActivity {
             }
         } else {
             if (pref.getInt("idLastHunt", 0)!=0) {
-                singleTeam.add(new SingleTeam("Team Red", new ArrayList<String>(), 1));
-                singleTeam.add(new SingleTeam("Team Blue", new ArrayList<String>(), 2));
 
-                mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), "Team Red", 1, "");
-                mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), "Team Blue", 2, "");
+                String name_1 = teamNamesFree.remove(0);
+                String name_2 = teamNamesFree.remove(0);
+                teamNamesHold.add(name_1);
+                teamNamesHold.add(name_2);
+
+
+
+                singleTeam.add(new SingleTeam(name_1, new ArrayList<String>(), 1));
+                singleTeam.add(new SingleTeam(name_2, new ArrayList<String>(), 2));
+
+                mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), name_1, 1, "");
+                mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), name_2, 2, "");
             }
         }
     }
@@ -157,6 +161,54 @@ public class TeamManagementActivity extends AppCompatActivity {
     }
 
     public void deleteTeam(View view){
+        numTeam = Integer.parseInt(view.getTag().toString());
+        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+        Log.v(getLocalClassName(), "numTeam:" + numTeam);
+        boolean res = mDbHelper.deleteAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), numTeam);
+        Log.v(getLocalClassName(), "res:" + res);
+
+        if (res) {
+            String name = "";
+            for (int i = 0; i < singleTeam.size(); i++) {
+                if (singleTeam.get(i).getNumTeam() == numTeam) {
+                    name = singleTeam.get(i).getName();
+                    singleTeam.remove(i);
+                    Log.v(getLocalClassName(), "remove!");
+                    break;
+                }
+
+            }
+            //modificarenumteam
+            for (int i = 0; i < singleTeam.size(); i++) {
+                if (singleTeam.get(i).getNumTeam() > numTeam) {
+                    singleTeam.get(i).setNumTeam(singleTeam.get(i).getNumTeam() - 1);
+                    Log.v(getLocalClassName(), "modificato numTeam!");
+                }
+
+            }
+
+
+            teamNamesFree.add(name);
+            teamNamesHold.remove(name);
+
+            Log.v(getLocalClassName(), "teamNamesFree:" + teamNamesFree.toString());
+            Log.v(getLocalClassName(), "teamNamesHold:" + teamNamesHold.toString());
+
+
+
+
+
+            adapter = new TeamCardsAdapter(singleTeam, this);
+            rv.setAdapter(adapter);
+        } else {
+            CharSequence text = "Errore Sconosciuto!";
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+
 
     }
 

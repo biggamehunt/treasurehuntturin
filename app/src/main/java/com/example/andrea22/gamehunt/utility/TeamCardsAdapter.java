@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,9 +28,10 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
         CardView cv;
         TextView teamName;
         TextView slogan;
-
-        //LinearLayout teamLayout;
+        ImageButton deleteTeam;
         Button goToTeam;
+        //LinearLayout teamLayout;
+
         //ArrayList<TextView> teamPlayer;
 
         SingleCardViewHolder(View itemView, SingleTeam singleTeam, Context context) {
@@ -38,6 +40,7 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
             teamName = (TextView)itemView.findViewById(R.id.team_name);
             slogan = (TextView)itemView.findViewById(R.id.slogan);
             goToTeam = (Button)itemView.findViewById(R.id.goToTeam);
+            deleteTeam = (ImageButton)itemView.findViewById(R.id.deleteTeam);
 
             //teamLayout = (LinearLayout) itemView.findViewById(R.id.team_layout);
             //addUser = (Button) itemView.findViewById(R.id.addUser);
@@ -87,7 +90,8 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
             ((TextView)singleCardViewHolder.teamLayout.getChildAt(j)).setText(singleTeam.get(i).player.get(j));
         }*/
         numTeam  = singleTeam.get(i).numTeam;
-        singleCardViewHolder.goToTeam.setTag(singleTeam.get(i).numTeam);
+        singleCardViewHolder.goToTeam.setTag(numTeam);
+        singleCardViewHolder.deleteTeam.setTag(numTeam);
 /*
         singleCardViewHolder.addUser.setOnClickListener(new View.OnClickListener() {
             @Override
