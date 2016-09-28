@@ -31,9 +31,17 @@
     <string name="emailLength_error">Error: Email too short</string>
 
 
-    <!-- HOME -->
+    <!-- HUNTLIST -->
     <string name="title_activity_huntlist">Hunt List</string>
-    <string name="welcome">Scegli la caccia a cui partecipare</string>
+    <string name="welcome1">Join, and buries all opponents</string>
+    <string name="welcome2">Choose your hunt and JOIN!</string>
+    <string name="welcome3">Play Now! Choose your hunt</string>
+    <string name="welcome4">Are you ready for the next hunt?</string>
+    <string name="welcome5">Will you be able to find the treasure?</string>
+
+
+
+
 
     <!-- NEWHUNT -->
     <string name="nameHunt">Hunt name</string>

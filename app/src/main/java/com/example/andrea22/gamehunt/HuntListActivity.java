@@ -35,7 +35,8 @@ public class HuntListActivity extends AppCompatActivity {
     private RecyclerView rv;
     private TextView tv;
     private List<SingleHunt> singlehunts;
-    List<String> slogans = Arrays.asList("Choose your hunt and JOIN!", "Play Now! Choose your hunt. ", "I don't now what I'm doing");
+    List<String> slogans = Arrays.asList(getString(R.string.welcome1),getString(R.string.welcome2),
+            getString(R.string.welcome3),getString(R.string.welcome4),getString(R.string.welcome5));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
