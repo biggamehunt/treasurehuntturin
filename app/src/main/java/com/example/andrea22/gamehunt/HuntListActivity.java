@@ -35,8 +35,10 @@ public class HuntListActivity extends AppCompatActivity {
     private RecyclerView rv;
     private TextView tv;
     private List<SingleHunt> singlehunts;
-    List<String> slogans = Arrays.asList(getString(R.string.welcome1),getString(R.string.welcome2),
-            getString(R.string.welcome3),getString(R.string.welcome4),getString(R.string.welcome5));
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +62,19 @@ public class HuntListActivity extends AppCompatActivity {
 
     private void initializeSlogan(){
 
+        ArrayList<String> slogans = new ArrayList<String>();
+        slogans.add(getString(R.string.welcome1));
+        slogans.add(getString(R.string.welcome2));
+        slogans.add(getString(R.string.welcome3));
+        slogans.add(getString(R.string.welcome4));
+        slogans.add(getString(R.string.welcome5));
+
+        //Log.v("lista_p", ": " + places);
+
         String random_string = slogans.get(new Random().nextInt(slogans.size()));
         tv = (TextView) findViewById(R.id.slogan);
         tv.setText(random_string);
+
 
     }
 
