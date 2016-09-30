@@ -2,34 +2,26 @@
     <string name="app_name">Game Hunt</string>
     <string name="title_activity_registration">Registration</string>
 
-
-    <!-- Strings related to login -->
+    <!-- LOGIN -->
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
-
-
-    <!-- LOGIN -->
     <string name="action_sign_in">Login</string>
     <string name="action_registration">Don\'t you have an account yet? Sign up!</string>
     <string name="action_sign_in2">Already a member? Login</string>
     <string name="continue_reg">Create Account</string>
-
     <string name="login_error">Error: Invalid Credential</string>
-
 
     <!-- REGISTRATION -->
     <string name="reg_username">Username</string>
     <string name="reg_email">Email</string>
     <string name="reg_password">Password</string>
     <string name="reg_conf_password">Confirm Password</string>
-
-    <string name="reg_error">Error: Username or Email already exists</string>
-    <string name="userLength_error">Error: Username too short</string>
-    <string name="passLength_error">Error: Password too short</string>
-    <string name="confirmpass_error">Error: Password don\'t match</string>
-    <string name="emailLength_error">Error: Email too short</string>
-
+    <string name="reg_error">Username or Email already exists</string>
+    <string name="userLength_error">Username too short</string>
+    <string name="passLength_error">Password too short</string>
+    <string name="confirmpass_error">Password don\'t match</string>
+    <string name="emailLength_error">Email too short</string>
 
     <!-- HUNTLIST -->
     <string name="title_activity_huntlist">Hunt List</string>
@@ -39,16 +31,22 @@
     <string name="welcome4">Are you ready for the next hunt?</string>
     <string name="welcome5">Will you be able to find the treasure?</string>
 
-
-
-
-
     <!-- NEWHUNT -->
     <string name="nameHunt">Hunt name</string>
     <string name="dateInitHunt">Today</string>
     <string name="timeInitHunt">Start time</string>
     <string name="dateEndHunt">Finish date</string>
     <string name="timeEndHunt">Finish time</string>
+    <string name="noNameHunt">Please insert the hunt name</string>
+    <string name="noDateHunt">Please insert date and time correctly</string>
+
+
+    <!-- STAGE MANAGEMENT -->
+    <string name="maxNumStage">Maximum number of stages reached</string>
+
+    <!-- TEAM MANAGEMENT -->
+    <string name="maxNumTeam">Maximum number of teams reached</string>
+
 
     <!-- FRAGMENT_NEWSTAGE -->
     <string name="areaStage">Stage area</string>
@@ -60,8 +58,8 @@
     <string name="descr_overflow_button">blabla bla</string>
 
     <!-- TOOLBARS -->
-    <string name="confirmStage">Confirm</string>
-    <string name="crateHunt">Create</string>
+    <string name="confirmStage">Next</string>
+    <string name="crateHunt">Next</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

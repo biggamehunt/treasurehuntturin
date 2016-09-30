@@ -34,6 +34,8 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
     EditText name;
     EditText description;
+    TextView startDate, finishDate, startTime, finishTime;
+
     int year = 0, month = 0, day = 0, minute = 0, hour = 0;
     private JSONObject stage;
 
@@ -44,6 +46,10 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
         name = (EditText) findViewById(R.id.nameHunt);
         description = (EditText) findViewById(R.id.descriptionHunt);
+        startDate = (TextView) findViewById(R.id.dateStartPick);
+        finishDate = (TextView) findViewById(R.id.dateEndPick);
+        startTime = (TextView) findViewById(R.id.timeStartPick);
+        finishTime = (TextView) findViewById(R.id.timeEndPick);
 
         output = (TextView) findViewById(R.id.dateStartPick);
 
@@ -108,6 +114,48 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         Intent intent = new Intent(this, NewStageActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
+
+    public static void splitCtrlString(String init,String end) {
+
+        String[] itemsInit = init.split("/");
+        String[] itemsEnd = init.split("/");
+
+        for(int i = 3; i > 0; i--){
+          //  if((int)itemsInit[i] > (int)itemsEnd[i]){
+                return;
+                //error
+            }
+
+        }
+
+
+        /*
+
+        for (String item : items) {
+                System.out.println("item = " + item);
+            }
+        }
+    */
+
+    public void goToStageManagement(){
+
+        if (name.getText().toString().equals("")){
+            CharSequence text = getString(R.string.noNameHunt);
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        } else if (finishDate.equals(R.string.dateEndHunt) ||  startTime.equals(R.string.timeInitHunt) || finishTime.equals(R.string.timeEndHunt)){
+            CharSequence text = getString(R.string.noDateHunt);
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+
+        Intent intent = new Intent(this, NewStageActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
+
     }
 
     public void goToTeam (View v) {
