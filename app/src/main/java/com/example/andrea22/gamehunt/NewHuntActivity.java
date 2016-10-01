@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,9 +24,11 @@ import org.json.JSONObject;
 import layout.DatePickerFragment;
 import layout.TimePickerFragment;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 
-/**
+/*
  * Created by Simone on 21/06/2016.
  */
 public class NewHuntActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -37,6 +40,9 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
     TextView startDate, finishDate, startTime, finishTime;
 
     int year = 0, month = 0, day = 0, minute = 0, hour = 0;
+    //todo: aggiugere in costanti
+    public final static long MILLIS_PER_DAY = 3 * 60 * 60 * 1000L;
+
     private JSONObject stage;
 
     @Override
@@ -50,7 +56,6 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         finishDate = (TextView) findViewById(R.id.dateEndPick);
         startTime = (TextView) findViewById(R.id.timeStartPick);
         finishTime = (TextView) findViewById(R.id.timeEndPick);
-
         output = (TextView) findViewById(R.id.dateStartPick);
 
         // Get current date by calender
@@ -62,9 +67,8 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         // Show current date
         output.setText(new StringBuilder()
                 // Month is 0 based, just add 1
-                .append(day).append("-").append(month + 1).append("-")
+                .append(day).append("/").append(month + 1).append("/")
                 .append(year).append(" "));
-
     }
 
     public void turnBack(View v){
@@ -81,7 +85,6 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         output = (TextView)v;
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getFragmentManager(), "datePicker");
-
     }
 
     @Override
@@ -91,7 +94,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         this.day = day;
 
         output.setText(new StringBuilder().append(day)
-                .append("-").append(month + 1).append("-").append(year)
+                .append("/").append(month + 1).append("/").append(year)
                 .append(" "));
     }
 
@@ -110,92 +113,132 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
-    public static void splitCtrlString(String init,String end) {
+    public static int dateControl(Date timeStart,Date timeEnd) {
 
-        String[] itemsInit = init.split("/");
-        String[] itemsEnd = init.split("/");
-
-        for(int i = 3; i > 0; i--){
-          //  if((int)itemsInit[i] > (int)itemsEnd[i]){
-                return;
-                //error
+        if (timeStart.before(timeEnd)){
+            if (Math.abs(timeEnd.getTime() - timeStart.getTime()) > MILLIS_PER_DAY){
+                return 1;
+            } else {
+                return 0;
             }
-
+        } else {
+            return -1;
         }
-
-
-        /*
-
-        for (String item : items) {
-                System.out.println("item = " + item);
-            }
-        }
-    */
+    }
 
     public void goToStageManagement(View view){
+
+        String[] itemsDateInit = startDate.getText().toString().split("/");
+        String[] itemsDateEnd = finishDate.getText().toString().split("/");
+        String[] itemsTimeInit = startTime.getText().toString().split(":");
+        String[] itemsTimeEnd = finishTime.getText().toString().split(":");
+
+        Log.v("","date init: " + itemsDateInit);
+        Log.v("","time init: " + itemsTimeInit);
+        Log.v("","date end: " + itemsDateEnd);
+        Log.v("","time end: " + itemsTimeEnd);
+
+        GregorianCalendar calInit = new GregorianCalendar();
+        calInit.set(Calendar.YEAR, Integer.parseInt(itemsDateInit[2]));
+        calInit.set(Calendar.MONTH, Integer.parseInt(itemsDateInit[1]));
+        calInit.set(Calendar.DATE, Integer.parseInt(itemsDateInit[0]));
+        calInit.set(Calendar.HOUR_OF_DAY, Integer.parseInt(itemsTimeInit[1]));
+        calInit.set(Calendar.MINUTE, Integer.parseInt(itemsTimeInit[0]));
+        calInit.set(Calendar.SECOND, 0);
+
+        GregorianCalendar calEnd = new GregorianCalendar();
+        calEnd.set(Calendar.YEAR, Integer.parseInt(itemsDateEnd[2]));
+        calEnd.set(Calendar.MONTH, Integer.parseInt(itemsDateEnd[1]));
+        calEnd.set(Calendar.DATE, Integer.parseInt(itemsDateEnd[0]));
+        calEnd.set(Calendar.HOUR_OF_DAY, Integer.parseInt(itemsTimeEnd[1]));
+        calEnd.set(Calendar.MINUTE, Integer.parseInt(itemsTimeEnd[0]));
+        calEnd.set(Calendar.SECOND, 0);
+
+        java.util.Date timeStart = new java.util.Date(calInit.getTime().getTime());
+        java.util.Date timeEnd = new java.util.Date(calEnd.getTime().getTime());
 
         if (name.getText().toString().equals("")){
             CharSequence text = getString(R.string.noNameHunt);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.show();
             return;
-        } /*else if (finishDate.equals(R.string.dateEndHunt) ||  startTime.equals(R.string.timeInitHunt) || finishTime.equals(R.string.timeEndHunt)){
-            CharSequence text = getString(R.string.noDateHunt);
+        } else if (startTime.equals(R.string.timeInitHunt)){
+            CharSequence text = "Nessun tempo di inizio";
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.show();
             return;
-        }*/
+        } else {
 
-        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+            CharSequence text;
+            Toast toast;
+
+            switch (dateControl(timeStart, timeEnd)){
+
+                case 0:
+                    text = "Meno di tre ore di differenza da inizio a fine";
+                    toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+                    toast.show();
+                    break;
+
+                case -1:
+                    text = "data iniziale più grande della finale";
+                    toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+                    toast.show();
+                    break;
+
+                case 1:
+
+                    SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+
+                    try {
+                        JSONObject hunt = new JSONObject();
+                        hunt.put("name", name.getText().toString());
+                        hunt.put("description", description.getText().toString());
+                        hunt.put("maxTeam", 0);
+                        hunt.put("day", calInit.get(Calendar.DATE));
+                        hunt.put("month", calInit.get(Calendar.MONTH));
+                        hunt.put("year", calInit.get(Calendar.YEAR));
+                        hunt.put("hour", calInit.get(Calendar.HOUR));
+                        hunt.put("minute", calInit.get(Calendar.MINUTE));
+                        hunt.put("dayEnd", calEnd.get(Calendar.DATE));
+                        hunt.put("monthEnd", calEnd.get(Calendar.MONTH));
+                        hunt.put("yearEnd", calEnd.get(Calendar.YEAR));
+                        hunt.put("hourEnd", calEnd.get(Calendar.HOUR));
+                        hunt.put("minuteEnd", calEnd.get(Calendar.MINUTE));
+                        hunt.put("idUser", pref.getInt("idUser", 0));
+                        String json = java.net.URLEncoder.encode(hunt.toString(), "UTF-8");
+
+                        Log.v("","JSON VS NIGHTMARE" + json.toString());
 
 
+                        String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=addHunt&json=" + json;
+                        String res = new RetrieveJson().execute(u).get();
 
-        try {
-            JSONObject hunt = new JSONObject();
-            hunt.put("name", name.getText().toString());
-            hunt.put("description", description.getText().toString());
-            hunt.put("maxTeam", 0);
-            hunt.put("day", day);
-            hunt.put("month", month);
-            hunt.put("year", year);
-            hunt.put("hour", hour);
-            hunt.put("minute", minute);
-            hunt.put("idUser", pref.getInt("idUser", 0));
-            String json = java.net.URLEncoder.encode(hunt.toString(), "UTF-8");
+                        if (!res.equals("0")) {
+                            DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+                            SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-            String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=addHunt&json=" + json;
-            String res = new RetrieveJson().execute(u).get();
+                            int idHunt = mDbHelper.insertCreateHunt(db, res);
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.putInt("idLastHunt", idHunt);
+                            editor.apply();
 
-            if (!res.equals("0")) {
-                DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
-                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                            Intent intent = new Intent(this, StageManagementActivity.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.enter, R.anim.exit);
 
-                int idHunt = mDbHelper.insertCreateHunt(db, res);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putInt("idLastHunt", idHunt);
-                editor.apply();
+                        } else {
+                            text = "c'è stato qualche errore";
+                            int duration = Toast.LENGTH_SHORT;
 
-                Intent intent = new Intent(this, StageManagementActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.enter, R.anim.exit);
-
-            } else {
-                CharSequence text = "c'è stato qualche errore";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(this, text, duration);
-                toast.show();
+                            toast = Toast.makeText(this, text, duration);
+                            toast.show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
             }
-
-
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
-
-
     }
 
     public void goToTeam (View v) {
