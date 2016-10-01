@@ -110,12 +110,6 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
-    public void goToStage(View v) {
-        Intent intent = new Intent(this, NewStageActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.enter, R.anim.exit);
-    }
-
     public static void splitCtrlString(String init,String end) {
 
         String[] itemsInit = init.split("/");
@@ -138,23 +132,69 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         }
     */
 
-    public void goToStageManagement(){
+    public void goToStageManagement(View view){
 
         if (name.getText().toString().equals("")){
             CharSequence text = getString(R.string.noNameHunt);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.show();
             return;
-        } else if (finishDate.equals(R.string.dateEndHunt) ||  startTime.equals(R.string.timeInitHunt) || finishTime.equals(R.string.timeEndHunt)){
+        } /*else if (finishDate.equals(R.string.dateEndHunt) ||  startTime.equals(R.string.timeInitHunt) || finishTime.equals(R.string.timeEndHunt)){
             CharSequence text = getString(R.string.noDateHunt);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.show();
             return;
+        }*/
+
+        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+
+
+
+        try {
+            JSONObject hunt = new JSONObject();
+            hunt.put("name", name.getText().toString());
+            hunt.put("description", description.getText().toString());
+            hunt.put("maxTeam", 0);
+            hunt.put("day", day);
+            hunt.put("month", month);
+            hunt.put("year", year);
+            hunt.put("hour", hour);
+            hunt.put("minute", minute);
+            hunt.put("idUser", pref.getInt("idUser", 0));
+            String json = java.net.URLEncoder.encode(hunt.toString(), "UTF-8");
+
+            String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=addHunt&json=" + json;
+            String res = new RetrieveJson().execute(u).get();
+
+            if (!res.equals("0")) {
+                DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+                int idHunt = mDbHelper.insertCreateHunt(db, res);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putInt("idLastHunt", idHunt);
+                editor.apply();
+
+                Intent intent = new Intent(this, StageManagementActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
+
+            } else {
+                CharSequence text = "c'è stato qualche errore";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(this, text, duration);
+                toast.show();
+            }
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        Intent intent = new Intent(this, NewStageActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.enter, R.anim.exit);
+
 
     }
 

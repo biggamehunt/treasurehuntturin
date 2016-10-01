@@ -60,6 +60,7 @@
 
 
                             <ImageView
+                                android:id="@+id/isLocationRequired"
                                 android:layout_marginRight="5dp"
                                 android:layout_gravity="center_vertical"
                                 android:alpha="0.3"
@@ -67,16 +68,16 @@
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_group_black_24dp"/>
                             <ImageView
+                                android:id="@+id/isPhotoRequired"
                                 android:layout_marginRight="5dp"
-
                                 android:layout_gravity="center_vertical"
                                 android:alpha="0.3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_group_black_24dp"/>
                             <ImageView
+                                android:id="@+id/isCheckRequired"
                                 android:layout_marginRight="5dp"
-
                                 android:layout_gravity="center_vertical"
                                 android:alpha="0.3"
                                 android:layout_width="wrap_content"

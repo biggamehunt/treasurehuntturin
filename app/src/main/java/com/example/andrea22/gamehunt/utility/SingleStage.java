@@ -6,15 +6,14 @@ import java.util.List;
  * Created by Simone on 30/09/2016.
  */
 public class SingleStage {
-    String name;
-    int numStage;
-    boolean isLocReq, isCheckReq, isPhotoReq;
+    int numStage, isLoactionRequired, isCheckRequired, isPhotoRequired;
 
-    public SingleStage(int numStage, boolean isLocReq, boolean isCheckReq, boolean isPhotoReq) {
+    public SingleStage(int numStage, int isLoactionRequired, int isCheckRequired, int isPhotoRequired) {
+
         this.numStage = numStage;
-        this.isLocReq = isLocReq;
-        this.isCheckReq = isCheckReq;
-        this.isPhotoReq = isPhotoReq;
+        this.isLoactionRequired = isLoactionRequired;
+        this.isCheckRequired = isCheckRequired;
+        this.isPhotoRequired = isPhotoRequired;
     }
 
     public int getNumStage(){
@@ -25,8 +24,17 @@ public class SingleStage {
         this.numStage = numStage;
     }
 
-    public String getName(){
-        return name;
+    public int getIsLocationRequired(){
+        return isLoactionRequired;
     }
+
+    public int getIsCheckRequired(){
+        return isCheckRequired;
+    }
+
+    public int getIsPhotoRequired(){
+        return isPhotoRequired;
+    }
+
 
 }

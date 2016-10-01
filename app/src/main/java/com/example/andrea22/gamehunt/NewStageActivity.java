@@ -2,6 +2,7 @@ package com.example.andrea22.gamehunt;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -278,33 +279,43 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
             toast.show();
         } else {
             EditText clue = (EditText) findViewById(R.id.clueHunt);
-            String clueText =clue.getText().toString();
+            String clueText = clue.getText().toString();
 
             CheckBox islocreq = (CheckBox) findViewById(R.id.islocreq);
             CheckBox isphotoreq = (CheckBox) findViewById(R.id.isphotoreq);
             CheckBox ischeckreq = (CheckBox) findViewById(R.id.ischeckreq);
 
             int islocreqText = 0;
-            if (islocreq.isChecked()){
+            if (islocreq.isChecked()) {
                 islocreqText = 1;
-                Log.v("maps","location a 1");
+                Log.v("maps", "location a 1");
 
 
             }
 
             int isphotoreqText = 0;
-            if (isphotoreq.isChecked()){
+            if (isphotoreq.isChecked()) {
                 isphotoreqText = 1;
             }
 
             int ischeckreqText = 0;
-            if (ischeckreq.isChecked()){
+            if (ischeckreq.isChecked()) {
                 ischeckreqText = 1;
             }
 
 
             EditText numberComplete = (EditText) findViewById(R.id.numberComplete);
-            int numberCompleteText =Integer.parseInt(numberComplete.getText().toString());
+            int numberCompleteText = 1;
+
+            try {
+                numberCompleteText = Integer.parseInt(numberComplete.getText().toString());
+            } catch(Exception e){
+                e.printStackTrace();
+                numberCompleteText = 1;
+            }
+
+
+
 
 
             int rayText =seek.getProgress() + 50;
@@ -319,8 +330,18 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
             SQLiteDatabase db = myHelper.getWritableDatabase();
             SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
 
-            myHelper.insertAddStage(db, pref.getInt("idUser",0),clueText, rayText, areaLat, areaLon, lat, lon, islocreqText, isphotoreqText, ischeckreqText,numberCompleteText);
-            onBackPressed();
+            myHelper.insertAddStage(db, pref.getInt("idUser", 0), clueText, rayText, areaLat, areaLon, lat, lon, islocreqText, isphotoreqText, ischeckreqText, numberCompleteText);
+
+            Intent intent = new Intent();
+
+            intent.putExtra("isCheckRequired", ischeckreqText);
+            intent.putExtra("isPhotoRequired", isphotoreqText);
+            intent.putExtra("isLocationRequired", islocreqText);
+
+
+            setResult(RESULT_OK, intent);
+
+            finish();
         }
 
     }

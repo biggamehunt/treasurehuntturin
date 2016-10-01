@@ -120,6 +120,8 @@ public class TeamManagementActivity extends AppCompatActivity {
     }
 
 
+
+
     public void initializeAdapter(){
 
         adapter = new TeamCardsAdapter(singleTeam, this);
@@ -149,8 +151,7 @@ public class TeamManagementActivity extends AppCompatActivity {
             mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), name, numTeam, "");
 
 
-            adapter = new TeamCardsAdapter(singleTeam, this);
-            rv.setAdapter(adapter);
+            initializeAdapter();
         } else {
             CharSequence text = "Massimo numero dei team raggiunto!";
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
@@ -200,8 +201,7 @@ public class TeamManagementActivity extends AppCompatActivity {
 
 
 
-            adapter = new TeamCardsAdapter(singleTeam, this);
-            rv.setAdapter(adapter);
+            initializeAdapter();
         } else {
             CharSequence text = "Errore Sconosciuto!";
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
@@ -236,25 +236,33 @@ public class TeamManagementActivity extends AppCompatActivity {
 
     public void finish(View view){
         Log.v(getLocalClassName(),"entro in finish");
-
-        for (int i = 0; i<singleTeam.size();i++) {
-            //todo inserire 1 tra le costanti (minimi user nel team)
-            if (singleTeam.get(i).getPlayer().size() < 1) {
-                CharSequence text = "Non puoi lasciare dei team vuoti!";
-                Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-                toast.show();
-                return;
-            }
-        }
-
-        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-
         try {
-            JSONBuilder jsonBuilder = new JSONBuilder();
+            DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+
             SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+
+
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
             Cursor c = db.rawQuery("SELECT * FROM ADDTEAM WHERE idHunt = " + pref.getInt("idLastHunt", 0), null);
+
+            if (c.moveToFirst()) {
+                do {
+
+                    String users = c.getString(c.getColumnIndex("users"));
+
+                    if (users==null || users.equals("")) {
+                        CharSequence text = "Non puoi lasciare dei team vuoti!";
+                        Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+                        toast.show();
+                        return;
+                    }
+                } while (c.moveToNext());
+
+            }
+
+
+            JSONBuilder jsonBuilder = new JSONBuilder();
+
 
             JSONObject teams = new JSONObject();
 
