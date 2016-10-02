@@ -2,6 +2,7 @@ package com.example.andrea22.gamehunt;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,9 +13,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
+import com.example.andrea22.gamehunt.utility.JSONBuilder;
+import com.example.andrea22.gamehunt.utility.RetrieveJson;
 import com.example.andrea22.gamehunt.utility.SingleStage;
 import com.example.andrea22.gamehunt.utility.StageCardsAdapter;
 import com.example.andrea22.gamehunt.utility.TeamCardsAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +76,81 @@ public class StageManagementActivity extends AppCompatActivity {
 
     }
 
+
+
+    public void goToTeamManagement(View view){
+
+        if (stages.size() < 1){
+            CharSequence text = "Devi inseire almeno uno stage!";
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        } /*else if (finishDate.equals(R.string.dateEndHunt) ||  startTime.equals(R.string.timeInitHunt) || finishTime.equals(R.string.timeEndHunt)){
+            CharSequence text = getString(R.string.noDateHunt);
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }*/
+
+        try {
+            DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+            JSONBuilder jsonBuilder = new JSONBuilder();
+            SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+            Cursor c = db.rawQuery("SELECT * FROM ADDSTAGE WHERE idUser = " + pref.getInt("idUser", 0), null);
+
+
+            JSONObject hunt = new JSONObject();
+            JSONArray stages = new JSONArray();
+            JSONObject stage;
+            int numStage = 0;
+            if (c.moveToFirst()) {
+                do {
+                    stage = jsonBuilder.getJSONStage(c,numStage);
+                    stages.put(stage);
+                    numStage++;
+                } while (c.moveToNext());
+
+            }
+            hunt.put("stages",stages);
+            hunt.put("idHunt",pref.getInt("idLastHunt", 0));
+
+
+            String json = java.net.URLEncoder.encode(hunt.toString(), "UTF-8");
+
+            String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation";
+            String p = "action=addStages&json=" + json;
+            String url[]= new String [2];
+            url[0] = u;
+            url[1] = p;
+            String res = new RetrieveJson().execute(url).get();
+
+            if (!res.equals("0")) {
+                db.execSQL("DELETE FROM ADDSTAGE WHERE idUser = " + pref.getInt("idUser", 0));
+
+                Intent intent = new Intent(this, TeamManagementActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
+
+            } else {
+                CharSequence text = "c'è stato qualche errore";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(this, text, duration);
+                toast.show();
+            }
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

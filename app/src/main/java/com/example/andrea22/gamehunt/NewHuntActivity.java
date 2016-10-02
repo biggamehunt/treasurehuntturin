@@ -137,7 +137,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         Log.v("","time init: " + itemsTimeInit);
         Log.v("","date end: " + itemsDateEnd);
         Log.v("","time end: " + itemsTimeEnd);
-
+/*
         GregorianCalendar calInit = new GregorianCalendar();
         calInit.set(Calendar.YEAR, Integer.parseInt(itemsDateInit[2]));
         calInit.set(Calendar.MONTH, Integer.parseInt(itemsDateInit[1]));
@@ -156,20 +156,20 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
         java.util.Date timeStart = new java.util.Date(calInit.getTime().getTime());
         java.util.Date timeEnd = new java.util.Date(calEnd.getTime().getTime());
-
+*/
         if (name.getText().toString().equals("")){
             CharSequence text = getString(R.string.noNameHunt);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.show();
             return;
-        } else if (startTime.equals(R.string.timeInitHunt)){
+        } /*else if (startTime.equals(R.string.timeInitHunt)){
             CharSequence text = "Nessun tempo di inizio";
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.show();
             return;
-        } else {
+        }*/ else {
 
-            CharSequence text;
+            /*CharSequence text;
             Toast toast;
 
             switch (dateControl(timeStart, timeEnd)){
@@ -186,7 +186,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                     toast.show();
                     break;
 
-                case 1:
+                case 1:*/
 
                     SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
 
@@ -195,7 +195,16 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                         hunt.put("name", name.getText().toString());
                         hunt.put("description", description.getText().toString());
                         hunt.put("maxTeam", 0);
-                        hunt.put("day", calInit.get(Calendar.DATE));
+
+                        //da eliminare
+                        hunt.put("day", 2);
+                        hunt.put("month", 10);
+                        hunt.put("year", 2016);
+                        hunt.put("hour", 12);
+                        hunt.put("minute", 0);
+
+
+                        /*hunt.put("day", calInit.get(Calendar.DATE));
                         hunt.put("month", calInit.get(Calendar.MONTH));
                         hunt.put("year", calInit.get(Calendar.YEAR));
                         hunt.put("hour", calInit.get(Calendar.HOUR));
@@ -204,15 +213,24 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                         hunt.put("monthEnd", calEnd.get(Calendar.MONTH));
                         hunt.put("yearEnd", calEnd.get(Calendar.YEAR));
                         hunt.put("hourEnd", calEnd.get(Calendar.HOUR));
-                        hunt.put("minuteEnd", calEnd.get(Calendar.MINUTE));
+                        hunt.put("minuteEnd", calEnd.get(Calendar.MINUTE));*/
                         hunt.put("idUser", pref.getInt("idUser", 0));
                         String json = java.net.URLEncoder.encode(hunt.toString(), "UTF-8");
 
                         Log.v("","JSON VS NIGHTMARE" + json.toString());
 
 
-                        String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=addHunt&json=" + json;
-                        String res = new RetrieveJson().execute(u).get();
+                        String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation";
+
+
+                        String p = "action=addHunt&json=" + json;
+                        String url[]= new String [2];
+                        url[0] = u;
+                        url[1] = p;
+
+
+
+                        String res = new RetrieveJson().execute(url).get();
 
                         if (!res.equals("0")) {
                             DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
@@ -228,16 +246,16 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                             overridePendingTransition(R.anim.enter, R.anim.exit);
 
                         } else {
-                            text = "c'è stato qualche errore";
+                            /*text = "c'è stato qualche errore";
                             int duration = Toast.LENGTH_SHORT;
 
                             toast = Toast.makeText(this, text, duration);
-                            toast.show();
+                            toast.show();*/
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-            }
+            /*}*/
         }
     }
 

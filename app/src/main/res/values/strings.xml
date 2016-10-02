@@ -58,8 +58,7 @@
     <string name="descr_overflow_button">blabla bla</string>
 
     <!-- TOOLBARS -->
-    <string name="confirmStage">Next</string>
-    <string name="crateHunt">Next</string>
+    <string name="next">Next</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

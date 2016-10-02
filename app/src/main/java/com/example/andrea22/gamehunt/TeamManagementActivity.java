@@ -283,8 +283,14 @@ public class TeamManagementActivity extends AppCompatActivity {
 
             String json = java.net.URLEncoder.encode(teams.toString(), "UTF-8");
 
-            String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=addTeams&json=" + json;
-            String res = new RetrieveJson().execute(u).get();
+            String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation";
+
+            String p = "action=addTeams&json=" + json;
+            String url[]= new String [2];
+            url[0] = u;
+            url[1] = p;
+
+            String res = new RetrieveJson().execute(url).get();
 
             if (!res.equals("0")) {
                 Log.v(getLocalClassName(), "idLastHunt"+pref.getInt("idLastHunt", 0));

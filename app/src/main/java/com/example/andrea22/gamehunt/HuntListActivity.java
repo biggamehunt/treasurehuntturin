@@ -129,9 +129,14 @@ public class HuntListActivity extends AppCompatActivity {
                 if (isLoaded == 0) {
                     Log.d("test debug", "info da caricare!");
                     String username_ut8 = java.net.URLEncoder.encode(pref.getString("username", null), "UTF-8");
-                    String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation?action=goToHunt&username=" + username_ut8 + "&idHunt=" + idHunt;
-                    String res = new RetrieveJson().execute(u).get();
 
+                    String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation";
+                    String p = "action=goToHunt&username=" + username_ut8 + "&idHunt=" + idHunt;
+                    String url[]= new String [2];
+                    url[0] = u;
+                    url[1] = p;
+                    String res = new RetrieveJson().execute(url).get();
+                    Log.d("test debug", "res = " + res);
 
                     if (!res.equals("0")) { //toDO sto if non funziona... entra anche con 0
 

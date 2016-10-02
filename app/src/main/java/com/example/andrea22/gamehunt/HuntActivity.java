@@ -118,6 +118,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.v("Hunt Activity", "onMapReady");
 
         mMap = googleMap;
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -161,8 +162,13 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
             //marker.setVisible(false);
 
+            Log.v("Hunt Activity", "isLocationRequired:"+isLocationRequired);
+            Log.v("Hunt Activity", "isCompleted:"+isCompleted);
 
             if (isLocationRequired == 1  && isCompleted == 0) {
+                Log.v("Hunt Activity", "areaLat:"+areaLat);
+                Log.v("Hunt Activity", "areaLon:"+areaLon);
+
                 LatLng latLng = new LatLng(areaLat, areaLon);
                 // Show the current goal in Google Map
                 mMap.addCircle(new CircleOptions()
@@ -186,7 +192,10 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
             }
             photoButton = (FloatingActionButton) findViewById(R.id.photo);
+            Log.v("Hunt Activity", "isPhotoRequired:"+isPhotoRequired);
+
             if (isPhotoRequired == 0 || isCompleted == 1) {
+
                 photoButton.setVisibility(View.INVISIBLE);
             }
 
@@ -226,6 +235,11 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     "WHERE   TEAM.idHunt = "+idHunt+" AND USER.idUser = " + idUser, null);
             Log.v("Hunt Activity", "info prelevate: " + c.getCount());
 
+
+
+
+            Log.v("Hunt Activity", "idHunt:"+idHunt);
+            Log.v("Hunt Activity", "idUser:"+idUser);
             if (c.moveToFirst()) {
                 do {
                     idStage = c.getInt(c.getColumnIndex("idStage"));
@@ -248,6 +262,11 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
 
+            Log.v("Hunt Activity", "numStage:"+numStage);
+            Log.v("Hunt Activity", "lat:"+lat);
+            Log.v("Hunt Activity", "lon:"+lon);
+            Log.v("Hunt Activity", "name:"+name);
+            Log.v("Hunt Activity", "clue:"+clue);
 
 
 
@@ -265,12 +284,19 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
 
             boolean upload = uploadImage();
+            String res = null;
 
             if (upload) {
-                String u = "http://jbossews-treasurehunto.rhcloud.com/StageOperation?action=setIsPhotoSended&idStage=" + idStage + "&idUser=" + idUser;
-                String res = null;
                 try {
-                    res = new RetrieveJson().execute(u).get();
+
+                    String u = "http://jbossews-treasurehunto.rhcloud.com/StageOperation";
+
+                    String p = "action=setIsPhotoSended&idStage=" + idStage + "&idUser=" + idUser;
+                    String url[]= new String [2];
+                    url[0] = u;
+                    url[1] = p;
+                    res = new RetrieveJson().execute(url).get();
+
                     Log.d("Hunt Activity", "res:"+res);
                     if (!res.trim().equals("0")) {
                         DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
