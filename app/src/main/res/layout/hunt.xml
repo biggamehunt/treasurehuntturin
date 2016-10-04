@@ -26,6 +26,17 @@
                 android:layout_marginRight="16dp"
                 />
 
+            <ImageButton
+                android:id="@+id/modifyHunt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_dehaze_white_24dp"
+                android:background="@android:color/holo_red_dark"
+                android:onClick="modHunt"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
