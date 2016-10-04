@@ -58,6 +58,8 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         finishTime = (TextView) findViewById(R.id.timeEndPick);
         output = (TextView) findViewById(R.id.dateStartPick);
 
+        Log.v("","STAMPO LOG COME UN CAMPIONE");
+
         // Get current date by calender
         final Calendar c = Calendar.getInstance();
         year  = c.get(Calendar.YEAR);
@@ -133,18 +135,33 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         String[] itemsTimeInit = startTime.getText().toString().split(":");
         String[] itemsTimeEnd = finishTime.getText().toString().split(":");
 
-        Log.v("","date init: " + itemsDateInit);
-        Log.v("","time init: " + itemsTimeInit);
-        Log.v("","date end: " + itemsDateEnd);
-        Log.v("","time end: " + itemsTimeEnd);
-/*
+        Log.v("", "date init: " + itemsDateInit[0]);
+        Log.v("", "date init: " + itemsDateInit[1]);
+        Log.v("", "date init: " + itemsDateInit[2]);
+
+        Log.v("", "date end: " + itemsDateEnd[0]);
+        Log.v("", "date end: " + itemsDateEnd[1]);
+        Log.v("", "date end: " + itemsDateEnd[2]);
+
+        Log.v("", "time init: " + itemsTimeInit[0]);
+        Log.v("", "time init: " + itemsTimeInit[1]);
+
+        Log.v("", "time finish: " + itemsTimeEnd[0]);
+        Log.v("", "time finish: " + itemsTimeEnd[1]);
+
+
+
+
         GregorianCalendar calInit = new GregorianCalendar();
         calInit.set(Calendar.YEAR, Integer.parseInt(itemsDateInit[2]));
-        calInit.set(Calendar.MONTH, Integer.parseInt(itemsDateInit[1]));
+
+      /*  calInit.set(Calendar.MONTH, Integer.parseInt(itemsDateInit[1]));
         calInit.set(Calendar.DATE, Integer.parseInt(itemsDateInit[0]));
         calInit.set(Calendar.HOUR_OF_DAY, Integer.parseInt(itemsTimeInit[1]));
         calInit.set(Calendar.MINUTE, Integer.parseInt(itemsTimeInit[0]));
         calInit.set(Calendar.SECOND, 0);
+
+        Log.v("","Gregorio: "+calInit);
 
         GregorianCalendar calEnd = new GregorianCalendar();
         calEnd.set(Calendar.YEAR, Integer.parseInt(itemsDateEnd[2]));
@@ -156,7 +173,12 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
         java.util.Date timeStart = new java.util.Date(calInit.getTime().getTime());
         java.util.Date timeEnd = new java.util.Date(calEnd.getTime().getTime());
+
+        Log.v("","date init: " + timeStart);
+        Log.v("","date init: " + timeEnd);
 */
+
+
         if (name.getText().toString().equals("")){
             CharSequence text = getString(R.string.noNameHunt);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
@@ -228,6 +250,8 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                         url[0] = u;
                         url[1] = p;
 
+                        /*
+
 
 
                         String res = new RetrieveJson().execute(url).get();
@@ -246,12 +270,12 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                             overridePendingTransition(R.anim.enter, R.anim.exit);
 
                         } else {
-                            /*text = "c'è stato qualche errore";
+                            text = "c'è stato qualche errore";
                             int duration = Toast.LENGTH_SHORT;
 
                             toast = Toast.makeText(this, text, duration);
-                            toast.show();*/
-                        }
+                            toast.show();
+                        }*/
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -54,6 +54,6 @@
         </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>
 
-    <include layout="@layout/navbar"/>
+    <!-- <include layout="@layout/navbar"/> -->
 
 </android.support.v4.widget.DrawerLayout>
