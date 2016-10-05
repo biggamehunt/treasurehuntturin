@@ -154,9 +154,7 @@ public class WelcomeActivity extends AppCompatActivity {
         }
     };
 
-    /**
-     * Making notification bar transparent
-     */
+    // Making notification bar transparent
     private void changeStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -165,9 +163,7 @@ public class WelcomeActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * View pager adapter
-     */
+    // View pager adapter
     public class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
 

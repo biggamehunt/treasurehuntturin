@@ -1,43 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v4.widget.DrawerLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/hunt_list_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.DrawerLayout
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            tools:openDrawer="start">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/white">
+
+                <include layout="@layout/toolbar"/>
+
+                <TextView
+                    android:id="@+id/slogan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_gravity="center"
+                    android:textColor="@color/metatile"
+                    android:textSize="14dp"
+                    android:layout_marginTop="15dp"/>
+
+                <android.support.design.widget.CoordinatorLayout
+                    android:id="@+id/main_content"
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/rv"
+                        xmlns:android="http://schemas.android.com/apk/res/android" />
+
+                </android.support.design.widget.CoordinatorLayout>
+
+            </LinearLayout>
+
+            <!-- <include layout="@layout/navbar"/> -->
+
+        </android.support.v4.widget.DrawerLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white">
-
-        <include layout="@layout/toolbar"/>
+        android:background="#88666666"
+        android:id="@+id/hunt_list_top_layout">
 
         <TextView
-            android:id="@+id/slogan"
+            android:id="@+id/scritta"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            android:layout_gravity="center"
-            android:textColor="@color/metatile"
-            android:textSize="14dp"
-            android:layout_marginTop="15dp"/>
+            android:text="Clicca qui per creare una nuova caccia al tesoro"
+            android:textSize="25dp"
+            android:textColor="@color/white"
+            android:layout_above="@+id/ivInstruction"
+            android:layout_alignParentStart="true"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            android:singleLine="false" />
 
-        <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/main_content"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/rv"
-                xmlns:android="http://schemas.android.com/apk/res/android" />
+        <ImageView
+
+            android:tint="@android:color/white"
+            android:id="@+id/ivInstruction"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginRight="16dp"
+            android:clickable="false"
+            android:src="@drawable/right_arrow"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="80dp"
+            android:layout_marginBottom="16dp" />
+
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -51,9 +108,4 @@
         android:src="@drawable/ic_add_white_24dp"
         android:onClick="createHunt"/>
 
-        </android.support.design.widget.CoordinatorLayout>
-    </LinearLayout>
-
-    <!-- <include layout="@layout/navbar"/> -->
-
-</android.support.v4.widget.DrawerLayout>
+</FrameLayout>

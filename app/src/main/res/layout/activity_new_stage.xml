@@ -83,6 +83,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp">
 
+                <EditText
+                    android:id="@+id/stageName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/nameStage"
+                    android:textSize="20dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp">
+
                 <ImageButton
                     android:alpha="0.3"
                     android:background="#fff"
@@ -100,7 +118,7 @@
                     android:layout_toEndOf="@+id/groupNewHunt"
                     android:layout_marginStart="20dp"
                     android:layout_centerVertical="true"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"/>
 
                 <EditText
                     android:id="@+id/numberComplete"

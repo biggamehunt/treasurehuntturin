@@ -10,18 +10,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-
 import android.support.design.widget.FloatingActionButton;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-
 import com.example.andrea22.gamehunt.Database.DBHelper;
-import com.example.andrea22.gamehunt.utility.OnStartDragListener;
 import com.example.andrea22.gamehunt.utility.RVAdapter;
 import com.example.andrea22.gamehunt.utility.RetrieveJson;
-import com.example.andrea22.gamehunt.utility.SimpleItemTouchHelperCallback;
 import com.example.andrea22.gamehunt.utility.SingleHunt;
 
 import java.util.ArrayList;
@@ -37,24 +34,28 @@ public class HuntListActivity extends AppCompatActivity {
     private RecyclerView rv;
     private TextView tv;
     public static List<SingleHunt> singlehunts;
+    private View topLevelLayout;
 
     private ItemTouchHelper mItemTouchHelper;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_hunt_list);
+
+        topLevelLayout = findViewById(R.id.hunt_list_top_layout);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        if (isFirstTime()) {
+            topLevelLayout.setVisibility(View.INVISIBLE);
+        }
 
         rv = (RecyclerView) findViewById(R.id.rv);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
         rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
 //        fab.setOnClickListener(this);
 
@@ -77,10 +78,7 @@ public class HuntListActivity extends AppCompatActivity {
         String random_string = slogans.get(new Random().nextInt(slogans.size()));
         tv = (TextView) findViewById(R.id.slogan);
         tv.setText(random_string);
-
-
     }
-
 
     private void initializeData() {
 
@@ -104,18 +102,13 @@ public class HuntListActivity extends AppCompatActivity {
 
     private void initializeAdapter() {
 
-
         RVAdapter adapter = new RVAdapter(singlehunts, this);
         rv.setAdapter(adapter);
 
         /*ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(rv);*/
-
-
-
     }
-
 
     public void createHunt(View view){
         Log.v("db log", "id: " + view.getId());
@@ -182,12 +175,10 @@ public class HuntListActivity extends AppCompatActivity {
                     Log.d("test debug", "info già caricate!");
                 }
 
-
             } catch (Exception e) {
                 Log.d("test debug", "eccezione: " + e.getMessage());
                 e.printStackTrace();
             }
-
 
         } catch (Exception e) {
             Log.d("test debug", "eccezione: " + e.getMessage());
@@ -195,8 +186,30 @@ public class HuntListActivity extends AppCompatActivity {
 
         }
 
-
         startActivity(intent);
+    }
+
+    private boolean isFirstTime(){
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        boolean ranBefore = preferences.getBoolean("HuntListRanBefore", false);
+        if (!ranBefore) {
+
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("HuntListRanBefore", true);
+            editor.commit();
+
+            topLevelLayout.setVisibility(View.VISIBLE);
+            fab.bringToFront();
+            topLevelLayout.setOnTouchListener(new View.OnTouchListener(){
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    topLevelLayout.setVisibility(View.INVISIBLE);
+                    return false;
+                }
+            });
+        }
+        return ranBefore;
     }
 
 
