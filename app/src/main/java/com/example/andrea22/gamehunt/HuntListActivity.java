@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 
@@ -17,12 +18,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
+import com.example.andrea22.gamehunt.utility.OnStartDragListener;
 import com.example.andrea22.gamehunt.utility.RVAdapter;
 import com.example.andrea22.gamehunt.utility.RetrieveJson;
+import com.example.andrea22.gamehunt.utility.SimpleItemTouchHelperCallback;
 import com.example.andrea22.gamehunt.utility.SingleHunt;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -34,8 +36,9 @@ public class HuntListActivity extends AppCompatActivity {
     private Animation rotate_forward, rotate_backward;
     private RecyclerView rv;
     private TextView tv;
-    private List<SingleHunt> singlehunts;
+    public static List<SingleHunt> singlehunts;
 
+    private ItemTouchHelper mItemTouchHelper;
 
 
 
@@ -100,8 +103,17 @@ public class HuntListActivity extends AppCompatActivity {
     }
 
     private void initializeAdapter() {
+
+
         RVAdapter adapter = new RVAdapter(singlehunts, this);
         rv.setAdapter(adapter);
+
+        /*ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(rv);*/
+
+
+
     }
 
 
@@ -114,7 +126,7 @@ public class HuntListActivity extends AppCompatActivity {
 
     public void goToHunt(String idHunt){
         Intent intent = new Intent(this, HuntActivity.class);
-        intent.putExtra("idHunt",idHunt);
+        intent.putExtra("idHunt", idHunt);
         SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
 
         //Task spinnerTask;
@@ -186,6 +198,7 @@ public class HuntListActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+
 
 }
 

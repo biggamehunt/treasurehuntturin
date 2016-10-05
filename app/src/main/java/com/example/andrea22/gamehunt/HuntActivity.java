@@ -14,12 +14,14 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.amazonaws.auth.AWSCredentials;
@@ -304,17 +306,26 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                         myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser,idHunt,name);
 
-                       /* JSONObject jsonRes = new JSONObject(res);
-                        JSONArray jsonUsers = jsonRes.getJSONArray("users");
+                        JSONObject jsonRes = new JSONObject(res);
 
-                        String users ="";
-                        for (int i=0; i<jsonUsers.length();i++){
-                            if (jsonUsers.getInt(i)!=idUser) {
-                                users += jsonUsers.getInt(i)+"&";
-                            }
+                        FrameLayout frame = (FrameLayout) findViewById(R.id.rect_map);
+                        CoordinatorLayout cl = (CoordinatorLayout) findViewById(R.id.coordinator_maps);
+                        Log.d("Hunt Activity", "teamIsCompleted:"+jsonRes.getString("teamIsCompleted"));
+                        Log.d("Hunt Activity", "userIsCompleted:"+jsonRes.getString("userIsCompleted"));
+
+                        if (jsonRes.getString("teamIsCompleted").equals("1")) {
+                            Log.d("Hunt Activity", "teamIsCompleted");
+                            cl.setVisibility(View.INVISIBLE);
+                            frame.setVisibility(View.VISIBLE);
+
+                        } else if (jsonRes.getString("userIsCompleted").equals("1")) {
+                            Log.d("Hunt Activity", "userIsCompleted");
+                            cl.setVisibility(View.INVISIBLE);
+
+                            frame.setVisibility(View.VISIBLE);
                         }
-                        Log.d("Hunt Activity", "users"+users);
-                        updateTeamWebSocket(users);*/
+
+
 
                     } else {
                         //toDo mettere il text di tutti i toast nelle variabili
@@ -323,9 +334,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     }
 
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

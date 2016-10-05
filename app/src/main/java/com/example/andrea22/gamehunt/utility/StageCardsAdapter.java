@@ -1,9 +1,14 @@
 package com.example.andrea22.gamehunt.utility;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -13,19 +18,22 @@ import android.widget.TextView;
 
 import com.example.andrea22.gamehunt.R;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by Andrea22 on 30/09/2016.
  */
 
-public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.SingleCardViewHolder> {
+public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.SingleCardViewHolder> implements ItemTouchHelperAdapter {
 
-    public static class SingleCardViewHolder extends RecyclerView.ViewHolder {
+    public static class SingleCardViewHolder extends RecyclerView.ViewHolder implements
+            ItemTouchHelperViewHolder {
 
         CardView cv;
         TextView stageName;
         ImageView isLocationRequired, isPhotoRequired, isCheckRequired;
+
         //ImageButton deleteStage;
 
         //ArrayList<TextView> teamPlayer;
@@ -40,13 +48,25 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
 
 
         }
+
+        @Override
+        public void onItemSelected() {
+            itemView.setBackgroundColor(Color.LTGRAY);
+        }
+
+        @Override
+        public void onItemClear() {
+            itemView.setBackgroundColor(0);
+        }
     }
     int cont=0;
     List<SingleStage> stages;
     Context context;
     public int numStage;
-    public StageCardsAdapter(List<SingleStage> stages, Context context){
+    private final OnStartDragListener mDragStartListener;
 
+    public StageCardsAdapter(List<SingleStage> stages, Context context, OnStartDragListener dragStartListener){
+        mDragStartListener = dragStartListener;
         this.context = context;
         this.stages = stages;
 
@@ -65,8 +85,9 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
         cont++;
         return pvh;
     }
+
     @Override
-    public void onBindViewHolder(SingleCardViewHolder singleCardViewHolder, int i) {
+    public void onBindViewHolder(final SingleCardViewHolder singleCardViewHolder, int i) {
         singleCardViewHolder.stageName.setText("Stage " + stages.get(i).getNumStage());
 
 
@@ -96,6 +117,32 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
 
 
 
+        singleCardViewHolder.cv.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.v("StageCardsAdapter", "onLongClickListener");
+
+                mDragStartListener.onStartDrag(singleCardViewHolder);
+                return false;
+            }
+        });
+
+
+        singleCardViewHolder.cv.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.v("RVAdapter", "nell'onTouch");
+
+                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                    mDragStartListener.onStartDrag(singleCardViewHolder);
+                }
+                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_UP) {
+                    mDragStartListener.onStartDrag(singleCardViewHolder);
+                }
+                return false;
+            }
+
+        });
         /*for(int j=0;j<singleCardViewHolder.teamLayout.getChildCount();j++){
 
             ((TextView)singleCardViewHolder.teamLayout.getChildAt(j)).setText(singleTeam.get(i).player.get(j));
@@ -122,4 +169,21 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
     public int getItemCount() {
         return stages.size();
     }
+
+    @Override
+    public void onItemDismiss(int position) {
+        stages.remove(position);
+        notifyItemRemoved(position);
+
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        Collections.swap(stages, fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
+
+
+        return true;
+    }
+
 }

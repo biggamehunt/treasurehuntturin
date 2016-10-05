@@ -8,13 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.JSONBuilder;
+import com.example.andrea22.gamehunt.utility.OnStartDragListener;
 import com.example.andrea22.gamehunt.utility.RetrieveJson;
+import com.example.andrea22.gamehunt.utility.SimpleItemTouchHelperCallback;
 import com.example.andrea22.gamehunt.utility.SingleStage;
 import com.example.andrea22.gamehunt.utility.StageCardsAdapter;
 import com.example.andrea22.gamehunt.utility.TeamCardsAdapter;
@@ -25,12 +28,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StageManagementActivity extends AppCompatActivity {
+public class StageManagementActivity extends AppCompatActivity implements OnStartDragListener {
 
     private int maxStages;
     private List<SingleStage> stages;
     StageCardsAdapter adapter;
     private RecyclerView rv;
+    private ItemTouchHelper mItemTouchHelper;
 
 
     @Override
@@ -49,8 +53,12 @@ public class StageManagementActivity extends AppCompatActivity {
     }
 
     public void initializeAdapter(){
-        adapter = new StageCardsAdapter(stages, this);
+        adapter = new StageCardsAdapter(stages, this, this);
         rv.setAdapter(adapter);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(rv);
     }
 
     public void addStage(View view) {
@@ -168,6 +176,14 @@ public class StageManagementActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
+    }
+
+
+
 
 }
 

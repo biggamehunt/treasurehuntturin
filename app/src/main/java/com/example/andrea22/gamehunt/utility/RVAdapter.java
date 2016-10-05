@@ -2,10 +2,13 @@ package com.example.andrea22.gamehunt.utility;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -17,16 +20,19 @@ import android.widget.TextView;
 
 import com.example.andrea22.gamehunt.HuntListActivity;
 import com.example.andrea22.gamehunt.R;
+
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by Simone on 29/06/2016.
  */
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHolder> {
+public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHolder>  {
 
 
-    public static class SingleHuntViewHolder extends RecyclerView.ViewHolder {
+    public static class SingleHuntViewHolder extends RecyclerView.ViewHolder   {
+
 
         CardView cv;
 
@@ -46,20 +52,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
             goToHunt = (Button)itemView.findViewById(R.id.single_goToHunt);
 
         }
+
     }
 
-    List<SingleHunt> singlehunts;
+    public List<SingleHunt> singlehunts;
     int dimStart = -1;
     int targetHeight;
 
-
-    TextView description;
-    Button goToHunt;
-
-
     Context context;
     public RVAdapter(List<SingleHunt> singlehunts, Context context){
-
         this.singlehunts = singlehunts;
         this.context = context;
     }
@@ -76,10 +77,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         return pvh;
     }
 
-    private CardView extendedCardView;
     int pos;
     @Override
-    public void onBindViewHolder(SingleHuntViewHolder singleHuntViewHolder, int i) {
+    public void onBindViewHolder(final SingleHuntViewHolder singleHuntViewHolder, int i) {
 
         singleHuntViewHolder.huntTitle.setText(singlehunts.get(i).title);
         singleHuntViewHolder.huntDate.setText(singlehunts.get(i).date);
@@ -92,7 +92,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         singleHuntViewHolder.goToHunt.setText("VAI ALLA CACCIA");
 
 
-        extendedCardView=singleHuntViewHolder.cv;
         pos=i;
 
         singleHuntViewHolder.cv.measure(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
@@ -121,7 +120,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
                 toggleProductDescriptionHeight(view);
 
             }
+
+
+
         });
+
+
+
 
         singleHuntViewHolder.goToHunt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +170,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
             //EXPAND
 
             ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(3)).setVisibility(View.VISIBLE);
-            ((Button)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(4)).setVisibility(View.VISIBLE);
+            ((Button)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(5)).setVisibility(View.VISIBLE);
             Log.v("RVAdapter", "expand h after add child:" + view.getHeight());
 
             final int targetHeight = view.getMeasuredHeight();
@@ -194,8 +199,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
 
             Log.v("RVAdapter", "collapse");
 
-            ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(3)).setVisibility(View.GONE);
-            ((Button)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(4)).setVisibility(View.GONE);
+            ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(4)).setVisibility(View.GONE);
+            ((Button)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(5)).setVisibility(View.GONE);
 
             ValueAnimator anim = ValueAnimator.ofInt(view.getMeasuredHeightAndState(),
                     dimStart);
