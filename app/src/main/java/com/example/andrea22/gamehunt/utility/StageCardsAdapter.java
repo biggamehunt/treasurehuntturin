@@ -1,6 +1,7 @@
 package com.example.andrea22.gamehunt.utility;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.CardView;
@@ -16,8 +17,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.R;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,8 +29,13 @@ import java.util.List;
  */
 
 public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.SingleCardViewHolder> implements ItemTouchHelperAdapter {
+    public int beginningPosition;
 
-    public static class SingleCardViewHolder extends RecyclerView.ViewHolder implements
+    public int fromPosition;
+    public int toPosition;
+    public boolean firstMove = true;
+
+    public class SingleCardViewHolder extends RecyclerView.ViewHolder implements
             ItemTouchHelperViewHolder {
 
         CardView cv;
@@ -51,16 +59,68 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
 
         @Override
         public void onItemSelected() {
-            itemView.setBackgroundColor(Color.LTGRAY);
+            //cv.setBackgroundColor(Color.LTGRAY);
+            itemView.setBackgroundColor(Color.parseColor("#ff9800"));
+            //itemView.setBackgroundColor(Color.LTGRAY);
+            tmpStages = new ArrayList<SingleStage>();
+
+            beginningPosition = -1;
+
+            for (int i = 0; i < stages.size(); i++){
+                tmpStages.add(new SingleStage(stages.get(i).getNumStage(),stages.get(i).getIsLocationRequired(),stages.get(i).getIsCheckRequired(),stages.get(i).getIsPhotoRequired()));
+            }
+
+            firstMove = true;
+
+            //tmpStages = stages;
+
         }
 
         @Override
         public void onItemClear() {
+
             itemView.setBackgroundColor(0);
+
+            Log.d("notifyData", "toPosition "+": "+toPosition);
+
+            if (beginningPosition == -1) {
+                return;
+            } else if (beginningPosition < toPosition){
+
+
+                Log.d("notifyData", "beginningPosition < toPosition " );
+                int[][] posChange = new int[(toPosition+1)-beginningPosition][2];
+
+                for (int i = beginningPosition, j=0; i<toPosition+1; i++, j++){
+                    posChange[j][0]=stages.get(i).getNumStage();
+                    posChange[j][1]=tmpStages.get(i).getNumStage();
+                    Log.v("notifyData", "cambiare da "+ posChange[j][0]+" a "+ posChange[j][1]);
+                    stages.get(i).setNumStage(posChange[j][1]);
+
+                }
+            } else if (beginningPosition > toPosition){
+                Log.d("notifyData", "beginningPosition > toPosition " );
+                int[][] posChange = new int[(beginningPosition+1)-toPosition][2];
+
+
+
+                for (int i = toPosition, j = 0; i<beginningPosition+1; i++, j++){
+                    posChange[j][0]=stages.get(i).getNumStage();
+                    posChange[j][1]=tmpStages.get(i).getNumStage();
+                    Log.v("notifyData", "cambiare da " + posChange[j][0] + " a " + posChange[j][1]);
+                    stages.get(i).setNumStage(posChange[j][1]);
+
+                }
+
+            }
+
+            //itemView.setBackgroundColor(0);
         }
     }
     int cont=0;
     List<SingleStage> stages;
+    List<SingleStage> tmpStages;
+
     Context context;
     public int numStage;
     private final OnStartDragListener mDragStartListener;
@@ -71,6 +131,13 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
         this.stages = stages;
 
     }
+    public void notifyData(List<SingleStage> myList) {
+        Log.d("notifyData ", myList.size() + "");
+        stages = myList;
+        //notifyDataSetChanged();
+    }
+
+
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
@@ -89,6 +156,7 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
     @Override
     public void onBindViewHolder(final SingleCardViewHolder singleCardViewHolder, int i) {
         singleCardViewHolder.stageName.setText("Stage " + stages.get(i).getNumStage());
+        numStage  = stages.get(i).numStage;
 
 
         //todo: sistemare le immagini nella card
@@ -120,15 +188,17 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
         singleCardViewHolder.cv.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.v("StageCardsAdapter", "onLongClickListener");
-
+               // Log.v("StageCardsAdapter", "onLongClickListener");
                 mDragStartListener.onStartDrag(singleCardViewHolder);
                 return false;
             }
+
+
         });
 
 
-        singleCardViewHolder.cv.setOnTouchListener(new View.OnTouchListener() {
+
+        /*singleCardViewHolder.cv.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Log.v("RVAdapter", "nell'onTouch");
@@ -142,12 +212,11 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
                 return false;
             }
 
-        });
+        });*/
         /*for(int j=0;j<singleCardViewHolder.teamLayout.getChildCount();j++){
 
             ((TextView)singleCardViewHolder.teamLayout.getChildAt(j)).setText(singleTeam.get(i).player.get(j));
         }*/
-        numStage  = stages.get(i).numStage;
        //toDO: settare le immagini
 
 
@@ -179,6 +248,39 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
+
+
+        if (firstMove) {
+            beginningPosition = fromPosition;
+            firstMove = false;
+
+            Log.v("RVAdapter", "beginningPosition" + beginningPosition);
+
+        }
+
+        this.fromPosition = fromPosition;
+        this.toPosition = toPosition;
+        Log.v("RVAdapter", "fromPosition" + fromPosition);
+        Log.v("RVAdapter", "toPosition" + toPosition);
+
+
+
+
+        /*
+
+        try {
+            DBHelper mDbHelper = DBHelper.getInstance(context);
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }*/
+
+
+
         Collections.swap(stages, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
 

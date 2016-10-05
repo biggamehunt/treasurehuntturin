@@ -297,9 +297,12 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insertAddStage(SQLiteDatabase db, int idUser, String clue, int ray, double areaLat, double areaLon, double  lat, double lon, int isLocationRequired, int isPhotoRequired, int isCheckRequired, int numUserToFinish)  {
+    public void insertAddStage(SQLiteDatabase db, int idUser, int numStage, String clue, int ray, double areaLat, double areaLon, double  lat, double lon, int isLocationRequired, int isPhotoRequired, int isCheckRequired, int numUserToFinish)  {
         if (idUser != 0){
             ContentValues values = new ContentValues();
+            values.put(AddStageTable.COLUMN_IDUSER, idUser);
+            values.put(AddStageTable.COLUMN_NUMSTAGE, numStage);
+
             values.put(AddStageTable.COLUMN_RAY, ray);
             values.put(AddStageTable.COLUMN_AREA_LAT, areaLat);
             values.put(AddStageTable.COLUMN_AREA_LON, areaLon);
@@ -642,6 +645,23 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try {
             Log.v("db log", "prima del set teamCompleted");
+            db.execSQL("UPDATE ADDSTAGE SET teamCompleted = 1 WHERE idStage =" + idStage + ";");
+            Log.v("db log", "prima del set idCurrentStage");
+
+            db.execSQL("UPDATE TEAM SET idCurrentStage = null, isCompleted = 1 WHERE idTeam =" + idTeam + ";");
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean updateNumStages(SQLiteDatabase db, int fromPosition, int toPosition, int idStage, int idTeam)  {
+
+        try {
+            Log.v("db log", "prima del set teamCompleted");
             db.execSQL("UPDATE STAGE SET teamCompleted = 1 WHERE idStage =" + idStage + ";");
             Log.v("db log", "prima del set idCurrentStage");
 
@@ -654,6 +674,8 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return true;
     }
+
+
 
 
 }

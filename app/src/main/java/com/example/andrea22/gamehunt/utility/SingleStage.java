@@ -20,7 +20,7 @@ public class SingleStage {
         return numStage;
     }
 
-    public void setNumTeam(int numStage){
+    public void setNumStage(int numStage){
         this.numStage = numStage;
     }
 

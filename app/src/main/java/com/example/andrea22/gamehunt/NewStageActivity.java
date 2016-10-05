@@ -47,6 +47,8 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
     ScrollView scrollview;
     ImageView transparentImageView;
 
+    int numStage;
+
     @Override
     protected void onResume (){
         super.onResume();
@@ -61,6 +63,9 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
         setContentView(R.layout.activity_new_stage);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
+
+        numStage = getIntent().getIntExtra("numStage",0);
+        Log.v("maps","numStage: "+numStage);
 
         scrollview = (ScrollView) findViewById(R.id.scrollViewNewStage);
         transparentImageView = (ImageView) findViewById(R.id.transparent_image);
@@ -330,7 +335,7 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
             SQLiteDatabase db = myHelper.getWritableDatabase();
             SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
 
-            myHelper.insertAddStage(db, pref.getInt("idUser", 0), clueText, rayText, areaLat, areaLon, lat, lon, islocreqText, isphotoreqText, ischeckreqText, numberCompleteText);
+            myHelper.insertAddStage(db, pref.getInt("idUser", 0), numStage, clueText, rayText, areaLat, areaLon, lat, lon, islocreqText, isphotoreqText, ischeckreqText, numberCompleteText);
 
             Intent intent = new Intent();
 

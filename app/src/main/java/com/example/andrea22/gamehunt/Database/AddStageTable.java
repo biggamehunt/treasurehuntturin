@@ -9,6 +9,8 @@ public class AddStageTable {
         public static final String COLUMN_LAT = "lat";
         public static final String COLUMN_LON = "lon";
         public static final String COLUMN_CLUE = "clue";
+        public static final String COLUMN_NUMSTAGE = "numStage";
+
         public static final String COLUMN_ISLOCATIONREQUIRED = "isLocationRequired";
         public static final String COLUMN_ISCHECKREQUIRED = "isCheckRequired";
         public static final String COLUMN_ISPHOTOREQUIRED = "isPhotoRequired";
@@ -18,6 +20,7 @@ public class AddStageTable {
         public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                         COLUMN_IDADDSTAGE + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        COLUMN_NUMSTAGE + " INTEGER NOT NULL, " +
                         COLUMN_AREA_LAT + " DOUBLE NOT NULL, " +
                         COLUMN_AREA_LON + " DOUBLE NOT NULL, " +
                         COLUMN_RAY + " INTEGER NOT NULL, " +

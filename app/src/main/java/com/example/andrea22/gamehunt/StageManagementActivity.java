@@ -41,25 +41,43 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stage_management);
-        rv=(RecyclerView)findViewById(R.id.rv_stages);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
-        rv.setHasFixedSize(true);
+
 
         stages= new ArrayList<>();
         maxStages = 20;
+
+
 
         initializeAdapter();
     }
 
     public void initializeAdapter(){
+
         adapter = new StageCardsAdapter(stages, this, this);
+
+
+        rv=(RecyclerView)findViewById(R.id.rv_stages);
+
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv.setLayoutManager(llm);
+        rv.setHasFixedSize(true);
         rv.setAdapter(adapter);
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(rv);
+
+
+
     }
+
+    public void updateAdapter(){
+
+        adapter.notifyData(stages);
+        adapter.notifyDataSetChanged();
+
+    }
+
 
     public void addStage(View view) {
 
@@ -67,6 +85,7 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
         if (stages.size() <= maxStages) {
 
             Intent intent = new Intent(this, NewStageActivity.class);
+            intent.putExtra("numStage",stages.size()+1);
             startActivityForResult(intent, 1);
             overridePendingTransition(R.anim.enter, R.anim.exit);
 
@@ -171,7 +190,11 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
                 int isPhotoRequired = data.getIntExtra("isPhotoRequired", 0);
                 SingleStage newStage = new SingleStage(numStage, isLocationRequired, isCheckRequired, isPhotoRequired);
                 stages.add(newStage);
-                initializeAdapter();
+
+                //initializeAdapter();
+
+                updateAdapter();
+
 
             }
         }
@@ -183,7 +206,11 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateAdapter();
 
-
+    }
 }
 
