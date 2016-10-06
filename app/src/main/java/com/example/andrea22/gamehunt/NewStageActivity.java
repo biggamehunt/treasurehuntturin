@@ -335,7 +335,10 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
             SQLiteDatabase db = myHelper.getWritableDatabase();
             SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
 
-            myHelper.insertAddStage(db, pref.getInt("idUser", 0), numStage, clueText, rayText, areaLat, areaLon, lat, lon, islocreqText, isphotoreqText, ischeckreqText, numberCompleteText);
+            Log.v("maps", "idLastHunt: " + pref.getInt("idLastHunt", 0));
+
+
+            myHelper.insertAddStage(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0),numStage, clueText, rayText, areaLat, areaLon, lat, lon, islocreqText, isphotoreqText, ischeckreqText, numberCompleteText);
 
             Intent intent = new Intent();
 

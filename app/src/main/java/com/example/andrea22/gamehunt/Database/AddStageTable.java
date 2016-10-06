@@ -16,6 +16,8 @@ public class AddStageTable {
         public static final String COLUMN_ISPHOTOREQUIRED = "isPhotoRequired";
         public static final String COLUMN_NUMUSERTOFINISH = "numUserToFinish";
         public static final String COLUMN_IDUSER = "idUser";
+        public static final String COLUMN_IDHUNT = "idHunt";
+
 
         public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
@@ -31,6 +33,7 @@ public class AddStageTable {
                         COLUMN_ISPHOTOREQUIRED + " INTEGER NOT NULL DEFAULT 0, " +
                         COLUMN_ISCHECKREQUIRED + " INTEGER NOT NULL DEFAULT 0, " +
                         COLUMN_IDUSER + " INTEGER NOT NULL, " +
+                        COLUMN_IDHUNT + " INTEGER NOT NULL, " +
                         COLUMN_NUMUSERTOFINISH + " INTEGER NOT NULL );";
 
         public static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;

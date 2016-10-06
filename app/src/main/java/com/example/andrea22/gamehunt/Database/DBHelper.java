@@ -2,6 +2,7 @@ package com.example.andrea22.gamehunt.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -297,7 +298,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insertAddStage(SQLiteDatabase db, int idUser, int numStage, String clue, int ray, double areaLat, double areaLon, double  lat, double lon, int isLocationRequired, int isPhotoRequired, int isCheckRequired, int numUserToFinish)  {
+    public void insertAddStage(SQLiteDatabase db, int idUser, int idHunt, int numStage, String clue, int ray, double areaLat, double areaLon, double  lat, double lon, int isLocationRequired, int isPhotoRequired, int isCheckRequired, int numUserToFinish)  {
         if (idUser != 0){
             ContentValues values = new ContentValues();
             values.put(AddStageTable.COLUMN_IDUSER, idUser);
@@ -315,6 +316,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(AddStageTable.COLUMN_ISCHECKREQUIRED, isCheckRequired);
             values.put(AddStageTable.COLUMN_ISPHOTOREQUIRED, isPhotoRequired);
             values.put(AddStageTable.COLUMN_NUMUSERTOFINISH, numUserToFinish);
+            values.put(AddStageTable.COLUMN_IDHUNT, idHunt);
 
             db.insert(AddStageTable.TABLE_NAME,null,values);
 
@@ -645,7 +647,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try {
             Log.v("db log", "prima del set teamCompleted");
-            db.execSQL("UPDATE ADDSTAGE SET teamCompleted = 1 WHERE idStage =" + idStage + ";");
+            db.execSQL("UPDATE STAGE SET teamCompleted = 1 WHERE idStage =" + idStage + ";");
             Log.v("db log", "prima del set idCurrentStage");
 
             db.execSQL("UPDATE TEAM SET idCurrentStage = null, isCompleted = 1 WHERE idTeam =" + idTeam + ";");
@@ -658,14 +660,44 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean updateNumStages(SQLiteDatabase db, int fromPosition, int toPosition, int idStage, int idTeam)  {
+    public boolean updateNumStages(SQLiteDatabase db, int[][] positions, int idUser, int idHunt)  {
 
         try {
-            Log.v("db log", "prima del set teamCompleted");
-            db.execSQL("UPDATE STAGE SET teamCompleted = 1 WHERE idStage =" + idStage + ";");
-            Log.v("db log", "prima del set idCurrentStage");
 
-            db.execSQL("UPDATE TEAM SET idCurrentStage = null, isCompleted = 1 WHERE idTeam =" + idTeam + ";");
+           /* for (int i = 0; i<positions.length;i++) {
+                Log.v("db log", "prima di updateNumStages");
+                db.execSQL("UPDATE ADDSTAGE SET numStage =" + positions[i][1] + " WHERE numStage = " + positions[i][0] + " AND idUser = " + idUser + " AND idHunt = " + idHunt +";");
+                Log.v("db log", "dopo updateNumStages");
+
+            }*/
+
+            String query = "UPDATE ADDSTAGE SET numStage=CASE ";
+            String oldPositions = "";
+
+
+            for (int i = 0; i<positions.length;i++) {
+                query+="WHEN numStage="+positions[i][0]+" THEN "+positions[i][1]+" ";
+                oldPositions+=positions[i][0]+",";
+            }
+            if (oldPositions != null && oldPositions.length() > 0){
+                oldPositions = oldPositions.substring(0, oldPositions.length()-1);
+            }
+            query+=" END WHERE numStage in ("+oldPositions+") AND idUser = " + idUser + " AND idHunt = " + idHunt;
+
+            db.execSQL(query);
+
+            Cursor c = db.rawQuery("SELECT * FROM ADDSTAGE WHERE idUser = " + idUser + " AND idHunt = " + idHunt, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    Log.v("db log", "clue: "+c.getString(c.getColumnIndex("clue")));
+                    Log.v("db log", "numStage: "+c.getString(c.getColumnIndex("numStage")));
+                } while (c.moveToNext());
+            }
+
+
+
+
 
 
         } catch (Exception e){

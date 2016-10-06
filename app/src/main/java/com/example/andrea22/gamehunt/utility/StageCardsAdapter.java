@@ -1,6 +1,7 @@
 package com.example.andrea22.gamehunt.utility;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v4.view.MotionEventCompat;
@@ -98,6 +99,17 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
                     stages.get(i).setNumStage(posChange[j][1]);
 
                 }
+
+                DBHelper mDbHelper = DBHelper.getInstance(context);
+                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                SharedPreferences pref = context.getSharedPreferences("session", context.MODE_PRIVATE);
+
+                Log.v("notifyData", "idLastHunt: "+ pref.getInt("idLastHunt", 0));
+                Log.v("notifyData", "idUser: "+ pref.getInt("idUser", 0));
+
+
+                mDbHelper.updateNumStages(db, posChange, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0));
+
             } else if (beginningPosition > toPosition){
                 Log.d("notifyData", "beginningPosition > toPosition " );
                 int[][] posChange = new int[(beginningPosition+1)-toPosition][2];
@@ -111,6 +123,16 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
                     stages.get(i).setNumStage(posChange[j][1]);
 
                 }
+
+                DBHelper mDbHelper = DBHelper.getInstance(context);
+                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                SharedPreferences pref = context.getSharedPreferences("session", context.MODE_PRIVATE);
+
+                Log.v("notifyData", "idLastHunt: "+ pref.getInt("idLastHunt", 0));
+                Log.v("notifyData", "idUser: "+ pref.getInt("idUser", 0));
+
+                mDbHelper.updateNumStages(db,posChange, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0));
+
 
             }
 

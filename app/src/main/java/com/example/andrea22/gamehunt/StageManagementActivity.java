@@ -85,7 +85,7 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
         if (stages.size() <= maxStages) {
 
             Intent intent = new Intent(this, NewStageActivity.class);
-            intent.putExtra("numStage",stages.size()+1);
+            intent.putExtra("numStage",stages.size());
             startActivityForResult(intent, 1);
             overridePendingTransition(R.anim.enter, R.anim.exit);
 
@@ -125,7 +125,7 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
 
             JSONBuilder jsonBuilder = new JSONBuilder();
             SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
-            Cursor c = db.rawQuery("SELECT * FROM ADDSTAGE WHERE idUser = " + pref.getInt("idUser", 0), null);
+            Cursor c = db.rawQuery("SELECT * FROM ADDSTAGE WHERE idUser = " + pref.getInt("idUser", 0) + " AND idHunt = " + pref.getInt("idLastHunt", 0) + " ORDER BY numStage ASC", null);
 
 
             JSONObject hunt = new JSONObject();
@@ -154,7 +154,7 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
             String res = new RetrieveJson().execute(url).get();
 
             if (!res.equals("0")) {
-                db.execSQL("DELETE FROM ADDSTAGE WHERE idUser = " + pref.getInt("idUser", 0));
+                db.execSQL("DELETE FROM ADDSTAGE WHERE idHunt = " + pref.getInt("idLastHunt", 0));
 
                 Intent intent = new Intent(this, TeamManagementActivity.class);
                 startActivity(intent);
@@ -184,7 +184,7 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
 
-                int numStage = stages.size() + 1;
+                int numStage = stages.size();
                 int isLocationRequired = data.getIntExtra("isLocationRequired", 0);
                 int isCheckRequired = data.getIntExtra("isCheckRequired", 0);
                 int isPhotoRequired = data.getIntExtra("isPhotoRequired", 0);
