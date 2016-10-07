@@ -127,7 +127,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         db.insert(HuntTable.TABLE_NAME, null, values);
                         Log.v("db log", "Insert Hunt eseguito");
 
-                        if (hunt.isNull("stages") == false) {
+                        /*if (hunt.isNull("stages") == false) {
                             JSONArray stages_create = hunt.getJSONArray("stages");
                             JSONObject stage = null;
                             if (stages_create != null) {
@@ -159,7 +159,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
                                 }
                             }
-                        }
+                        }*/
 
 
 
@@ -210,6 +210,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(StageTable.COLUMN_RAY, stage.isNull("ray") == false ? stage.getString("ray"):"");
                 values.put(StageTable.COLUMN_NUMSTAGE, stage.getString("numStage"));
                 values.put(StageTable.COLUMN_CLUE, stage.isNull("clue") == false ? stage.getString("clue"):"");
+                values.put(StageTable.COLUMN_NAME, stage.getString("name"));
                 values.put(StageTable.COLUMN_ISLOCATIONREQUIRED, stage.getString("isLocationRequired"));
                 values.put(StageTable.COLUMN_ISPHOTOREQUIRED, stage.getString("isPhotoRequired"));
                 values.put(StageTable.COLUMN_ISCHECKREQUIRED, stage.getString("isCheckRequired"));
@@ -298,7 +299,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insertAddStage(SQLiteDatabase db, int idUser, int idHunt, int numStage, String clue, int ray, double areaLat, double areaLon, double  lat, double lon, int isLocationRequired, int isPhotoRequired, int isCheckRequired, int numUserToFinish)  {
+    public void insertAddStage(SQLiteDatabase db, int idUser, int idHunt, int numStage, String name, String clue, int ray, double areaLat, double areaLon, double  lat, double lon, int isLocationRequired, int isPhotoRequired, int isCheckRequired, int numUserToFinish)  {
         if (idUser != 0){
             ContentValues values = new ContentValues();
             values.put(AddStageTable.COLUMN_IDUSER, idUser);
@@ -310,6 +311,8 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(AddStageTable.COLUMN_LAT, lat);
             values.put(AddStageTable.COLUMN_LON, lon);
             values.put(AddStageTable.COLUMN_CLUE, clue);
+            values.put(AddStageTable.COLUMN_NAME, name);
+
             values.put(AddStageTable.COLUMN_IDUSER, idUser);
 
             values.put(AddStageTable.COLUMN_ISLOCATIONREQUIRED, isLocationRequired);
@@ -485,6 +488,8 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(StageTable.COLUMN_RAY, stage.isNull("ray") == false ? stage.getString("ray"):"");
             values.put(StageTable.COLUMN_NUMSTAGE, stage.getString("numStage"));
             values.put(StageTable.COLUMN_CLUE, stage.isNull("clue") == false ? stage.getString("clue"):"");
+            values.put(StageTable.COLUMN_NAME, stage.getString("name"));
+
             values.put(StageTable.COLUMN_ISLOCATIONREQUIRED, stage.getString("isLocationRequired"));
             values.put(StageTable.COLUMN_ISPHOTOREQUIRED, stage.getString("isPhotoRequired"));
             values.put(StageTable.COLUMN_ISCHECKREQUIRED, stage.getString("isCheckRequired"));
@@ -686,11 +691,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
             db.execSQL(query);
 
-            Cursor c = db.rawQuery("SELECT * FROM ADDSTAGE WHERE idUser = " + idUser + " AND idHunt = " + idHunt, null);
+            Cursor c = db.rawQuery("SELECT * FROM ADDSTAGE WHERE idUser = " + idUser + " AND idHunt = " + idHunt+" ORDER BY numStage ASC", null);
 
             if (c.moveToFirst()) {
                 do {
-                    Log.v("db log", "clue: "+c.getString(c.getColumnIndex("clue")));
+                    Log.v("db log", "name: "+c.getString(c.getColumnIndex("name")));
                     Log.v("db log", "numStage: "+c.getString(c.getColumnIndex("numStage")));
                 } while (c.moveToNext());
             }
@@ -706,6 +711,23 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return true;
     }
+
+    public boolean removeAddStage(SQLiteDatabase db, int numStage, int idUser, int idHunt)  {
+
+        try {
+
+            db.execSQL("DELETE FROM ADDSTAGE WHERE numStage =" + numStage + " AND idUser = "+idUser+" AND idHunt = " + idHunt + ";");
+
+            Log.v("db log", "Delete AddStage eseguito");
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 
 
 

@@ -3,11 +3,13 @@ package com.example.andrea22.gamehunt.Database;
 public class AddStageTable {
         public static final String TABLE_NAME = "ADDSTAGE";
         public static final String COLUMN_IDADDSTAGE = "idAddStage";
+        public static final String COLUMN_NAME = "name";
         public static final String COLUMN_RAY = "ray";
         public static final String COLUMN_AREA_LAT = "areaLat";
         public static final String COLUMN_AREA_LON = "areaLon";
         public static final String COLUMN_LAT = "lat";
         public static final String COLUMN_LON = "lon";
+
         public static final String COLUMN_CLUE = "clue";
         public static final String COLUMN_NUMSTAGE = "numStage";
 
@@ -29,6 +31,7 @@ public class AddStageTable {
                         COLUMN_LAT + " DOUBLE NOT NULL, " +
                         COLUMN_LON + " DOUBLE NOT NULL, " +
                         COLUMN_CLUE + " TEXT, " +
+                        COLUMN_NAME + " TEXT NOT NULL, " +
                         COLUMN_ISLOCATIONREQUIRED + " INTEGER NOT NULL DEFAULT 0, " +
                         COLUMN_ISPHOTOREQUIRED + " INTEGER NOT NULL DEFAULT 0, " +
                         COLUMN_ISCHECKREQUIRED + " INTEGER NOT NULL DEFAULT 0, " +

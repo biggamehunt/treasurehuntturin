@@ -73,7 +73,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     File photo;
     final int TAKE_PHOTO_REQ = 100;
 
-    private String clue, name;
+    private String clue, nameHunt, nameStage;
     private int numStage, ray, isLocationRequired, isCheckRequired, isPhotoRequired, isCompleted;
     private float areaLat, areaLon, lat, lon;
     FloatingActionButton photoButton;
@@ -221,11 +221,12 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                             "STAGE.lat, " +
                             "STAGE.lon, " +
                             "STAGE.ray, " +
+                            "STAGE.name AS nameStage, " +
                             "STAGE.clue, " +
                             "STAGE.isLocationRequired, " +
                             "STAGE.isCheckRequired, " +
                             "STAGE.isPhotoRequired, " +
-                            "HUNT.name, " +
+                            "HUNT.name AS nameHunt, " +
                             "TEAM.isCompleted, " +
                             "TEAM.idTeam " +
 
@@ -251,13 +252,14 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     lat = c.getFloat(c.getColumnIndex("lat"));
                     lon = c.getFloat(c.getColumnIndex("lon"));
                     ray = c.getInt(c.getColumnIndex("ray"));
+                    nameStage =  c.getString(c.getColumnIndex("nameStage"));
                     clue =  c.getString(c.getColumnIndex("clue"));
                     isLocationRequired = c.getInt(c.getColumnIndex("isLocationRequired"));
                     isCheckRequired = c.getInt(c.getColumnIndex("isCheckRequired"));
                     isPhotoRequired = c.getInt(c.getColumnIndex("isPhotoRequired"));
                     idTeam = c.getInt(c.getColumnIndex("idTeam"));
                     isCompleted = c.getInt(c.getColumnIndex("isCompleted"));
-                    name = c.getString(c.getColumnIndex("name"));
+                    nameHunt = c.getString(c.getColumnIndex("nameHunt"));
 
 
                 } while (c.moveToNext());
@@ -267,7 +269,9 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             Log.v("Hunt Activity", "numStage:"+numStage);
             Log.v("Hunt Activity", "lat:"+lat);
             Log.v("Hunt Activity", "lon:"+lon);
-            Log.v("Hunt Activity", "name:"+name);
+            Log.v("Hunt Activity", "nameStage:"+nameStage);
+            Log.v("Hunt Activity", "nameHunt:"+nameHunt);
+
             Log.v("Hunt Activity", "clue:"+clue);
 
 
@@ -304,7 +308,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                         DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                         SQLiteDatabase db = myHelper.getWritableDatabase();
 
-                        myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser,idHunt,name);
+                        myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser,idHunt,nameHunt);
 
                         JSONObject jsonRes = new JSONObject(res);
 

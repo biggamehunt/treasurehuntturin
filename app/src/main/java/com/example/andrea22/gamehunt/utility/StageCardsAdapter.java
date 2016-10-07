@@ -68,7 +68,7 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
             beginningPosition = -1;
 
             for (int i = 0; i < stages.size(); i++){
-                tmpStages.add(new SingleStage(stages.get(i).getNumStage(),stages.get(i).getIsLocationRequired(),stages.get(i).getIsCheckRequired(),stages.get(i).getIsPhotoRequired()));
+                tmpStages.add(new SingleStage(stages.get(i).getName(), stages.get(i).getNumStage(),stages.get(i).getIsLocationRequired(),stages.get(i).getIsCheckRequired(),stages.get(i).getIsPhotoRequired()));
             }
 
             firstMove = true;
@@ -144,7 +144,6 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
     List<SingleStage> tmpStages;
 
     Context context;
-    public int numStage;
     private final OnStartDragListener mDragStartListener;
 
     public StageCardsAdapter(List<SingleStage> stages, Context context, OnStartDragListener dragStartListener){
@@ -177,9 +176,7 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
 
     @Override
     public void onBindViewHolder(final SingleCardViewHolder singleCardViewHolder, int i) {
-        singleCardViewHolder.stageName.setText("Stage " + stages.get(i).getNumStage());
-        numStage  = stages.get(i).numStage;
-
+        singleCardViewHolder.stageName.setText(stages.get(i).getName());
 
         //todo: sistemare le immagini nella card
 
@@ -263,8 +260,33 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
 
     @Override
     public void onItemDismiss(int position) {
+
+        DBHelper mDbHelper = DBHelper.getInstance(context);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        SharedPreferences pref = context.getSharedPreferences("session", context.MODE_PRIVATE);
+
+        int numStage = stages.get(position).getNumStage();
+        mDbHelper.removeAddStage(db, numStage, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0));
+
+        if (stages.size()-position-1 != 0){
+            int[][] posChange = new int[stages.size()-position-1][2];
+
+            for (int i = 0, j=position+1; i<posChange.length; i++, j++){
+                posChange[i][0]=stages.get(j).getNumStage();
+                posChange[i][1]=posChange[i][0]-1;
+                Log.v("notifyData", "cambiare da "+ posChange[i][0]+" a "+ posChange[i][1]);
+                stages.get(j).setNumStage(posChange[i][1]);
+
+            }
+
+            mDbHelper.updateNumStages(db, posChange, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0));
+
+        }
+
         stages.remove(position);
         notifyItemRemoved(position);
+
+
 
     }
 

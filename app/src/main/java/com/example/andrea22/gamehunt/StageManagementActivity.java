@@ -184,11 +184,12 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
 
+                String name = data.getStringExtra("name");
                 int numStage = stages.size();
                 int isLocationRequired = data.getIntExtra("isLocationRequired", 0);
                 int isCheckRequired = data.getIntExtra("isCheckRequired", 0);
                 int isPhotoRequired = data.getIntExtra("isPhotoRequired", 0);
-                SingleStage newStage = new SingleStage(numStage, isLocationRequired, isCheckRequired, isPhotoRequired);
+                SingleStage newStage = new SingleStage(name, numStage, isLocationRequired, isCheckRequired, isPhotoRequired);
                 stages.add(newStage);
 
                 //initializeAdapter();

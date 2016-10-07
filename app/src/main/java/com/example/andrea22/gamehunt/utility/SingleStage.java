@@ -7,13 +7,17 @@ import java.util.List;
  */
 public class SingleStage {
     int numStage, isLoactionRequired, isCheckRequired, isPhotoRequired;
+    String name;
+    public SingleStage(String name, int numStage, int isLoactionRequired, int isCheckRequired, int isPhotoRequired) {
 
-    public SingleStage(int numStage, int isLoactionRequired, int isCheckRequired, int isPhotoRequired) {
-
+        this.name = name;
         this.numStage = numStage;
         this.isLoactionRequired = isLoactionRequired;
         this.isCheckRequired = isCheckRequired;
         this.isPhotoRequired = isPhotoRequired;
+    }
+    public String getName(){
+        return name;
     }
 
     public int getNumStage(){

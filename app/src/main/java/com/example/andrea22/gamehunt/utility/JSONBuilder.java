@@ -20,6 +20,7 @@ public class JSONBuilder {
 		jStage.put("lat", stage.getString(stage.getColumnIndex("lat")));
 		jStage.put("lon", stage.getString(stage.getColumnIndex("lon")));
 		jStage.put("clue", stage.getString(stage.getColumnIndex("clue")));
+		jStage.put("name", stage.getString(stage.getColumnIndex("name")));
 		jStage.put("isLocationRequired", stage.getString(stage.getColumnIndex("isLocationRequired")));
 		jStage.put("isPhotoRequired", stage.getString(stage.getColumnIndex("isPhotoRequired")));
 		jStage.put("isCheckRequired", stage.getString(stage.getColumnIndex("isCheckRequired")));

@@ -46,6 +46,7 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
     SeekBar seek;
     ScrollView scrollview;
     ImageView transparentImageView;
+    EditText name;
 
     int numStage;
 
@@ -65,9 +66,12 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
 
 
         numStage = getIntent().getIntExtra("numStage",0);
-        Log.v("maps","numStage: "+numStage);
+        Log.v("maps", "numStage: " + numStage);
 
         scrollview = (ScrollView) findViewById(R.id.scrollViewNewStage);
+        name =  (EditText) findViewById(R.id.stageName);
+        name.setText("Stage " + (numStage+1));
+
         transparentImageView = (ImageView) findViewById(R.id.transparent_image);
 
         transparentImageView.setOnTouchListener(new View.OnTouchListener() {
@@ -286,6 +290,15 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
             EditText clue = (EditText) findViewById(R.id.clueHunt);
             String clueText = clue.getText().toString();
 
+            String nameText = name.getText().toString();
+            Log.v("maps", "nameText: "+nameText);
+
+
+            if (nameText == null || nameText.equals("")){
+                nameText = "Stage " + (numStage+1);
+            }
+
+
             CheckBox islocreq = (CheckBox) findViewById(R.id.islocreq);
             CheckBox isphotoreq = (CheckBox) findViewById(R.id.isphotoreq);
             CheckBox ischeckreq = (CheckBox) findViewById(R.id.ischeckreq);
@@ -338,10 +351,11 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
             Log.v("maps", "idLastHunt: " + pref.getInt("idLastHunt", 0));
 
 
-            myHelper.insertAddStage(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0),numStage, clueText, rayText, areaLat, areaLon, lat, lon, islocreqText, isphotoreqText, ischeckreqText, numberCompleteText);
+            myHelper.insertAddStage(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0),numStage, nameText, clueText, rayText, areaLat, areaLon, lat, lon, islocreqText, isphotoreqText, ischeckreqText, numberCompleteText);
 
             Intent intent = new Intent();
 
+            intent.putExtra("name", nameText);
             intent.putExtra("isCheckRequired", ischeckreqText);
             intent.putExtra("isPhotoRequired", isphotoreqText);
             intent.putExtra("isLocationRequired", islocreqText);
