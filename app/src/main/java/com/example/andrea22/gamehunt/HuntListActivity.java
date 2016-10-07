@@ -40,9 +40,8 @@ public class HuntListActivity extends AppCompatActivity {
 
     private FloatingActionButton fab;
     private Animation rotate_forward, rotate_backward;
-    private RecyclerView rv;
     private TextView tv;
-    public static List<SingleHunt> userHunts, otherHunts;
+    public List<SingleHunt> userHunts, otherHunts;
     private View topLevelLayout;
 
     private ItemTouchHelper mItemTouchHelper;
@@ -52,24 +51,8 @@ public class HuntListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hunt_list);
 
-        rv = (RecyclerView) findViewById(R.id.rv);
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.addTab(tabLayout.newTab().setText("All"));
-        tabLayout.addTab(tabLayout.newTab().setText("My Hunt"));
-        tabLayout.addTab(tabLayout.newTab().setText("Play Hunt"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        final PagerAdapter adapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
-
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
-        // Get the colors for tabLayout
-        tabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.drawable.tab_selector));
-        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorAccent));
 
 
 
@@ -79,9 +62,6 @@ public class HuntListActivity extends AppCompatActivity {
             topLevelLayout.setVisibility(View.INVISIBLE);
         }
 
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
-        rv.setHasFixedSize(true);
 
         rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
 //        fab.setOnClickListener(this);
@@ -92,22 +72,7 @@ public class HuntListActivity extends AppCompatActivity {
 
 
 
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
 
 
 /*
@@ -159,8 +124,13 @@ public class HuntListActivity extends AppCompatActivity {
 
 
         if (c.moveToFirst()) {
+
+            Log.v("data", "idUser: " + pref.getInt("idUser", 0));
+            Log.v("data", "idUser db: " + c.getInt(c.getColumnIndex("idUser")));
+
             do {
                 if(c.getInt(c.getColumnIndex("idUser")) == (pref.getInt("idUser",0))){
+                    Log.v("data", "if");
 
                     userHunts.add(new SingleHunt(c.getInt(c.getColumnIndex("idHunt")),
                             c.getString(c.getColumnIndex("name")),
@@ -168,6 +138,8 @@ public class HuntListActivity extends AppCompatActivity {
                             R.drawable.she_mini, c.getString(c.getColumnIndex("description"))));
 
                 } else {
+                    Log.v("data", "else");
+
                     otherHunts.add(new SingleHunt(c.getInt(c.getColumnIndex("idHunt")),
                             c.getString(c.getColumnIndex("name")),
                             c.getString(c.getColumnIndex("timeStart")),
@@ -175,12 +147,98 @@ public class HuntListActivity extends AppCompatActivity {
                 }
             } while (c.moveToNext());
         }
+
+        Log.v("data", "userHunts: "+userHunts.size());
+        Log.v("data", "otherHunts: "+otherHunts.size());
+
+
     }
 
     private void initializeAdapter() {
 
-        RVAdapter adapter = new RVAdapter(userHunts, this);
-        rv.setAdapter(adapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.addTab(tabLayout.newTab().setText("All"));
+        tabLayout.addTab(tabLayout.newTab().setText("My Hunt"));
+        tabLayout.addTab(tabLayout.newTab().setText("Play Hunt"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+
+        // Get the colors for tabLayout
+        tabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.drawable.tab_selector));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorAccent));
+
+
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+
+        final PagerAdapter adapterPage;
+        List<SingleHunt> hunts = new ArrayList<SingleHunt>();
+
+        Log.v("data", "getTabCount: "+tabLayout.getTabCount());
+
+
+        hunts.addAll(otherHunts);
+        hunts.addAll(userHunts);
+
+        adapterPage= new SimpleFragmentPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),hunts);
+
+
+
+        viewPager.setAdapter(adapterPage);
+
+
+
+
+
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+
+                final PagerAdapter adapterPage;
+                List<SingleHunt> hunts = new ArrayList<SingleHunt>();
+
+
+
+                if (tab.getPosition() == 0){
+                    hunts.addAll(otherHunts);
+                    hunts.addAll(userHunts);
+
+                } else if (tab.getPosition() == 1){
+                    hunts.addAll(userHunts);
+
+                } else if (tab.getPosition() == 2){
+                    hunts.addAll(otherHunts);
+
+                }
+
+                //todo: rimuovere sto 3
+                adapterPage= new SimpleFragmentPagerAdapter(getSupportFragmentManager(), 3,hunts);
+
+
+
+                viewPager.setAdapter(adapterPage);
+
+
+                viewPager.setCurrentItem(tab.getPosition());
+
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
+
 
         /*ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);

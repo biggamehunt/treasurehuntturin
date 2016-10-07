@@ -24,8 +24,8 @@ public class HuntTable {
                         COLUMN_DESCRIPTION + " TEXT, " +
                         COLUMN_ISFINISHED + " INTEGER NOT NULL, " +
                         COLUMN_ISLOADED + " INTEGER NOT NULL DEFAULT 0, " +
-                        COLUMN_IDUSER + " INTEGER NOT NULL, " +
-                        "FOREIGN KEY(" + COLUMN_IDUSER + ") REFERENCES " + USERTABLE + "(" + COLUMN_IDUSER + "));";
+                        COLUMN_IDUSER + " INTEGER NOT NULL);"/* +
+                        "FOREIGN KEY(" + COLUMN_IDUSER + ") REFERENCES " + USERTABLE + "(" + COLUMN_IDUSER + "));"*/;
 
         public static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }

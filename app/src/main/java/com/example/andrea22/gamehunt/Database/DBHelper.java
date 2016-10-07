@@ -122,7 +122,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         values.put(HuntTable.COLUMN_TIMEEND, hunt.getString("timeEnd"));
                         values.put(HuntTable.COLUMN_DESCRIPTION, hunt.isNull("description") == false ? hunt.getString("description") : "");
                         values.put(HuntTable.COLUMN_ISFINISHED, hunt.getString("isFinished"));
-                        values.put(HuntTable.COLUMN_IDUSER, user.getString("idUser"));
+                        values.put(HuntTable.COLUMN_IDUSER, hunt.getString("idUser"));
 
                         db.insert(HuntTable.TABLE_NAME, null, values);
                         Log.v("db log", "Insert Hunt eseguito");

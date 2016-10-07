@@ -10,4 +10,63 @@
         android:layout_height="match_parent"
         android:text="ALTRE CACCE" />
 
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/hunt_list_main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v4.widget.DrawerLayout
+                android:id="@+id/drawer_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                tools:openDrawer="start">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/slogan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:layout_gravity="center"
+                        android:textColor="@color/metatile"
+                        android:textSize="14dp"
+                        android:layout_marginTop="15dp"/>
+
+                    <android.support.design.widget.CoordinatorLayout
+                        android:id="@+id/main_content"
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/rv_others"
+                            xmlns:android="http://schemas.android.com/apk/res/android" />
+
+                    </android.support.design.widget.CoordinatorLayout>
+
+                </LinearLayout>
+
+                <!-- <include layout="@layout/navbar"/> -->
+
+            </android.support.v4.widget.DrawerLayout>
+
+        </RelativeLayout>
+
+
+    </FrameLayout>
+
 </FrameLayout>
