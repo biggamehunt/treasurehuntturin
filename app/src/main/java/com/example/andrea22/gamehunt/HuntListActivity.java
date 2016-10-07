@@ -5,11 +5,18 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +26,7 @@ import android.widget.TextView;
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.RVAdapter;
 import com.example.andrea22.gamehunt.utility.RetrieveJson;
+import com.example.andrea22.gamehunt.utility.SimpleFragmentPagerAdapter;
 import com.example.andrea22.gamehunt.utility.SingleHunt;
 
 import java.util.ArrayList;
@@ -29,11 +37,12 @@ import java.util.Random;
  * Created by Simone on 21/06/2016.
  */
 public class HuntListActivity extends AppCompatActivity {
+
     private FloatingActionButton fab;
     private Animation rotate_forward, rotate_backward;
     private RecyclerView rv;
     private TextView tv;
-    public static List<SingleHunt> singlehunts;
+    public static List<SingleHunt> userHunts, otherHunts;
     private View topLevelLayout;
 
     private ItemTouchHelper mItemTouchHelper;
@@ -43,15 +52,33 @@ public class HuntListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hunt_list);
 
-        topLevelLayout = findViewById(R.id.hunt_list_top_layout);
-
+        rv = (RecyclerView) findViewById(R.id.rv);
         fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.addTab(tabLayout.newTab().setText("All"));
+        tabLayout.addTab(tabLayout.newTab().setText("My Hunt"));
+        tabLayout.addTab(tabLayout.newTab().setText("Play Hunt"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        final PagerAdapter adapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        // Get the colors for tabLayout
+        tabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.drawable.tab_selector));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorAccent));
+
+
+
+        topLevelLayout = findViewById(R.id.hunt_list_top_layout);
 
         if (isFirstTime()) {
             topLevelLayout.setVisibility(View.INVISIBLE);
         }
 
-        rv = (RecyclerView) findViewById(R.id.rv);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
         rv.setHasFixedSize(true);
@@ -62,6 +89,44 @@ public class HuntListActivity extends AppCompatActivity {
         initializeSlogan();
         initializeData();
         initializeAdapter();
+
+
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
+/*
+        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new SimpleFragmentPagerAdapter(getSupportFragmentManager(),HuntListActivity.this));
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+        // Get the colors for tabLayout
+        tabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.drawable.tab_selector));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorAccent));
+
+*/
+
+
+
     }
 
     private void initializeSlogan(){
@@ -84,25 +149,37 @@ public class HuntListActivity extends AppCompatActivity {
 
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        singlehunts = new ArrayList<>();
+        userHunts = new ArrayList<>();
+        otherHunts = new ArrayList<>();
 
-        Cursor c = db.rawQuery("SELECT * FROM HUNT ", null);
+        Cursor c = db.rawQuery("SELECT * FROM HUNT", null);
         Log.v("data", "numhunt: " + c.getCount());
+
+        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+
 
         if (c.moveToFirst()) {
             do {
+                if(c.getInt(c.getColumnIndex("idUser")) == (pref.getInt("idUser",0))){
 
-                singlehunts.add(new SingleHunt(c.getInt(c.getColumnIndex("idHunt")),
-                        c.getString(c.getColumnIndex("name")),
-                        c.getString(c.getColumnIndex("timeStart")),
-                        R.drawable.she_mini, c.getString(c.getColumnIndex("description"))));
+                    userHunts.add(new SingleHunt(c.getInt(c.getColumnIndex("idHunt")),
+                            c.getString(c.getColumnIndex("name")),
+                            c.getString(c.getColumnIndex("timeStart")),
+                            R.drawable.she_mini, c.getString(c.getColumnIndex("description"))));
+
+                } else {
+                    otherHunts.add(new SingleHunt(c.getInt(c.getColumnIndex("idHunt")),
+                            c.getString(c.getColumnIndex("name")),
+                            c.getString(c.getColumnIndex("timeStart")),
+                            R.drawable.she_mini, c.getString(c.getColumnIndex("description"))));
+                }
             } while (c.moveToNext());
         }
     }
 
     private void initializeAdapter() {
 
-        RVAdapter adapter = new RVAdapter(singlehunts, this);
+        RVAdapter adapter = new RVAdapter(userHunts, this);
         rv.setAdapter(adapter);
 
         /*ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
@@ -212,6 +289,14 @@ public class HuntListActivity extends AppCompatActivity {
         return ranBefore;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
+        return super.onOptionsItemSelected(item);
+    }
 }
 
