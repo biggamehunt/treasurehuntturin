@@ -304,7 +304,12 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     res = new RetrieveJson().execute(url).get();
 
                     Log.d("Hunt Activity", "res:"+res);
-                    if (!res.trim().equals("0")) {
+                    if (res.trim().equals("-1")) {
+                        Intent intent = new Intent(this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                        startActivity(intent);
+                    } else if (!res.trim().equals("0")) {
                         DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                         SQLiteDatabase db = myHelper.getWritableDatabase();
 
@@ -507,7 +512,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void updateTeamWebSocket(String users) {
 
-        LoginActivity.mWebSocketClient.send("up:" + users+"-"+idStage);
+        LoginActivity.mWebSocketClient.send("up:" + users + "-" + idStage);
 
 
         /*mWebSocketClient = new WebSocketClient(uri) {
@@ -546,6 +551,36 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         mWebSocketClient.connect();*/
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.v(getLocalClassName(), "onRestart");
+
+        String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation";
+
+        try {
+            String p = "action=checkSession";
+            String url[] = new String[2];
+            url[0] = u;
+            url[1] = p;
+            String res = new RetrieveJson().execute(url).get();
+            Log.v(getLocalClassName(), "onRestart, res: " + res);
+
+            if (!res.trim().equals("1")) {
+
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 }

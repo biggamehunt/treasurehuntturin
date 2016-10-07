@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class StageManagementActivity extends AppCompatActivity implements OnStartDragListener {
 
@@ -153,7 +154,12 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
             url[1] = p;
             String res = new RetrieveJson().execute(url).get();
 
-            if (!res.equals("0")) {
+            if (res.trim().equals("-1")) {
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+            } else if (!res.equals("0")) {
                 db.execSQL("DELETE FROM ADDSTAGE WHERE idHunt = " + pref.getInt("idLastHunt", 0));
 
                 Intent intent = new Intent(this, TeamManagementActivity.class);
@@ -211,6 +217,37 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
     protected void onResume() {
         super.onResume();
         updateAdapter();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.v(getLocalClassName(), "onRestart");
+
+        String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation";
+
+        try {
+            String p = "action=checkSession";
+            String url[] = new String[2];
+            url[0] = u;
+            url[1] = p;
+            String res = new RetrieveJson().execute(url).get();
+            Log.v(getLocalClassName(), "onRestart, res: " + res);
+
+            if (!res.trim().equals("1")) {
+
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
     }
 }

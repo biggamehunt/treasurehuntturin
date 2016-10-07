@@ -17,9 +17,11 @@ import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.RetrieveFeedTask;
+import com.example.andrea22.gamehunt.utility.RetrieveJson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class SingleTeamActivity extends AppCompatActivity {
 
@@ -72,7 +74,7 @@ public class SingleTeamActivity extends AppCompatActivity {
 
         String stringUsers = myHelper.selectUserAddTeam(db, idHunt, numTeam);
 
-        Log.v(getLocalClassName(), "users Team:"+stringUsers);
+        Log.v(getLocalClassName(), "users Team:" + stringUsers);
 
         String[] splitUsers = stringUsers.split("\\|");
         List<String> users = new ArrayList<String>();
@@ -192,7 +194,12 @@ public class SingleTeamActivity extends AppCompatActivity {
                 Log.v(getLocalClassName(), "res:" + res);
 
 
-                if (!res.trim().equals("0")) {
+                if (res.trim().equals("-1")) {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    startActivity(intent);
+                } else if (!res.trim().equals("0")) {
 
                     Log.v(getLocalClassName(), "username inserito:" + username);
 
@@ -236,6 +243,37 @@ public class SingleTeamActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.v(getLocalClassName(), "onRestart");
+
+        String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation";
+
+        try {
+            String p = "action=checkSession";
+            String url[] = new String[2];
+            url[0] = u;
+            url[1] = p;
+            String res = new RetrieveJson().execute(url).get();
+            Log.v(getLocalClassName(), "onRestart, res: " + res);
+
+            if (!res.trim().equals("1")) {
+
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 }

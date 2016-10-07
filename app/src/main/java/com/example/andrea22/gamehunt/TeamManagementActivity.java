@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class TeamManagementActivity extends AppCompatActivity {
 
@@ -235,7 +236,7 @@ public class TeamManagementActivity extends AppCompatActivity {
 
 
     public void finish(View view){
-        Log.v(getLocalClassName(),"entro in finish");
+        Log.v(getLocalClassName(), "entro in finish");
         try {
             DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
 
@@ -292,7 +293,12 @@ public class TeamManagementActivity extends AppCompatActivity {
 
             String res = new RetrieveJson().execute(url).get();
 
-            if (!res.equals("0")) {
+            if (res.trim().equals("-1")) {
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+            } else if (!res.equals("0")) {
                 Log.v(getLocalClassName(), "idLastHunt"+pref.getInt("idLastHunt", 0));
 
 
@@ -331,6 +337,37 @@ public class TeamManagementActivity extends AppCompatActivity {
         startActivity(intent);
 
         overridePendingTransition(R.anim.back_enter, R.anim.back_exit);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.v(getLocalClassName(), "onRestart");
+
+        String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation";
+
+        try {
+            String p = "action=checkSession";
+            String url[] = new String[2];
+            url[0] = u;
+            url[1] = p;
+            String res = new RetrieveJson().execute(url).get();
+            Log.v(getLocalClassName(), "onRestart, res: " + res);
+
+            if (!res.trim().equals("1")) {
+
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

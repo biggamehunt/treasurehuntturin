@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.DistanceCalculator;
+import com.example.andrea22.gamehunt.utility.RetrieveJson;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -35,6 +36,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class NewStageActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -112,7 +114,7 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
                 if (finallocation != null) {
                     double distance = DistanceCalculator.distance(stagelocation.getPosition().latitude, stagelocation.getPosition().longitude, finallocation.getPosition().latitude, finallocation.getPosition().longitude, "K");
                     if (distance > seekBar.getProgress() + 50) {
-                        Log.v("maps","distanza maggiore");
+                        Log.v("maps", "distanza maggiore");
                         finallocation.remove();
                         finallocation = null;
                     }
@@ -374,7 +376,36 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
         overridePendingTransition(R.anim.back_enter, R.anim.back_exit);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.v(getLocalClassName(), "onRestart");
 
+        String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation";
+
+        try {
+            String p = "action=checkSession";
+            String url[] = new String[2];
+            url[0] = u;
+            url[1] = p;
+            String res = new RetrieveJson().execute(url).get();
+            Log.v(getLocalClassName(), "onRestart, res: " + res);
+
+            if (!res.trim().equals("1")) {
+
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 

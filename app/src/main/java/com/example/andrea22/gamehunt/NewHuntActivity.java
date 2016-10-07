@@ -26,6 +26,7 @@ import layout.TimePickerFragment;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.ExecutionException;
 
 
 /*
@@ -71,6 +72,37 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                 // Month is 0 based, just add 1
                 .append(day).append("/").append(month + 1).append("/")
                 .append(year).append(" "));
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.v(getLocalClassName(), "onRestart");
+
+        String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation";
+
+        try {
+            String p = "action=checkSession";
+            String url[] = new String[2];
+            url[0] = u;
+            url[1] = p;
+            String res = new RetrieveJson().execute(url).get();
+            Log.v(getLocalClassName(), "onRestart, res: " + res);
+
+            if (!res.trim().equals("1")) {
+
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void turnBack(View v){
@@ -240,7 +272,12 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
                         String res = new RetrieveJson().execute(url).get();
 
-                        if (!res.equals("0")) {
+                        if (res.trim().equals("-1")) {
+                            Intent intent = new Intent(this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                            startActivity(intent);
+                        } else if (!res.equals("0")) {
                             DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
                             SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
