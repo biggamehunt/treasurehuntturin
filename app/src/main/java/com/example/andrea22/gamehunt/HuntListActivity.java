@@ -32,6 +32,7 @@ import com.example.andrea22.gamehunt.utility.SingleHunt;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Simone on 21/06/2016.
@@ -149,7 +150,7 @@ public class HuntListActivity extends AppCompatActivity {
         }
 
         Log.v("data", "userHunts: "+userHunts.size());
-        Log.v("data", "otherHunts: "+otherHunts.size());
+        Log.v("data", "otherHunts: " + otherHunts.size());
 
 
     }
@@ -200,22 +201,20 @@ public class HuntListActivity extends AppCompatActivity {
                 List<SingleHunt> hunts = new ArrayList<SingleHunt>();
 
 
-
-                if (tab.getPosition() == 0){
+                if (tab.getPosition() == 0) {
                     hunts.addAll(otherHunts);
                     hunts.addAll(userHunts);
 
-                } else if (tab.getPosition() == 1){
+                } else if (tab.getPosition() == 1) {
                     hunts.addAll(userHunts);
 
-                } else if (tab.getPosition() == 2){
+                } else if (tab.getPosition() == 2) {
                     hunts.addAll(otherHunts);
 
                 }
 
                 //todo: rimuovere sto 3
-                adapterPage= new SimpleFragmentPagerAdapter(getSupportFragmentManager(), 3,hunts);
-
+                adapterPage = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), 3, hunts);
 
 
                 viewPager.setAdapter(adapterPage);
@@ -355,6 +354,42 @@ public class HuntListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.v(getLocalClassName(), "onRestart");
+
+        String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation";
+
+        try {
+            String p = "action=checkSession";
+            String url[] = new String[2];
+            url[0] = u;
+            url[1] = p;
+            String res = new RetrieveJson().execute(url).get();
+            Log.v(getLocalClassName(), "onRestart, res: " + res);
+
+            if (res.trim().equals("-1")) {
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+            } else if (!res.trim().equals("1")) {
+
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
     }
 }
 
