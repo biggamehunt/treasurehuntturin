@@ -98,17 +98,23 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
 
         singleHuntViewHolder.cv.measure(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
         targetHeight = singleHuntViewHolder.cv.getMeasuredHeightAndState();
-        Log.v("dim finale",""+targetHeight);
+        Log.v("dim finale", "" + targetHeight);
 
         singleHuntViewHolder.description.setVisibility(View.GONE);
         singleHuntViewHolder.goToHunt.setVisibility(View.GONE);
         singleHuntViewHolder.modifyHunt.setVisibility(View.GONE);
         singleHuntViewHolder.goToHunt.setTag(singlehunts.get(i).idHunt);
+        singleHuntViewHolder.modifyHunt.setTag(singlehunts.get(i).idHunt);
 
         if (dimStart != -1) {
             singleHuntViewHolder.cv.getLayoutParams().height = dimStart;
         }
 
+        if (singlehunts.get(i).isStarted == false && singlehunts.get(i).isMine ==true){
+            singleHuntViewHolder.cv.setTag(true);
+        } else {
+            singleHuntViewHolder.cv.setTag(false);
+        }
 
         singleHuntViewHolder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +137,17 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
                 ((HuntListActivity)context).goToHunt(view.getTag().toString());
             }
         });
+
+        singleHuntViewHolder.modifyHunt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // ((TeamManagementActivity) context).addUser(view);
+                Log.v("RVAdapter", "idHunt:"+view.getTag());
+                Log.v("db log", "id: " + view.getId());
+
+                ((HuntListActivity)context).modHunt(view.getTag().toString());
+            }
+        });
     }
 
     @Override
@@ -141,6 +158,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
     private View cardPressed;
 
     public void toggleProductDescriptionHeight(final View view) {
+
+        boolean showmodify = (boolean) view.getTag();
 
         if (dimStart==-1){
             dimStart = view.getHeight();
@@ -157,7 +176,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
 
             ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(3)).setVisibility(View.VISIBLE);
             ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(4)).setVisibility(View.VISIBLE);
-            ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(5)).setVisibility(View.VISIBLE);
+
+
+            if (showmodify == true){
+                ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(5)).setVisibility(View.VISIBLE);
+            }
             Log.v("RVAdapter", "expand h after add child:" + view.getHeight());
 
             final int targetHeight = view.getMeasuredHeight();

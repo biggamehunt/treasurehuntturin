@@ -10,15 +10,15 @@ public class SingleHunt {
         int imageId;
         String description;
         boolean isStarted;
-        int idUser; //creatore della caccia
+        boolean isMine; //creatore della caccia
 
-        public SingleHunt(int idHunt, String title, String date, int imageId, String description/*, boolean isStarted, int idUser*/) {
+        public SingleHunt(int idHunt, String title, String date, int imageId, String description, boolean isStarted, boolean isMine) {
                 this.idHunt=idHunt;
                 this.title = title;
                 this.date = date;
                 this.imageId = imageId;
                 this.description = description;
                 this.isStarted = isStarted;
-                this.idUser = idUser;
+                this.isMine = isMine;
         }
 }

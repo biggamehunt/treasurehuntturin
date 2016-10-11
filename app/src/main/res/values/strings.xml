@@ -81,6 +81,9 @@
     <string name="reqCheckStage">Photo Check</string>
     <string name="descr_overflow_button">blabla bla</string>
 
+    <!-- MODHUNT -->
+    <string name="title_activity_modhunt">Modify Hunt</string>
+
     <!-- TOOLBARS -->
     <string name="next">Next</string>
 

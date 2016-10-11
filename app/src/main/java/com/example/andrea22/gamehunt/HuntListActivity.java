@@ -128,23 +128,20 @@ public class HuntListActivity extends AppCompatActivity {
 
             Log.v("data", "idUser: " + pref.getInt("idUser", 0));
             Log.v("data", "idUser db: " + c.getInt(c.getColumnIndex("idUser")));
-
+            //todo: modificare la variabile false che sta per isStarted
+            boolean isMine;
             do {
                 if(c.getInt(c.getColumnIndex("idUser")) == (pref.getInt("idUser",0))){
-                    Log.v("data", "if");
-
                     userHunts.add(new SingleHunt(c.getInt(c.getColumnIndex("idHunt")),
                             c.getString(c.getColumnIndex("name")),
                             c.getString(c.getColumnIndex("timeStart")),
-                            R.drawable.she_mini, c.getString(c.getColumnIndex("description"))));
+                            R.drawable.she_mini, c.getString(c.getColumnIndex("description")), false, true));
 
                 } else {
-                    Log.v("data", "else");
-
                     otherHunts.add(new SingleHunt(c.getInt(c.getColumnIndex("idHunt")),
                             c.getString(c.getColumnIndex("name")),
                             c.getString(c.getColumnIndex("timeStart")),
-                            R.drawable.she_mini, c.getString(c.getColumnIndex("description"))));
+                            R.drawable.she_mini, c.getString(c.getColumnIndex("description")), false, false));
                 }
             } while (c.moveToNext());
         }
@@ -303,6 +300,63 @@ public class HuntListActivity extends AppCompatActivity {
 
                         Toast toast = Toast.makeText(this, text, duration);
                         toast.show();*/
+                        Log.d("test debug", "else");
+                    }
+                } else {
+                    Log.d("test debug", "info già caricate!");
+                }
+
+            } catch (Exception e) {
+                Log.d("test debug", "eccezione: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            Log.d("test debug", "eccezione: " + e.getMessage());
+            e.printStackTrace();
+
+        }
+
+        startActivity(intent);
+    }
+
+
+    public void modHunt(String idHunt){
+        Intent intent = new Intent(this, ModHuntActivity.class);
+        intent.putExtra("idHunt", idHunt);
+        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+
+        //Task spinnerTask;
+        try {
+
+            try {
+                DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                SQLiteDatabase db = myHelper.getWritableDatabase();
+
+                int isLoaded = myHelper.getHuntIsLoaded(db, Integer.parseInt(idHunt));
+
+                if (isLoaded == 0) {
+                    Log.d("test debug", "info da caricare!");
+                    String username_ut8 = java.net.URLEncoder.encode(pref.getString("username", null), "UTF-8");
+
+                    String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation";
+                    String p = "action=goToHunt&username=" + username_ut8 + "&idHunt=" + idHunt;
+                    String url[]= new String [2];
+                    url[0] = u;
+                    url[1] = p;
+                    String res = new RetrieveJson().execute(url).get();
+                    Log.d("test debug", "res = " + res);
+
+                    if (!res.equals("0")) { //toDO sto if non funziona... entra anche con 0
+
+
+                        Log.d("test debug", "if. res = " + res);
+
+                        myHelper.insertHuntDetail(db,res);
+                        myHelper.setHuntIsLoaded(db, Integer.parseInt(idHunt));
+
+                    } else {
+
                         Log.d("test debug", "else");
                     }
                 } else {
