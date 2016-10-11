@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,7 +29,7 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
         CardView cv;
         TextView teamName;
         TextView slogan;
-        ImageButton deleteTeam;
+        ImageView deleteTeam;
         Button goToTeam;
         //LinearLayout teamLayout;
 
@@ -40,7 +41,7 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
             teamName = (TextView)itemView.findViewById(R.id.team_name);
             slogan = (TextView)itemView.findViewById(R.id.slogan);
             goToTeam = (Button)itemView.findViewById(R.id.goToTeam);
-            deleteTeam = (ImageButton)itemView.findViewById(R.id.deleteTeam);
+            deleteTeam = (ImageView)itemView.findViewById(R.id.deleteTeam);
 
             //teamLayout = (LinearLayout) itemView.findViewById(R.id.team_layout);
             //addUser = (Button) itemView.findViewById(R.id.addUser);

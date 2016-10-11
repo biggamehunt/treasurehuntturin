@@ -348,6 +348,8 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+
+
     public boolean deleteAddTeam(SQLiteDatabase db, int idUser, int idHunt, int numTeam)  {
         if (idUser != 0){
             try{
@@ -437,8 +439,32 @@ public class DBHelper extends SQLiteOpenHelper {
                     oldusername = c.getString(c.getColumnIndex("users"));
                 } while (c.moveToNext());
             }
+            Log.v("db log", "oldusername:"+oldusername);
+            Log.v("db log", "newusername:"+oldusername + username.trim() + "|");
 
-            db.execSQL("UPDATE ADDTEAM SET users = '" + oldusername + username + "|' WHERE numTeam =" + numTeam + " AND idHunt = " + idHunt + ";");
+            db.execSQL("UPDATE ADDTEAM SET users = '" + oldusername + username.trim() + "|' WHERE numTeam =" + numTeam + " AND idHunt = " + idHunt + ";");
+
+
+            Log.v("db log", "Update AddTeam eseguito");
+
+        }
+    }
+
+    public void removeUserAddTeam(SQLiteDatabase db, int idHunt, int numTeam, String username)  {
+        if (numTeam != 0){
+            String oldusername = "";
+            Cursor c = db.rawQuery("SELECT users FROM ADDTEAM WHERE numTeam =" + numTeam + " AND idHunt = " + idHunt + ";", null);
+            if (c.moveToFirst()) {
+                do {
+                    oldusername = c.getString(c.getColumnIndex("users"));
+                } while (c.moveToNext());
+            }
+            String newusername = oldusername.replaceAll(username.trim()+'|',"");
+
+            Log.v("db log", "oldusername:"+oldusername);
+            Log.v("db log", "newusername:" + newusername);
+
+            db.execSQL("UPDATE ADDTEAM SET users = '" + newusername + "' WHERE numTeam =" + numTeam + " AND idHunt = " + idHunt + ";");
 
 
             Log.v("db log", "Update AddTeam eseguito");
@@ -646,6 +672,7 @@ public class DBHelper extends SQLiteOpenHelper {
             return false;
         }
         return true;
+
     }
 
     public boolean notifyFromTeamHuntCompleted(SQLiteDatabase db, int idStage, int idTeam)  {

@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,7 @@ public class SingleTeamActivity extends AppCompatActivity {
     List<String> usersTeam;
     List<String> users;
     LinearLayout conteinerUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +57,7 @@ public class SingleTeamActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(nameTeam[0]);
         slogan.setText(nameTeam[1]);
         usersTeam = getUsersTeam();
+
 
         for (int i = 0; i < usersTeam.size(); i++){
             LinearLayout ll = (LinearLayout)getLayoutInflater().inflate(R.layout.content_activity_single_team, null, true);
@@ -242,6 +246,62 @@ public class SingleTeamActivity extends AppCompatActivity {
         }
 
     }
+
+
+    public void removeUser(View view){
+        Log.v(getLocalClassName(), "removeUser");
+
+        //UsernamePickerFragment u = new UsernamePickerFragment();
+
+        // numTeam = Integer.parseInt(((Button) view).getTag().toString());
+
+        //<todo inserire 30 nelle costanti, e ovviamente anche le string dei toast...
+         try {
+
+             String username = ((TextView) ((LinearLayout) (view.getParent()).getParent()).getChildAt(1)).getText().toString();
+             Log.v(getLocalClassName(), "username:" + username);
+
+             SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+
+             if (pref.getInt("idLastHunt", 0) != 0) {
+
+                 DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                 SQLiteDatabase db = myHelper.getWritableDatabase();
+
+                 myHelper.removeUserAddTeam(db, pref.getInt("idLastHunt", 0), numTeam, username);
+                 users.remove(username);
+                 usersTeam.remove(username);
+
+                 //rimuovere alla grafica
+                 //i parte da 1 perché il primo figlio è l'editText
+                 for (int i = 1; i < conteinerUser.getChildCount(); i++) {
+                     if (((TextView)((LinearLayout)conteinerUser.getChildAt(i)).getChildAt(1)).getText().toString().equals(username)){
+                         conteinerUser.removeViewAt(i);
+                         break;
+                     }
+                 }
+
+                    /*TextView playerView = new TextView(this);
+                    playerView.setText(username);
+                    singleTeam.get(numTeam - 1).getPlayer().add(username.trim());
+                    ((LinearLayout) ((LinearLayout) lastAddUser.getParent()).getChildAt(1)).addView(playerView);*/
+
+
+             } else {
+                 Intent intent = new Intent(this, LoginActivity.class);
+                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                 startActivity(intent);
+             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
+
 
 
     @Override
