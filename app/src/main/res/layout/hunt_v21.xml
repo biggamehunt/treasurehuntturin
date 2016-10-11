@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/cv"
-    android:layout_marginLeft="@dimen/activity_vertical_margin"
-    android:layout_marginRight="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="32dp"
+    android:layout_marginRight="32dp"
     android:layout_marginTop="2dip"
     android:layout_marginBottom="2dip"
     card_view:cardUseCompatPadding="true">
@@ -19,6 +19,7 @@
         >
 
         <ImageView
+            android:src="@drawable/she_mini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/single_image"
@@ -27,28 +28,21 @@
             android:layout_marginRight="16dp"
             />
 
-        <ImageButton
-            android:id="@+id/modifyHunt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_dehaze_white_24dp"
-            android:background="@android:color/holo_red_dark"
-            android:onClick="modHunt"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:text="Titolo Caccia"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/single_title"
             android:layout_toRightOf="@+id/single_image"
             android:layout_alignParentTop="true"
-            android:textSize="25sp"
+            android:textSize="24dp"
+            android:textColor="@color/colorPrimary"
             />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:text="22/10/2016 alle 15:30"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/single_date"
             android:layout_toRightOf="@+id/single_image"
@@ -56,23 +50,40 @@
             />
 
         <TextView
+            android:layout_marginTop="8dp"
+            android:text="breve descrizione sul contenuto della caccia al tesoro."
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/single_description"
             android:layout_below="@+id/single_image"
-            android:textSize="18dp"
-            />
+            android:textSize="16dp"/>
 
-        <Button
+        <TextView
+            android:paddingRight="4dp"
+            android:layout_marginTop="12dp"
+            android:text="GO TO HUNT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/single_goToHunt"
+            android:textSize="18dp"
             android:layout_below="@+id/single_description"
-            android:textSize="20dp"
-            android:textColor="@android:color/white"
-            android:backgroundTint="@color/colorPrimary"
-            />
+            android:textColor="@color/colorAccent"/>
+
+        <TextView
+            android:paddingRight="4dp"
+            android:paddingLeft="4dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="14dp"
+            android:text="MODIFY"
+            android:textSize="18dp"
+            android:id="@+id/modifyHunt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/single_goToHunt"
+            android:layout_below="@+id/single_description"
+            android:onClick="modHunt"/>
 
     </RelativeLayout>
+
 
 </android.support.v7.widget.CardView>

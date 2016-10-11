@@ -21,8 +21,11 @@ import android.widget.TextView;
 import com.example.andrea22.gamehunt.HuntListActivity;
 import com.example.andrea22.gamehunt.R;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+
 
 /**
  * Created by Simone on 29/06/2016.
@@ -40,7 +43,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         TextView huntDate;
         ImageView huntImage;
         TextView description;
-        Button goToHunt;
+        TextView goToHunt;
+        TextView modifyHunt;
 
         SingleHuntViewHolder(View itemView) {
             super(itemView);
@@ -49,7 +53,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
             huntDate = (TextView)itemView.findViewById(R.id.single_date);
             huntImage = (ImageView)itemView.findViewById(R.id.single_image);
             description = (TextView)itemView.findViewById(R.id.single_description);
-            goToHunt = (Button)itemView.findViewById(R.id.single_goToHunt);
+            goToHunt = (TextView)itemView.findViewById(R.id.single_goToHunt);
+            modifyHunt = (TextView)itemView.findViewById(R.id.modifyHunt);
 
         }
 
@@ -84,13 +89,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         singleHuntViewHolder.huntTitle.setText(singlehunts.get(i).title);
         singleHuntViewHolder.huntDate.setText(singlehunts.get(i).date);
         singleHuntViewHolder.huntImage.setImageResource(singlehunts.get(i).imageId);
-
-
+        
         singleHuntViewHolder.description.setText(singlehunts.get(i).description);
-        //todo: il testo va in string.xml
-
-        singleHuntViewHolder.goToHunt.setText("VAI ALLA CACCIA");
-
+        singleHuntViewHolder.goToHunt.setText(this.context.getResources().getString(R.string.goToHunt));
+        singleHuntViewHolder.modifyHunt.setText(this.context.getResources().getString(R.string.modifyHunt));
 
         pos=i;
 
@@ -98,12 +100,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         targetHeight = singleHuntViewHolder.cv.getMeasuredHeightAndState();
         Log.v("dim finale",""+targetHeight);
 
-
-
-
         singleHuntViewHolder.description.setVisibility(View.GONE);
         singleHuntViewHolder.goToHunt.setVisibility(View.GONE);
-
+        singleHuntViewHolder.modifyHunt.setVisibility(View.GONE);
         singleHuntViewHolder.goToHunt.setTag(singlehunts.get(i).idHunt);
 
         if (dimStart != -1) {
@@ -120,13 +119,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
                 toggleProductDescriptionHeight(view);
 
             }
-
-
-
         });
-
-
-
 
         singleHuntViewHolder.goToHunt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,12 +129,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
                 Log.v("db log", "id: " + view.getId());
 
                 ((HuntListActivity)context).goToHunt(view.getTag().toString());
-
-
-
             }
         });
-
     }
 
     @Override
@@ -149,11 +138,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         return singlehunts.size();
     }
 
-
     private View cardPressed;
 
     public void toggleProductDescriptionHeight(final View view) {
-
 
         if (dimStart==-1){
             dimStart = view.getHeight();
@@ -163,14 +150,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
 
         Log.v("RVAdapter", "height:" + view.getHeight());
 
-
         //int descriptionViewMinHeight = descriptionViewFullHeight;
 
         if (view.getHeight() == dimStart) {
             //EXPAND
 
             ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(3)).setVisibility(View.VISIBLE);
-            ((Button)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(5)).setVisibility(View.VISIBLE);
+            ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(4)).setVisibility(View.VISIBLE);
+            ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(5)).setVisibility(View.VISIBLE);
             Log.v("RVAdapter", "expand h after add child:" + view.getHeight());
 
             final int targetHeight = view.getMeasuredHeight();
@@ -199,8 +186,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
 
             Log.v("RVAdapter", "collapse");
 
+            ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(3)).setVisibility(View.GONE);
             ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(4)).setVisibility(View.GONE);
-            ((Button)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(5)).setVisibility(View.GONE);
+            ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(5)).setVisibility(View.GONE);
 
             ValueAnimator anim = ValueAnimator.ofInt(view.getMeasuredHeightAndState(),
                     dimStart);
@@ -214,9 +202,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
                 }
             });
             anim.start();
-
         }
-
     }
-
 }
