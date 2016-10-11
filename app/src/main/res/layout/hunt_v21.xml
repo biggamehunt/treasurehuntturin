@@ -41,7 +41,7 @@
             />
 
         <TextView
-            android:text="22/10/2016 alle 15:30"
+            android:text="22/10/2016 15:30"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/single_date"
@@ -59,7 +59,7 @@
             android:textSize="16dp"/>
 
         <TextView
-            android:paddingRight="4dp"
+            android:padding="4dp"
             android:layout_marginTop="12dp"
             android:text="GO TO HUNT"
             android:layout_width="wrap_content"
@@ -67,10 +67,11 @@
             android:id="@+id/single_goToHunt"
             android:textSize="18dp"
             android:layout_below="@+id/single_description"
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/colorAccent"
+            android:background="@drawable/gotohunt_style"/>
 
         <TextView
-            android:paddingRight="4dp"
+            android:padding="4dp"
             android:paddingLeft="4dp"
             android:layout_marginTop="12dp"
             android:layout_marginLeft="14dp"
@@ -81,7 +82,9 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/single_goToHunt"
             android:layout_below="@+id/single_description"
-            android:onClick="modHunt"/>
+            android:onClick="modHunt"
+            android:background="@drawable/gotohunt_style"/>
+
 
     </RelativeLayout>
 

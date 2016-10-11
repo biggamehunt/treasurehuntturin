@@ -6,6 +6,7 @@
     <color name="navigationBarColor">#FB8C00</color>
     <color name="colorAccent">#29B6F6</color>
     <color name="colorGray">#c5c5c5</color>
+    <color name="colorLightGray">#60c5c5c5</color>
     <color name="colorX">#F44336</color>
 
 
