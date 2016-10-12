@@ -197,7 +197,8 @@
                     android:id="@+id/islocreq"
                     android:layout_marginLeft="295dp"
                     android:layout_centerVertical="true"
-                    android:checked="true" />
+                    android:checked="true"
+                    android:textColor="@drawable/checkbutton_style"/>
 
             </RelativeLayout>
 
@@ -220,7 +221,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/isphotoreq"
                     android:layout_marginLeft="295dp"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true"
+                    android:textColor="@drawable/checkbutton_style"/>
 
             </RelativeLayout>
 
@@ -242,23 +244,11 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/ischeckreq"
                     android:layout_marginLeft="295dp"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true"
+                    android:textColor="@drawable/checkbutton_style"/>
 
 
             </RelativeLayout>
-
-
-            <Button
-                android:layout_marginTop="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Maira succhia"
-                android:textColor="#fff"
-                android:textSize="18dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="15dp"
-                android:id="@+id/donestage"
-                android:onClick="TurnToHunt"/>
 
         </LinearLayout>
 

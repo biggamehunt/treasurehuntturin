@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -55,8 +56,9 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
             isPhotoRequired = (ImageView)itemView.findViewById(R.id.isPhotoRequired);
             isCheckRequired = (ImageView)itemView.findViewById(R.id.isCheckRequired);
 
-
         }
+
+
 
         @Override
         public void onItemSelected() {
@@ -176,28 +178,25 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
 
     @Override
     public void onBindViewHolder(final SingleCardViewHolder singleCardViewHolder, int i) {
+
         singleCardViewHolder.stageName.setText(stages.get(i).getName());
+        singleCardViewHolder.isLocationRequired.setVisibility(View.INVISIBLE);
+        singleCardViewHolder.isPhotoRequired.setVisibility(View.INVISIBLE);
+        singleCardViewHolder.isCheckRequired.setVisibility(View.INVISIBLE);
+
 
         //todo: sistemare le immagini nella card
 
         if (stages.get(i).getIsLocationRequired()==1) {
-            singleCardViewHolder.isLocationRequired.setImageResource(R.drawable.ic_add_location_black_24dp);
-        } else {
-            singleCardViewHolder.isLocationRequired.setImageResource(R.drawable.ic_add_white_24dp);
-
+            singleCardViewHolder.isLocationRequired.setColorFilter(ContextCompat.getColor(context,R.color.colorAccent));
         }
 
         if (stages.get(i).getIsPhotoRequired()==1) {
-            singleCardViewHolder.isPhotoRequired.setImageResource(R.drawable.ic_query_builder_black_24dp);
-        } else {
-            singleCardViewHolder.isPhotoRequired.setImageResource(R.drawable.ic_add_white_24dp);
-
+            singleCardViewHolder.isPhotoRequired.setColorFilter(ContextCompat.getColor(context,R.color.colorAccent));
         }
 
         if (stages.get(i).getIsCheckRequired()==1) {
-            singleCardViewHolder.isCheckRequired.setImageResource(R.drawable.ic_create_black_24dp);
-        } else {
-            singleCardViewHolder.isCheckRequired.setImageResource(R.drawable.ic_add_white_24dp);
+            singleCardViewHolder.isCheckRequired.setColorFilter(ContextCompat.getColor(context,R.color.colorAccent));
 
         }
 

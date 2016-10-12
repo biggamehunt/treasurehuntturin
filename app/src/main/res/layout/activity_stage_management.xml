@@ -16,7 +16,7 @@
         android:orientation="vertical"
         android:background="@color/white">
 
-        <include layout="@layout/toolbar_new_stage"/>
+        <include layout="@layout/toolbar_stages"/>
 
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/main_content_stages"

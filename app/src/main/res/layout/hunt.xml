@@ -42,7 +42,7 @@
                 />
 
             <TextView
-                android:text="22/10/2016 alle 15:30"
+                android:text="22/10/2016 15:30"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/single_date"
@@ -60,7 +60,7 @@
                 android:textSize="16dp"/>
 
             <TextView
-                android:paddingRight="4dp"
+                android:padding="4dp"
                 android:layout_marginTop="12dp"
                 android:text="GO TO HUNT"
                 android:layout_width="wrap_content"
@@ -72,7 +72,7 @@
                 android:background="@drawable/gotohunt_style"/>
 
             <TextView
-                android:paddingRight="4dp"
+                android:padding="4dp"
                 android:paddingLeft="4dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="14dp"
