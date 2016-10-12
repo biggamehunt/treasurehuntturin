@@ -273,7 +273,7 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
         finish();
     }
 
-    public void TurnToHunt (View view) {
+    public void turnHunt(View v) {
 
         //todo: inserire su string i toast
 

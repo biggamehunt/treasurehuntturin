@@ -37,7 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="STAGE 1"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="22dp"/>
 
 
@@ -53,36 +53,43 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_marginTop="20dp"
+                            android:layout_marginLeft="-4dp"
+                            android:layout_marginTop="16dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
 
                             <ImageView
+                                android:padding="4dp"
                                 android:id="@+id/isLocationRequired"
                                 android:layout_marginRight="5dp"
                                 android:layout_gravity="center_vertical"
+                                android:tint="@android:color/black"
                                 android:alpha="0.3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_group_black_24dp"/>
+                                android:src="@drawable/ic_room_black_24dp"/>
                             <ImageView
+                                android:padding="4dp"
                                 android:id="@+id/isPhotoRequired"
                                 android:layout_marginRight="5dp"
                                 android:layout_gravity="center_vertical"
+                                android:tint="@android:color/black"
                                 android:alpha="0.3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_group_black_24dp"/>
+                                android:src="@drawable/ic_photo_camera_white_24dp"/>
                             <ImageView
+                                android:padding="4dp"
                                 android:id="@+id/isCheckRequired"
                                 android:layout_marginRight="5dp"
                                 android:layout_gravity="center_vertical"
+                                android:tint="@android:color/black"
                                 android:alpha="0.3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_group_black_24dp"/>
+                                android:src="@drawable/ic_search_white_24dp"/>
 
                         </LinearLayout>
 

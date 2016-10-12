@@ -197,8 +197,7 @@
                     android:id="@+id/islocreq"
                     android:layout_marginLeft="295dp"
                     android:layout_centerVertical="true"
-                    android:checked="true"
-                    android:textColor="@drawable/checkbutton_style"/>
+                    android:checked="true"/>
 
             </RelativeLayout>
 
@@ -221,8 +220,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/isphotoreq"
                     android:layout_marginLeft="295dp"
-                    android:layout_centerVertical="true"
-                    android:textColor="@drawable/checkbutton_style"/>
+                    android:layout_centerVertical="true"/>
 
             </RelativeLayout>
 
@@ -244,8 +242,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/ischeckreq"
                     android:layout_marginLeft="295dp"
-                    android:layout_centerVertical="true"
-                    android:textColor="@drawable/checkbutton_style"/>
+                    android:layout_centerVertical="true" />
 
 
             </RelativeLayout>

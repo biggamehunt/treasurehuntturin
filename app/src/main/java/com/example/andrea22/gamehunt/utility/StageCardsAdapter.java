@@ -180,22 +180,25 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
     public void onBindViewHolder(final SingleCardViewHolder singleCardViewHolder, int i) {
 
         singleCardViewHolder.stageName.setText(stages.get(i).getName());
-        singleCardViewHolder.isLocationRequired.setVisibility(View.INVISIBLE);
-        singleCardViewHolder.isPhotoRequired.setVisibility(View.INVISIBLE);
-        singleCardViewHolder.isCheckRequired.setVisibility(View.INVISIBLE);
 
 
         //todo: sistemare le immagini nella card
 
         if (stages.get(i).getIsLocationRequired()==1) {
+            Log.v("RVAdapter", "stages.get(i).getIsLocationRequired()==1");
+
             singleCardViewHolder.isLocationRequired.setColorFilter(ContextCompat.getColor(context,R.color.colorAccent));
         }
 
         if (stages.get(i).getIsPhotoRequired()==1) {
+            Log.v("RVAdapter", "stages.get(i).getIsPhotoRequired()==1");
+
             singleCardViewHolder.isPhotoRequired.setColorFilter(ContextCompat.getColor(context,R.color.colorAccent));
         }
 
         if (stages.get(i).getIsCheckRequired()==1) {
+            Log.v("RVAdapter", "stages.get(i).getIsCheckRequired()==1");
+
             singleCardViewHolder.isCheckRequired.setColorFilter(ContextCompat.getColor(context,R.color.colorAccent));
 
         }

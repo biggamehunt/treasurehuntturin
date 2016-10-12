@@ -89,9 +89,9 @@ public class ModHuntActivity extends AppCompatActivity implements DatePickerDial
                         .append(":").append(timeStart.substring(14, 16)).append(" "));
 
 
-                if (c.isNull(c.getColumnIndex("timeEnd"))==false){
+                if (c.isNull(c.getColumnIndex("timeEnd"))==false || !c.getString(c.getColumnIndex("timeEnd")).trim().equals("")){
                     String timeEnd = c.getString(c.getColumnIndex("timeEnd"));
-
+                    Log.v("data", "timeEnd: " + c.getString(c.getColumnIndex("timeEnd")));
                     finishDate.setText(new StringBuilder()
                             // Month is 0 based, just add 1
                             .append(timeEnd.substring(8, 10)).append("/").append(timeEnd.substring(5, 7)).append("/")
