@@ -459,7 +459,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     oldusername = c.getString(c.getColumnIndex("users"));
                 } while (c.moveToNext());
             }
-            String newusername = oldusername.replaceAll(username.trim()+'|',"");
+            username = username.trim() + "\\|";
+            String newusername = oldusername.replaceAll(username,"");
 
             Log.v("db log", "oldusername:"+oldusername);
             Log.v("db log", "newusername:" + newusername);

@@ -46,6 +46,7 @@ public class JSONBuilder {
 		for (int i = 0; i < jUsersSplit.length; i ++){
 			user = new JSONObject();
 			user.put("username",jUsersSplit[i]);
+			Log.v("JSONBuilder", "user:" + jUsersSplit[i]);
 
 			users.put(user);
 		}

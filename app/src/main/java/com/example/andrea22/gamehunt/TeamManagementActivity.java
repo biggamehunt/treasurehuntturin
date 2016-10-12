@@ -271,16 +271,22 @@ public class TeamManagementActivity extends AppCompatActivity {
 
             JSONArray jTeams = new JSONArray();
             int i = 0;
+            //todo: costante
+            int minTeam=31;
             JSONObject team;
             if (c.moveToFirst()) {
                 do {
                     team = jsonBuilder.getJSONTeam(c);
+                    if (minTeam > team.getJSONArray("users").length()){
+                        minTeam = team.getJSONArray("users").length();
+                    }
                     jTeams.put(team);
                 } while (c.moveToNext());
 
             }
 
             teams.put("teams",jTeams);
+            teams.put("minTeam",minTeam);
 
             String json = java.net.URLEncoder.encode(teams.toString(), "UTF-8");
 

@@ -145,8 +145,9 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
     }
 
     public static int dateControl(Date timeStart,Date timeEnd) {
-
-        if (timeStart.before(timeEnd)){
+        if (timeEnd == null){
+            return 1;
+        } else if (timeStart.before(timeEnd)){
             if (Math.abs(timeEnd.getTime() - timeStart.getTime()) > MILLIS_PER_DAY){
                 return 1;
             } else {
@@ -159,25 +160,27 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
     public void goToStageManagement(View view){
 
+        if (name.getText().toString().equals("")){
+            CharSequence text = getString(R.string.noNameHunt);
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        } else if (startTime.getText().toString().equals(getResources().getString(R.string.timeInitHunt))){
+            CharSequence text = "Nessun tempo di inizio";
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+
+        Log.v(getLocalClassName(),"startTime.getText().toString().trim(): "+startTime.getText().toString().trim());
+        Log.v(getLocalClassName(),"R.string.timeInitHunt: "+R.string.timeInitHunt);
+
+
+
         String[] itemsDateInit = startDate.getText().toString().split("/");
         String[] itemsDateEnd = finishDate.getText().toString().split("/");
         String[] itemsTimeInit = startTime.getText().toString().split(":");
         String[] itemsTimeEnd = finishTime.getText().toString().split(":");
-
-        Log.v(getLocalClassName(), "date init: " + itemsDateInit[0]);
-        Log.v(getLocalClassName(), "date init: " + itemsDateInit[1]);
-        Log.v(getLocalClassName(), "date init: " + itemsDateInit[2]);
-
-        Log.v(getLocalClassName(), "date end: " + itemsDateEnd[0]);
-        Log.v(getLocalClassName(), "date end: " + itemsDateEnd[1]);
-        Log.v(getLocalClassName(), "date end: " + itemsDateEnd[2]);
-
-        Log.v(getLocalClassName(), "time init: " + itemsTimeInit[0]);
-        Log.v(getLocalClassName(), "time init: " + itemsTimeInit[1]);
-
-        Log.v(getLocalClassName(), "time finish: " + itemsTimeEnd[0]);
-        Log.v(getLocalClassName(), "time finish: " + itemsTimeEnd[1]);
-
 
 
 
@@ -191,120 +194,132 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         calInit.set(Calendar.SECOND, 0);
 
         Log.v(getLocalClassName(),"Gregorio: "+calInit);
+        java.util.Date timeStart = new java.util.Date(calInit.getTime().getTime());
+        java.util.Date timeEnd = null;
 
         GregorianCalendar calEnd = new GregorianCalendar();
-        calEnd.set(Calendar.YEAR, Integer.parseInt(itemsDateEnd[2].trim()));
-        calEnd.set(Calendar.MONTH, Integer.parseInt(itemsDateEnd[1].trim())-1);
-        calEnd.set(Calendar.DATE, Integer.parseInt(itemsDateEnd[0].trim()));
-        calEnd.set(Calendar.HOUR_OF_DAY, Integer.parseInt(itemsTimeEnd[0].trim()));
-        calEnd.set(Calendar.MINUTE, Integer.parseInt(itemsTimeEnd[1].trim()));
-        calEnd.set(Calendar.SECOND, 0);
+        if (!finishDate.getText().toString().equals(getResources().getString(R.string.dateEndHunt))){
 
-        java.util.Date timeStart = new java.util.Date(calInit.getTime().getTime());
-        java.util.Date timeEnd = new java.util.Date(calEnd.getTime().getTime());
+            calEnd.set(Calendar.YEAR, Integer.parseInt(itemsDateEnd[2].trim()));
+            calEnd.set(Calendar.MONTH, Integer.parseInt(itemsDateEnd[1].trim())-1);
+            calEnd.set(Calendar.DATE, Integer.parseInt(itemsDateEnd[0].trim()));
+
+
+            if (finishTime.getText().toString().equals(getResources().getString(R.string.timeEndHunt))){
+                finishTime.setText(new StringBuilder().append("0:0").append(" "));
+                calEnd.set(Calendar.HOUR_OF_DAY, 0);
+                calEnd.set(Calendar.MINUTE, 0);
+                calEnd.set(Calendar.SECOND, 0);
+            } else {
+                calEnd.set(Calendar.HOUR_OF_DAY, Integer.parseInt(itemsTimeEnd[0].trim()));
+                calEnd.set(Calendar.MINUTE, Integer.parseInt(itemsTimeEnd[1].trim()));
+                calEnd.set(Calendar.SECOND, 0);
+            }
+            timeEnd = new java.util.Date(calEnd.getTime().getTime());
+        }
+
+
+
+
+
+
 
         Log.v(getLocalClassName(),"date init: " + timeStart);
         Log.v(getLocalClassName(),"date init: " + timeEnd);
 
 
 
-        if (name.getText().toString().equals("")){
-            CharSequence text = getString(R.string.noNameHunt);
-            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-            toast.show();
-            return;
-        } else if (startTime.equals(R.string.timeInitHunt)){
-            CharSequence text = "Nessun tempo di inizio";
-            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-            toast.show();
-            return;
-        }
 
-            CharSequence text;
-            Toast toast;
 
-            switch (dateControl(timeStart, timeEnd)) {
+        CharSequence text;
+        Toast toast;
+        switch (dateControl(timeStart, timeEnd)) {
 
-                case 0:
-                    text = "Meno di tre ore di differenza da inizio a fine";
-                    toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-                    toast.show();
-                    break;
+            case 0:
+                text = "Meno di tre ore di differenza da inizio a fine";
+                toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+                toast.show();
+                break;
 
-                case -1:
-                    text = "data iniziale più grande della finale";
-                    toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-                    toast.show();
-                    break;
+            case -1:
+                text = "data iniziale più grande della finale";
+                toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+                toast.show();
+                break;
 
-                case 1:
+            case 1:
 
-                    SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+                SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
 
-                    try {
-                        JSONObject hunt = new JSONObject();
-                        hunt.put("name", name.getText().toString());
-                        hunt.put("description", description.getText().toString());
-                        hunt.put("maxTeam", 0);
+                try {
+                    JSONObject hunt = new JSONObject();
+                    hunt.put("name", name.getText().toString());
+                    hunt.put("description", description.getText().toString());
+                    hunt.put("maxTeam", 0);
 
-                        hunt.put("day", calInit.get(Calendar.DATE));
-                        hunt.put("month", calInit.get(Calendar.MONTH));
-                        hunt.put("year", calInit.get(Calendar.YEAR));
-                        hunt.put("hour", calInit.get(Calendar.HOUR_OF_DAY));
-                        hunt.put("minute", calInit.get(Calendar.MINUTE));
+                    hunt.put("day", calInit.get(Calendar.DATE));
+                    hunt.put("month", calInit.get(Calendar.MONTH));
+                    hunt.put("year", calInit.get(Calendar.YEAR));
+                    hunt.put("hour", calInit.get(Calendar.HOUR_OF_DAY));
+                    hunt.put("minute", calInit.get(Calendar.MINUTE));
 
+                    if (timeEnd != null){
                         hunt.put("dayEnd", calEnd.get(Calendar.DATE));
                         hunt.put("monthEnd", calEnd.get(Calendar.MONTH));
                         hunt.put("yearEnd", calEnd.get(Calendar.YEAR));
                         hunt.put("hourEnd", calEnd.get(Calendar.HOUR_OF_DAY));
                         hunt.put("minuteEnd", calEnd.get(Calendar.MINUTE));
-                        hunt.put("idUser", pref.getInt("idUser", 0));
-                        String json = java.net.URLEncoder.encode(hunt.toString(), "UTF-8");
-
-                        Log.v(getLocalClassName(), "JSON VS NIGHTMARE" + json.toString());
-
-
-                        String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation";
-
-
-                        String p = "action=addHunt&json=" + json;
-                        String url[] = new String[2];
-                        url[0] = u;
-                        url[1] = p;
-
-
-                        String res = new RetrieveJson().execute(url).get();
-
-                        if (res.trim().equals("-1")) {
-                            Intent intent = new Intent(this, LoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-                            startActivity(intent);
-                        } else if (!res.equals("0")) {
-                            DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
-                            SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-                            int idHunt = mDbHelper.insertCreateHunt(db, res);
-                            SharedPreferences.Editor editor = pref.edit();
-                            editor.putInt("idLastHunt", idHunt);
-                            editor.apply();
-
-                            Intent intent = new Intent(this, StageManagementActivity.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.enter, R.anim.exit);
-
-                        } else {
-                            text = "c'è stato qualche errore";
-                            int duration = Toast.LENGTH_SHORT;
-
-                            toast = Toast.makeText(this, text, duration);
-                            toast.show();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
-                    break;
-            }
+
+                    hunt.put("idUser", pref.getInt("idUser", 0));
+                    String json = java.net.URLEncoder.encode(hunt.toString(), "UTF-8");
+
+                    Log.v(getLocalClassName(), "JSON VS NIGHTMARE" + json.toString());
+
+
+                    String u = "http://jbossews-treasurehunto.rhcloud.com/HuntOperation";
+
+
+                    String p = "action=addHunt&json=" + json;
+                    String url[] = new String[2];
+                    url[0] = u;
+                    url[1] = p;
+
+
+                    String res = new RetrieveJson().execute(url).get();
+
+                    if (res.trim().equals("-1")) {
+                        Intent intent = new Intent(this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                        startActivity(intent);
+                    } else if (!res.equals("0")) {
+                        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+                        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+                        int idHunt = mDbHelper.insertCreateHunt(db, res);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putInt("idLastHunt", idHunt);
+                        editor.apply();
+
+                        Intent intent = new Intent(this, StageManagementActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.enter, R.anim.exit);
+
+                    } else {
+                        text = "c'è stato qualche errore";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        toast = Toast.makeText(this, text, duration);
+                        toast.show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+
+
 
 
     }
