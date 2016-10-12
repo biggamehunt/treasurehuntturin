@@ -127,7 +127,7 @@
                     android:layout_marginLeft="295dp"
                     android:layout_centerVertical="true"
                     android:textSize="20dp"
-                    android:hint="1"/>
+                    android:text="1"/>
 
             </RelativeLayout>
 
