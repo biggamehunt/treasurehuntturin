@@ -45,6 +45,9 @@
     <string name="emailLength_error">Email too short</string>
 
     <!-- HUNTLIST -->
+    <string name="tab1">Play</string>
+    <string name="tab2">Your Hunts</string>
+    <string name="tab3">All Hunts</string>
     <string name="title_activity_huntlist">Hunt List</string>
     <string name="welcome1">Join, and buries all opponents</string>
     <string name="welcome2">Choose your hunt and JOIN!</string>

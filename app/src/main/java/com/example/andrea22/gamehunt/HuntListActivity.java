@@ -54,9 +54,6 @@ public class HuntListActivity extends AppCompatActivity {
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
-
-
-
         topLevelLayout = findViewById(R.id.hunt_list_top_layout);
 
         if (isFirstTime()) {
@@ -154,13 +151,11 @@ public class HuntListActivity extends AppCompatActivity {
 
     private void initializeAdapter() {
 
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.addTab(tabLayout.newTab().setText("All"));
-        tabLayout.addTab(tabLayout.newTab().setText("My Hunt"));
-        tabLayout.addTab(tabLayout.newTab().setText("Play Hunt"));
+        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.tab1)));
+        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.tab2)));
+        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.tab3)));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
 
         // Get the colors for tabLayout
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.drawable.tab_selector));
@@ -198,14 +193,14 @@ public class HuntListActivity extends AppCompatActivity {
                 List<SingleHunt> hunts = new ArrayList<SingleHunt>();
 
 
-                if (tab.getPosition() == 0) {
+                if (tab.getPosition() == 2) {
                     hunts.addAll(otherHunts);
                     hunts.addAll(userHunts);
 
                 } else if (tab.getPosition() == 1) {
                     hunts.addAll(userHunts);
 
-                } else if (tab.getPosition() == 2) {
+                } else if (tab.getPosition() == 0) {
                     hunts.addAll(otherHunts);
 
                 }

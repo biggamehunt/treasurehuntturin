@@ -26,6 +26,8 @@
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:maxLength="30"
+                    android:maxLines="2"
                     android:theme="@style/NewHuntMenu"
                     android:height="75dp"
                     android:textSize="25dp"

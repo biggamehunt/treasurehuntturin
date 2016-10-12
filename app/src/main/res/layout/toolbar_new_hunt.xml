@@ -18,8 +18,7 @@
         />
 
 
-    <TextView
-        android:padding="2dp"
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/next"
@@ -27,7 +26,6 @@
         android:textColor="#fff"
         android:textSize="20dp"
         android:layout_gravity="right"
-        android:layout_marginRight="15dp"
         android:onClick="goToStageManagement"
         />
 
