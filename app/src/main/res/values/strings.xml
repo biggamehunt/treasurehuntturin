@@ -72,6 +72,11 @@
 
     <!-- TEAM MANAGEMENT -->
     <string name="maxNumTeam">Maximum number of teams reached</string>
+    <string name="namePick">Insert Team Name</string>
+    <string name="sloganPick">Insert Slogan</string>
+    <string name="dialogOk">OK</string>
+    <string name="dialogCancel">Cancel</string>
+
 
 
     <!-- FRAGMENT_NEWSTAGE -->

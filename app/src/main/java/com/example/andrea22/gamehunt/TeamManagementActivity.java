@@ -1,14 +1,17 @@
 package com.example.andrea22.gamehunt;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -36,13 +39,14 @@ import java.util.concurrent.ExecutionException;
 public class TeamManagementActivity extends AppCompatActivity {
 
     private RecyclerView rv;
-    public static List<SingleTeam> teams;
+    public List<SingleTeam> teams;
     private int numTeam;
 
     Button lastAddUser;
     List<String> teamNamesFree;
     List<String> teamNamesHold;
     TeamCardsAdapter adapter;
+    private String m_Text = "";
 
 
 
@@ -192,16 +196,11 @@ public class TeamManagementActivity extends AppCompatActivity {
 
             }
 
-
             teamNamesFree.add(name);
             teamNamesHold.remove(name);
 
             Log.v(getLocalClassName(), "teamNamesFree:" + teamNamesFree.toString());
             Log.v(getLocalClassName(), "teamNamesHold:" + teamNamesHold.toString());
-
-
-
-
 
             initializeAdapter();
         } else {
@@ -209,13 +208,7 @@ public class TeamManagementActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.show();
         }
-
-
-
     }
-
-
-
 
     public void goToSingleTeam(View view){
 
@@ -224,7 +217,6 @@ public class TeamManagementActivity extends AppCompatActivity {
 
         EditText editName = (EditText) ly.getChildAt(0);
         Log.v(getLocalClassName(), "edit name:" + editName.getText().toString());
-
 
         Intent intent = new Intent(this, SingleTeamActivity.class);
 
@@ -238,7 +230,6 @@ public class TeamManagementActivity extends AppCompatActivity {
         Log.v(getLocalClassName(), "numTeam:" + view.getTag().toString());
 
         Log.v(getLocalClassName(), "idHunt:" + pref.getInt("idLastHunt", 0));
-
 
         startActivity(intent);
         overridePendingTransition(R.anim.enter, R.anim.exit);
@@ -410,8 +401,74 @@ public class TeamManagementActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    public void sloganPicker(final View view) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.namePick));
+        final EditText v = (EditText)view;
+// Set up the input
+        final EditText input = new EditText(this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        builder.setView(input);
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                m_Text = input.getText().toString();
+                v.setText(m_Text);
+                int i = Integer.parseInt(""+v.getTag());
+                teams.get(i).setSlogan(m_Text);
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
 
     }
+
+    public void namePicker(final View view) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.sloganPick));
+        final EditText v = (EditText)view;
+// Set up the input
+        final EditText input = new EditText(this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        builder.setView(input);
+
+// Set up the buttons
+        builder.setPositiveButton(getResources().getString(R.string.dialogOk), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                m_Text = input.getText().toString();
+                v.setText(m_Text);
+                int i = Integer.parseInt(""+v.getTag());
+                teams.get(i).setName(m_Text);
+
+            }
+        });
+        builder.setNegativeButton(getResources().getString(R.string.dialogCancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
+    }
+
 
 
 }

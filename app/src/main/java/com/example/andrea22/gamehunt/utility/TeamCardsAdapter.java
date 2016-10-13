@@ -94,6 +94,8 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
         numTeam  = singleTeam.get(i).numTeam;
         singleCardViewHolder.goToTeam.setTag(numTeam);
         singleCardViewHolder.deleteTeam.setTag(numTeam);
+        singleCardViewHolder.teamName.setTag(i);
+        singleCardViewHolder.slogan.setTag(i);
 
 
         //for(int j=0;j<singleCardViewHolder.teamPlayer.size();j++){
