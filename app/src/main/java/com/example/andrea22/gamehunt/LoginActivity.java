@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -79,10 +80,13 @@ public class LoginActivity extends AppCompatActivity {
         if(username.length() < 4){
             CharSequence text = getString(R.string.userLength_error);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else if(password.length() < 7){
             CharSequence text = getString(R.string.passLength_error);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+
             toast.show();
         } else { */
             try {
@@ -118,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                         int duration = Toast.LENGTH_SHORT;
 
                         Toast toast = Toast.makeText(this, text, duration);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
                     }
 

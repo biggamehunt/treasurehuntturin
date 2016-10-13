@@ -318,6 +318,8 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                         int duration = Toast.LENGTH_SHORT;
 
                         toast = Toast.makeText(this, text, duration);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+
                         toast.show();
                     }
                 } catch (Exception e) {

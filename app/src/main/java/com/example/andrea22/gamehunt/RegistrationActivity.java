@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -47,18 +48,22 @@ public class RegistrationActivity extends AppCompatActivity {
         if(username.length() < 4){
             CharSequence text = getString(R.string.userLength_error);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else if(password.length() < 7){
             CharSequence text = getString(R.string.passLength_error);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else if(email.length() < 4) {
             CharSequence text = getString(R.string.emailLength_error);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else if (!password.equals(confirm)) {
             CharSequence text = getString(R.string.confirmpass_error);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else {
 
@@ -78,6 +83,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         int duration = Toast.LENGTH_SHORT;
 
                         Toast toast = Toast.makeText(this, text, duration);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
                     }
                 } catch (Exception e) {
