@@ -52,6 +52,7 @@
 
 
                 <EditText
+                    android:editable="false"
                     android:maxLines="2"
                     android:id="@+id/team_name"
                     android:layout_width="match_parent"
@@ -63,6 +64,7 @@
                     android:onClick="namePicker"/>
 
                 <EditText
+                    android:editable="false"
                     android:id="@+id/slogan"
                     android:paddingTop="4dp"
                     android:layout_width="match_parent"
