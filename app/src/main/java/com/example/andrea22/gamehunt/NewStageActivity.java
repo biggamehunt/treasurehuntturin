@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -282,12 +283,14 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(this, text, duration);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else if (finallocation == null) {
             CharSequence text = "PUNTO DI ARRIVO MANCANTE";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(this, text, duration);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else {
             EditText clue = (EditText) findViewById(R.id.clueHunt);

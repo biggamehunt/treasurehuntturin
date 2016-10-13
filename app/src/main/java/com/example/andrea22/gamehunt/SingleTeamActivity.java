@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -155,6 +156,7 @@ public class SingleTeamActivity extends AppCompatActivity {
         if (usersTeam.size() >= 30){
             CharSequence text = "Ragiunto il numero massimo di utenti per il team!";
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else {
             try {
@@ -167,6 +169,7 @@ public class SingleTeamActivity extends AppCompatActivity {
                     //todo: inserire i messaggi dei toasts in string.xml
                     CharSequence text = "Non puoi aggiungere l'utente che ha creato la caccia";
                     Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
                     return;
                 }
@@ -180,6 +183,7 @@ public class SingleTeamActivity extends AppCompatActivity {
                         int duration = Toast.LENGTH_SHORT;
 
                         Toast toast = Toast.makeText(this, text, duration);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
                         return;
                     }
@@ -235,6 +239,7 @@ public class SingleTeamActivity extends AppCompatActivity {
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(this, text, duration);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
                 }
             } catch (Exception e) {
