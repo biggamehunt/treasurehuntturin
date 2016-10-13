@@ -6,11 +6,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +36,7 @@ import java.util.concurrent.ExecutionException;
 public class TeamManagementActivity extends AppCompatActivity {
 
     private RecyclerView rv;
-    private List<SingleTeam> singleTeam;
+    public static List<SingleTeam> teams;
     private int numTeam;
 
     Button lastAddUser;
@@ -77,7 +80,7 @@ public class TeamManagementActivity extends AppCompatActivity {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
 
-        singleTeam = new ArrayList<>();
+        teams = new ArrayList<>();
         String[] splitUsers;
 
         List<String> users = new ArrayList<String>();
@@ -97,7 +100,7 @@ public class TeamManagementActivity extends AppCompatActivity {
                     }
 
 
-                    singleTeam.add(new SingleTeam(c.getString(c.getColumnIndex("name")), users, c.getInt(c.getColumnIndex("numTeam"))));
+                    teams.add(new SingleTeam(c.getString(c.getColumnIndex("name")), c.getString(c.getColumnIndex("slogan")), users, c.getInt(c.getColumnIndex("numTeam"))));
                     users = new ArrayList<String>();
                 } while (c.moveToNext());
             }
@@ -111,8 +114,8 @@ public class TeamManagementActivity extends AppCompatActivity {
 
 
 
-                singleTeam.add(new SingleTeam(name_1, new ArrayList<String>(), 1));
-                singleTeam.add(new SingleTeam(name_2, new ArrayList<String>(), 2));
+                teams.add(new SingleTeam(name_1,"", new ArrayList<String>(), 1));
+                teams.add(new SingleTeam(name_2,"", new ArrayList<String>(), 2));
 
                 mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), name_1, 1, "");
                 mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), name_2, 2, "");
@@ -125,10 +128,8 @@ public class TeamManagementActivity extends AppCompatActivity {
 
     public void initializeAdapter(){
 
-        adapter = new TeamCardsAdapter(singleTeam, this);
+        adapter = new TeamCardsAdapter(teams, this);
         rv.setAdapter(adapter);
-
-
     }
 
     public void turnBack(View v){
@@ -145,9 +146,9 @@ public class TeamManagementActivity extends AppCompatActivity {
             String name = teamNamesFree.remove(0);
             teamNamesHold.add(name);
 
-            int numTeam = singleTeam.size() + 1;
-            SingleTeam newTeam = new SingleTeam(name, new ArrayList<String>(), numTeam);
-            singleTeam.add(newTeam);
+            int numTeam = teams.size() + 1;
+            SingleTeam newTeam = new SingleTeam(name, "", new ArrayList<String>(), numTeam);
+            teams.add(newTeam);
 
             mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), name, numTeam, "");
 
@@ -173,19 +174,19 @@ public class TeamManagementActivity extends AppCompatActivity {
 
         if (res) {
             String name = "";
-            for (int i = 0; i < singleTeam.size(); i++) {
-                if (singleTeam.get(i).getNumTeam() == numTeam) {
-                    name = singleTeam.get(i).getName();
-                    singleTeam.remove(i);
+            for (int i = 0; i < teams.size(); i++) {
+                if (teams.get(i).getNumTeam() == numTeam) {
+                    name = teams.get(i).getName();
+                    teams.remove(i);
                     Log.v(getLocalClassName(), "remove!");
                     break;
                 }
 
             }
             //modificarenumteam
-            for (int i = 0; i < singleTeam.size(); i++) {
-                if (singleTeam.get(i).getNumTeam() > numTeam) {
-                    singleTeam.get(i).setNumTeam(singleTeam.get(i).getNumTeam() - 1);
+            for (int i = 0; i < teams.size(); i++) {
+                if (teams.get(i).getNumTeam() > numTeam) {
+                    teams.get(i).setNumTeam(teams.get(i).getNumTeam() - 1);
                     Log.v(getLocalClassName(), "modificato numTeam!");
                 }
 
@@ -217,6 +218,14 @@ public class TeamManagementActivity extends AppCompatActivity {
 
 
     public void goToSingleTeam(View view){
+
+        //todo: cambiare dopo l'aggiunta del picker. Non c'è bisogno di sto get parent, basta prendere i dati da teams!
+        LinearLayout ly =(LinearLayout)view.getParent().getParent().getParent().getParent();
+
+        EditText editName = (EditText) ly.getChildAt(0);
+        Log.v(getLocalClassName(), "edit name:" + editName.getText().toString());
+
+
         Intent intent = new Intent(this, SingleTeamActivity.class);
 
         numTeam = Integer.parseInt(view.getTag().toString());
@@ -224,6 +233,7 @@ public class TeamManagementActivity extends AppCompatActivity {
         intent.putExtra("numTeam", numTeam);
         SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
         intent.putExtra("idHunt", pref.getInt("idLastHunt", 0));
+        intent.putExtra("name", editName.getText().toString());
 
         Log.v(getLocalClassName(), "numTeam:" + view.getTag().toString());
 
@@ -236,7 +246,28 @@ public class TeamManagementActivity extends AppCompatActivity {
 
 
     public void finish(View view){
+
         Log.v(getLocalClassName(), "entro in finish");
+        /*
+        EditText editName = (EditText) rv.getChildAt(0).findViewById(R.id.team_name);
+        EditText editSlogan = (EditText) rv.getChildAt(0).findViewById(R.id.slogan);
+
+
+        Log.v(getLocalClassName(), "editName 1:" + editName.getText().toString());
+        Log.v(getLocalClassName(), "editSlogan 1:" + editSlogan.getText().toString());
+
+
+
+        Log.v(getLocalClassName(), "nome 1:" + ((EditText)((LinearLayout)((LinearLayout)((CardView)((LinearLayout)rv.getChildAt(0)).getChildAt(0)).getChildAt(0)).getChildAt(1)).getChildAt(0)).getText().toString());
+        Log.v(getLocalClassName(), "slogan 1:" + ((EditText)((LinearLayout)((LinearLayout)((CardView)((LinearLayout)rv.getChildAt(0)).getChildAt(0)).getChildAt(0)).getChildAt(1)).getChildAt(1)).getText().toString());
+
+        Log.v(getLocalClassName(), "nome 2:" + ((EditText)((LinearLayout)((LinearLayout)((CardView)((LinearLayout)rv.getChildAt(1)).getChildAt(0)).getChildAt(0)).getChildAt(1)).getChildAt(0)).getText().toString());
+        Log.v(getLocalClassName(), "slogan 2:" + ((EditText)((LinearLayout)((LinearLayout)((CardView)((LinearLayout)rv.getChildAt(1)).getChildAt(0)).getChildAt(0)).getChildAt(1)).getChildAt(1)).getText().toString());
+*/
+
+
+
+
         try {
             DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
 
@@ -244,6 +275,12 @@ public class TeamManagementActivity extends AppCompatActivity {
 
 
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+
+
+
+
+
             Cursor c = db.rawQuery("SELECT * FROM ADDTEAM WHERE idHunt = " + pref.getInt("idLastHunt", 0), null);
 
             if (c.moveToFirst()) {

@@ -40,7 +40,6 @@ public class SingleTeamActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.singleTeamToolbar);
         conteinerUser = (LinearLayout) findViewById(R.id.containerUser);
 
-        TextView slogan = (TextView) findViewById(R.id.teamSub);
 
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
@@ -52,10 +51,9 @@ public class SingleTeamActivity extends AppCompatActivity {
         Log.v(getLocalClassName(), "idHunt:" + idHunt);
 
 
-        String[] nameTeam = getNameSloganTeam();
 
-        getSupportActionBar().setTitle(nameTeam[0]);
-        slogan.setText(nameTeam[1]);
+
+        getSupportActionBar().setTitle(intent.getStringExtra("name"));
         usersTeam = getUsersTeam();
 
 

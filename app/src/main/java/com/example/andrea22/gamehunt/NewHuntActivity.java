@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -163,11 +164,13 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         if (name.getText().toString().equals("")){
             CharSequence text = getString(R.string.noNameHunt);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
             return;
         } else if (startTime.getText().toString().equals(getResources().getString(R.string.timeInitHunt))){
             CharSequence text = "Nessun tempo di inizio";
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
             return;
         }
@@ -238,12 +241,16 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
             case 0:
                 text = "Meno di tre ore di differenza da inizio a fine";
                 toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+
                 toast.show();
                 break;
 
             case -1:
                 text = "data iniziale più grande della finale";
                 toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+
                 toast.show();
                 break;
 

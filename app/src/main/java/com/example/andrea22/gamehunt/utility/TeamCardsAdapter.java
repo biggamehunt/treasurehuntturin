@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,19 +28,19 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
     public static class SingleCardViewHolder extends RecyclerView.ViewHolder {
 
         CardView cv;
-        TextView teamName;
-        TextView slogan;
+        EditText teamName;
+        EditText slogan;
         ImageView deleteTeam;
         Button goToTeam;
         //LinearLayout teamLayout;
 
         //ArrayList<TextView> teamPlayer;
 
-        SingleCardViewHolder(View itemView, SingleTeam singleTeam, Context context) {
+        SingleCardViewHolder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cvteam);
-            teamName = (TextView)itemView.findViewById(R.id.team_name);
-            slogan = (TextView)itemView.findViewById(R.id.slogan);
+            teamName = (EditText)itemView.findViewById(R.id.team_name);
+            slogan = (EditText)itemView.findViewById(R.id.slogan);
             goToTeam = (Button)itemView.findViewById(R.id.goToTeam);
             deleteTeam = (ImageView)itemView.findViewById(R.id.deleteTeam);
 
@@ -78,12 +79,12 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
     public SingleCardViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.single_team_v21, viewGroup, false);
 
-        SingleCardViewHolder pvh = new SingleCardViewHolder(v,singleTeam.get(cont),context);
+        SingleCardViewHolder pvh = new SingleCardViewHolder(v);
         cont++;
         return pvh;
     }
     @Override
-    public void onBindViewHolder(SingleCardViewHolder singleCardViewHolder, int i) {
+    public void onBindViewHolder(SingleCardViewHolder singleCardViewHolder, final int i) {
         singleCardViewHolder.teamName.setText(singleTeam.get(i).name);
 
         /*for(int j=0;j<singleCardViewHolder.teamLayout.getChildCount();j++){
@@ -93,14 +94,8 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
         numTeam  = singleTeam.get(i).numTeam;
         singleCardViewHolder.goToTeam.setTag(numTeam);
         singleCardViewHolder.deleteTeam.setTag(numTeam);
-/*
-        singleCardViewHolder.addUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((TeamManagementActivity) context).addUser(view);
-            }
-        });
-*/
+
+
         //for(int j=0;j<singleCardViewHolder.teamPlayer.size();j++){
         //    singleCardViewHolder.teamPlayer.get(j).setText(singleTeam.get(i).player.get(j));
         //}
