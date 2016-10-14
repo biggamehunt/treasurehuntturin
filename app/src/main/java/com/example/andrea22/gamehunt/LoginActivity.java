@@ -1,6 +1,7 @@
 package com.example.andrea22.gamehunt;
 
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +17,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -37,6 +39,11 @@ import java.net.URISyntaxException;
 /**
  * A login screen that offers login via email/password.
  */
+
+
+
+
+
 public class LoginActivity extends AppCompatActivity {
 
     /**
@@ -46,6 +53,12 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleApiClient client;
     private ProgressBar spinner;
     public static WebSocketClient mWebSocketClient;
+    private static final String TAG = "LoginActivity";
+    private static final int REQUEST_SIGNUP = 0;
+    EditText usernameview;
+    EditText passwordview;
+    Button loginButton;
+
 
     public Context context;
 
@@ -54,8 +67,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        spinner=(ProgressBar)findViewById(R.id.spinner);
-        spinner.setVisibility(View.GONE);
+        usernameview = (EditText) findViewById(R.id.username);
+        passwordview = (EditText) findViewById(R.id.password);
+        loginButton= (Button)findViewById(R.id.sign_in);
 
         context = this;
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -64,82 +78,83 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
+        Log.d(TAG, "Login");
 
+        if (!validate()) {
+            onLoginFailed();
+            return;
+        }
 
-        spinner.setVisibility(View.VISIBLE);
+        loginButton.setEnabled(false);
 
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authenticating...");
 
-
-        EditText usernameview = (EditText) findViewById(R.id.username);
         String username = usernameview.getText().toString();
-
-        EditText passwordview = (EditText) findViewById(R.id.password);
         String password = passwordview.getText().toString();
-        //Task spinnerTask;
-/*
-        if(username.length() < 4){
-            CharSequence text = getString(R.string.userLength_error);
-            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-        } else if(password.length() < 7){
-            CharSequence text = getString(R.string.passLength_error);
-            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
 
-            toast.show();
-        } else { */
+        try {
+
+            progressDialog.show();
+
             try {
+                String username_ut8 = java.net.URLEncoder.encode(username, "UTF-8");
+                String password_ut8 = java.net.URLEncoder.encode(password, "UTF-8");
 
-                try {
-                    String username_ut8 = java.net.URLEncoder.encode(username, "UTF-8");
-                    String password_ut8 = java.net.URLEncoder.encode(password, "UTF-8");
-
-                    String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=login&username=" + username_ut8 + "&password=" + password_ut8;
-                    String res = new RetrieveLoginTask().execute(u).get();
+                String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=login&username=" + username_ut8 + "&password=" + password_ut8;
+                String res = new RetrieveLoginTask().execute(u).get();
 
 
-                    if (!res.equals("0")) {
+                if (!res.equals("0")) {
 
 
-                        DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
-                        SQLiteDatabase db = myHelper.getWritableDatabase();
-                        idUser = myHelper.createDB(db, res);
+                    DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                    SQLiteDatabase db = myHelper.getWritableDatabase();
+                    idUser = myHelper.createDB(db, res);
 
-                        connectWebSocket();
-
-
-                        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = pref.edit();
-                        editor.putInt("idUser", idUser);
-                        editor.putString("username", username);
-
-                        editor.commit();
-                        Intent intent = new Intent(this, HuntListActivity.class);
-                        startActivity(intent);
-                    } else {
-                        CharSequence text = getString(R.string.login_error);
-                        int duration = Toast.LENGTH_SHORT;
-
-                        Toast toast = Toast.makeText(this, text, duration);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
-                    }
+                    connectWebSocket();
 
 
-                } catch (Exception e) {
-                    Log.d("test debug", "eccezione: " + e.getMessage());
-                    e.printStackTrace();
+                    SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putInt("idUser", idUser);
+                    editor.putString("username", username);
+
+                    editor.commit();
+
+                } else {
+                    CharSequence text = getString(R.string.login_error);
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(this, text, duration);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 }
 
+                new android.os.Handler().postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                // On complete call either onLoginSuccess or onLoginFailed
+                                onLoginSuccess();
+                                // onLoginFailed();
+                                progressDialog.dismiss();
+                            }
+                        }, 3000);
 
             } catch (Exception e) {
                 Log.d("test debug", "eccezione: " + e.getMessage());
                 e.printStackTrace();
-
             }
+
+
+        } catch (Exception e) {
+            Log.d("test debug", "eccezione: " + e.getMessage());
+            e.printStackTrace();
+
         }
 
+    }
   //  }
 //TODO: inserire questa funzione in tutte le activity che usano tastiera
     @Override
@@ -149,53 +164,10 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-
-
     public void registration(View view) {
         Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
     }
-
-    /*@Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Login Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.example.andrea22.gamehunt/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Login Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.example.andrea22.gamehunt/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
-    }*/
-
 
     private void connectWebSocket() {
         URI uri;
@@ -306,17 +278,59 @@ public class LoginActivity extends AppCompatActivity {
         mWebSocketClient.connect();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_SIGNUP) {
+            if (resultCode == RESULT_OK) {
 
+                // TODO: Implement successful signup logic here
+                // By default we just finish the Activity and log them in automatically
+                this.finish();
+            }
+        }
+    }
 
+    @Override
+    public void onBackPressed() {
+        // disable going back to the MainActivity
+        moveTaskToBack(true);
+    }
 
+    public void onLoginSuccess() {
+        loginButton.setEnabled(true);
+        Intent intent = new Intent(this, HuntListActivity.class);
+        startActivity(intent);    }
 
+    public void onLoginFailed() {
+        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
+        loginButton.setEnabled(true);
+    }
 
+    public boolean validate() {
 
+        boolean valid = true;
+/*
+        String usernameText = usernameview.getText().toString();
+        String passwordText = passwordview.getText().toString();
 
+        if(usernameText.isEmpty() || usernameText.length() < 4){
+            CharSequence text = getString(R.string.userLength_error);
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            valid = false;
 
-
-
+        } else if(passwordText.isEmpty()|| passwordText.length() < 7){
+            CharSequence text = getString(R.string.passLength_error);
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            valid = false;
+        }
+*/
+        return valid;
+    }
 
 
 }
