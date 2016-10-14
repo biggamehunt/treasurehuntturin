@@ -1,19 +1,15 @@
 package com.example.andrea22.gamehunt;
 
 import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -23,9 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
-import com.example.andrea22.gamehunt.utility.RetrieveFeedTask;
 import com.example.andrea22.gamehunt.utility.RetrieveLoginTask;
-import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -57,8 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final int REQUEST_SIGNUP = 0;
     EditText usernameview;
     EditText passwordview;
-    Button loginButton;
-
+    public Button loginButton;
 
     public Context context;
 
@@ -70,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
         usernameview = (EditText) findViewById(R.id.username);
         passwordview = (EditText) findViewById(R.id.password);
         loginButton= (Button)findViewById(R.id.sign_in);
-
         context = this;
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -85,54 +77,32 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        loginButton.setEnabled(false);
+        //loginButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
+        final
 
         String username = usernameview.getText().toString();
         String password = passwordview.getText().toString();
 
         try {
 
-            progressDialog.show();
+            //progressDialog.show();
 
             try {
                 String username_ut8 = java.net.URLEncoder.encode(username, "UTF-8");
                 String password_ut8 = java.net.URLEncoder.encode(password, "UTF-8");
 
                 String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=login&username=" + username_ut8 + "&password=" + password_ut8;
-                String res = new RetrieveLoginTask().execute(u).get();
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
+                new RetrieveLoginTask(this,username).execute(u);
 
 
-                if (!res.equals("0")) {
 
 
-                    DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
-                    SQLiteDatabase db = myHelper.getWritableDatabase();
-                    idUser = myHelper.createDB(db, res);
-
-                    connectWebSocket();
-
-
-                    SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putInt("idUser", idUser);
-                    editor.putString("username", username);
-
-                    editor.commit();
-
-                } else {
-                    CharSequence text = getString(R.string.login_error);
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(this, text, duration);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                }
-
-                new android.os.Handler().postDelayed(
+                /*new android.os.Handler().postDelayed(
                         new Runnable() {
                             public void run() {
                                 // On complete call either onLoginSuccess or onLoginFailed
@@ -140,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                                 // onLoginFailed();
                                 progressDialog.dismiss();
                             }
-                        }, 3000);
+                        }, 3000);*/
 
             } catch (Exception e) {
                 Log.d("test debug", "eccezione: " + e.getMessage());
@@ -159,8 +129,9 @@ public class LoginActivity extends AppCompatActivity {
 //TODO: inserire questa funzione in tutte le activity che usano tastiera
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
         return true;
     }
 
@@ -169,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void connectWebSocket() {
+    public void connectWebSocket() {
         URI uri;
         try {
             uri = new URI("ws://ws-treasurehunto.rhcloud.com:8000");
@@ -298,8 +269,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         loginButton.setEnabled(true);
-        Intent intent = new Intent(this, HuntListActivity.class);
-        startActivity(intent);    }
+            }
 
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();

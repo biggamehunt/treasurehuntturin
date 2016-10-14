@@ -1,7 +1,20 @@
 package com.example.andrea22.gamehunt.utility;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
+
+import com.example.andrea22.gamehunt.Database.DBHelper;
+import com.example.andrea22.gamehunt.HuntListActivity;
+import com.example.andrea22.gamehunt.LoginActivity;
+import com.example.andrea22.gamehunt.R;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,7 +32,19 @@ public class RetrieveLoginTask extends AsyncTask<String, Void, String> {
     static final String COOKIES_HEADER = "Set-Cookie";
 
     private Exception exception;
+    private ProgressDialog progressDialog;
+    private LoginActivity context;
+    private String username;
 
+    public RetrieveLoginTask(LoginActivity activity, String username) {
+        this.context = activity;
+        this.username=username;
+        progressDialog = new ProgressDialog(activity, R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authenticating...");
+        progressDialog.setCanceledOnTouchOutside(false);
+    }
+    @Override
     protected String doInBackground(String... urls) {
         try {
             HttpURLConnection urlConnection = null;
@@ -48,7 +73,45 @@ public class RetrieveLoginTask extends AsyncTask<String, Void, String> {
                 res+=current;
                 data = isw.read();
             }
+
+            if (!res.equals("0")) {
+
+
+                DBHelper myHelper = DBHelper.getInstance(context);
+                SQLiteDatabase db = myHelper.getWritableDatabase();
+                int idUser = myHelper.createDB(db, res);
+
+                context.connectWebSocket();
+
+
+                SharedPreferences pref = context.getSharedPreferences("session", context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putInt("idUser", idUser);
+                editor.putString("username", username);
+
+                editor.commit();
+
+                Intent intent = new Intent(context, HuntListActivity.class);
+                context.startActivity(intent);
+
+            } else {
+                CharSequence text = context.getString(R.string.login_error);
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }
+
+
+
+
+
+
+
             return res;
+
+
 
         } catch (Exception e) {
             this.exception = e;
@@ -57,9 +120,21 @@ public class RetrieveLoginTask extends AsyncTask<String, Void, String> {
             return null;
         }
     }
+    @Override
+    protected void onPreExecute() {
+        Log.d("test debug", "onPreExecute");
 
-    protected void onPostExecute(String feed) {
-        // TODO: check this.exception
-        // TODO: do something with the feed
+        progressDialog.show();
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        Log.d("test debug", "onPostExecute");
+
+        if (progressDialog.isShowing()) {
+            Log.d("test debug", "if progressDialog");
+
+            progressDialog.dismiss();
+        }
     }
 }
