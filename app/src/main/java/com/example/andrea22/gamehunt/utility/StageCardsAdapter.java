@@ -63,7 +63,7 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
         @Override
         public void onItemSelected() {
             //cv.setBackgroundColor(Color.LTGRAY);
-            itemView.setBackgroundColor(Color.parseColor("#ff9800"));
+            itemView.setBackgroundColor(Color.parseColor("#ffff"));
             //itemView.setBackgroundColor(Color.LTGRAY);
             tmpStages = new ArrayList<SingleStage>();
 

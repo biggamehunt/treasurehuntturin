@@ -30,25 +30,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 
-/**
- * A login screen that offers login via email/password.
- */
-
-
-
-
-
 public class LoginActivity extends AppCompatActivity {
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
     private GoogleApiClient client;
-    private ProgressBar spinner;
     public static WebSocketClient mWebSocketClient;
-    private static final String TAG = "LoginActivity";
-    private static final int REQUEST_SIGNUP = 0;
     EditText usernameview;
     EditText passwordview;
     public Button loginButton;
@@ -70,23 +55,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
-        Log.d(TAG, "Login");
-
         if (!validate()) {
             onLoginFailed();
             return;
         }
 
-        //loginButton.setEnabled(false);
-
-        final
+        loginButton.setEnabled(false);
 
         String username = usernameview.getText().toString();
         String password = passwordview.getText().toString();
 
         try {
-
-            //progressDialog.show();
 
             try {
                 String username_ut8 = java.net.URLEncoder.encode(username, "UTF-8");
@@ -99,24 +78,10 @@ public class LoginActivity extends AppCompatActivity {
 
                 new RetrieveLoginTask(this,username).execute(u);
 
-
-
-
-                /*new android.os.Handler().postDelayed(
-                        new Runnable() {
-                            public void run() {
-                                // On complete call either onLoginSuccess or onLoginFailed
-                                onLoginSuccess();
-                                // onLoginFailed();
-                                progressDialog.dismiss();
-                            }
-                        }, 3000);*/
-
             } catch (Exception e) {
                 Log.d("test debug", "eccezione: " + e.getMessage());
                 e.printStackTrace();
             }
-
 
         } catch (Exception e) {
             Log.d("test debug", "eccezione: " + e.getMessage());
@@ -249,31 +214,8 @@ public class LoginActivity extends AppCompatActivity {
         mWebSocketClient.connect();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
-                this.finish();
-            }
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        // disable going back to the MainActivity
-        moveTaskToBack(true);
-    }
-
-    public void onLoginSuccess() {
-        loginButton.setEnabled(true);
-            }
-
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
         loginButton.setEnabled(true);
     }
 
