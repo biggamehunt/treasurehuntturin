@@ -9,13 +9,14 @@ public class SingleTeam {
     String name, slogan;
     List<String> player;
     int numTeam;
+    int numUsers;
 
-
-    public SingleTeam(String name, String slogan, List<String> player, int numTeam) {
+    public SingleTeam(String name, String slogan, List<String> player, int numTeam, int numUsers) {
         this.name = name;
         this.slogan = slogan;
         this.player = player;
         this.numTeam = numTeam;
+        this.numUsers = numUsers;
 
     }
 
@@ -36,12 +37,19 @@ public class SingleTeam {
     public String getSlogan(){
         return slogan;
     }
+    public int getNumUsers(){
+        return numUsers;
+    }
 
     public void setName(String name){
         this.name = name;
     }
     public void setSlogan(String slogan){
         this.slogan = slogan;
+    }
+
+    public void setNumUsers (int numUsers){
+        this.numUsers = numUsers;
     }
 
     public List<String> getPlayer () { return player; }

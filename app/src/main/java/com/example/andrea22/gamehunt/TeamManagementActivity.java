@@ -11,10 +11,12 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -104,7 +106,8 @@ public class TeamManagementActivity extends AppCompatActivity {
                     }
 
 
-                    teams.add(new SingleTeam(c.getString(c.getColumnIndex("name")), c.getString(c.getColumnIndex("slogan")), users, c.getInt(c.getColumnIndex("numTeam"))));
+                    //todo: cambiare lo 0 in quinto parametro
+                    teams.add(new SingleTeam(c.getString(c.getColumnIndex("name")), c.getString(c.getColumnIndex("slogan")), users, c.getInt(c.getColumnIndex("numTeam")),0));
                     users = new ArrayList<String>();
                 } while (c.moveToNext());
             }
@@ -118,8 +121,8 @@ public class TeamManagementActivity extends AppCompatActivity {
 
 
 
-                teams.add(new SingleTeam(name_1,"", new ArrayList<String>(), 1));
-                teams.add(new SingleTeam(name_2,"", new ArrayList<String>(), 2));
+                teams.add(new SingleTeam(name_1,"", new ArrayList<String>(), 1,0));
+                teams.add(new SingleTeam(name_2,"", new ArrayList<String>(), 2,0));
 
                 mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), name_1, 1, "");
                 mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), name_2, 2, "");
@@ -151,7 +154,7 @@ public class TeamManagementActivity extends AppCompatActivity {
             teamNamesHold.add(name);
 
             int numTeam = teams.size() + 1;
-            SingleTeam newTeam = new SingleTeam(name, "", new ArrayList<String>(), numTeam);
+            SingleTeam newTeam = new SingleTeam(name, "", new ArrayList<String>(), numTeam,0);
             teams.add(newTeam);
 
             mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), name, numTeam, "");
@@ -215,7 +218,7 @@ public class TeamManagementActivity extends AppCompatActivity {
         //todo: cambiare dopo l'aggiunta del picker. Non c'è bisogno di sto get parent, basta prendere i dati da teams!
         LinearLayout ly =(LinearLayout)view.getParent().getParent().getParent().getParent();
 
-        EditText editName = (EditText) ly.getChildAt(0);
+        TextView editName = (TextView) ly.getChildAt(0);
         Log.v(getLocalClassName(), "edit name:" + editName.getText().toString());
 
         Intent intent = new Intent(this, SingleTeamActivity.class);
@@ -231,8 +234,45 @@ public class TeamManagementActivity extends AppCompatActivity {
 
         Log.v(getLocalClassName(), "idHunt:" + pref.getInt("idLastHunt", 0));
 
-        startActivity(intent);
+        startActivityForResult(intent, 1);
+
         overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+
+                int numUsers = data.getIntExtra("numUsers",0);
+                int numTeam = data.getIntExtra("numTeam",0);
+
+                Log.v(getLocalClassName(), "numUsers:"+numUsers);
+                Log.v(getLocalClassName(), "numTeam:"+numTeam);
+
+
+                int pos = -1;
+                for (int i = 0; i<teams.size();i++){
+                    if (teams.get(i).getNumTeam() == numTeam){
+                        pos = i;
+                        teams.get(i).setNumUsers(numUsers);
+                        break;
+                    }
+                }
+                if (pos!=-1) {
+                    Log.v(getLocalClassName(), "pos:" + pos);
+                    Log.v(getLocalClassName(), "ly:" + rv.getChildAt(pos));
+
+                    TextView numUser = (TextView) (rv.getChildAt(pos)).findViewById(R.id.numUser);
+                    Log.v(getLocalClassName(), "numUser:" + numUser);
+                    numUser.setText("" + numUsers);
+
+
+                    Log.v(getLocalClassName(), "ly+1:" + rv.getChildAt(pos + 1));
+
+                }
+            }
+        }
     }
 
 
@@ -407,9 +447,17 @@ public class TeamManagementActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.sloganPick));
-        final EditText v = (EditText)view;
+        final TextView v = (TextView)view;
 // Set up the input
         final EditText input = new EditText(this);
+        /*input.setLines(2);
+        input.setSingleLine(false);
+        input.setImeOptions(EditorInfo.IME_FLAG_NO_ENTER_ACTION);*/
+       //todo costants
+        int maxLength = 50;
+        InputFilter[] fArray = new InputFilter[1];
+        fArray[0] = new InputFilter.LengthFilter(maxLength);
+        input.setFilters(fArray);
 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
@@ -420,7 +468,7 @@ public class TeamManagementActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 m_Text = input.getText().toString();
                 v.setText(m_Text);
-                int i = Integer.parseInt(""+v.getTag());
+                int i = Integer.parseInt("" + v.getTag());
                 teams.get(i).setSlogan(m_Text);
 
             }
@@ -440,9 +488,18 @@ public class TeamManagementActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.namePick));
-        final EditText v = (EditText)view;
+        final TextView v = (TextView)view;
 // Set up the input
         final EditText input = new EditText(this);
+        /*input.setLines(2);
+        input.setSingleLine(false);
+        input.setImeOptions(EditorInfo.IME_FLAG_NO_ENTER_ACTION);*/
+        //todo costants
+        int maxLength = 30;
+        InputFilter[] fArray = new InputFilter[1];
+        fArray[0] = new InputFilter.LengthFilter(maxLength);
+        input.setFilters(fArray);
+
 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
@@ -453,7 +510,7 @@ public class TeamManagementActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 m_Text = input.getText().toString();
                 v.setText(m_Text);
-                int i = Integer.parseInt(""+v.getTag());
+                int i = Integer.parseInt("" + v.getTag());
                 teams.get(i).setName(m_Text);
 
             }

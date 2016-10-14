@@ -28,10 +28,12 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
     public static class SingleCardViewHolder extends RecyclerView.ViewHolder {
 
         CardView cv;
-        EditText teamName;
-        EditText slogan;
+        TextView teamName;
+        TextView numUser;
         ImageView deleteTeam;
         Button goToTeam;
+        TextView slogan;
+
         //LinearLayout teamLayout;
 
         //ArrayList<TextView> teamPlayer;
@@ -39,10 +41,11 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
         SingleCardViewHolder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cvteam);
-            teamName = (EditText)itemView.findViewById(R.id.team_name);
-            slogan = (EditText)itemView.findViewById(R.id.slogan);
+            teamName = (TextView)itemView.findViewById(R.id.team_name);
+            slogan = (TextView)itemView.findViewById(R.id.slogan);
             goToTeam = (Button)itemView.findViewById(R.id.goToTeam);
             deleteTeam = (ImageView)itemView.findViewById(R.id.deleteTeam);
+            numUser = (TextView) itemView.findViewById(R.id.numUser);
 
             //teamLayout = (LinearLayout) itemView.findViewById(R.id.team_layout);
             //addUser = (Button) itemView.findViewById(R.id.addUser);
@@ -87,6 +90,7 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
     public void onBindViewHolder(SingleCardViewHolder singleCardViewHolder, final int i) {
         singleCardViewHolder.teamName.setText(singleTeam.get(i).name);
         singleCardViewHolder.slogan.setText(singleTeam.get(i).slogan);
+        singleCardViewHolder.numUser.setText(""+singleTeam.get(i).getNumUsers());
 
 
         /*for(int j=0;j<singleCardViewHolder.teamLayout.getChildCount();j++){

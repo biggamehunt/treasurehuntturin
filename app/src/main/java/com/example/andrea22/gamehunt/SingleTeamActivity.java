@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 
 public class SingleTeamActivity extends AppCompatActivity {
 
-    int numTeam, idHunt;
+    int numTeam, idHunt, pos;
     List<String> usersTeam;
     List<String> users;
     LinearLayout conteinerUser;
@@ -47,10 +47,9 @@ public class SingleTeamActivity extends AppCompatActivity {
 
 
         numTeam = intent.getIntExtra("numTeam", 0);
-        idHunt = intent.getIntExtra("idHunt", 0);
-        Log.v(getLocalClassName(), "numTeam:" + numTeam);
-        Log.v(getLocalClassName(), "idHunt:" + idHunt);
+        pos = intent.getIntExtra("pos", 0);
 
+        idHunt = intent.getIntExtra("idHunt", 0);
 
 
 
@@ -132,6 +131,15 @@ public class SingleTeamActivity extends AppCompatActivity {
     }
 
     public void turnBack(View v){
+
+        Intent intent = new Intent();
+
+        intent.putExtra("numUsers", usersTeam.size());
+        intent.putExtra("numTeam", numTeam);
+
+
+        setResult(RESULT_OK, intent);
+
         finish();
     }
 
