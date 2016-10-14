@@ -139,10 +139,6 @@ public class TeamManagementActivity extends AppCompatActivity {
         rv.setAdapter(adapter);
     }
 
-    public void turnBack(View v){
-        finish();
-    }
-
     public void addTeam(View view){
 
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
@@ -408,6 +404,9 @@ public class TeamManagementActivity extends AppCompatActivity {
 
     }
 
+    public void turnBack(View view) {
+        onBackPressed();
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();

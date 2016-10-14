@@ -109,9 +109,6 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
     }
 
-    public void turnBack(View v){
-        finish();
-    }
 
     public void showTimePickerDialog(View v) {
         output = (TextView)v;
@@ -300,7 +297,15 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                         startActivity(intent);
-                    } else if (!res.equals("0")) {
+                    } else if (res.trim().equals("-2")) {
+                        text = "La data di partenza non è valida!";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        toast = Toast.makeText(this, text, duration);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+
+                        toast.show();
+                    }else if (!res.equals("0")) {
                         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
                         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
@@ -332,6 +337,20 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
 
     }
+
+    public void turnBack(View view) {
+        onBackPressed();
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, HuntListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
+        overridePendingTransition(R.anim.back_enter, R.anim.back_exit);
+    }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

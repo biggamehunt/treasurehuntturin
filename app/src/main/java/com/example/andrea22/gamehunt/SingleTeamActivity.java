@@ -99,7 +99,7 @@ public class SingleTeamActivity extends AppCompatActivity {
 
         String stringUsers = myHelper.selectAllUserAddTeam(db, idHunt);
 
-        Log.v(getLocalClassName(), "users:"+stringUsers);
+        Log.v(getLocalClassName(), "users:" + stringUsers);
 
 
         String[] splitUsers = stringUsers.split("\\|");
@@ -141,6 +141,23 @@ public class SingleTeamActivity extends AppCompatActivity {
         setResult(RESULT_OK, intent);
 
         finish();
+        overridePendingTransition(R.anim.back_enter, R.anim.back_exit);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+
+        intent.putExtra("numUsers", usersTeam.size());
+        intent.putExtra("numTeam", numTeam);
+
+
+        setResult(RESULT_OK, intent);
+
+        finish();
+        overridePendingTransition(R.anim.back_enter, R.anim.back_exit);
+
     }
 
     public void showPopup(View v) {

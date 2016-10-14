@@ -270,10 +270,6 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
 
     }
 
-    public void turnBack(View v){
-        finish();
-    }
-
     public void turnHunt(View v) {
 
         //todo: inserire su string i toast
@@ -370,14 +366,10 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
             setResult(RESULT_OK, intent);
 
             finish();
+            overridePendingTransition(R.anim.back_enter, R.anim.back_exit);
+
         }
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.back_enter, R.anim.back_exit);
     }
 
     @Override
@@ -418,6 +410,16 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
         return true;
     }
 
+    public void turnBack(View view) {
+        onBackPressed();
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+
+        overridePendingTransition(R.anim.back_enter, R.anim.back_exit);
+    }
 
 
 
