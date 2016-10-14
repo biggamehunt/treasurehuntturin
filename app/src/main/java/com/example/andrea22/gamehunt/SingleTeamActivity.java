@@ -232,6 +232,8 @@ public class SingleTeamActivity extends AppCompatActivity {
                         ((TextView)ll.getChildAt(1)).setText(username);
                         conteinerUser.addView(ll);
 
+                        ((EditText) findViewById(R.id.singleUserId)).setText("");
+
                         /*TextView playerView = new TextView(this);
                         playerView.setText(username);
                         singleTeam.get(numTeam - 1).getPlayer().add(username.trim());

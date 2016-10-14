@@ -1,6 +1,7 @@
 package com.example.andrea22.gamehunt;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -75,37 +76,82 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     private String clue, nameHunt, nameStage;
     private int numStage, ray, isLocationRequired, isCheckRequired, isPhotoRequired, isCompleted;
+    private int isStarted, isEnded;
     private float areaLat, areaLon, lat, lon;
-    FloatingActionButton photoButton;
+    FloatingActionButton photoButton, position, info;
     Bitmap resized;
     //WebSocketClient mWebSocketClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_hunt);
         parent = this;
         Intent intent = getIntent();
         idHunt = Integer.parseInt(intent.getStringExtra("idHunt"));
 
-        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
-        idUser = pref.getInt("idUser", 0);
+        isStarted = intent.getIntExtra("isStarted", -1);
+        isEnded = intent.getIntExtra("isEnded",-1);
+
+        Log.v("Hunt Activity", "isStarted:"+isStarted);
+        Log.v("Hunt Activity", "isEnded:"+isEnded);
+
+        photoButton = (FloatingActionButton) findViewById(R.id.photo);
+        position = (FloatingActionButton) findViewById(R.id.position);
+        info = (FloatingActionButton) findViewById(R.id.info);
 
 
-        if (isCompleted == 0){
-            setContentView(R.layout.activity_hunt);
+
+        if (isStarted==1 && isEnded==0) {
+            Log.v("Hunt Activity", "in corso!");
+            SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+
+            idUser = pref.getInt("idUser", 0);
+
             setStageMap();
 
 
+
+            //todo: da rivedere... isComplete lo setto dopo l'if!!!
+
+            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
+
+        } else if (isStarted==0 && isEnded==0){
+            Log.v("Hunt Activity", "deve partire ancora...");
+
+            String timeStart = intent.getStringExtra("timeStart");
+            Log.v("Hunt Activity", "timeStart:"+timeStart);
+
+            new AlertDialog.Builder(this)
+            .setTitle("Devi ancora aspettare!")
+                    .setMessage("La caccia partirà il " + timeStart)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+
+            photoButton.setVisibility(View.INVISIBLE);
+            info.setVisibility(View.INVISIBLE);
+            position.setVisibility(View.INVISIBLE);
+        } else if (isStarted==1 && isEnded==1){
+            Log.v("Hunt Activity", "è finita...");
+
+            new AlertDialog.Builder(this)
+            .setTitle("La caccia è terminata!")
+                    .setMessage("Grazie per aver giocato con noi.")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+
+            photoButton.setVisibility(View.INVISIBLE);
+            info.setVisibility(View.INVISIBLE);
+            position.setVisibility(View.INVISIBLE);
+
         } else {
-            //todo:mettere un altro layout...?
-            setContentView(R.layout.activity_hunt);
-            Toast toast = Toast.makeText(this, "La caccia è completa!", Toast.LENGTH_SHORT);
-            toast.show();
+            //todo da gestire
         }
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
+
     }
 
 
@@ -193,7 +239,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
             }
-            photoButton = (FloatingActionButton) findViewById(R.id.photo);
             Log.v("Hunt Activity", "isPhotoRequired:"+isPhotoRequired);
 
             if (isPhotoRequired == 0 || isCompleted == 1) {
@@ -262,6 +307,13 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     nameHunt = c.getString(c.getColumnIndex("nameHunt"));
 
 
+
+                    if (isCompleted == 1){
+                        Toast toast = Toast.makeText(this, "La caccia è completa!", Toast.LENGTH_SHORT);
+                        toast.show();
+
+                    }
+
                 } while (c.moveToNext());
 
             }
@@ -310,12 +362,18 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                         startActivity(intent);
                     } else if (!res.trim().equals("0")) {
+
+
+
+
+                        JSONObject jsonRes = new JSONObject(res);
+
+
                         DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                         SQLiteDatabase db = myHelper.getWritableDatabase();
 
                         myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser,idHunt,nameHunt);
 
-                        JSONObject jsonRes = new JSONObject(res);
 
                         FrameLayout frame = (FrameLayout) findViewById(R.id.rect_map);
                         CoordinatorLayout cl = (CoordinatorLayout) findViewById(R.id.coordinator_maps);
@@ -333,6 +391,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                             frame.setVisibility(View.VISIBLE);
                         }
+
+
 
 
 

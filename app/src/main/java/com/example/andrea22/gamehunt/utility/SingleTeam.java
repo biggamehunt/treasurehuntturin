@@ -7,21 +7,15 @@ import java.util.List;
  */
 public class SingleTeam {
     String name, slogan;
-    List<String> player;
     int numTeam;
     int numUsers;
 
-    public SingleTeam(String name, String slogan, List<String> player, int numTeam, int numUsers) {
+    public SingleTeam(String name, String slogan, int numTeam, int numUsers) {
         this.name = name;
         this.slogan = slogan;
-        this.player = player;
         this.numTeam = numTeam;
         this.numUsers = numUsers;
 
-    }
-
-    public int getCountPlayer(){
-        return player.size();
     }
 
     public int getNumTeam(){
@@ -52,5 +46,4 @@ public class SingleTeam {
         this.numUsers = numUsers;
     }
 
-    public List<String> getPlayer () { return player; }
 }

@@ -29,6 +29,8 @@ import com.example.andrea22.gamehunt.utility.RetrieveJson;
 import com.example.andrea22.gamehunt.utility.SimpleFragmentPagerAdapter;
 import com.example.andrea22.gamehunt.utility.SingleHunt;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -273,9 +275,36 @@ public class HuntListActivity extends AppCompatActivity {
 
 
                         Log.d("test debug", "if. res = " + res);
+                        JSONObject jRes = new JSONObject(res);
 
-                        myHelper.insertHuntDetail(db,res);
-                        myHelper.setHuntIsLoaded(db, Integer.parseInt(idHunt));
+                        if (jRes.getInt("isStarted")==1 && jRes.getInt("isEnded")==0) {
+                            Log.v("HuntListActivity", "in corso");
+
+                            myHelper.insertHuntDetail(db,res);
+                            myHelper.setHuntIsLoaded(db, Integer.parseInt(idHunt));
+                            intent.putExtra("isStarted", 1);
+                            intent.putExtra("isEnded",0);
+
+                        } else  if (jRes.getInt("isStarted")==0 && jRes.getInt("isEnded")==0) {
+                            Log.v("HuntListActivity", "deve partire ancora...");
+
+                            intent.putExtra("isStarted", 0);
+                            intent.putExtra("isEnded",0);
+                            intent.putExtra("timeStart",jRes.getString("timeStart"));
+
+
+
+                        } else  if (jRes.getInt("isStarted")==1 && jRes.getInt("isEnded")==1) {
+                            Log.v("HuntListActivity", "è finita");
+
+                            intent.putExtra("isStarted", 1);
+                            intent.putExtra("isEnded",1);
+                            intent.putExtra("timeStart",jRes.getString("timeStart"));
+                        }
+
+
+
+
                         /*idUser = myHelper.createDB(db, res);
 
                         connectWebSocket();

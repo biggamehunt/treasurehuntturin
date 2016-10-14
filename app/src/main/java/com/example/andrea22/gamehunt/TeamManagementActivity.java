@@ -101,14 +101,14 @@ public class TeamManagementActivity extends AppCompatActivity {
                 do {
                     splitUsers = c.getString(c.getColumnIndex("users")).split("\\|");
 
-                    for(int i=0; i<splitUsers.length; i++){
+                    /*for(int i=0; i<splitUsers.length; i++){
                         users.add(splitUsers[i]);
-                    }
+                    }*/
 
 
                     //todo: cambiare lo 0 in quinto parametro
-                    teams.add(new SingleTeam(c.getString(c.getColumnIndex("name")), c.getString(c.getColumnIndex("slogan")), users, c.getInt(c.getColumnIndex("numTeam")),0));
-                    users = new ArrayList<String>();
+                    teams.add(new SingleTeam(c.getString(c.getColumnIndex("name")), c.getString(c.getColumnIndex("slogan")), c.getInt(c.getColumnIndex("numTeam")),0));
+                   // users = new ArrayList<String>();
                 } while (c.moveToNext());
             }
         } else {
@@ -121,8 +121,8 @@ public class TeamManagementActivity extends AppCompatActivity {
 
 
 
-                teams.add(new SingleTeam(name_1,"", new ArrayList<String>(), 1,0));
-                teams.add(new SingleTeam(name_2,"", new ArrayList<String>(), 2,0));
+                teams.add(new SingleTeam(name_1,"", 1,0));
+                teams.add(new SingleTeam(name_2,"", 2,0));
 
                 mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), name_1, 1, "");
                 mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), name_2, 2, "");
@@ -154,7 +154,7 @@ public class TeamManagementActivity extends AppCompatActivity {
             teamNamesHold.add(name);
 
             int numTeam = teams.size() + 1;
-            SingleTeam newTeam = new SingleTeam(name, "", new ArrayList<String>(), numTeam,0);
+            SingleTeam newTeam = new SingleTeam(name, "", numTeam,0);
             teams.add(newTeam);
 
             mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), name, numTeam, "");
@@ -279,6 +279,11 @@ public class TeamManagementActivity extends AppCompatActivity {
     public void finish(View view){
 
         Log.v(getLocalClassName(), "entro in finish");
+
+
+
+
+
         /*
         EditText editName = (EditText) rv.getChildAt(0).findViewById(R.id.team_name);
         EditText editSlogan = (EditText) rv.getChildAt(0).findViewById(R.id.slogan);
@@ -309,7 +314,7 @@ public class TeamManagementActivity extends AppCompatActivity {
 
 
 
-
+            mDbHelper.updateNamesAndSlogans(db,teams,pref.getInt("idUser", 0),pref.getInt("idLastHunt", 0));
 
 
             Cursor c = db.rawQuery("SELECT * FROM ADDTEAM WHERE idHunt = " + pref.getInt("idLastHunt", 0), null);
