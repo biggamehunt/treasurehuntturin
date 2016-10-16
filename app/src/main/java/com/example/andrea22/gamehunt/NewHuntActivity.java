@@ -307,7 +307,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                         toast.setGravity(Gravity.CENTER, 0, 0);
 
                         toast.show();
-                    }else if (!res.equals("0")) {
+                    }else if (!res.trim().equals("0")) {
                         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
                         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 

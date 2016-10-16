@@ -126,6 +126,9 @@ public class DBHelper extends SQLiteOpenHelper {
                         values.put(HuntTable.COLUMN_DESCRIPTION, hunt.isNull("description") == false ? hunt.getString("description") : "");
                         values.put(HuntTable.COLUMN_ISFINISHED, hunt.getString("isFinished"));
                         values.put(HuntTable.COLUMN_IDUSER, hunt.getString("idUser"));
+                        values.put(HuntTable.COLUMN_ISSTAGESEMPTY, hunt.getString("isStagesEmpty"));
+                        values.put(HuntTable.COLUMN_ISTEAMSEMPTY, hunt.getString("isTeamsEmpty"));
+
 
                         db.insert(HuntTable.TABLE_NAME, null, values);
                         Log.v("db log", "Insert Hunt eseguito");
@@ -194,12 +197,14 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(HuntTable.COLUMN_DESCRIPTION, hunt.isNull("description") == false ? hunt.getString("description") : "");
         values.put(HuntTable.COLUMN_ISFINISHED, hunt.getString("isFinished"));
         values.put(HuntTable.COLUMN_IDUSER, hunt.getString("idUser"));
+        values.put(HuntTable.COLUMN_ISSTAGESEMPTY, hunt.getString("isStagesEmpty"));
+        values.put(HuntTable.COLUMN_ISTEAMSEMPTY, hunt.getString("isTeamsEmpty"));
 
 
 
         db.insert(HuntTable.TABLE_NAME, null, values);
         Log.v("db log", "Insert Hunt eseguito");
-
+/*
         if (hunt.isNull("stages") == false) {
             JSONArray stages_create = hunt.getJSONArray("stages");
             JSONObject stage = null;
@@ -229,7 +234,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Log.v("db log", "Insert Stage eseguito");
 
             }
-        }
+        }*/
 
         return Integer.parseInt(hunt.getString("idHunt"));
 
@@ -508,6 +513,7 @@ public class DBHelper extends SQLiteOpenHelper {
         JSONObject hunt = new JSONObject(res);
         JSONArray stages = hunt.getJSONArray("stages");
         JSONObject stage = null;
+        Log.v("db log", "stages.length():"+stages.length());
 
         for (int i = 0; i < stages.length(); i++) {
 
@@ -538,6 +544,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
         JSONObject team = hunt.getJSONObject("team");
+        Log.v("db log", "team:"+team);
 
         values = new ContentValues();
 
@@ -792,6 +799,36 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("DELETE FROM ADDSTAGE WHERE numStage =" + numStage + " AND idUser = "+idUser+" AND idHunt = " + idHunt + ";");
 
             Log.v("db log", "Delete AddStage eseguito");
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean updateisStagesEmpty(SQLiteDatabase db, int idHunt, int isEmpty)  {
+
+        try {
+            Log.v("db log", "prima di updateisStageEmpty");
+            db.execSQL("UPDATE HUNT SET isStagesEmpty = " + isEmpty + " WHERE idHunt =" + idHunt + ";");
+            Log.v("db log", "dopo di updateisStageEmpty");
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean updateisTeamsEmpty(SQLiteDatabase db, int idHunt, int isEmpty)  {
+
+        try {
+            Log.v("db log", "prima di updateisTeamsEmpty");
+            db.execSQL("UPDATE HUNT SET isTeamsEmpty = " + isEmpty + " WHERE idHunt =" + idHunt + ";");
+            Log.v("db log", "dopo di updateisTeamsEmpty");
 
 
         } catch (Exception e){

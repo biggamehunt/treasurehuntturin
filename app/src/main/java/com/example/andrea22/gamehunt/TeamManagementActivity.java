@@ -383,6 +383,7 @@ public class TeamManagementActivity extends AppCompatActivity {
                 mDbHelper.insertCreateTeams(db, res);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.apply();
+                mDbHelper.updateisTeamsEmpty(db,pref.getInt("idLastHunt", 0),0);
 
                 Intent intent = new Intent(this, HuntListActivity.class);
                 startActivity(intent);

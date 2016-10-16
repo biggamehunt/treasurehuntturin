@@ -89,9 +89,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         singleHuntViewHolder.huntTitle.setText(singlehunts.get(i).title);
         singleHuntViewHolder.huntDate.setText(singlehunts.get(i).date);
         singleHuntViewHolder.huntImage.setImageResource(singlehunts.get(i).imageId);
-        
+
         singleHuntViewHolder.description.setText(singlehunts.get(i).description);
-        singleHuntViewHolder.goToHunt.setText(this.context.getResources().getString(R.string.goToHunt));
         singleHuntViewHolder.modifyHunt.setText(this.context.getResources().getString(R.string.modifyHunt));
 
         pos=i;
@@ -103,18 +102,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         singleHuntViewHolder.description.setVisibility(View.GONE);
         singleHuntViewHolder.goToHunt.setVisibility(View.GONE);
         singleHuntViewHolder.modifyHunt.setVisibility(View.GONE);
-        singleHuntViewHolder.goToHunt.setTag(singlehunts.get(i).idHunt);
+        final String idHunt = ""+singlehunts.get(i).idHunt;
         singleHuntViewHolder.modifyHunt.setTag(singlehunts.get(i).idHunt);
 
         if (dimStart != -1) {
             singleHuntViewHolder.cv.getLayoutParams().height = dimStart;
         }
+        singleHuntViewHolder.cv.setTag(singlehunts.get(i).isMine);
 
-        if (singlehunts.get(i).isStarted == false && singlehunts.get(i).isMine ==true){
-            singleHuntViewHolder.cv.setTag(true);
-        } else {
-            singleHuntViewHolder.cv.setTag(false);
-        }
 
         singleHuntViewHolder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,16 +122,44 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
             }
         });
 
-        singleHuntViewHolder.goToHunt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // ((TeamManagementActivity) context).addUser(view);
-                Log.v("RVAdapter", "idHunt:"+view.getTag());
-                Log.v("db log", "id: " + view.getId());
+        if (singlehunts.get(i).isStagesEmpty == 0 && singlehunts.get(i).isTeamsEmpty == 0){
+            singleHuntViewHolder.goToHunt.setText(this.context.getResources().getString(R.string.goToHunt));
+            singleHuntViewHolder.goToHunt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // ((TeamManagementActivity) context).addUser(view);
+                    Log.v("RVAdapter", "idHunt:"+idHunt);
+                    Log.v("db log", "id: " + view.getId());
 
-                ((HuntListActivity)context).goToHunt(view.getTag().toString());
-            }
-        });
+                    ((HuntListActivity)context).goToHunt(idHunt);
+                }
+            });
+        } else if (singlehunts.get(i).isStagesEmpty == 1 && singlehunts.get(i).isTeamsEmpty == 1){
+            singleHuntViewHolder.goToHunt.setText(this.context.getResources().getString(R.string.continueHunt));
+            singleHuntViewHolder.goToHunt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // ((TeamManagementActivity) context).addUser(view);
+                    Log.v("RVAdapter", "idHunt:"+view.getTag());
+                    Log.v("db log", "id: " + view.getId());
+
+                    ((HuntListActivity)context).goToStagesCreation(idHunt);
+                }
+            });
+        } else if (singlehunts.get(i).isStagesEmpty == 0 && singlehunts.get(i).isTeamsEmpty == 1){
+            singleHuntViewHolder.goToHunt.setText(this.context.getResources().getString(R.string.continueHunt));
+            singleHuntViewHolder.goToHunt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // ((TeamManagementActivity) context).addUser(view);
+                    Log.v("RVAdapter", "idHunt:"+view.getTag());
+                    Log.v("db log", "id: " + view.getId());
+
+                    ((HuntListActivity)context).goToTeamsCreation(idHunt);
+                }
+            });
+        }
+
 
         singleHuntViewHolder.modifyHunt.setOnClickListener(new View.OnClickListener() {
             @Override

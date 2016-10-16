@@ -9,16 +9,18 @@ public class SingleHunt {
         String date;
         int imageId;
         String description;
-        boolean isStarted;
+        int isStagesEmpty;
+        int isTeamsEmpty;
         boolean isMine; //creatore della caccia
 
-        public SingleHunt(int idHunt, String title, String date, int imageId, String description, boolean isStarted, boolean isMine) {
+        public SingleHunt(int idHunt, String title, String date, int isStagesEmpty, int isTeamsEmpty, int imageId,String description, boolean isMine) {
                 this.idHunt=idHunt;
                 this.title = title;
                 this.date = date;
                 this.imageId = imageId;
                 this.description = description;
-                this.isStarted = isStarted;
                 this.isMine = isMine;
+                this.isStagesEmpty = isStagesEmpty;
+                this.isTeamsEmpty = isTeamsEmpty;
         }
 }

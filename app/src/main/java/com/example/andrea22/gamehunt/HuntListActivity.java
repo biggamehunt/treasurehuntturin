@@ -128,19 +128,22 @@ public class HuntListActivity extends AppCompatActivity {
             Log.v("data", "idUser: " + pref.getInt("idUser", 0));
             Log.v("data", "idUser db: " + c.getInt(c.getColumnIndex("idUser")));
             //todo: modificare la variabile false che sta per isStarted
-            boolean isMine;
             do {
                 if(c.getInt(c.getColumnIndex("idUser")) == (pref.getInt("idUser",0))){
                     userHunts.add(new SingleHunt(c.getInt(c.getColumnIndex("idHunt")),
                             c.getString(c.getColumnIndex("name")),
                             c.getString(c.getColumnIndex("timeStart")),
-                            R.drawable.she_mini, c.getString(c.getColumnIndex("description")), false, true));
+                            c.getInt(c.getColumnIndex("isStagesEmpty")),
+                            c.getInt(c.getColumnIndex("isTeamsEmpty")),
+                            R.drawable.she_mini, c.getString(c.getColumnIndex("description")), true));
 
                 } else {
                     otherHunts.add(new SingleHunt(c.getInt(c.getColumnIndex("idHunt")),
                             c.getString(c.getColumnIndex("name")),
                             c.getString(c.getColumnIndex("timeStart")),
-                            R.drawable.she_mini, c.getString(c.getColumnIndex("description")), false, false));
+                            c.getInt(c.getColumnIndex("isStagesEmpty")),
+                            c.getInt(c.getColumnIndex("isTeamsEmpty")),
+                            R.drawable.she_mini, c.getString(c.getColumnIndex("description")), false));
                 }
             } while (c.moveToNext());
         }
@@ -245,6 +248,30 @@ public class HuntListActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
+    public void goToStagesCreation(String idHunt){
+        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("idLastHunt", Integer.parseInt(idHunt));
+        editor.apply();
+
+        Intent intent = new Intent(this, StageManagementActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
+
+
+    public void goToTeamsCreation(String idHunt){
+        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("idLastHunt", Integer.parseInt(idHunt));
+        editor.apply();
+
+        Intent intent = new Intent(this, TeamManagementActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
+
+
     public void goToHunt(String idHunt){
         Intent intent = new Intent(this, HuntActivity.class);
         intent.putExtra("idHunt", idHunt);
@@ -294,12 +321,11 @@ public class HuntListActivity extends AppCompatActivity {
 
 
 
-                        } else  if (jRes.getInt("isStarted")==1 && jRes.getInt("isEnded")==1) {
+                        } else  if (jRes.getInt("isStarted")==1 && jRes.getInt("isEnded") == 1) {
                             Log.v("HuntListActivity", "è finita");
 
                             intent.putExtra("isStarted", 1);
                             intent.putExtra("isEnded",1);
-                            intent.putExtra("timeStart",jRes.getString("timeStart"));
                         }
 
 

@@ -161,7 +161,7 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
                 startActivity(intent);
             } else if (!res.equals("0")) {
                 db.execSQL("DELETE FROM ADDSTAGE WHERE idHunt = " + pref.getInt("idLastHunt", 0));
-
+                mDbHelper.updateisStagesEmpty(db,pref.getInt("idLastHunt", 0),0);
                 Intent intent = new Intent(this, TeamManagementActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.enter, R.anim.exit);
