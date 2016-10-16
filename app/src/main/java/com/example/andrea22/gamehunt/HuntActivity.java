@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.CoordinatorLayout;
@@ -20,9 +21,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.auth.AWSCredentials;
@@ -78,7 +82,13 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     private int numStage, ray, isLocationRequired, isCheckRequired, isPhotoRequired, isCompleted;
     private int isStarted, isEnded;
     private float areaLat, areaLon, lat, lon;
-    FloatingActionButton photoButton, position, info;
+    boolean click;
+    ImageButton centralButton, clueButton, teamButton;
+    TextView clueText;
+    Toolbar bottomBar;
+
+
+    //FloatingActionButton photoButton, position, info;
     Bitmap resized;
     //WebSocketClient mWebSocketClient;
 
@@ -88,6 +98,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_hunt);
         parent = this;
         Intent intent = getIntent();
+
+        click = false;
         idHunt = Integer.parseInt(intent.getStringExtra("idHunt"));
 
         isStarted = intent.getIntExtra("isStarted", -1);
@@ -96,11 +108,15 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         Log.v("Hunt Activity", "isStarted:"+isStarted);
         Log.v("Hunt Activity", "isEnded:"+isEnded);
 
-        photoButton = (FloatingActionButton) findViewById(R.id.photo);
-        position = (FloatingActionButton) findViewById(R.id.position);
-        info = (FloatingActionButton) findViewById(R.id.info);
+        //photoButton = (FloatingActionButton) findViewById(R.id.photo);
+        //position = (FloatingActionButton) findViewById(R.id.position);
+        //info = (FloatingActionButton) findViewById(R.id.info);
 
-
+        bottomBar = (Toolbar) findViewById(R.id.bot);
+        centralButton = (ImageButton)findViewById(R.id.central);
+        clueButton = (ImageButton)findViewById(R.id.clue);
+        teamButton = (ImageButton)findViewById(R.id.team);
+        clueText = (TextView)findViewById(R.id.clueText);
 
         if (isStarted==1 && isEnded==0) {
             Log.v("Hunt Activity", "in corso!");
@@ -109,8 +125,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             idUser = pref.getInt("idUser", 0);
 
             setStageMap();
-
-
 
             //todo: da rivedere... isComplete lo setto dopo l'if!!!
 
@@ -131,9 +145,10 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
-            photoButton.setVisibility(View.INVISIBLE);
-            info.setVisibility(View.INVISIBLE);
-            position.setVisibility(View.INVISIBLE);
+            bottomBar.setVisibility(View.GONE);
+            //photoButton.setVisibility(View.INVISIBLE);
+            //info.setVisibility(View.INVISIBLE);
+            //position.setVisibility(View.INVISIBLE);
         } else if (isStarted==1 && isEnded==1){
             Log.v("Hunt Activity", "è finita...");
 
@@ -143,9 +158,11 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
-            photoButton.setVisibility(View.INVISIBLE);
-            info.setVisibility(View.INVISIBLE);
-            position.setVisibility(View.INVISIBLE);
+            //photoButton.setVisibility(View.INVISIBLE);
+            //info.setVisibility(View.INVISIBLE);
+            //position.setVisibility(View.INVISIBLE);
+            bottomBar.setVisibility(View.GONE);
+
 
         } else {
             //todo da gestire
@@ -213,6 +230,15 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             Log.v("Hunt Activity", "isLocationRequired:"+isLocationRequired);
             Log.v("Hunt Activity", "isCompleted:"+isCompleted);
 
+            if (isPhotoRequired == 0) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    centralButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_room_black_24dp, getApplicationContext().getTheme()));
+                } else {
+                    centralButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_room_black_24dp));
+                }
+            }
+
             if (isLocationRequired == 1  && isCompleted == 0) {
                 Log.v("Hunt Activity", "areaLat:"+areaLat);
                 Log.v("Hunt Activity", "areaLon:"+areaLon);
@@ -241,10 +267,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             }
             Log.v("Hunt Activity", "isPhotoRequired:"+isPhotoRequired);
 
-            if (isPhotoRequired == 0 || isCompleted == 1) {
 
-                photoButton.setVisibility(View.INVISIBLE);
-            }
 
 
 
@@ -473,34 +496,17 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void float1(View view){
-        Log.v("Hunt Activity", "open camera");
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    public void takeClue(View view){
 
-        photo = null;
-        try
-        {
-            // place where to store camera taken picture
-            photo =  createTemporaryFile("picture", ".jpg");
-
+        if(click){
+            clueText.setVisibility(View.GONE);
+        } else {
+            clueText.setVisibility(View.VISIBLE);
         }
-        catch(Exception e)
-        {
-            Log.v("hunt", "Can't create file to take picture!");
-
-        }
-        mImageUri = Uri.fromFile(photo);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
-        // start camera activity
-        startActivityForResult(intent, TAKE_PHOTO_REQ);
+        click = !click;
     }
 
-    public void float2(View view){
-
-
-    }
-
-    public void float3(View view){
+    public void takePosition(View view){
         Log.v("Hunt Activity", "check location");
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -510,7 +516,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             // Show rationale and request permission.
         }
-
 
         LocationManager mLocationManager = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
         List<String> providers = mLocationManager.getProviders(true);
@@ -542,15 +547,35 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             Log.v("Hunt Activity", "lat: "+lat);
             Log.v("Hunt Activity", "lon: "+lon);
 
+            //todo: mettere distance tra le costanti
+            if (distance <= 500) {
+                if (isPhotoRequired == 0) {
+                    Toast.makeText(this, "Sono arrivato!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.v("Hunt Activity", "open camera");
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-            //toDo mettere 50 tra i costants
-            if (distance <= 50){
-                Toast.makeText(this, "Sono arrivato!", Toast.LENGTH_SHORT).show();
-            } else  {
-                Toast.makeText(this, "Ne devo fare di strada ancora! "+distance, Toast.LENGTH_SHORT).show();
+                    photo = null;
+                    try
+                    {
+                        // place where to store camera taken picture
+                        photo =  createTemporaryFile("picture", ".jpg");
+
+                    }
+                    catch(Exception e)
+                    {
+                        Log.v("hunt", "Can't create file to take picture!");
+
+                    }
+                    mImageUri = Uri.fromFile(photo);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+                    // start camera activity
+                    startActivityForResult(intent, TAKE_PHOTO_REQ);
+
+                }
+            } else {
+                Toast.makeText(this, "Ne devo fare di strada ancora! " + distance, Toast.LENGTH_SHORT).show();
             }
-
-
 
         }
 

@@ -17,56 +17,166 @@
         android:layout_height="match_parent"
         android:id="@+id/coordinator_maps"
         >
-
-
-
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="com.example.andrea22.gamehunt.HuntActivity" >
+            android:layout_height="match_parent">
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/photo"
+            <fragment
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:map="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.example.andrea22.gamehunt.HuntActivity"/>
+
+            <ImageView
+                android:id="@+id/transparent_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@android:color/transparent"/>
+
+        </RelativeLayout>
+
+
+
+
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/top"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                app:elevation="6dp"
-                app:backgroundTint="@color/colorAccent"
-                app:pressedTranslationZ="12dp"
-                android:layout_margin="@dimen/fab_margin"
-                android:src="@drawable/ic_add_white_24dp"
-                android:onClick="float1"/>
+                android:src="@drawable/ic_dehaze_white_24dp"
+                android:background="@drawable/imagebutton_background"
+                android:layout_centerVertical="true"/>
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/info"
+
+            <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|bottom"
-                app:elevation="6dp"
-                app:backgroundTint="@color/colorAccent"
-                app:pressedTranslationZ="12dp"
-                android:layout_margin="@dimen/fab_margin"
-                android:src="@drawable/ic_add_white_24dp"
-                android:onClick="float2"/>
+                android:src="@drawable/ic_search_white_24dp"
+                android:background="@drawable/imagebutton_background"
+                android:layout_gravity="right"
+                android:layout_marginRight="15dp"
+                android:layout_centerVertical="true"/>
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/position"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|bottom"
-                app:elevation="6dp"
-                app:backgroundTint="@color/colorAccent"
-                app:pressedTranslationZ="12dp"
-                android:layout_margin="@dimen/fab_margin"
-                android:src="@drawable/ic_add_white_24dp"
-                android:onClick="float3"/>
+        </android.support.v7.widget.Toolbar>
 
-        </fragment>
 
     </android.support.design.widget.CoordinatorLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/bot"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            >
+
+            <ImageButton
+                android:padding="6dp"
+                android:id="@+id/central"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_photo_camera_white_24dp"
+                android:tint="@color/colorPrimary"
+                android:background="@drawable/imagebutton_style"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:onClick="takePosition"/>
+
+            <ImageButton
+                android:padding="6dp"
+                android:id="@+id/clue"
+                android:layout_marginStart="70dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_create_black_24dp"
+                android:alpha="0.3"
+                android:background="@drawable/imagebutton_style"
+                android:layout_centerVertical="true"
+                android:onClick="takeClue"/>
+
+
+            <ImageButton
+                android:padding="6dp"
+                android:id="@+id/team"
+                android:layout_marginEnd="70dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_group_black_24dp"
+                android:background="@drawable/imagebutton_style"
+                android:alpha="0.3"
+                android:layout_centerVertical="true"
+                android:layout_gravity="end"/>
+
+        </android.support.v7.widget.Toolbar>
+
+        <TextView
+            android:id="@+id/clueText"
+            android:visibility="gone"
+            android:height="150dp"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ma questo è un fantastico suggerimento"/>
+
+    </LinearLayout>
+
+
+
 </RelativeLayout>
+
+<!--
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            app:elevation="6dp"
+            app:backgroundTint="@color/colorAccent"
+            app:pressedTranslationZ="12dp"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_add_white_24dp"
+            android:onClick="float1"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|bottom"
+            app:elevation="6dp"
+            app:backgroundTint="@color/colorAccent"
+            app:pressedTranslationZ="12dp"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_add_white_24dp"
+            android:onClick="float2"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            app:elevation="6dp"
+            app:backgroundTint="@color/colorAccent"
+            app:pressedTranslationZ="12dp"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_add_white_24dp"
+            android:onClick="float3"/>-->

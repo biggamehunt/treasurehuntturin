@@ -228,7 +228,7 @@
                     android:id="@+id/isphotoreq"
                     android:layout_marginStart="295dp"
                     android:layout_centerVertical="true"
-                    android:checked="true"
+                    android:checked="false"
                     app:buttonTint="@color/colorAccent"/>
 
 
@@ -252,7 +252,7 @@
                     android:id="@+id/ischeckreq"
                     android:layout_marginStart="295dp"
                     android:layout_centerVertical="true"
-                    android:checked="true"
+                    android:checked="false"
                     app:buttonTint="@color/colorAccent"/>
 
 
