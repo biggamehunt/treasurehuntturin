@@ -44,12 +44,28 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
         setContentView(R.layout.activity_stage_management);
 
 
-        stages= new ArrayList<>();
+        stages= initializeStages();
+
+        //todo aggiungere in constants
         maxStages = 20;
 
 
 
         initializeAdapter();
+    }
+
+    public List<SingleStage> initializeStages(){
+
+
+        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+
+        return mDbHelper.selectAddStage(db,pref.getInt("idLastHunt",0),pref.getInt("idUser",0));
+
+
+
     }
 
     public void initializeAdapter(){
@@ -81,6 +97,10 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
 
 
     public void addStage(View view) {
+
+        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
 
 
         if (stages.size() <= maxStages) {

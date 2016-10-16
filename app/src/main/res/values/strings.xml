@@ -55,7 +55,8 @@
     <string name="welcome4">Are you ready for the next hunt?</string>
     <string name="welcome5">Will you be able to find the treasure?</string>
     <string name="goToHunt">GO TO HUNT</string>
-    <string name="continueHunt">CONTINUE</string>
+    <string name="goToStages">ADD STAGES</string>
+    <string name="goToTeams">ADD TEAMS</string>
     <string name="modifyHunt">MODIFY</string>
 
     <!-- NEWHUNT -->

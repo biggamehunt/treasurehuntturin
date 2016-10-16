@@ -6,16 +6,22 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.andrea22.gamehunt.LoginActivity;
+import com.example.andrea22.gamehunt.utility.SingleStage;
 import com.example.andrea22.gamehunt.utility.SingleTeam;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by Simone on 16/06/2016.
@@ -703,6 +709,67 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean updateSlogan(SQLiteDatabase db, String slogan, int numTeam, int idUser, int idHunt)  {
+
+        try {
+            if (idUser!=0 && idHunt!=0){
+                db.execSQL("UPDATE ADDTEAM SET slogan = '" + slogan + "' WHERE numTeam = " + numTeam + " AND idUser = " + idUser + " AND idHunt = " + idHunt +";");
+
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
+    public boolean updateName(SQLiteDatabase db, String name, int numTeam, int idUser, int idHunt)  {
+
+        try {
+            if (idUser!=0 && idHunt!=0){
+                db.execSQL("UPDATE ADDTEAM SET name = '" + name + "' WHERE numTeam = " + numTeam + " AND idUser = " + idUser + " AND idHunt = " + idHunt +";");
+
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
+    public boolean removeAddStage(SQLiteDatabase db, int numStage, int idUser, int idHunt)  {
+
+        try {
+
+            db.execSQL("DELETE FROM ADDSTAGE WHERE numStage = " + numStage + " AND idUser = "+idUser+" AND idHunt = " + idHunt + ";");
+
+            Log.v("db log", "Delete AddStage eseguito");
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean updateisStagesEmpty(SQLiteDatabase db, int idHunt, int isEmpty)  {
+
+        try {
+            Log.v("db log", "prima di updateisStageEmpty");
+            db.execSQL("UPDATE HUNT SET isStagesEmpty = " + isEmpty + " WHERE idHunt =" + idHunt + ";");
+            Log.v("db log", "dopo di updateisStageEmpty");
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public boolean updateNumStages(SQLiteDatabase db, int[][] positions, int idUser, int idHunt)  {
 
         try {
@@ -736,93 +803,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean updateNamesAndSlogans(SQLiteDatabase db, List<SingleTeam> teams, int idUser, int idHunt)  {
-
-        try {
-
-           /* for (int i = 0; i<positions.length;i++) {
-                Log.v("db log", "prima di updateNumStages");
-                db.execSQL("UPDATE ADDSTAGE SET numStage =" + positions[i][1] + " WHERE numStage = " + positions[i][0] + " AND idUser = " + idUser + " AND idHunt = " + idHunt +";");
-                Log.v("db log", "dopo updateNumStages");
-
-            }*/
-
-            String query1 = "UPDATE ADDTEAM SET name=CASE ";
-            String query2 = "UPDATE ADDTEAM SET slogan=CASE ";
-
-            //String numTeams="";
-            SingleTeam team;
-            for (int i = 0; i<teams.size();i++) {
-                team = teams.get(i);
-
-                query1+="WHEN numTeam="+team.getNumTeam()+" THEN '"+team.getName()+"' ";
-                query2+="WHEN numTeam="+team.getNumTeam()+" THEN '"+team.getSlogan()+"' ";
-
-                //numTeams += team.getNumTeam()+",";
-            }
-            /*if (numTeams != null && numTeams.length() > 0){
-                numTeams = numTeams.substring(0, numTeams.length()-1);
-            }*/
-            query1+=" END WHERE idUser = " + idUser + " AND idHunt = " + idHunt;
-            query2+=" END WHERE idUser = " + idUser + " AND idHunt = " + idHunt;
-
-            db.execSQL(query1);
-            db.execSQL(query2);
-
-            Cursor c = db.rawQuery("SELECT * FROM ADDTEAM WHERE idUser = " + idUser + " AND idHunt = " + idHunt+" ORDER BY numTeam ASC", null);
-
-            if (c.moveToFirst()) {
-                do {
-                    Log.v("db log", "name: "+c.getString(c.getColumnIndex("name")));
-                    Log.v("db log", "slogan: "+c.getString(c.getColumnIndex("slogan")));
-                } while (c.moveToNext());
-            }
-
-
-
-
-
-
-        } catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-
-
-    public boolean removeAddStage(SQLiteDatabase db, int numStage, int idUser, int idHunt)  {
-
-        try {
-
-            db.execSQL("DELETE FROM ADDSTAGE WHERE numStage =" + numStage + " AND idUser = "+idUser+" AND idHunt = " + idHunt + ";");
-
-            Log.v("db log", "Delete AddStage eseguito");
-
-
-        } catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    public boolean updateisStagesEmpty(SQLiteDatabase db, int idHunt, int isEmpty)  {
-
-        try {
-            Log.v("db log", "prima di updateisStageEmpty");
-            db.execSQL("UPDATE HUNT SET isStagesEmpty = " + isEmpty + " WHERE idHunt =" + idHunt + ";");
-            Log.v("db log", "dopo di updateisStageEmpty");
-
-
-        } catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
     public boolean updateisTeamsEmpty(SQLiteDatabase db, int idHunt, int isEmpty)  {
 
         try {
@@ -838,7 +818,27 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public List<SingleStage> selectAddStage(SQLiteDatabase db, int idHunt, int idUser)  {
+        if (idHunt != 0 && idUser != 0){
+            List<SingleStage> stages = new ArrayList<>() ;
+            Cursor c = db.rawQuery("SELECT * FROM ADDSTAGE WHERE idHunt = " + idHunt + " AND idUser = "+ idUser+" ORDER BY numStage ASC;", null);
+            if (c.moveToFirst()) {
 
+                SingleStage singleStage;
+                do {
+
+                    singleStage = new SingleStage(c.getString(c.getColumnIndex("name")),c.getInt(c.getColumnIndex("numStage")),c.getInt(c.getColumnIndex("isLocationRequired")),c.getInt(c.getColumnIndex("isCheckRequired")), c.getInt(c.getColumnIndex("isPhotoRequired")));
+                    stages.add(singleStage);
+                } while (c.moveToNext());
+            }
+
+            Log.v("db log", "Select users eseguito");
+
+            return stages;
+
+        }
+        return null;
+    }
 
 
 

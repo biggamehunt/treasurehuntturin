@@ -89,7 +89,7 @@ public class TeamManagementActivity extends AppCompatActivity {
         teams = new ArrayList<>();
         String[] splitUsers;
 
-        List<String> users = new ArrayList<String>();
+        List<String> users = new ArrayList<>();
 
         Cursor c = db.rawQuery("SELECT * FROM ADDTEAM WHERE idUser = " + pref.getInt("idUser",0)+" AND idHunt = " + pref.getInt("idLastHunt",0), null);
 
@@ -101,13 +101,13 @@ public class TeamManagementActivity extends AppCompatActivity {
                 do {
                     splitUsers = c.getString(c.getColumnIndex("users")).split("\\|");
 
-                    /*for(int i=0; i<splitUsers.length; i++){
+                    for(int i=0; i<splitUsers.length; i++) {
                         users.add(splitUsers[i]);
-                    }*/
+                    }
 
 
                     //todo: cambiare lo 0 in quinto parametro
-                    teams.add(new SingleTeam(c.getString(c.getColumnIndex("name")), c.getString(c.getColumnIndex("slogan")), c.getInt(c.getColumnIndex("numTeam")),0));
+                    teams.add(new SingleTeam(c.getString(c.getColumnIndex("name")), c.getString(c.getColumnIndex("slogan")), c.getInt(c.getColumnIndex("numTeam")),splitUsers.length));
                    // users = new ArrayList<String>();
                 } while (c.moveToNext());
             }
@@ -309,10 +309,6 @@ public class TeamManagementActivity extends AppCompatActivity {
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
 
-
-            mDbHelper.updateNamesAndSlogans(db,teams,pref.getInt("idUser", 0),pref.getInt("idLastHunt", 0));
-
-
             Cursor c = db.rawQuery("SELECT * FROM ADDTEAM WHERE idHunt = " + pref.getInt("idLastHunt", 0), null);
 
             if (c.moveToFirst()) {
@@ -383,7 +379,7 @@ public class TeamManagementActivity extends AppCompatActivity {
                 mDbHelper.insertCreateTeams(db, res);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.apply();
-                mDbHelper.updateisTeamsEmpty(db,pref.getInt("idLastHunt", 0),0);
+                mDbHelper.updateisTeamsEmpty(db, pref.getInt("idLastHunt", 0), 0);
 
                 Intent intent = new Intent(this, HuntListActivity.class);
                 startActivity(intent);
@@ -471,10 +467,24 @@ public class TeamManagementActivity extends AppCompatActivity {
         builder.setPositiveButton(getResources().getString(R.string.dialogOk), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+
+
+
                 m_Text = input.getText().toString();
                 v.setText(m_Text);
                 int i = Integer.parseInt("" + v.getTag());
                 teams.get(i).setSlogan(m_Text);
+
+                DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+
+                SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+
+
+                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+                mDbHelper.updateSlogan(db,m_Text,teams.get(i).getNumTeam(),pref.getInt("idUser",0),pref.getInt("idLastHunt",0));
+
 
             }
         });
@@ -517,6 +527,16 @@ public class TeamManagementActivity extends AppCompatActivity {
                 v.setText(m_Text);
                 int i = Integer.parseInt("" + v.getTag());
                 teams.get(i).setName(m_Text);
+
+                DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+
+                SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+
+
+                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+                mDbHelper.updateName(db, m_Text, teams.get(i).getNumTeam(), pref.getInt("idUser",0), pref.getInt("idLastHunt",0));
+
 
             }
         });

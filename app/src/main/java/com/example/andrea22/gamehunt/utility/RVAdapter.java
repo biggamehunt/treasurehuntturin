@@ -135,7 +135,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
                 }
             });
         } else if (singlehunts.get(i).isStagesEmpty == 1 && singlehunts.get(i).isTeamsEmpty == 1){
-            singleHuntViewHolder.goToHunt.setText(this.context.getResources().getString(R.string.continueHunt));
+            singleHuntViewHolder.goToHunt.setText(this.context.getResources().getString(R.string.goToStages));
+
+            singleHuntViewHolder.huntTitle.setTextColor(R.color.colorAccent);
+
+
+
             singleHuntViewHolder.goToHunt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -147,7 +152,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
                 }
             });
         } else if (singlehunts.get(i).isStagesEmpty == 0 && singlehunts.get(i).isTeamsEmpty == 1){
-            singleHuntViewHolder.goToHunt.setText(this.context.getResources().getString(R.string.continueHunt));
+            singleHuntViewHolder.goToHunt.setText(this.context.getResources().getString(R.string.goToTeams));
+            singleHuntViewHolder.huntTitle.setTextColor(R.color.colorAccent);
             singleHuntViewHolder.goToHunt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
