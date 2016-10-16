@@ -398,21 +398,21 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                         myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser,idHunt,nameHunt);
 
 
-                        FrameLayout frame = (FrameLayout) findViewById(R.id.rect_map);
-                        CoordinatorLayout cl = (CoordinatorLayout) findViewById(R.id.coordinator_maps);
+                        //FrameLayout frame = (FrameLayout) findViewById(R.id.rect_map);
+                        //CoordinatorLayout cl = (CoordinatorLayout) findViewById(R.id.coordinator_maps);
                         Log.d("Hunt Activity", "teamIsCompleted:"+jsonRes.getString("teamIsCompleted"));
                         Log.d("Hunt Activity", "userIsCompleted:"+jsonRes.getString("userIsCompleted"));
 
                         if (jsonRes.getString("teamIsCompleted").equals("1")) {
                             Log.d("Hunt Activity", "teamIsCompleted");
-                            cl.setVisibility(View.INVISIBLE);
-                            frame.setVisibility(View.VISIBLE);
+                            //cl.setVisibility(View.INVISIBLE);
+                            //frame.setVisibility(View.VISIBLE);
 
                         } else if (jsonRes.getString("userIsCompleted").equals("1")) {
                             Log.d("Hunt Activity", "userIsCompleted");
-                            cl.setVisibility(View.INVISIBLE);
+                            //cl.setVisibility(View.INVISIBLE);
 
-                            frame.setVisibility(View.VISIBLE);
+                            //frame.setVisibility(View.VISIBLE);
                         }
 
 
