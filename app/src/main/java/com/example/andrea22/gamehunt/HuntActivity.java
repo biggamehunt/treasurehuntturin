@@ -24,6 +24,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -86,7 +88,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     ImageButton centralButton, clueButton, teamButton;
     TextView clueText;
     Toolbar bottomBar;
-
 
     //FloatingActionButton photoButton, position, info;
     Bitmap resized;
@@ -171,16 +172,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.v("Hunt Activity", "onMapReady");
@@ -349,6 +340,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
             Log.v("Hunt Activity", "clue:"+clue);
 
+            clueText.setText(clue);
+
 
 
 
@@ -498,6 +491,11 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void takeClue(View view){
 
+        Animation a = AnimationUtils.loadAnimation(this, R.anim.scale);
+        a.reset();
+        clueText.clearAnimation();
+        clueText.startAnimation(a);
+
         if(click){
             clueText.setVisibility(View.GONE);
         } else {
@@ -581,8 +579,11 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    private File createTemporaryFile(String part, String ext) throws Exception
-    {
+    public void takeTeam(View view){
+
+    }
+
+    private File createTemporaryFile(String part, String ext) throws Exception {
         File tempDir= Environment.getExternalStorageDirectory();
         tempDir=new File(tempDir.getAbsolutePath()+"/.temp/");
         if(!tempDir.exists())
@@ -593,7 +594,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
         return File.createTempFile(part, ext, tempDir);
     }
-
 
     private void updateTeamWebSocket(String users) {
 
@@ -666,6 +666,5 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
     }
-
 
 }

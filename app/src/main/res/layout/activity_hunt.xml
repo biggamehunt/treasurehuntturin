@@ -109,7 +109,8 @@
                 android:background="@drawable/imagebutton_style"
                 android:alpha="0.3"
                 android:layout_centerVertical="true"
-                android:layout_gravity="end"/>
+                android:layout_gravity="end"
+                android:onClick="takeTeam"/>
 
         </android.support.v7.widget.Toolbar>
 
