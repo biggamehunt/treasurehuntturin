@@ -179,6 +179,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         });
     }
 
+
     @Override
     public int getItemCount() {
         return singlehunts.size();
