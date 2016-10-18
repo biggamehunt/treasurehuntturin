@@ -31,33 +31,40 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:screenOrientation="portrait">
 
-        <activity android:name=".WelcomeActivity">
+        <activity
+            android:name=".WelcomeActivity"
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait">
+
             <!-- inserire intent filter nella WelcomeActivity -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".RegistrationActivity"
             android:label="@string/title_activity_registration"
-            android:noHistory="true" />
+            android:noHistory="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".HuntListActivity"
-            android:label="@string/title_activity_huntlist" />
+            android:label="@string/title_activity_huntlist"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ModHuntActivity"
-            android:label="@string/title_activity_modhunt" />
+            android:label="@string/title_activity_modhunt"
+            android:screenOrientation="portrait"/>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -70,20 +77,31 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <activity android:name=".NewHuntActivity" />
+        <activity
+            android:name=".NewHuntActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".NewStageActivity"
-            android:label="@string/title_activity_maps" />
-        <activity android:name=".TeamManagementActivity" />
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".TeamManagementActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".HuntActivity"
-            android:label="@string/title_activity_hunt" />
+            android:label="@string/title_activity_hunt"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SingleTeamActivity"
             android:label="@string/title_activity_activity_single_team"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".StageManagementActivity" />
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".StageManagementActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".GalleryActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

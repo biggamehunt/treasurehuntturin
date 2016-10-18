@@ -241,6 +241,13 @@ public class HuntListActivity extends AppCompatActivity {
         mItemTouchHelper.attachToRecyclerView(rv);*/
     }
 
+
+    public void goToGrid(View view) {
+        Log.v("db log", "id: " + view.getId());
+        Intent intent = new Intent(this, GalleryActivity.class);
+        startActivity(intent);
+    }
+
     public void createHunt(View view){
         Log.v("db log", "id: " + view.getId());
         Intent intent = new Intent(this, NewHuntActivity.class);
