@@ -12,6 +12,8 @@ public class HuntTable {
         public static final String COLUMN_ISLOADED = "isLoaded";
         public static final String COLUMN_ISSTAGESEMPTY = "isStagesEmpty";
         public static final String COLUMN_ISTEAMSEMPTY = "isTeamsEmpty";
+        public static final String COLUMN_ISSTARTED = "isStarted";
+        public static final String COLUMN_ISENDED = "isEnded";
 
 
 
@@ -29,6 +31,9 @@ public class HuntTable {
                         COLUMN_DESCRIPTION + " TEXT, " +
                         COLUMN_ISFINISHED + " INTEGER NOT NULL, " +
                         COLUMN_ISLOADED + " INTEGER NOT NULL DEFAULT 0, " +
+                        COLUMN_ISSTARTED + " INTEGER NOT NULL DEFAULT 0, " +
+                        COLUMN_ISENDED + " INTEGER NOT NULL DEFAULT 0, " +
+
                         COLUMN_ISSTAGESEMPTY + " INTEGER NOT NULL DEFAULT 0, " +
                         COLUMN_ISTEAMSEMPTY + " INTEGER NOT NULL DEFAULT 0, " +
                         COLUMN_IDUSER + " INTEGER NOT NULL);"/* +

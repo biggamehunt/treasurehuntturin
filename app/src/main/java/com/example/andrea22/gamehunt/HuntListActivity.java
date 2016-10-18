@@ -284,9 +284,14 @@ public class HuntListActivity extends AppCompatActivity {
                 DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                 SQLiteDatabase db = myHelper.getWritableDatabase();
 
-                int isLoaded = myHelper.getHuntIsLoaded(db, Integer.parseInt(idHunt));
+                int[] info = myHelper.getHuntIsLoadedIsStartedIsEnded(db, Integer.parseInt(idHunt));
 
-                if (isLoaded == 0) {
+                //info[0] = isLoaded
+                //info[1] = isStarted
+                //info[2] = isEnded
+
+
+                if (info[0] == 0) {
                     Log.d("test debug", "info da caricare!");
                     String username_ut8 = java.net.URLEncoder.encode(pref.getString("username", null), "UTF-8");
 
@@ -354,6 +359,9 @@ public class HuntListActivity extends AppCompatActivity {
                     }
                 } else {
                     Log.d("test debug", "info già caricate!");
+                    intent.putExtra("isStarted", info[1]);
+                    intent.putExtra("isEnded", info[2]);
+
                 }
 
             } catch (Exception e) {
@@ -383,9 +391,9 @@ public class HuntListActivity extends AppCompatActivity {
                 DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                 SQLiteDatabase db = myHelper.getWritableDatabase();
 
-                int isLoaded = myHelper.getHuntIsLoaded(db, Integer.parseInt(idHunt));
+                int info[] = myHelper.getHuntIsLoadedIsStartedIsEnded(db, Integer.parseInt(idHunt));
 
-                if (isLoaded == 0) {
+                if (info[0] == 0) {
                     Log.d("test debug", "info da caricare!");
                     String username_ut8 = java.net.URLEncoder.encode(pref.getString("username", null), "UTF-8");
 

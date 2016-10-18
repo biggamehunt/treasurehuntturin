@@ -487,20 +487,27 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public int getHuntIsLoaded(SQLiteDatabase db, int idHunt)  {
+    public int[] getHuntIsLoadedIsStartedIsEnded(SQLiteDatabase db, int idHunt)  {
 
-        int isLoaded = 0;
-        Cursor c = db.rawQuery("SELECT isLoaded FROM HUNT WHERE idHunt =" + idHunt + ";", null);
+        int[] info = new int[3];
+        Cursor c = db.rawQuery("SELECT isLoaded, isStarted, isEnded FROM HUNT WHERE idHunt =" + idHunt + ";", null);
         if (c.moveToFirst()) {
             do {
-                isLoaded = c.getInt(c.getColumnIndex("isLoaded"));
+                info[0] = c.getInt(c.getColumnIndex("isLoaded"));
+                info[1] = c.getInt(c.getColumnIndex("isStarted"));
+                info[2] = c.getInt(c.getColumnIndex("isEnded"));
+
             } while (c.moveToNext());
         }
 
-        Log.v("db log", "get isLoaded = "+ isLoaded);
+        Log.v("db log", "get isLoaded = "+ info[0]);
+        Log.v("db log", "get isStarted = "+ info[1]);
+        Log.v("db log", "get isEnded = "+ info[2]);
 
-        return isLoaded;
+
+        return info;
     }
+
 
     public void setHuntIsLoaded(SQLiteDatabase db, int idHunt)  {
 
@@ -591,6 +598,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
         }
+
+
+        db.execSQL("UPDATE HUNT SET isStarted = "+hunt.getInt("isStarted")+" AND isEnded = "+hunt.getInt("isEnded")+" WHERE idHunt =" + hunt.getString("idHunt") + ";");
+
 
 
 

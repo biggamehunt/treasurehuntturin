@@ -146,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                             boolean res;
                             DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                             SQLiteDatabase db = myHelper.getWritableDatabase();
-                            if (myHelper.getHuntIsLoaded(db,idHunt)==1) {
+                            if (myHelper.getHuntIsLoadedIsStartedIsEnded(db,idHunt)[0]==1) {
                                 res = myHelper.notifyFromTeamStageCompleted(db, idStage, nextSage, idTeam); //todo: questo deve andare PRIMA del notificationcompat builder!
                             } else {
                                 res = true;
@@ -176,7 +176,7 @@ public class LoginActivity extends AppCompatActivity {
                             DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                             SQLiteDatabase db = myHelper.getWritableDatabase();
                             boolean res;
-                            if (myHelper.getHuntIsLoaded(db,idHunt)==1) {
+                            if (myHelper.getHuntIsLoadedIsStartedIsEnded(db,idHunt)[0]==1) {
                                 res = myHelper.notifyFromTeamHuntCompleted(db,idStage,idTeam);
                             } else {
                                 res = true;

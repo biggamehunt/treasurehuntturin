@@ -45,29 +45,18 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.handshake.ServerHandshake;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 public class HuntActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -219,7 +208,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             //marker.setVisible(false);
 
             Log.v("Hunt Activity", "isLocationRequired:"+isLocationRequired);
-            Log.v("Hunt Activity", "isCompleted:"+isCompleted);
+            Log.v("Hunt Activity", "isCompleted:" + isCompleted);
 
             if (isPhotoRequired == 0) {
 
@@ -256,7 +245,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
             }
-            Log.v("Hunt Activity", "isPhotoRequired:"+isPhotoRequired);
+            Log.v("Hunt Activity", "isPhotoRequired:" + isPhotoRequired);
 
 
 
@@ -491,15 +480,16 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void takeClue(View view){
 
-        Animation a = AnimationUtils.loadAnimation(this, R.anim.scale);
-        a.reset();
-        clueText.clearAnimation();
-        clueText.startAnimation(a);
+
 
         if(click){
             clueText.setVisibility(View.GONE);
         } else {
             clueText.setVisibility(View.VISIBLE);
+            Animation a = AnimationUtils.loadAnimation(this, R.anim.scale);
+            a.reset();
+            clueText.clearAnimation();
+            clueText.startAnimation(a);
         }
         click = !click;
     }
@@ -532,6 +522,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         if (bestLocation != null) {
+            Log.v("Hunt Activity", "bestLocation != null");
+
             // Get latitude of the current location
             double actualLatitude = bestLocation.getLatitude();
 
@@ -547,7 +539,95 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
             //todo: mettere distance tra le costanti
             if (distance <= 500) {
+                Log.v("Hunt Activity", "distance <= 500");
+
                 if (isPhotoRequired == 0) {
+                    String res = null;
+
+                    try{
+                        String u = "http://jbossews-treasurehunto.rhcloud.com/StageOperation";
+
+                        JSONObject info = new JSONObject();
+                        info.put("lat", actualLatitude);
+                        info.put("lon", actualLongitude);
+                        String json = java.net.URLEncoder.encode(info.toString(), "UTF-8");
+                        Log.v("Hunt Activity", "info lat:" + info.getString("lat"));
+                        Log.v("Hunt Activity", "info lon:" + info.getString("lon"));
+                        Log.v("Hunt Activity", "info json:"+json);
+
+                        String p = "action=checkLocation&idStage=" + idStage + "&idUser=" + idUser + "&json=" + json;
+                        String url[]= new String [2];
+                        url[0] = u;
+                        url[1] = p;
+                        res = new RetrieveJson().execute(url).get();
+                        Log.v("Hunt Activity", "res:"+res);
+
+                        if (res.trim().equals("-1")) {
+                            Intent intent = new Intent(this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                            startActivity(intent);
+                        } else if (!res.trim().equals("0")) {
+
+
+
+                            Log.v("Hunt Activity", "!res.trim().equals(0)");
+
+                            JSONObject jsonRes = new JSONObject(res);
+
+
+                            DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                            SQLiteDatabase db = myHelper.getWritableDatabase();
+
+                            myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser,idHunt,nameHunt);
+
+
+                            //FrameLayout frame = (FrameLayout) findViewById(R.id.rect_map);
+                            //CoordinatorLayout cl = (CoordinatorLayout) findViewById(R.id.coordinator_maps);
+                            Log.d("Hunt Activity", "teamIsCompleted:"+jsonRes.getString("teamIsCompleted"));
+                            Log.d("Hunt Activity", "userIsCompleted:"+jsonRes.getString("userIsCompleted"));
+
+                            if (jsonRes.getString("teamIsCompleted").equals("1")) {
+                                Log.d("Hunt Activity", "teamIsCompleted");
+                                //cl.setVisibility(View.INVISIBLE);
+                                //frame.setVisibility(View.VISIBLE);
+
+                            } else if (jsonRes.getString("userIsCompleted").equals("1")) {
+                                Log.d("Hunt Activity", "userIsCompleted");
+                                //cl.setVisibility(View.INVISIBLE);
+
+                                //frame.setVisibility(View.VISIBLE);
+                            }
+
+
+
+
+
+                        } else {
+                            //toDo mettere il text di tutti i toast nelle variabili
+                            Toast toast = Toast.makeText(this, "Si è verificato un errore.", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+
+
+
+
+
+
+
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+
+
+
+
+
+
+
+
+
                     Toast.makeText(this, "Sono arrivato!", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.v("Hunt Activity", "open camera");
@@ -590,51 +670,11 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         {
             tempDir.mkdirs();
         }
-        Log.v("Hunt Activity", "File.createTempFile(part, ext, tempDir) : "+File.createTempFile(part, ext, tempDir).toString());
+        Log.v("Hunt Activity", "File.createTempFile(part, ext, tempDir) : " + File.createTempFile(part, ext, tempDir).toString());
 
         return File.createTempFile(part, ext, tempDir);
     }
 
-    private void updateTeamWebSocket(String users) {
-
-        LoginActivity.mWebSocketClient.send("up:" + users + "-" + idStage);
-
-
-        /*mWebSocketClient = new WebSocketClient(uri) {
-
-            @Override
-            public void onOpen(ServerHandshake serverHandshake) {
-                Log.i("Websocket", "Opened");
-                mWebSocketClient.send("up:" + users+"-"+idStage);
-
-            }
-
-            @Override
-            public void onMessage(String s) {
-                final String message = s;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        Log.i("Websocket", "message:"+message);
-                    }
-                });
-            }
-
-            @Override
-            public void onClose(int i, String s, boolean b) {
-                Log.i("Websocket", "Closed " + s);
-            }
-
-            @Override
-            public void onError(Exception e) {
-                Log.i("Websocket", "Error " + e.getMessage());
-            }
-        };
-
-
-        mWebSocketClient.connect();*/
-    }
 
     @Override
     protected void onRestart() {
