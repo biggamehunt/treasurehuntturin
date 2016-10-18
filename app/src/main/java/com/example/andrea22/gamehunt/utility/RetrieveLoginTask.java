@@ -79,14 +79,14 @@ public class RetrieveLoginTask extends AsyncTask<String, Void, String> {
 
                 DBHelper myHelper = DBHelper.getInstance(context);
                 SQLiteDatabase db = myHelper.getWritableDatabase();
-                int idUser = myHelper.createDB(db, res);
+                context.idUser = myHelper.createDB(db, res);
 
                 context.connectWebSocket();
 
 
                 SharedPreferences pref = context.getSharedPreferences("session", context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                editor.putInt("idUser", idUser);
+                editor.putInt("idUser", context.idUser);
                 editor.putString("username", username);
 
                 editor.commit();

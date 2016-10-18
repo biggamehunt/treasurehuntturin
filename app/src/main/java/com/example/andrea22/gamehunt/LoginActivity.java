@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public Context context;
 
-    int idUser;
+    public int idUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             String[] firstSplit = message.substring(3).split("-");
                             int idStage = Integer.parseInt(firstSplit[0]);
-                            int nextSage = Integer.parseInt(firstSplit[1]);
+                            int nextStage = Integer.parseInt(firstSplit[1]);
                             int idTeam = Integer.parseInt(firstSplit[2]);
                             int idHunt = Integer.parseInt(firstSplit[3]);
                             String name = firstSplit[4];
@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                             DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                             SQLiteDatabase db = myHelper.getWritableDatabase();
                             if (myHelper.getHuntIsLoadedIsStartedIsEnded(db,idHunt)[0]==1) {
-                                res = myHelper.notifyFromTeamStageCompleted(db, idStage, nextSage, idTeam); //todo: questo deve andare PRIMA del notificationcompat builder!
+                                res = myHelper.notifyFromTeamStageCompleted(db, idStage, nextStage, idTeam); //todo: questo deve andare PRIMA del notificationcompat builder!
                             } else {
                                 res = true;
                             }
