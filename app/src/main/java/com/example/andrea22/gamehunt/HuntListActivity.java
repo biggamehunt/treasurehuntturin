@@ -44,7 +44,7 @@ public class HuntListActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private Animation rotate_forward, rotate_backward;
     private TextView tv;
-    public List<SingleHunt> userHunts, otherHunts;
+    public List<SingleHunt> userHunts, otherHunts, hunts;
     private View topLevelLayout;
 
     private ItemTouchHelper mItemTouchHelper;
@@ -170,15 +170,15 @@ public class HuntListActivity extends AppCompatActivity {
         final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         final PagerAdapter adapterPage;
-        List<SingleHunt> hunts = new ArrayList<SingleHunt>();
+        hunts = new ArrayList<SingleHunt>();
 
-        Log.v("data", "getTabCount: "+tabLayout.getTabCount());
+        Log.v("data", "getTabCount: " + tabLayout.getTabCount());
 
 
         hunts.addAll(otherHunts);
-        hunts.addAll(userHunts);
 
-        adapterPage= new SimpleFragmentPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),hunts);
+        adapterPage = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),hunts);
+
 
 
 
@@ -195,7 +195,7 @@ public class HuntListActivity extends AppCompatActivity {
 
 
                 final PagerAdapter adapterPage;
-                List<SingleHunt> hunts = new ArrayList<SingleHunt>();
+                hunts = new ArrayList<>();
 
 
                 if (tab.getPosition() == 2) {

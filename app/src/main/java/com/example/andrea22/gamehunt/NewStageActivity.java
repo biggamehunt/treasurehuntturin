@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -27,6 +29,9 @@ import android.widget.Toast;
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.DistanceCalculator;
 import com.example.andrea22.gamehunt.utility.RetrieveJson;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -52,10 +57,19 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
     ImageView transparentImageView;
     EditText name;
 
+    CheckBox islocreq;
+    CheckBox isphotoreq;
+    CheckBox ischeckreq;
+
     int numStage;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
-    protected void onResume (){
+    protected void onResume() {
         super.onResume();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -69,12 +83,103 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
 
-        numStage = getIntent().getIntExtra("numStage",0);
+        numStage = getIntent().getIntExtra("numStage", 0);
         Log.v("maps", "numStage: " + numStage);
 
+        islocreq = (CheckBox) findViewById(R.id.islocreq);
+        isphotoreq = (CheckBox) findViewById(R.id.isphotoreq);
+        ischeckreq = (CheckBox) findViewById(R.id.ischeckreq);
+
+
+
+        islocreq.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.v("maps", "isChecked: " + isChecked);
+
+                if (isChecked == true){
+                   return;
+                } else if (ischeckreq.isChecked() == false) {
+                    islocreq.setChecked(true);
+                    CharSequence text = "COMBINAZIONE IMPOSSIBILE!";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(buttonView.getContext(), text, duration);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+
+            }
+        });
+
+
+        isphotoreq.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.v("maps", "isChecked: " + isChecked);
+
+                if (isChecked == false) {
+                    if (islocreq.isChecked() == false) {
+                        CharSequence text = "COMBINAZIONE IMPOSSIBILE!";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(buttonView.getContext(), text, duration);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        isphotoreq.setChecked(true);
+                    } else {
+                        ischeckreq.setChecked(false);
+                    }
+
+                }
+
+            }
+        });
+
+        ischeckreq.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.v("maps", "isChecked: " + isChecked);
+
+                if (isChecked) {
+                    if (isphotoreq.isChecked()==false){
+                        isphotoreq.setChecked(true);
+                        CharSequence text = "CON IL CHECK E' RICHIESTO ANCHE L'INIVIO DI UNA FOTO!";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(buttonView.getContext(), text, duration);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    }
+
+                } else if (isChecked == false) {
+                    if (islocreq.isChecked()==false){
+
+                        CharSequence text = "CON IL CHECK DISATTIVATO BISOGNA AVERE LA LOCATION!";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(buttonView.getContext(), text, duration);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    }
+
+                    islocreq.setChecked(true);
+
+
+                }
+
+
+
+            }
+        });
+
+
         scrollview = (ScrollView) findViewById(R.id.scrollViewNewStage);
-        name =  (EditText) findViewById(R.id.stageName);
-        name.setText("Stage " + (numStage+1));
+        name = (EditText) findViewById(R.id.stageName);
+        name.setText("Stage " + (numStage + 1));
 
         transparentImageView = (ImageView) findViewById(R.id.transparent_image);
 
@@ -104,7 +209,6 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
                 }
             }
         });
-
 
 
         seek = (SeekBar) findViewById(R.id.ray);
@@ -142,6 +246,9 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
             }
         });
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -170,7 +277,7 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
         // Create a criteria object to retrieve provider
         Criteria criteria = new Criteria();
 
-        LocationManager mLocationManager = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
+        LocationManager mLocationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
         List<String> providers = mLocationManager.getProviders(true);
         Location bestLocation = null;
 
@@ -202,11 +309,9 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
             mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
 
             //TODO: aggiungere su R.string titolo e snippet dei marker
-            Marker marker =  mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
+            Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
             marker.setVisible(false);
         }
-
-
 
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -270,6 +375,19 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
 
     }
 
+    public void checkPhotoCheck(View v) {
+
+    }
+
+    public void checkRequiredPhoto(View v) {
+
+    }
+
+    public void checkRequiredLocation(View v) {
+
+    }
+
+
     public void turnHunt(View v) {
 
         //todo: inserire su string i toast
@@ -293,17 +411,13 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
             String clueText = clue.getText().toString();
 
             String nameText = name.getText().toString();
-            Log.v("maps", "nameText: "+nameText);
+            Log.v("maps", "nameText: " + nameText);
 
 
-            if (nameText == null || nameText.equals("")){
-                nameText = "Stage " + (numStage+1);
+            if (nameText == null || nameText.equals("")) {
+                nameText = "Stage " + (numStage + 1);
             }
 
-
-            CheckBox islocreq = (CheckBox) findViewById(R.id.islocreq);
-            CheckBox isphotoreq = (CheckBox) findViewById(R.id.isphotoreq);
-            CheckBox ischeckreq = (CheckBox) findViewById(R.id.ischeckreq);
 
             int islocreqText = 0;
             if (islocreq.isChecked()) {
@@ -329,23 +443,20 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
 
             try {
                 numberCompleteText = Integer.parseInt(numberComplete.getText().toString());
-            } catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 numberCompleteText = 1;
             }
 
 
-
-
-
-            int rayText =seek.getProgress() + 50;
+            int rayText = seek.getProgress() + 50;
 
             double areaLat = stagelocation.getPosition().latitude;
             double areaLon = stagelocation.getPosition().longitude;
 
             double lat = finallocation.getPosition().latitude;
             double lon = finallocation.getPosition().longitude;
-            
+
             DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
             SQLiteDatabase db = myHelper.getWritableDatabase();
             SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
@@ -353,7 +464,7 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
             Log.v("maps", "idLastHunt: " + pref.getInt("idLastHunt", 0));
 
 
-            myHelper.insertAddStage(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0),numStage, nameText, clueText, rayText, areaLat, areaLon, lat, lon, islocreqText, isphotoreqText, ischeckreqText, numberCompleteText);
+            myHelper.insertAddStage(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), numStage, nameText, clueText, rayText, areaLat, areaLon, lat, lon, islocreqText, isphotoreqText, ischeckreqText, numberCompleteText);
 
             Intent intent = new Intent();
 
@@ -405,7 +516,7 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         return true;
     }
@@ -413,6 +524,7 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
     public void turnBack(View view) {
         onBackPressed();
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -435,10 +547,10 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
             float x = event.getRawX() + w.getLeft() - scrcoords[0];
             float y = event.getRawY() + w.getTop() - scrcoords[1];
 
-            Log.d("Activity", "Touch event "+event.getRawX()+","+event.getRawY()+" "+x+","+y+" rect "+w.getLeft()+","+w.getTop()+","+w.getRight()+","+w.getBottom()+" coords "+scrcoords[0]+","+scrcoords[1]);
-            if (event.getAction() == MotionEvent.ACTION_UP && (x < w.getLeft() || x >= w.getRight() || y < w.getTop() || y > w.getBottom()) ) {
+            Log.d("Activity", "Touch event " + event.getRawX() + "," + event.getRawY() + " " + x + "," + y + " rect " + w.getLeft() + "," + w.getTop() + "," + w.getRight() + "," + w.getBottom() + " coords " + scrcoords[0] + "," + scrcoords[1]);
+            if (event.getAction() == MotionEvent.ACTION_UP && (x < w.getLeft() || x >= w.getRight() || y < w.getTop() || y > w.getBottom())) {
 
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
             }
         }
@@ -446,4 +558,43 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "NewStage Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.example.andrea22.gamehunt/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "NewStage Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.example.andrea22.gamehunt/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
 }

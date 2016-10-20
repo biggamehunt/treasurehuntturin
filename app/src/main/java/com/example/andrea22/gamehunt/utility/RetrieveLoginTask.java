@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
@@ -30,7 +31,7 @@ import java.util.Map;
 public class RetrieveLoginTask extends AsyncTask<String, Void, String> {
     public static java.net.CookieManager msCookieManager = new java.net.CookieManager();
     static final String COOKIES_HEADER = "Set-Cookie";
-
+    private boolean error;
     private Exception exception;
     private ProgressDialog progressDialog;
     private LoginActivity context;
@@ -39,10 +40,12 @@ public class RetrieveLoginTask extends AsyncTask<String, Void, String> {
     public RetrieveLoginTask(LoginActivity activity, String username) {
         this.context = activity;
         this.username=username;
-        progressDialog = new ProgressDialog(activity, R.style.AppTheme_Dark_Dialog);
+        progressDialog = new ProgressDialog (activity, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        error = false;
     }
     @Override
     protected String doInBackground(String... urls) {
@@ -90,17 +93,14 @@ public class RetrieveLoginTask extends AsyncTask<String, Void, String> {
                 editor.putString("username", username);
 
                 editor.commit();
+                error = false;
 
                 Intent intent = new Intent(context, HuntListActivity.class);
                 context.startActivity(intent);
 
             } else {
-                CharSequence text = context.getString(R.string.login_error);
-                int duration = Toast.LENGTH_SHORT;
+                error = true;
 
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
             }
 
 
@@ -117,6 +117,8 @@ public class RetrieveLoginTask extends AsyncTask<String, Void, String> {
             this.exception = e;
             Log.d("test debug", "eccez:" + e.getMessage());
             e.printStackTrace();
+
+
             return null;
         }
     }
@@ -135,6 +137,19 @@ public class RetrieveLoginTask extends AsyncTask<String, Void, String> {
             Log.d("test debug", "if progressDialog");
 
             progressDialog.dismiss();
+            context.loginButton.setEnabled(true);
+
+
+            if (error){
+
+                CharSequence text = context.getString(R.string.login_error);
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+
+            }
         }
     }
 }

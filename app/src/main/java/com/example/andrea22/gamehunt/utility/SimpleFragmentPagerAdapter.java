@@ -29,7 +29,7 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                TabFragmentAll tab1 = new TabFragmentAll();
+                TabFragmentOthers tab1 = new TabFragmentOthers();
                 //Bundle bdl = new Bundle(2);
 
                 //tab1.setArguments(bdl);
@@ -41,7 +41,8 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
                 TabFragmentMine tab2 = new TabFragmentMine();
                 return tab2;
             case 2:
-                TabFragmentOthers tab3 = new TabFragmentOthers();
+                TabFragmentAll tab3 = new TabFragmentAll();
+
                 return tab3;
             default:
                 return null;
