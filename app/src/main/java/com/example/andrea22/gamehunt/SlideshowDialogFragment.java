@@ -11,18 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.andrea22.gamehunt.utility.Image;
-
 import java.util.ArrayList;
-
-
 
 /**
  * Created by Simone on 18/10/2016.
  */
+
 public class SlideshowDialogFragment extends DialogFragment {
     private String TAG = SlideshowDialogFragment.class.getSimpleName();
     private ArrayList<Image> images;

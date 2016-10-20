@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class GalleryActivity extends AppCompatActivity {
 
     private String TAG = GalleryActivity.class.getSimpleName();
-    private static final String endpoint = "http://api.androidhive.info/json/glide.json";
+    private static final String endpoint = "https://drive.google.com/open?id=0B9gNK0lCV_TgRk9uTl9YdUNRQ3M";
     private ArrayList<Image> images;
     private ProgressDialog pDialog;
     private GalleryAdapter mAdapter;
@@ -80,6 +80,21 @@ public class GalleryActivity extends AppCompatActivity {
         pDialog.setMessage("Downloading json...");
         pDialog.show();
 
+        images.clear();
+        Image image = new Image();
+
+        image.setName("name");
+        image.setSmall("http://api.androidhive.info/images/glide/small/cacw.jpg");
+        image.setMedium("http://api.androidhive.info/images/glide/medium/cacw.jpg");
+        image.setLarge("http://api.androidhive.info/images/glide/large/cacw.jpg");
+        image.setTimestamp("timestamp");
+
+        images.add(image);
+/*
+
+
+
+        ;
         JsonArrayRequest req = new JsonArrayRequest(endpoint,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -88,8 +103,15 @@ public class GalleryActivity extends AppCompatActivity {
                         pDialog.hide();
 
                         images.clear();
+
                         for (int i = 0; i < response.length(); i++) {
+
+                            Log.d("nel for","lunghezza response = " +response.length());
+
                             try {
+
+                                Log.d("nel try","");
+
                                 JSONObject object = response.getJSONObject(i);
                                 Image image = new Image();
                                 image.setName(object.getString("name"));
@@ -99,6 +121,9 @@ public class GalleryActivity extends AppCompatActivity {
                                 image.setMedium(url.getString("medium"));
                                 image.setLarge(url.getString("large"));
                                 image.setTimestamp(object.getString("timestamp"));
+
+                                Log.d("nel try","url = " +url);
+
 
                                 images.add(image);
 
@@ -118,6 +143,6 @@ public class GalleryActivity extends AppCompatActivity {
         });
 
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(req);
+        AppController.getInstance().addToRequestQueue(req);*/
     }
 }
