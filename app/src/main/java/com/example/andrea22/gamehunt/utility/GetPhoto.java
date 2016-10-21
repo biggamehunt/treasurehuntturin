@@ -10,12 +10,18 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.amazonaws.services.s3.model.GetObjectMetadataRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.example.andrea22.gamehunt.GalleryActivity;
 import com.example.andrea22.gamehunt.R;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.net.URL;
@@ -24,16 +30,18 @@ import java.util.ArrayList;
 /**
  * Created by Andrea22 on 15/06/2016.
  */
-public class GetPhoto extends AsyncTask<ArrayList<Object>, Void, Integer> {
+public class GetPhoto extends AsyncTask<ArrayList<InfoHuntForCheck>, Void, Integer> {
 
     private Exception exception;
-    private Context context;
+    private GalleryActivity context;
+    private ArrayList<Image> images;
 
     public GetPhoto (Context context){
-        this.context = context;
+        this.context = (GalleryActivity)context;
     }
 
-    protected Integer doInBackground(ArrayList<Object>... params) {
+    @Override
+    protected Integer doInBackground(ArrayList<InfoHuntForCheck>... params) {
         try {
 
             AWSCredentials credentials = new BasicAWSCredentials(context.getResources().getString(R.string.access_key),
@@ -41,49 +49,56 @@ public class GetPhoto extends AsyncTask<ArrayList<Object>, Void, Integer> {
 
             AmazonS3 s3client = new AmazonS3Client(credentials);
 
-            String prefix = "178/106";
-            final ListObjectsRequest listObjectRequest = new ListObjectsRequest().
-                    withBucketName("treasurehuntturin").
-                    withPrefix(prefix);
-            final ObjectListing objectListing = s3client.listObjects(listObjectRequest);
-
-            for (final S3ObjectSummary objectSummary: objectListing.getObjectSummaries()) {
-                final String key = objectSummary.getKey();
-                if (isImmediateDescendant(prefix, key)) {
-                    final String relativePath = getRelativePath(prefix, key);
-                    Log.v("amazon getphoto", "relativePath:" + relativePath);
-
-                }
-
-            }
-
-
+            String prefix;
+            int currentHunt = 0;
+            images = new ArrayList<>();
 
             java.util.Date expiration = new java.util.Date();
             long msec = expiration.getTime();
-            msec += 1000*60; // 1 hour.
+            msec += 1000*60; // 1 minute.
             expiration.setTime(msec);
 
-            GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                    new GeneratePresignedUrlRequest("treasurehuntturin", "163/84/1");
-            generatePresignedUrlRequest.setMethod(HttpMethod.GET); // Default.
-            generatePresignedUrlRequest.setExpiration(expiration);
+            for (int i = 0; i < params[0].size(); i++){
 
-            URL s = s3client.generatePresignedUrl(generatePresignedUrlRequest);
+                if (i == 0 || currentHunt != params[0].get(i).idHunt){
+                    currentHunt = params[0].get(i).idHunt;
+                    prefix = params[0].get(i).idHunt+"/";
+                    ObjectListing listing = s3client.listObjects(new ListObjectsRequest().withBucketName("treasurehuntturin").withPrefix(prefix));
 
-            Log.v("amazon getphoto", "url:" + s.toString());
+                    for (S3ObjectSummary objectSummary : listing.getObjectSummaries()) {
 
-
-            generatePresignedUrlRequest =
-                    new GeneratePresignedUrlRequest("treasurehuntturin", "163/84");
-            generatePresignedUrlRequest.setMethod(HttpMethod.GET); // Default.
-            generatePresignedUrlRequest.setExpiration(expiration);
-
-            s = s3client.generatePresignedUrl(generatePresignedUrlRequest);
-
-            Log.v("amazon getphoto", "url:" + s.toString());
+                        GeneratePresignedUrlRequest generatePresignedUrlRequest =
+                                new GeneratePresignedUrlRequest("treasurehuntturin", objectSummary.getKey());
 
 
+
+
+                        generatePresignedUrlRequest.setMethod(HttpMethod.GET); // Default.
+                        generatePresignedUrlRequest.setExpiration(expiration);
+
+                        URL s = s3client.generatePresignedUrl(generatePresignedUrlRequest);
+                        ObjectMetadata objectMetadata = s3client.getObjectMetadata("treasurehuntturin", objectSummary.getKey());
+
+
+                        Image image = new Image();
+                        image.setName(params[0].get(i).nameHunt + " - " + objectMetadata.getUserMetaDataOf("namestage"));
+
+                        image.setSmall(s.toString());
+                        image.setMedium(s.toString());
+                        image.setLarge(s.toString());
+                        image.setTimestamp(params[0].get(i).timeStart);
+
+                        context.mAdapter.images.add(image);
+
+
+
+                    }
+                }
+
+
+
+
+            }
 
 
             return 1;
@@ -95,9 +110,16 @@ public class GetPhoto extends AsyncTask<ArrayList<Object>, Void, Integer> {
         }
     }
 
-    protected void onPostExecute(String feed) {
+    @Override
+    protected void onPostExecute(Integer result) {
+
         // TODO: check this.exception
         // TODO: do something with the feed
+        if (result == 1) {
+            context.mAdapter.notifyDataSetChanged();
+        }
+
+
     }
 
     public String getRelativePath(final String parent, final String child) {

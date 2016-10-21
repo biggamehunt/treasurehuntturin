@@ -74,8 +74,6 @@ public class HuntListActivity extends AppCompatActivity {
 
 
 
-        GetPhoto get = new GetPhoto (this);
-        get.execute();
 
 
 

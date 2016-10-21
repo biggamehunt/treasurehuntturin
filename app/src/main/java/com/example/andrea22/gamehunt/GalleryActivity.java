@@ -1,6 +1,8 @@
 package com.example.andrea22.gamehunt;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -8,19 +10,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.example.andrea22.gamehunt.utility.AppController;
+import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.GalleryAdapter;
+import com.example.andrea22.gamehunt.utility.GetPhoto;
 import com.example.andrea22.gamehunt.utility.Image;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.andrea22.gamehunt.utility.InfoHuntForCheck;
 
 import java.util.ArrayList;
 
@@ -31,7 +27,7 @@ public class GalleryActivity extends AppCompatActivity {
     private static final String endpoint = "https://drive.google.com/open?id=0B9gNK0lCV_TgRk9uTl9YdUNRQ3M";
     private ArrayList<Image> images;
     private ProgressDialog pDialog;
-    private GalleryAdapter mAdapter;
+    public GalleryAdapter mAdapter;
     private RecyclerView recyclerView;
 
     @Override
@@ -54,6 +50,17 @@ public class GalleryActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
+
+        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+
+
+
+        ArrayList<InfoHuntForCheck> hunts = mDbHelper.getHuntsFromUser(db, pref.getInt("idUser", 0));
+
+
+
         recyclerView.addOnItemTouchListener(new GalleryAdapter.RecyclerTouchListener(getApplicationContext(), recyclerView, new GalleryAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -73,10 +80,13 @@ public class GalleryActivity extends AppCompatActivity {
             }
         }));
 
-        fetchImages();
+
+        new GetPhoto(this).execute(hunts);
+
+
     }
 
-    private void fetchImages() {
+    /*private void fetchImages() {
 
         pDialog.setMessage("Downloading images...");
         pDialog.show();
@@ -132,5 +142,5 @@ public class GalleryActivity extends AppCompatActivity {
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(req);
-    }
+    }*/
 }

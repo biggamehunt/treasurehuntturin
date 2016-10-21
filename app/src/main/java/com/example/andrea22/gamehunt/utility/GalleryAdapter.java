@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHolder> {
 
-    private List<Image> images;
+    public List<Image> images;
     private Context mContext;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
