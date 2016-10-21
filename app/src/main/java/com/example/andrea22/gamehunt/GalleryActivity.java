@@ -39,8 +39,9 @@ public class GalleryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.gallery_toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("");
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
