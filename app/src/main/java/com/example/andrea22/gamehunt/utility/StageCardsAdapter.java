@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.R;
+import com.example.andrea22.gamehunt.StageManagementActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -286,6 +287,7 @@ public class StageCardsAdapter extends RecyclerView.Adapter<StageCardsAdapter.Si
         }
 
         stages.remove(position);
+        ((StageManagementActivity)context).addTutorial();
         notifyItemRemoved(position);
 
 

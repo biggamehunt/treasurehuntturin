@@ -51,34 +51,11 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
 
         fabStage = (FloatingActionButton) findViewById(R.id.addStage);
 
-        new MaterialTapTargetPrompt.Builder(StageManagementActivity.this)
-                .setTarget(findViewById(R.id.fab))
-                .setPrimaryText("Create your stage")
-                .setSecondaryText("Tap the this button to start creating your stage")
-                .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener()
-                {
-                    @Override
-                    public void onHidePrompt(MotionEvent event, boolean tappedTarget)
-                    {
-                        //Do something such as storing a value so that this prompt is never shown again
-                        int duration = Toast.LENGTH_SHORT;
-                        String text = "hai premuto";
 
-                        Toast toast = Toast.makeText(fabStage.getContext(), text, duration);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
-                    }
-
-                    @Override
-                    public void onHidePromptComplete()
-                    {
-
-                    }
-                })
-                .show();
 
 
         stages= initializeStages();
+        addTutorial();
 
         //todo aggiungere in constants
         maxStages = 20;
@@ -271,6 +248,7 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
     protected void onResume() {
         super.onResume();
         updateAdapter();
+        addTutorial();
 
     }
 
@@ -316,6 +294,32 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
         startActivity(intent);
 
         overridePendingTransition(R.anim.back_enter, R.anim.back_exit);
+    }
+
+    public void addTutorial(){
+        if (stages.size()==0){
+            new MaterialTapTargetPrompt.Builder(StageManagementActivity.this)
+                    .setBackgroundColour(getResources().getColor(R.color.colorPrimary))
+                    .setTarget(findViewById(R.id.addStage))
+                    //todo: strings
+                    .setPrimaryText("Create your stage")
+                    .setSecondaryText("Tap this button to start creating your stage")
+                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener()
+                    {
+                        @Override
+                        public void onHidePrompt(MotionEvent event, boolean tappedTarget)
+                        {
+                            //Do something such as storing a value so that this prompt is never shown again
+                        }
+
+                        @Override
+                        public void onHidePromptComplete()
+                        {
+
+                        }
+                    })
+                    .show();
+        }
     }
 }
 
