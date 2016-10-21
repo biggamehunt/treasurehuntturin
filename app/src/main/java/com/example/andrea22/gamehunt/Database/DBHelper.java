@@ -2,26 +2,21 @@ package com.example.andrea22.gamehunt.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.andrea22.gamehunt.LoginActivity;
+import com.example.andrea22.gamehunt.utility.InfoHuntForCheck;
 import com.example.andrea22.gamehunt.utility.SingleStage;
-import com.example.andrea22.gamehunt.utility.SingleTeam;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by Simone on 16/06/2016.
@@ -781,6 +776,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+
+
     public boolean updateNumStages(SQLiteDatabase db, int[][] positions, int idUser, int idHunt)  {
 
         try {
@@ -851,6 +848,36 @@ public class DBHelper extends SQLiteOpenHelper {
         return null;
     }
 
+
+    public ArrayList<InfoHuntForCheck> getHuntsFromUser(SQLiteDatabase db, int idUser)  {
+        ArrayList<InfoHuntForCheck> hunts = new ArrayList<>();
+
+        try {
+            Cursor c = db.rawQuery( "SELECT * " +
+                                    "FROM HUNT " +
+                                    "WHERE idUser = "+idUser+" AND isEnded = 0 AND isFinished = 0  ORDER BY idHunt;", null);
+            if (c.moveToFirst()) {
+                InfoHuntForCheck hunt;
+
+
+                do {
+
+                    hunt = new InfoHuntForCheck(c.getInt(c.getColumnIndex("idHunt")),
+                            c.getString(c.getColumnIndex("name")),c.getString(c.getColumnIndex("timeStart")));
+
+                    hunts.add(hunt);
+
+                } while (c.moveToNext());
+            }
+
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return hunts;
+    }
 
 
 }

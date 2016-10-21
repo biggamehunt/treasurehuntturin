@@ -451,14 +451,15 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             fos.flush();
             fos.close();
 
-            String path = idHunt+"/"+idTeam+"/"+idUser;
+            String path = idHunt+"/"+idStage+"/"+idUser;
             ArrayList<Object> list = new ArrayList<>();
             list.add(photo);
             list.add(path);
+            list.add(nameStage);
 
             Log.d("Hunt Activity", "list size: " + list.size());
 
-            /*int res = new SendPhoto().execute(list).get();
+            int res = new SendPhoto(this).execute(list).get();
 
             if (res == 1) {
                 Toast.makeText(this, "Image Upload!", Toast.LENGTH_SHORT).show();
@@ -468,8 +469,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                 Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
                 return false;
-            }*/
-            return true;
+            }
 
         } catch (Exception e) {
             Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
