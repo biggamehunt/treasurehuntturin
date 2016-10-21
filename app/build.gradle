@@ -33,7 +33,8 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.4.0'
     compile 'com.android.support:recyclerview-v7:23.4.0'
 
-
+    // Material Tap Target
+    compile 'uk.co.samuelwall:material-tap-target-prompt:1.4.3'
 
     compile 'com.google.android.gms:play-services:4.2.42'
     compile 'com.android.support:appcompat-v7:23.+'

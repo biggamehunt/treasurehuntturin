@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
+
 public class StageManagementActivity extends AppCompatActivity implements OnStartDragListener {
 
     private int maxStages;
@@ -36,12 +41,41 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
     StageCardsAdapter adapter;
     private RecyclerView rv;
     private ItemTouchHelper mItemTouchHelper;
+    private FloatingActionButton fabStage;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stage_management);
+
+        fabStage = (FloatingActionButton) findViewById(R.id.addStage);
+
+        new MaterialTapTargetPrompt.Builder(StageManagementActivity.this)
+                .setTarget(findViewById(R.id.fab))
+                .setPrimaryText("Create your stage")
+                .setSecondaryText("Tap the this button to start creating your stage")
+                .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener()
+                {
+                    @Override
+                    public void onHidePrompt(MotionEvent event, boolean tappedTarget)
+                    {
+                        //Do something such as storing a value so that this prompt is never shown again
+                        int duration = Toast.LENGTH_SHORT;
+                        String text = "hai premuto";
+
+                        Toast toast = Toast.makeText(fabStage.getContext(), text, duration);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    }
+
+                    @Override
+                    public void onHidePromptComplete()
+                    {
+
+                    }
+                })
+                .show();
 
 
         stages= initializeStages();
