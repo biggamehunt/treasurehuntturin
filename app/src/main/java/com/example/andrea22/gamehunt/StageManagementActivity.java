@@ -41,7 +41,6 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
     StageCardsAdapter adapter;
     private RecyclerView rv;
     private ItemTouchHelper mItemTouchHelper;
-    private FloatingActionButton fabStage;
 
 
     @Override
@@ -49,24 +48,16 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stage_management);
 
-        fabStage = (FloatingActionButton) findViewById(R.id.addStage);
-
-
-
-
         stages= initializeStages();
         addTutorial();
 
         //todo aggiungere in constants
         maxStages = 20;
 
-
-
         initializeAdapter();
     }
 
     public List<SingleStage> initializeStages(){
-
 
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -74,15 +65,11 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
         SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
 
         return mDbHelper.selectAddStage(db,pref.getInt("idLastHunt",0),pref.getInt("idUser",0));
-
-
-
     }
 
     public void initializeAdapter(){
 
         adapter = new StageCardsAdapter(stages, this, this);
-
 
         rv=(RecyclerView)findViewById(R.id.rv_stages);
 
@@ -94,16 +81,12 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(rv);
-
-
-
     }
 
     public void updateAdapter(){
 
         adapter.notifyData(stages);
         adapter.notifyDataSetChanged();
-
     }
 
 
@@ -112,8 +95,6 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-
-
         if (stages.size() <= maxStages) {
 
             Intent intent = new Intent(this, NewStageActivity.class);
@@ -121,21 +102,16 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
             startActivityForResult(intent, 1);
             overridePendingTransition(R.anim.enter, R.anim.exit);
 
-
         } else {
             CharSequence text = getString(R.string.maxNumStage);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.show();
         }
-
-
     }
 
     public void deleteStage(View view) {
 
     }
-
-
 
     public void goToTeamManagement(View view){
 
@@ -205,15 +181,9 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
                 toast.show();
             }
 
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -232,8 +202,6 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
                 //initializeAdapter();
 
                 updateAdapter();
-
-
             }
         }
     }
@@ -249,7 +217,6 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
         super.onResume();
         updateAdapter();
         addTutorial();
-
     }
 
     @Override
@@ -280,7 +247,6 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
     }
 
     public void turnBack(View view) {
@@ -302,8 +268,8 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
                     .setBackgroundColour(getResources().getColor(R.color.colorPrimary))
                     .setTarget(findViewById(R.id.addStage))
                     //todo: strings
-                    .setPrimaryText("Create your stage")
-                    .setSecondaryText("Tap this button to start creating your stage")
+                    .setPrimaryText(getString(R.string.tutorialStageText1))
+                    .setSecondaryText(getString(R.string.tutorialStageText2))
                     .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener()
                     {
                         @Override

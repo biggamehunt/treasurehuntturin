@@ -37,6 +37,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
+
 /**
  * Created by Simone on 21/06/2016.
  */
@@ -56,13 +58,13 @@ public class HuntListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hunt_list);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-
+/*
         topLevelLayout = findViewById(R.id.hunt_list_top_layout);
 
         if (isFirstTime()) {
             topLevelLayout.setVisibility(View.INVISIBLE);
         }
-
+*/
 
         rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
 //        fab.setOnClickListener(this);
@@ -212,6 +214,8 @@ public class HuntListActivity extends AppCompatActivity {
                     hunts.addAll(otherHunts);
 
                 }
+
+                addTutorial();
 
                 //todo: rimuovere sto 3
                 adapterPage = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), 3, hunts);
@@ -444,7 +448,7 @@ public class HuntListActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
-
+/*
     private boolean isFirstTime(){
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         boolean ranBefore = preferences.getBoolean("HuntListRanBefore", false);
@@ -466,7 +470,7 @@ public class HuntListActivity extends AppCompatActivity {
             });
         }
         return ranBefore;
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -512,6 +516,32 @@ public class HuntListActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    public void addTutorial(){
+        if (hunts.size()==0){
+            new MaterialTapTargetPrompt.Builder(HuntListActivity.this)
+                    .setBackgroundColour(getResources().getColor(R.color.colorPrimary))
+                    .setTarget(findViewById(R.id.addStage))
+                    //todo: strings
+                    .setPrimaryText(getString(R.string.tutorialStageText1))
+                    .setSecondaryText(getString(R.string.tutorialStageText2))
+                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener()
+                    {
+                        @Override
+                        public void onHidePrompt(MotionEvent event, boolean tappedTarget)
+                        {
+                            //Do something such as storing a value so that this prompt is never shown again
+                        }
+
+                        @Override
+                        public void onHidePromptComplete()
+                        {
+
+                        }
+                    })
+                    .show();
+        }
     }
 }
 

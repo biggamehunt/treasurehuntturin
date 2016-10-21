@@ -71,6 +71,9 @@
 
     <!-- STAGE MANAGEMENT -->
     <string name="maxNumStage">Maximum number of stages reached</string>
+    <string name="tutorialStageText1">Create your stage</string>
+    <string name="tutorialStageText2">Tap the button to start creating your stage</string>
+
 
     <!-- TEAM MANAGEMENT -->
     <string name="maxNumTeam">Maximum number of teams reached</string>

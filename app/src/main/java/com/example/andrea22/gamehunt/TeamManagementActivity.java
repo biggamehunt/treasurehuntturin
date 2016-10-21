@@ -15,6 +15,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -37,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class TeamManagementActivity extends AppCompatActivity {
 
@@ -202,6 +205,7 @@ public class TeamManagementActivity extends AppCompatActivity {
             Log.v(getLocalClassName(), "teamNamesHold:" + teamNamesHold.toString());
 
             initializeAdapter();
+            addTutorial();
         } else {
             CharSequence text = "Errore Sconosciuto!";
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
@@ -276,9 +280,14 @@ public class TeamManagementActivity extends AppCompatActivity {
 
         Log.v(getLocalClassName(), "entro in finish");
 
+        if(teamNamesHold.size() < 2){
 
+            CharSequence text = "Devi avere minimo due team, altrimenti non c'è sfida u.u";
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.show();
+            return;
 
-
+        }
 
         /*
         EditText editName = (EditText) rv.getChildAt(0).findViewById(R.id.team_name);
@@ -549,6 +558,32 @@ public class TeamManagementActivity extends AppCompatActivity {
 
         builder.show();
 
+    }
+
+    public void addTutorial(){
+        if (teamNamesHold.size()==0){
+            new MaterialTapTargetPrompt.Builder(TeamManagementActivity.this)
+                    .setBackgroundColour(getResources().getColor(R.color.colorPrimary))
+                    .setTarget(findViewById(R.id.addStage))
+                    //todo: strings
+                    .setPrimaryText(getString(R.string.tutorialStageText1))
+                    .setSecondaryText(getString(R.string.tutorialStageText2))
+                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener()
+                    {
+                        @Override
+                        public void onHidePrompt(MotionEvent event, boolean tappedTarget)
+                        {
+                            //Do something such as storing a value so that this prompt is never shown again
+                        }
+
+                        @Override
+                        public void onHidePromptComplete()
+                        {
+
+                        }
+                    })
+                    .show();
+        }
     }
 
 

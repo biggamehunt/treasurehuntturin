@@ -43,10 +43,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/rv"
                         xmlns:android="http://schemas.android.com/apk/res/android" />
+
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/fab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|right"
+                        app:layout_anchor="@id/rv"
+                        app:layout_anchorGravity="bottom|right|end"
+                        app:elevation="6dp"
+                        app:backgroundTint="@color/colorAccent"
+                        app:pressedTranslationZ="12dp"
+                        android:layout_margin="@dimen/fab_margin"
+                        android:src="@drawable/ic_add_white_24dp"
+                        android:onClick="createHunt"/>
 
                 </android.support.design.widget.CoordinatorLayout>
 
@@ -58,54 +74,6 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#88666666"
-        android:id="@+id/hunt_list_top_layout">
 
-        <TextView
-            android:id="@+id/scritta"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Clicca qui per creare una nuova caccia al tesoro"
-            android:textSize="25dp"
-            android:textColor="@color/white"
-            android:layout_above="@+id/ivInstruction"
-            android:layout_alignParentStart="true"
-            android:focusableInTouchMode="false"
-            android:focusable="false"
-            android:singleLine="false" />
-
-
-        <ImageView
-
-            android:tint="@android:color/white"
-            android:id="@+id/ivInstruction"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginRight="16dp"
-            android:clickable="false"
-            android:src="@drawable/right_arrow"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="80dp"
-            android:layout_marginBottom="16dp" />
-
-    </RelativeLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        app:elevation="6dp"
-        app:backgroundTint="@color/colorAccent"
-        app:pressedTranslationZ="12dp"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add_white_24dp"
-        android:onClick="createHunt"/>
 
 </FrameLayout>
