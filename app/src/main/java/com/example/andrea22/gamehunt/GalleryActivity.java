@@ -77,24 +77,11 @@ public class GalleryActivity extends AppCompatActivity {
 
     private void fetchImages() {
 
-        pDialog.setMessage("Downloading json...");
+        pDialog.setMessage("Downloading images...");
         pDialog.show();
 
-        images.clear();
-        Image image = new Image();
-
-        image.setName("name");
-        image.setSmall("http://api.androidhive.info/images/glide/small/cacw.jpg");
-        image.setMedium("http://api.androidhive.info/images/glide/medium/cacw.jpg");
-        image.setLarge("http://api.androidhive.info/images/glide/large/cacw.jpg");
-        image.setTimestamp("timestamp");
-
-        images.add(image);
-/*
 
 
-
-        ;
         JsonArrayRequest req = new JsonArrayRequest(endpoint,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -143,6 +130,6 @@ public class GalleryActivity extends AppCompatActivity {
         });
 
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(req);*/
+        AppController.getInstance().addToRequestQueue(req);
     }
 }
