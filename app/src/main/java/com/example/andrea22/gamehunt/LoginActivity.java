@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameview.getText().toString();
         String password = passwordview.getText().toString();
 
+
         try {
 
             try {

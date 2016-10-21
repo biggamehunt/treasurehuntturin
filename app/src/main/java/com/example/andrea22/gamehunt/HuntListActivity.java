@@ -24,6 +24,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import com.example.andrea22.gamehunt.Database.DBHelper;
+import com.example.andrea22.gamehunt.utility.GetPhoto;
 import com.example.andrea22.gamehunt.utility.RVAdapter;
 import com.example.andrea22.gamehunt.utility.RetrieveJson;
 import com.example.andrea22.gamehunt.utility.SimpleFragmentPagerAdapter;
@@ -71,6 +72,10 @@ public class HuntListActivity extends AppCompatActivity {
         initializeAdapter();
 
 
+
+
+        GetPhoto get = new GetPhoto (this);
+        get.execute();
 
 
 
