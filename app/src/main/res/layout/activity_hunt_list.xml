@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<android.support.design.widget.CoordinatorLayout android:id="@+id/main_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <RelativeLayout
-        android:id="@+id/hunt_list_main_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <android.support.v4.widget.DrawerLayout
             android:id="@+id/drawer_layout"
@@ -34,46 +29,34 @@
                     android:text=""
                     android:layout_gravity="center"
                     android:textColor="@color/metatile"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:layout_marginTop="15dp"/>
 
-                <android.support.design.widget.CoordinatorLayout
-                    android:id="@+id/main_content"
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:layout_width="match_parent"
+                    <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/rv"
                         xmlns:android="http://schemas.android.com/apk/res/android" />
 
-
-                    <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/fab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|right"
-                        app:layout_anchor="@id/rv"
-                        app:layout_anchorGravity="bottom|right|end"
-                        app:elevation="6dp"
-                        app:backgroundTint="@color/colorAccent"
-                        app:pressedTranslationZ="12dp"
-                        android:layout_margin="@dimen/fab_margin"
-                        android:src="@drawable/ic_add_white_24dp"
-                        android:onClick="createHunt"/>
-
-                </android.support.design.widget.CoordinatorLayout>
-
             </LinearLayout>
 
             <!-- <include layout="@layout/navbar"/> -->
-
         </android.support.v4.widget.DrawerLayout>
 
-    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabHunt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:elevation="6dp"
+        app:backgroundTint="@color/colorAccent"
+        app:pressedTranslationZ="12dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_add_white_24dp"
+        android:onClick="createHunt"
+        app:layout_behavior="com.example.andrea22.gamehunt.utility.FAB_Float_on_Scroll"
+        />
 
 
 
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

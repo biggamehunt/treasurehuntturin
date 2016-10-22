@@ -44,7 +44,7 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
  */
 public class HuntListActivity extends AppCompatActivity {
 
-    private FloatingActionButton fab;
+    private FloatingActionButton fabHunt;
     private Animation rotate_forward, rotate_backward;
     private TextView tv;
     public List<SingleHunt> userHunts, otherHunts, hunts;
@@ -57,7 +57,7 @@ public class HuntListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hunt_list);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fabHunt = (FloatingActionButton) findViewById(R.id.fabHunt);
 /*
         topLevelLayout = findViewById(R.id.hunt_list_top_layout);
 
@@ -72,6 +72,7 @@ public class HuntListActivity extends AppCompatActivity {
         initializeSlogan();
         initializeData();
         initializeAdapter();
+        addTutorial();
 
 
 
@@ -519,13 +520,12 @@ public class HuntListActivity extends AppCompatActivity {
     }
 
     public void addTutorial(){
-        if (hunts.size()==0){
+        if (userHunts.size()==0){
             new MaterialTapTargetPrompt.Builder(HuntListActivity.this)
                     .setBackgroundColour(getResources().getColor(R.color.colorPrimary))
-                    .setTarget(findViewById(R.id.addStage))
-                    //todo: strings
-                    .setPrimaryText(getString(R.string.tutorialStageText1))
-                    .setSecondaryText(getString(R.string.tutorialStageText2))
+                    .setTarget(findViewById(R.id.fabHunt))
+                    .setPrimaryText(getString(R.string.tutorialHuntText1))
+                    .setSecondaryText(getString(R.string.tutorialHuntText2))
                     .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener()
                     {
                         @Override

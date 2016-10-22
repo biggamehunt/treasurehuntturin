@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ public class TeamManagementActivity extends AppCompatActivity {
     private int numTeam;
 
     Button lastAddUser;
+    FloatingActionButton teamButton;
     List<String> teamNamesFree;
     List<String> teamNamesHold;
     TeamCardsAdapter adapter;
@@ -60,6 +62,7 @@ public class TeamManagementActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_management);
 
+        teamButton = (FloatingActionButton)findViewById(R.id.addTeam);
         rv=(RecyclerView)findViewById(R.id.rv);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
@@ -564,10 +567,10 @@ public class TeamManagementActivity extends AppCompatActivity {
         if (teamNamesHold.size()==0){
             new MaterialTapTargetPrompt.Builder(TeamManagementActivity.this)
                     .setBackgroundColour(getResources().getColor(R.color.colorPrimary))
-                    .setTarget(findViewById(R.id.addStage))
+                    .setTarget(findViewById(R.id.addTeam))
                     //todo: strings
-                    .setPrimaryText(getString(R.string.tutorialStageText1))
-                    .setSecondaryText(getString(R.string.tutorialStageText2))
+                    .setPrimaryText(getString(R.string.tutorialTeamText1))
+                    .setSecondaryText(getString(R.string.tutorialTeamText2))
                     .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener()
                     {
                         @Override

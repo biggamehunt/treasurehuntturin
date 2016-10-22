@@ -27,6 +27,7 @@
         android:textSize="20sp"
         android:layout_gravity="end"
         android:onClick="goToStageManagement"
+        android:stateListAnimator="@null"
         />
 
 

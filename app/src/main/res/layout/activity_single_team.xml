@@ -30,7 +30,7 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
 
-                <ImageView
+                <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_arrow_back_white_24dp"
@@ -40,7 +40,7 @@
                     />
 
 
-                <ImageView
+                <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_more_vert_white_24dp"
@@ -63,16 +63,6 @@
                 app:layout_collapseParallaxMultiplier="0.3"
                 app:layout_anchor="@id/app_bar"
                 >
-
-                    <TextView
-                        android:id="@+id/teamSub"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="5dp"
-                        android:text="mogli e buoi dei paesi tuoi"
-                        android:textColor="@android:color/white"
-                        />
 
             </FrameLayout>
 

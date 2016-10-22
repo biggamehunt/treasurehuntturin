@@ -58,6 +58,8 @@
     <string name="goToStages">ADD STAGES</string>
     <string name="goToTeams">ADD TEAMS</string>
     <string name="modifyHunt">MODIFY</string>
+    <string name="tutorialHuntText1">Create new Hunt</string>
+    <string name="tutorialHuntText2">Tap the button to start creating your hunt</string>
 
     <!-- NEWHUNT -->
     <string name="nameHunt">Hunt name</string>
@@ -76,6 +78,8 @@
 
 
     <!-- TEAM MANAGEMENT -->
+    <string name="tutorialTeamText1">Create your team</string>
+    <string name="tutorialTeamText2">Tap the button to start creating your team</string>
     <string name="maxNumTeam">Maximum number of teams reached</string>
     <string name="namePick">Insert Team Name</string>
     <string name="sloganPick">Insert Slogan</string>
