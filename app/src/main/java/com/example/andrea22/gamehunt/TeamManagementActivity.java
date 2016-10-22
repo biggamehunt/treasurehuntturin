@@ -48,21 +48,16 @@ public class TeamManagementActivity extends AppCompatActivity {
     public List<SingleTeam> teams;
     private int numTeam;
 
-    Button lastAddUser;
-    FloatingActionButton teamButton;
     List<String> teamNamesFree;
     List<String> teamNamesHold;
     TeamCardsAdapter adapter;
     private String m_Text = "";
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_management);
 
-        teamButton = (FloatingActionButton)findViewById(R.id.addTeam);
         rv=(RecyclerView)findViewById(R.id.rv);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
@@ -71,21 +66,15 @@ public class TeamManagementActivity extends AppCompatActivity {
         teamNamesFree= new ArrayList<String>();
         teamNamesHold= new ArrayList<String>();
 
-        String[] teamNames = {"Team Red","Team Blue","Team Green","Team Yellow","Team Orange","Team Purple","Team Pink","Team Brown"};
-
+        String[] teamNames = {getString(R.string.team1),getString(R.string.team2),getString(R.string.team3),getString(R.string.team4),getString(R.string.team5),getString(R.string.team6),getString(R.string.team7),getString(R.string.team8)};
         for (int i =0; i<teamNames.length;i++){
             teamNamesFree.add(teamNames[i]);
-
         }
 
         initializeData();
         initializeAdapter();
-        //fab = (FloatingActionButton)findViewById(R.id.fab);
-        //rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
-        //fab.setOnClickListener(this);
-
-
     }
+
     private void initializeData(){
 
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
@@ -111,8 +100,6 @@ public class TeamManagementActivity extends AppCompatActivity {
                         users.add(splitUsers[i]);
                     }
 
-
-                    //todo: cambiare lo 0 in quinto parametro
                     teams.add(new SingleTeam(c.getString(c.getColumnIndex("name")), c.getString(c.getColumnIndex("slogan")), c.getInt(c.getColumnIndex("numTeam")),splitUsers.length));
                    // users = new ArrayList<String>();
                 } while (c.moveToNext());
@@ -125,8 +112,6 @@ public class TeamManagementActivity extends AppCompatActivity {
                 teamNamesHold.add(name_1);
                 teamNamesHold.add(name_2);
 
-
-
                 teams.add(new SingleTeam(name_1,"", 1,0));
                 teams.add(new SingleTeam(name_2,"", 2,0));
 
@@ -135,9 +120,6 @@ public class TeamManagementActivity extends AppCompatActivity {
             }
         }
     }
-
-
-
 
     public void initializeAdapter(){
 
@@ -161,15 +143,12 @@ public class TeamManagementActivity extends AppCompatActivity {
 
             mDbHelper.insertAddTeam(db, pref.getInt("idUser", 0), pref.getInt("idLastHunt", 0), name, numTeam, "");
 
-
             initializeAdapter();
         } else {
-            CharSequence text = "Massimo numero dei team raggiunto!";
+            CharSequence text = getString(R.string.maxTeamToast);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.show();
         }
-
-
     }
 
     public void deleteTeam(View view){
@@ -192,13 +171,11 @@ public class TeamManagementActivity extends AppCompatActivity {
                 }
 
             }
-            //modificarenumteam
             for (int i = 0; i < teams.size(); i++) {
                 if (teams.get(i).getNumTeam() > numTeam) {
                     teams.get(i).setNumTeam(teams.get(i).getNumTeam() - 1);
                     Log.v(getLocalClassName(), "modificato numTeam!");
                 }
-
             }
 
             teamNamesFree.add(name);
@@ -308,8 +285,6 @@ public class TeamManagementActivity extends AppCompatActivity {
         Log.v(getLocalClassName(), "nome 2:" + ((EditText)((LinearLayout)((LinearLayout)((CardView)((LinearLayout)rv.getChildAt(1)).getChildAt(0)).getChildAt(0)).getChildAt(1)).getChildAt(0)).getText().toString());
         Log.v(getLocalClassName(), "slogan 2:" + ((EditText)((LinearLayout)((LinearLayout)((CardView)((LinearLayout)rv.getChildAt(1)).getChildAt(0)).getChildAt(0)).getChildAt(1)).getChildAt(1)).getText().toString());
 */
-
-
 
 
         try {

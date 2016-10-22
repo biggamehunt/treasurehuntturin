@@ -11,9 +11,9 @@ import android.view.animation.LinearInterpolator;
 /**
  * Created by Simone on 22/10/2016.
  */
-public class FAB_Float_on_Scroll extends FloatingActionButton.Behavior {
+public class FAB_FloatOnScroll extends FloatingActionButton.Behavior {
 
-    public FAB_Float_on_Scroll(Context context, AttributeSet attrs) {
+    public FAB_FloatOnScroll(Context context, AttributeSet attrs) {
         super();
     }
 

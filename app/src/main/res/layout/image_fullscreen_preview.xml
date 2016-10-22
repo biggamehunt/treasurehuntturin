@@ -12,12 +12,15 @@
         android:layout_centerInParent="true"
         android:scaleType="fitCenter" />
 
+
     <Button
         android:id="@+id/checkOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="OK"
-        android:onClick="checkOk"/>
+        android:onClick="checkOk"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/checkNo"

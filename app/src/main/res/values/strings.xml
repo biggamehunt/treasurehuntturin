@@ -85,6 +85,7 @@
     <string name="sloganPick">Insert Slogan</string>
     <string name="dialogOk">OK</string>
     <string name="dialogCancel">Cancel</string>
+    <string name="maxTeamToast">Max number of teams reached</string>
 
 
     <!-- FRAGMENT_NEWSTAGE -->
@@ -102,6 +103,16 @@
 
     <!-- TOOLBARS -->
     <string name="next">NEXT</string>
+
+    <!-- TEAM NAMES -->
+    <string name="team1">Team Red</string>
+    <string name="team2">Team Blue</string>
+    <string name="team3">Team Green</string>
+    <string name="team4">Team Yellow</string>
+    <string name="team5">Team Orange</string>
+    <string name="team6">Team Purple</string>
+    <string name="team7">Team Pink</string>
+    <string name="team8">Team Brown</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
