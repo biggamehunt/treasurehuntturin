@@ -88,6 +88,13 @@ public class GetPhoto extends AsyncTask<ArrayList<InfoHuntForCheck>, Void, Integ
                         image.setLarge(s.toString());
                         image.setTimestamp(params[0].get(i).timeStart);
 
+                        String[] split = objectSummary.getKey().split("/");
+
+                        image.setIdUser(Integer.parseInt(split[split.length-1]));
+                        image.setIdStage(Integer.parseInt(split[split.length - 2]));
+                        image.setIdHunt(currentHunt);
+                        Log.v("GetPhoto","currentHunt"+currentHunt);
+
                         context.mAdapter.images.add(image);
 
 

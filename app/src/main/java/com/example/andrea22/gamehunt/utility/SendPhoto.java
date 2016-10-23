@@ -42,7 +42,7 @@ public class SendPhoto extends AsyncTask<ArrayList<Object>, Void, Integer> {
     protected Integer doInBackground(ArrayList<Object>... params) {
         try {
 
-            AWSCredentials credentials = new BasicAWSCredentials(context.getResources().getString(R.string.access_key),
+            /*AWSCredentials credentials = new BasicAWSCredentials(context.getResources().getString(R.string.access_key),
                     context.getResources().getString(R.string.secret_key));
 
             AmazonS3 s3client = new AmazonS3Client(credentials);
@@ -52,7 +52,7 @@ public class SendPhoto extends AsyncTask<ArrayList<Object>, Void, Integer> {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.addUserMetadata("namestage",(String)params[0].get(2));
             req.setMetadata(metadata);
-            s3client.putObject(req);
+            s3client.putObject(req);*/
             return 1;
 
         } catch (Exception e) {

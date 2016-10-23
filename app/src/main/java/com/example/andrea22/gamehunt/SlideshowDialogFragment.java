@@ -1,6 +1,9 @@
 package com.example.andrea22.gamehunt;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerAdapter;
@@ -9,12 +12,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.Image;
+import com.example.andrea22.gamehunt.utility.RetrieveJson;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Simone on 18/10/2016.
@@ -27,6 +39,7 @@ public class SlideshowDialogFragment extends DialogFragment {
     private MyViewPagerAdapter myViewPagerAdapter;
     private TextView lblCount, lblTitle, lblDate;
     private int selectedPosition = 0;
+    private int idUser;
 
     static SlideshowDialogFragment newInstance() {
         SlideshowDialogFragment f = new SlideshowDialogFragment();
@@ -87,6 +100,10 @@ public class SlideshowDialogFragment extends DialogFragment {
         Image image = images.get(position);
         lblTitle.setText(image.getName());
         lblDate.setText(image.getTimestamp());
+        idUser = image.getIdUser();
+
+
+
     }
 
     @Override
@@ -111,7 +128,171 @@ public class SlideshowDialogFragment extends DialogFragment {
 
             ImageView imageViewPreview = (ImageView) view.findViewById(R.id.image_preview);
 
-            Image image = images.get(position);
+            Button checkNo = (Button) view.findViewById(R.id.checkNo);
+            final Button checkOk = (Button) view.findViewById(R.id.checkOk);
+            final Image image = images.get(position);
+
+
+            checkNo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.v("SlideShowDialogFragment","checkNo");
+
+                    String u = "http://jbossews-treasurehunto.rhcloud.com/StageOperation";
+
+                    String p = "action=checkPhoto&idUser="+image.getIdUser()+"&idStage="+image.getIdStage()+"&check=0";
+                    String url[]= new String [2];
+                    url[0] = u;
+                    url[1] = p;
+
+                    try {
+                        String res = new RetrieveJson().execute(url).get();
+
+                        if (res.trim().equals("-1")) {
+                            Intent intent = new Intent(v.getContext(), LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                            startActivity(intent);
+                        } else if (!res.trim().equals("0")) {
+
+
+
+                            Log.v("Slidehow", "!res.trim().equals(0)");
+
+                            JSONObject jsonRes = new JSONObject(res);
+
+/*
+                            DBHelper myHelper = DBHelper.getInstance(v.getContext());
+                            SQLiteDatabase db = myHelper.getWritableDatabase();
+
+                            myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser,idHunt,nameHunt);
+
+*/
+                            //FrameLayout frame = (FrameLayout) findViewById(R.id.rect_map);
+                            //CoordinatorLayout cl = (CoordinatorLayout) findViewById(R.id.coordinator_maps);
+                            Log.d("Slidehow", "teamIsCompleted:"+jsonRes.getString("teamIsCompleted"));
+                            Log.d("Slidehow", "userIsCompleted:"+jsonRes.getString("userIsCompleted"));
+
+                            if (jsonRes.getString("teamIsCompleted").equals("1")) {
+                                Log.d("Slidehow", "teamIsCompleted");
+                                LoginActivity.mWebSocketClient.send("ca:" + image.getIdStage()+"-"+jsonRes.getInt("nextStage")+"-"+jsonRes.getInt("idTeam")+"-"+image.getIdHunt()+"-"+image.getName());
+
+
+                            } else if (jsonRes.getString("userIsCompleted").equals("1")) {
+                                Log.d("Slidehow", "User is completed");
+                                LoginActivity.mWebSocketClient.send("cd:" + image.getIdStage()+"-"+jsonRes.getInt("idTeam")+"-"+image.getIdHunt()+"-"+image.getName());
+                            } else if (jsonRes.getInt("huntDone")==1) {
+                                Log.d("Slidehow", "Hunt is Done!");
+                                LoginActivity.mWebSocketClient.send("ha:" + image.getIdStage()+"-"+jsonRes.getInt("idTeam")+"-"+image.getIdHunt()+"-"+image.getName());
+                            } else if (jsonRes.getString("userIsCompleted").equals("0")) {
+                                Log.d("Slidehow", "User is not completed");
+                                Log.d("Hunt Activity", "cf:" + image.getIdUser()+"-"+image.getIdStage()+"-"+image.getIdHunt()+"-"+image.getName());
+
+                                LoginActivity.mWebSocketClient.send("cf:" + image.getIdUser()+"-"+image.getIdStage()+"-"+image.getIdHunt()+"-"+image.getName());
+                            }
+
+
+
+
+
+                        } else {
+                            //toDo mettere il text di tutti i toast nelle variabili
+                            Toast toast = Toast.makeText(v.getContext(), "Si è verificato un errore.", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+
+
+
+
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            });
+
+            checkOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.v("SlideShowDialogFragment","checkOk");
+
+                    String u = "http://jbossews-treasurehunto.rhcloud.com/StageOperation";
+
+                    String p = "action=checkPhoto&idUser="+image.getIdUser()+"&idStage="+image.getIdStage()+"&check=1";
+                    String url[]= new String [2];
+                    url[0] = u;
+                    url[1] = p;
+
+                    try {
+                        String res = new RetrieveJson().execute(url).get();
+
+                        if (res.trim().equals("-1")) {
+                            Intent intent = new Intent(v.getContext(), LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                            startActivity(intent);
+                        } else if (!res.trim().equals("0")) {
+
+
+
+                            Log.v("Hunt Activity", "!res.trim().equals(0)");
+
+                            JSONObject jsonRes = new JSONObject(res);
+
+/*
+                            DBHelper myHelper = DBHelper.getInstance(v.getContext());
+                            SQLiteDatabase db = myHelper.getWritableDatabase();
+
+                            myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser,idHunt,nameHunt);
+
+*/
+                            //FrameLayout frame = (FrameLayout) findViewById(R.id.rect_map);
+                            //CoordinatorLayout cl = (CoordinatorLayout) findViewById(R.id.coordinator_maps);
+                            Log.d("Hunt Activity", "teamIsCompleted:"+jsonRes.getString("teamIsCompleted"));
+                            Log.d("Hunt Activity", "userIsCompleted:"+jsonRes.getString("userIsCompleted"));
+
+                            if (jsonRes.getString("teamIsCompleted").equals("1")) {
+                                Log.d("Hunt Activity", "teamIsCompleted");
+                                LoginActivity.mWebSocketClient.send("ca:" + image.getIdStage()+"-"+jsonRes.getInt("nextStage")+"-"+jsonRes.getInt("idTeam")+"-"+image.getIdHunt()+"-"+image.getName());
+
+
+                            } else if (jsonRes.getString("userIsCompleted").equals("1")) {
+                                Log.d("Hunt Activity", "User is completed");
+                                LoginActivity.mWebSocketClient.send("cd:" + image.getIdStage()+"-"+jsonRes.getInt("idTeam")+"-"+image.getIdHunt()+"-"+image.getName());
+                            } else if (jsonRes.getInt("huntDone")==1) {
+                                Log.d("Hunt Activity", "Hunt is Done!");
+                                LoginActivity.mWebSocketClient.send("ha:" + image.getIdStage()+"-"+jsonRes.getInt("idTeam")+"-"+image.getIdHunt()+"-"+image.getName());
+                            } else if (jsonRes.getString("userIsCompleted").equals("0")) {
+                                Log.d("Hunt Activity", "User is not completed");
+                                LoginActivity.mWebSocketClient.send("cf:" + image.getIdStage()+"-"+jsonRes.getInt("idTeam")+"-"+image.getIdHunt()+"-"+image.getName());
+                            }
+
+
+
+
+
+                        } else {
+                            //toDo mettere il text di tutti i toast nelle variabili
+                            Toast toast = Toast.makeText(v.getContext(), "Si è verificato un errore.", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+
+
+
+
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+
+
 
             Glide.with(getActivity()).load(image.getLarge())
                     .thumbnail(0.5f)
@@ -139,5 +320,10 @@ public class SlideshowDialogFragment extends DialogFragment {
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
         }
+
+
+
+
+
     }
 }

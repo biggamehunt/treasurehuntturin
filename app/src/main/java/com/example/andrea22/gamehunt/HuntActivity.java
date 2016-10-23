@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -55,6 +56,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -345,8 +347,22 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == TAKE_PHOTO_REQ && resultCode == RESULT_OK) {
 
+            Log.d("Hunt Activity", "mImageUri:"+mImageUri);
+            /*Uri imageUri = data.getData();
+            try {
+                photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
 
-            boolean upload = uploadImage();
+            boolean upload = false;
+            try {
+                upload = uploadImage();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             String res = null;
 
             if (upload) {
@@ -422,12 +438,39 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public boolean uploadImage() {
-        this.getContentResolver().notifyChange(mImageUri, null);
+    public boolean uploadImage() throws ExecutionException, InterruptedException {
+
+
+
+        Log.d("Hunt Activity", "mImageUri:" + mImageUri);
+        Log.d("Hunt Activity", "getContentResolver:" + getContentResolver());
+        Uri url = mImageUri;
+        File file = photo;
+        if (url == null){
+            Log.v("HuntActivity","mImageUri == null");
+
+            SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+            url = Uri.parse(pref.getString("mImageUri",""));
+        }
+        if (file == null){
+            Log.v("HuntActivity","photo == null");
+
+            file = new File(url.getPath());
+        }
+
+
+
+
+        Log.v("HuntActivity", idHunt+"/"+idStage+"/"+idUser);
+
+        Log.v("HuntActivity","nuuuuuu::::"+url);
+        getContentResolver().notifyChange(url, null);
+
+
         ContentResolver cr = this.getContentResolver();
         Bitmap bitmap;
         try {
-            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
+            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, url);
 
             int width = bitmap.getWidth();
             int height = bitmap.getHeight();
@@ -446,14 +489,14 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             FileOutputStream fos;
 
             byte[] bitmapdata = bos.toByteArray();
-            fos = new FileOutputStream(photo);
+            fos = new FileOutputStream(file);
             fos.write(bitmapdata);
             fos.flush();
             fos.close();
 
             String path = idHunt+"/"+idStage+"/"+idUser;
             ArrayList<Object> list = new ArrayList<>();
-            list.add(photo);
+            list.add(file);
             list.add(path);
             list.add(nameStage);
 
@@ -642,11 +685,19 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                     catch(Exception e)
                     {
-                        Log.v("hunt", "Can't create file to take picture!");
+                        Log.v("hunt open camera", "Can't create file to take picture!");
 
                     }
+
                     mImageUri = Uri.fromFile(photo);
+                    Log.v("hunt open camera", "mImageUri:" + mImageUri);
+
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+                    SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("mImageUri", mImageUri.toString());
+                    editor.commit();
+
                     // start camera activity
                     startActivityForResult(intent, TAKE_PHOTO_REQ);
 

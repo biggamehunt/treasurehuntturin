@@ -698,6 +698,23 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+
+    public boolean notifyCheckFailed(SQLiteDatabase db, int idStage)  {
+
+        try {
+            Log.v("db log", "prima del set isPhotoSended");
+            db.execSQL("UPDATE STAGE SET isPhotoSended = 0 WHERE idStage =" + idStage + ";");
+            Log.v("db log", "dopo il set isPhotoSended");
+
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public boolean notifyFromTeamHuntCompleted(SQLiteDatabase db, int idStage, int idTeam)  {
 
         try {

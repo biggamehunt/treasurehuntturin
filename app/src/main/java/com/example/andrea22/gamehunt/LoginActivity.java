@@ -194,6 +194,35 @@ public class LoginActivity extends AppCompatActivity {
                                 notificationManager.notify(0, n.build());
                                 Log.i("Websocket", "dopo il notification");
                             }
+                        } else if (message.substring(0,2).equals("cf")){ //cd=checkfailed
+                            Log.i("Websocket", "cf");
+
+                            String[] firstSplit = message.substring(3).split("-");
+                            int idStage = Integer.parseInt(firstSplit[1]);
+                            int idHunt = Integer.parseInt(firstSplit[2]);
+                            String name = firstSplit[3];
+                            name=name.replace("___","-");
+                            name=name.replace("£$%","&");
+                            DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                            SQLiteDatabase db = myHelper.getWritableDatabase();
+                            boolean res;
+                            if (myHelper.getHuntIsLoadedIsStartedIsEnded(db,idHunt)[0]==1) {
+                                res = myHelper.notifyCheckFailed(db,idStage);
+                            } else {
+                                res = true;
+                            }
+                            if (res) {
+                                NotificationCompat.Builder n = new NotificationCompat.Builder(context)
+                                        .setContentTitle("Foto rifiutata!")
+                                        .setContentText(name)
+                                        .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}) //Vibrazione
+                                        .setLights(Color.RED, 3000, 3000) //Led
+                                        .setSmallIcon(R.mipmap.ic_launcher);
+
+                                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                notificationManager.notify(0, n.build());
+                                Log.i("Websocket", "dopo il notification");
+                            }
                         }
 
                     }
