@@ -36,7 +36,14 @@
 
         <activity
             android:name=".WelcomeActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2">
+            <!-- inserire intent filter nella WelcomeActivity -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
         <activity
@@ -45,12 +52,6 @@
             android:noHistory="true"
             android:screenOrientation="portrait">
 
-            <!-- inserire intent filter nella WelcomeActivity -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".RegistrationActivity"
