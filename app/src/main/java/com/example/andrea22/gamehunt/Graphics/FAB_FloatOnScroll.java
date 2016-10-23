@@ -1,4 +1,4 @@
-package com.example.andrea22.gamehunt.utility;
+package com.example.andrea22.gamehunt.Graphics;
 
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;

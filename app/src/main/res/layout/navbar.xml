@@ -294,7 +294,7 @@
 
 
 
-                <com.example.andrea22.gamehunt.utility.CircleImageView
+                <com.example.andrea22.gamehunt.Graphics.CircleImageView
                     android:id="@+id/banar1"
                     android:layout_width="50dp"
                     android:layout_height="50dp"

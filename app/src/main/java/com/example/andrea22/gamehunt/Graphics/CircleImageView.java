@@ -1,4 +1,4 @@
-package com.example.andrea22.gamehunt.utility;
+package com.example.andrea22.gamehunt.Graphics;
 
 import android.annotation.TargetApi;
 import android.content.Context;

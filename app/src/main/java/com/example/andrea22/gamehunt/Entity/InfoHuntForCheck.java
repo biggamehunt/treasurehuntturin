@@ -1,4 +1,4 @@
-package com.example.andrea22.gamehunt.utility;
+package com.example.andrea22.gamehunt.Entity;
 
 import java.util.ArrayList;
 
@@ -16,5 +16,17 @@ public class InfoHuntForCheck {
         this.idHunt = idHunt;
         this.timeStart = timeStart;
 
+    }
+
+    public int getIdHunt(){
+        return idHunt;
+    }
+
+    public String getNameHunt(){
+        return nameHunt;
+    }
+
+    public String getTimeStart(){
+        return timeStart;
     }
 }

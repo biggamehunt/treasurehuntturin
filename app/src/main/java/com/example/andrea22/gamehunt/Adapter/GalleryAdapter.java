@@ -1,4 +1,4 @@
-package com.example.andrea22.gamehunt.utility;
+package com.example.andrea22.gamehunt.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.andrea22.gamehunt.R;
+import com.example.andrea22.gamehunt.Entity.Image;
 
 import java.util.List;
 

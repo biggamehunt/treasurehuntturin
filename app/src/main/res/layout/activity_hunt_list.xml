@@ -55,7 +55,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_white_24dp"
         android:onClick="createHunt"
-        app:layout_behavior="com.example.andrea22.gamehunt.utility.FAB_FloatOnScroll"
+        app:layout_behavior="com.example.andrea22.gamehunt.Graphics.FAB_FloatOnScroll"
         />
 
 

@@ -1,4 +1,4 @@
-    package com.example.andrea22.gamehunt.utility;
+    package com.example.andrea22.gamehunt.Graphics;
 
 /**
  * Created by Simone on 18/10/2016.

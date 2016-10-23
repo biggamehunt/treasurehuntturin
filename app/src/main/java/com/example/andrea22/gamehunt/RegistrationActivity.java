@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
-import com.example.andrea22.gamehunt.utility.RetrieveFeedTask;
+import com.example.andrea22.gamehunt.AsyncTask.RetrieveFeedTask;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On

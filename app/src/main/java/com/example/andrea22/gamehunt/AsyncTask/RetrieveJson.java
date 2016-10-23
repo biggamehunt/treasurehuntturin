@@ -1,22 +1,20 @@
-package com.example.andrea22.gamehunt.utility;
+package com.example.andrea22.gamehunt.AsyncTask;
 
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Created by Andrea22 on 15/06/2016.
  */
-public class RetrieveFeedTask extends AsyncTask<String, Void, String> {
+public class RetrieveJson extends AsyncTask<String, Void, String> {
 
     private Exception exception;
 
@@ -25,6 +23,16 @@ public class RetrieveFeedTask extends AsyncTask<String, Void, String> {
             HttpURLConnection urlConnection = null;
             URL url = new URL(urls[0]);
             urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setDoInput(true);
+            urlConnection.setRequestMethod("POST");
+
+            //urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestProperty("Accept", "application/json");
+            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            urlConnection.setRequestProperty( "charset", "utf-8");
+            urlConnection.setUseCaches( false );
+
+
 
 
             if(RetrieveLoginTask.msCookieManager.getCookieStore().getCookies().size() > 0)
@@ -33,9 +41,25 @@ public class RetrieveFeedTask extends AsyncTask<String, Void, String> {
                 urlConnection.setRequestProperty("Cookie",
                         TextUtils.join(";", RetrieveLoginTask.msCookieManager.getCookieStore().getCookies()));
             }
+            String urlParameters  = urls[1];
+            byte[] postData       = urlParameters.getBytes( StandardCharsets.UTF_8 );
+
+            int    postDataLength = postData.length;
+            urlConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+
+            try( DataOutputStream wr = new DataOutputStream( urlConnection.getOutputStream())) {
+                Log.d("test debug", "postData:" + postData);
+                Log.d("test debug", "postDataLength:" + postDataLength);
+                Log.d("test debug", "urls[1]:" + urls[1]);
+                wr.write( postData );
+                wr.flush();
+                wr.close();
+            }
+
 
             InputStream in = urlConnection.getInputStream();
             InputStreamReader isw = new InputStreamReader(in);
+
             int data = isw.read();
             Log.d("test debug", "data:" + data);
 
@@ -49,8 +73,9 @@ public class RetrieveFeedTask extends AsyncTask<String, Void, String> {
 
         } catch (Exception e) {
             this.exception = e;
-            Log.d("test debug", "eccez:" + e.getMessage());
             e.printStackTrace();
+            Log.d("test debug", "eccez:" + e.getMessage());
+
             return null;
         }
     }

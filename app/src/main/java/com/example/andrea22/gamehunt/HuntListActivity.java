@@ -10,12 +10,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,11 +20,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import com.example.andrea22.gamehunt.Database.DBHelper;
-import com.example.andrea22.gamehunt.utility.GetPhoto;
-import com.example.andrea22.gamehunt.utility.RVAdapter;
-import com.example.andrea22.gamehunt.utility.RetrieveJson;
-import com.example.andrea22.gamehunt.utility.SimpleFragmentPagerAdapter;
-import com.example.andrea22.gamehunt.utility.SingleHunt;
+import com.example.andrea22.gamehunt.AsyncTask.RetrieveJson;
+import com.example.andrea22.gamehunt.Adapter.SimpleFragmentPagerAdapter;
+import com.example.andrea22.gamehunt.Entity.SingleHunt;
 
 import org.json.JSONObject;
 

@@ -1,4 +1,4 @@
-package com.example.andrea22.gamehunt.utility;
+package com.example.andrea22.gamehunt.AsyncTask;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -13,10 +13,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
-import com.example.andrea22.gamehunt.utility.GalleryAdapter;
-import com.example.andrea22.gamehunt.utility.GetPhoto;
-import com.example.andrea22.gamehunt.utility.Image;
-import com.example.andrea22.gamehunt.utility.InfoHuntForCheck;
+import com.example.andrea22.gamehunt.Adapter.GalleryAdapter;
+import com.example.andrea22.gamehunt.AsyncTask.GetPhoto;
+import com.example.andrea22.gamehunt.Entity.Image;
+import com.example.andrea22.gamehunt.Entity.InfoHuntForCheck;
 
 import java.util.ArrayList;
 

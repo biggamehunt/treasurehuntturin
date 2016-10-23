@@ -5,21 +5,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,16 +22,14 @@ import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.JSONBuilder;
-import com.example.andrea22.gamehunt.utility.RetrieveFeedTask;
-import com.example.andrea22.gamehunt.utility.RetrieveJson;
-import com.example.andrea22.gamehunt.utility.SingleTeam;
-import com.example.andrea22.gamehunt.utility.TeamCardsAdapter;
+import com.example.andrea22.gamehunt.AsyncTask.RetrieveJson;
+import com.example.andrea22.gamehunt.Entity.SingleTeam;
+import com.example.andrea22.gamehunt.Adapter.TeamCardsAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 

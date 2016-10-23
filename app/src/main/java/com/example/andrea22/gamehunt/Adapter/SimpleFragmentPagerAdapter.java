@@ -1,7 +1,6 @@
-package com.example.andrea22.gamehunt.utility;
+package com.example.andrea22.gamehunt.Adapter;
 
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -9,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.example.andrea22.gamehunt.TabFragmentAll;
 import com.example.andrea22.gamehunt.TabFragmentMine;
 import com.example.andrea22.gamehunt.TabFragmentOthers;
+import com.example.andrea22.gamehunt.Entity.SingleHunt;
 
 import java.util.List;
 

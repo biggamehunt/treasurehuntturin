@@ -15,11 +15,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
-import com.example.andrea22.gamehunt.utility.RetrieveLoginTask;
+import com.example.andrea22.gamehunt.AsyncTask.RetrieveLoginTask;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 

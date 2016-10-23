@@ -1,4 +1,4 @@
-package com.example.andrea22.gamehunt.utility;
+package com.example.andrea22.gamehunt.AsyncTask;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -10,20 +10,15 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
-import com.amazonaws.services.s3.model.GetObjectMetadataRequest;
-import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.example.andrea22.gamehunt.GalleryActivity;
 import com.example.andrea22.gamehunt.R;
+import com.example.andrea22.gamehunt.Entity.Image;
+import com.example.andrea22.gamehunt.Entity.InfoHuntForCheck;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -60,9 +55,9 @@ public class GetPhoto extends AsyncTask<ArrayList<InfoHuntForCheck>, Void, Integ
 
             for (int i = 0; i < params[0].size(); i++){
 
-                if (i == 0 || currentHunt != params[0].get(i).idHunt){
-                    currentHunt = params[0].get(i).idHunt;
-                    prefix = params[0].get(i).idHunt+"/";
+                if (i == 0 || currentHunt != params[0].get(i).getIdHunt()){
+                    currentHunt = params[0].get(i).getIdHunt();
+                    prefix = params[0].get(i).getIdHunt()+"/";
                     ObjectListing listing = s3client.listObjects(new ListObjectsRequest().withBucketName("treasurehuntturin").withPrefix(prefix));
 
                     for (S3ObjectSummary objectSummary : listing.getObjectSummaries()) {
@@ -81,12 +76,12 @@ public class GetPhoto extends AsyncTask<ArrayList<InfoHuntForCheck>, Void, Integ
 
 
                         Image image = new Image();
-                        image.setName(params[0].get(i).nameHunt + " - " + objectMetadata.getUserMetaDataOf("namestage"));
+                        image.setName(params[0].get(i).getNameHunt() + " - " + objectMetadata.getUserMetaDataOf("namestage"));
 
                         image.setSmall(s.toString());
                         image.setMedium(s.toString());
                         image.setLarge(s.toString());
-                        image.setTimestamp(params[0].get(i).timeStart);
+                        image.setTimestamp(params[0].get(i).getTimeStart());
 
                         String[] split = objectSummary.getKey().split("/");
 

@@ -4,31 +4,27 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.utility.JSONBuilder;
-import com.example.andrea22.gamehunt.utility.OnStartDragListener;
-import com.example.andrea22.gamehunt.utility.RetrieveJson;
-import com.example.andrea22.gamehunt.utility.SimpleItemTouchHelperCallback;
-import com.example.andrea22.gamehunt.utility.SingleStage;
-import com.example.andrea22.gamehunt.utility.StageCardsAdapter;
-import com.example.andrea22.gamehunt.utility.TeamCardsAdapter;
+import com.example.andrea22.gamehunt.Graphics.OnStartDragListener;
+import com.example.andrea22.gamehunt.AsyncTask.RetrieveJson;
+import com.example.andrea22.gamehunt.Graphics.SimpleItemTouchHelperCallback;
+import com.example.andrea22.gamehunt.Entity.SingleStage;
+import com.example.andrea22.gamehunt.Adapter.StageCardsAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 

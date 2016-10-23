@@ -2,8 +2,6 @@ package com.example.andrea22.gamehunt;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerAdapter;
@@ -19,14 +17,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.andrea22.gamehunt.Database.DBHelper;
-import com.example.andrea22.gamehunt.utility.Image;
-import com.example.andrea22.gamehunt.utility.RetrieveJson;
+import com.example.andrea22.gamehunt.Entity.Image;
+import com.example.andrea22.gamehunt.AsyncTask.RetrieveJson;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Simone on 18/10/2016.

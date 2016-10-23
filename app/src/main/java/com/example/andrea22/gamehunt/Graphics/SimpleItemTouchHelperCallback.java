@@ -1,4 +1,4 @@
-package com.example.andrea22.gamehunt.utility;
+package com.example.andrea22.gamehunt.Graphics;
 
 /**
  * Created by Andrea22 on 04/10/2016.
@@ -8,6 +8,8 @@ import android.graphics.Canvas;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+
+import com.example.andrea22.gamehunt.Adapter.StageCardsAdapter;
 
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 

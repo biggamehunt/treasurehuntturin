@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.andrea22.gamehunt.LoginActivity;
-import com.example.andrea22.gamehunt.utility.InfoHuntForCheck;
-import com.example.andrea22.gamehunt.utility.SingleStage;
+import com.example.andrea22.gamehunt.Entity.InfoHuntForCheck;
+import com.example.andrea22.gamehunt.Entity.SingleStage;
 
 import org.json.JSONArray;
 import org.json.JSONException;

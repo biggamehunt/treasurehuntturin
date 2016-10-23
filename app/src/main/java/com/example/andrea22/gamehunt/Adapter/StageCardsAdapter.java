@@ -1,27 +1,25 @@
-package com.example.andrea22.gamehunt.utility;
+package com.example.andrea22.gamehunt.Adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.R;
 import com.example.andrea22.gamehunt.StageManagementActivity;
+import com.example.andrea22.gamehunt.Graphics.ItemTouchHelperAdapter;
+import com.example.andrea22.gamehunt.Graphics.ItemTouchHelperViewHolder;
+import com.example.andrea22.gamehunt.Graphics.OnStartDragListener;
+import com.example.andrea22.gamehunt.Entity.SingleStage;
 
 import java.util.ArrayList;
 import java.util.Collections;

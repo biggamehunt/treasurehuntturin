@@ -1,21 +1,17 @@
-package com.example.andrea22.gamehunt.utility;
+package com.example.andrea22.gamehunt.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.andrea22.gamehunt.R;
-import com.example.andrea22.gamehunt.TeamManagementActivity;
+import com.example.andrea22.gamehunt.Entity.SingleTeam;
 
 import java.util.List;
 
@@ -88,8 +84,8 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
     }
     @Override
     public void onBindViewHolder(SingleCardViewHolder singleCardViewHolder, final int i) {
-        singleCardViewHolder.teamName.setText(singleTeam.get(i).name);
-        singleCardViewHolder.slogan.setText(singleTeam.get(i).slogan);
+        singleCardViewHolder.teamName.setText(singleTeam.get(i).getName());
+        singleCardViewHolder.slogan.setText(singleTeam.get(i).getSlogan());
         singleCardViewHolder.numUser.setText(""+singleTeam.get(i).getNumUsers());
 
 
@@ -97,7 +93,7 @@ public class TeamCardsAdapter extends RecyclerView.Adapter<TeamCardsAdapter.Sing
 
             ((TextView)singleCardViewHolder.teamLayout.getChildAt(j)).setText(singleTeam.get(i).player.get(j));
         }*/
-        numTeam  = singleTeam.get(i).numTeam;
+        numTeam  = singleTeam.get(i).getNumTeam();
         singleCardViewHolder.goToTeam.setTag(numTeam);
         singleCardViewHolder.deleteTeam.setTag(numTeam);
         singleCardViewHolder.teamName.setTag(i);

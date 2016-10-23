@@ -15,15 +15,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
-import com.example.andrea22.gamehunt.utility.RetrieveFeedTask;
-import com.example.andrea22.gamehunt.utility.RetrieveJson;
+import com.example.andrea22.gamehunt.AsyncTask.RetrieveFeedTask;
+import com.example.andrea22.gamehunt.AsyncTask.RetrieveJson;
 
 import java.util.ArrayList;
 import java.util.List;

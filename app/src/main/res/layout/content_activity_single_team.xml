@@ -13,7 +13,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp">
 
-        <com.example.andrea22.gamehunt.utility.CircleImageView
+        <com.example.andrea22.gamehunt.Graphics.CircleImageView
             android:id="@+id/imageUser"
             android:layout_width="40dp"
             android:layout_height="40dp"

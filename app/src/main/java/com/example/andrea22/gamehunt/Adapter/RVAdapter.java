@@ -1,29 +1,24 @@
-package com.example.andrea22.gamehunt.utility;
+package com.example.andrea22.gamehunt.Adapter;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Color;
-import android.support.v4.view.MotionEventCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.andrea22.gamehunt.HuntListActivity;
 import com.example.andrea22.gamehunt.R;
+import com.example.andrea22.gamehunt.Entity.SingleHunt;
 
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 
@@ -86,11 +81,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
     @Override
     public void onBindViewHolder(final SingleHuntViewHolder singleHuntViewHolder, int i) {
 
-        singleHuntViewHolder.huntTitle.setText(singlehunts.get(i).title);
-        singleHuntViewHolder.huntDate.setText(singlehunts.get(i).date);
-        singleHuntViewHolder.huntImage.setImageResource(singlehunts.get(i).imageId);
+        singleHuntViewHolder.huntTitle.setText(singlehunts.get(i).getTitle());
+        singleHuntViewHolder.huntDate.setText(singlehunts.get(i).getDate());
+        singleHuntViewHolder.huntImage.setImageResource(singlehunts.get(i).getImageId());
 
-        singleHuntViewHolder.description.setText(singlehunts.get(i).description);
+        singleHuntViewHolder.description.setText(singlehunts.get(i).getDescription());
         singleHuntViewHolder.modifyHunt.setText(this.context.getResources().getString(R.string.modifyHunt));
 
         pos=i;
@@ -102,13 +97,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         singleHuntViewHolder.description.setVisibility(View.GONE);
         singleHuntViewHolder.goToHunt.setVisibility(View.GONE);
         singleHuntViewHolder.modifyHunt.setVisibility(View.GONE);
-        final String idHunt = ""+singlehunts.get(i).idHunt;
-        singleHuntViewHolder.modifyHunt.setTag(singlehunts.get(i).idHunt);
+        final String idHunt = ""+singlehunts.get(i).getIdHunt();
+        singleHuntViewHolder.modifyHunt.setTag(singlehunts.get(i).getIdHunt());
 
         if (dimStart != -1) {
             singleHuntViewHolder.cv.getLayoutParams().height = dimStart;
         }
-        singleHuntViewHolder.cv.setTag(singlehunts.get(i).isMine);
+        singleHuntViewHolder.cv.setTag(singlehunts.get(i).isMine());
 
 
         singleHuntViewHolder.cv.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +117,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
             }
         });
 
-        if (singlehunts.get(i).isStagesEmpty == 0 && singlehunts.get(i).isTeamsEmpty == 0){
+        if (singlehunts.get(i).getIsStagesEmpty() == 0 && singlehunts.get(i).getIsTeamsEmpty() == 0){
             singleHuntViewHolder.goToHunt.setText(this.context.getResources().getString(R.string.goToHunt));
             singleHuntViewHolder.goToHunt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,10 +129,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
                     ((HuntListActivity)context).goToHunt(idHunt);
                 }
             });
-        } else if (singlehunts.get(i).isStagesEmpty == 1 && singlehunts.get(i).isTeamsEmpty == 1){
+        } else if (singlehunts.get(i).getIsStagesEmpty() == 1 && singlehunts.get(i).getIsTeamsEmpty() == 1){
             singleHuntViewHolder.goToHunt.setText(this.context.getResources().getString(R.string.goToStages));
 
-            singleHuntViewHolder.huntTitle.setTextColor(R.color.colorAccent);
+            singleHuntViewHolder.huntTitle.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
 
 
 
@@ -151,9 +146,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
                     ((HuntListActivity)context).goToStagesCreation(idHunt);
                 }
             });
-        } else if (singlehunts.get(i).isStagesEmpty == 0 && singlehunts.get(i).isTeamsEmpty == 1){
+        } else if (singlehunts.get(i).getIsStagesEmpty() == 0 && singlehunts.get(i).getIsTeamsEmpty() == 1){
             singleHuntViewHolder.goToHunt.setText(this.context.getResources().getString(R.string.goToTeams));
-            singleHuntViewHolder.huntTitle.setTextColor(R.color.colorAccent);
+            singleHuntViewHolder.huntTitle.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
             singleHuntViewHolder.goToHunt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

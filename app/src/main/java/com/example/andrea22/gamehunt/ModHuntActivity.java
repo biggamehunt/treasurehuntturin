@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.andrea22.gamehunt.Database.DBHelper;
-import com.example.andrea22.gamehunt.utility.RetrieveJson;
+import com.example.andrea22.gamehunt.AsyncTask.RetrieveJson;
 
 import org.json.JSONObject;
 
