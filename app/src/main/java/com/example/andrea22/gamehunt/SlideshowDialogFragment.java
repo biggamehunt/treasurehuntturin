@@ -120,12 +120,12 @@ public class SlideshowDialogFragment extends DialogFragment {
         public Object instantiateItem(ViewGroup container, int position) {
 
             layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = layoutInflater.inflate(R.layout.image_fullscreen_preview, container, false);
+            View view = layoutInflater.inflate(R.layout.fragment_image_slider, container, false);
 
             ImageView imageViewPreview = (ImageView) view.findViewById(R.id.image_preview);
 
-            Button checkNo = (Button) view.findViewById(R.id.checkNo);
-            final Button checkOk = (Button) view.findViewById(R.id.checkOk);
+            ImageView checkNo = (ImageView) view.findViewById(R.id.checkNo);
+            final ImageView checkOk = (ImageView) view.findViewById(R.id.checkOk);
             final Image image = images.get(position);
 
 
