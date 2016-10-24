@@ -537,12 +537,19 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(StageTable.COLUMN_ISLOCATIONREQUIRED, stage.getString("isLocationRequired"));
             values.put(StageTable.COLUMN_ISPHOTOREQUIRED, stage.getString("isPhotoRequired"));
             values.put(StageTable.COLUMN_ISCHECKREQUIRED, stage.getString("isCheckRequired"));
+            values.put(StageTable.COLUMN_ISPHOTOCHECKED, stage.isNull("isPhotoChecked") == false ? stage.getInt("isPhotoChecked"):0);
+            values.put(StageTable.COLUMN_ISPHOTOSENDED, stage.isNull("isPhotoSended") == false ? stage.getInt("isPhotoSended"):0);
+            values.put(StageTable.COLUMN_USERCOMPLETED, stage.isNull("userCompleted") == false ? stage.getInt("userCompleted"):0);
+            values.put(StageTable.COLUMN_TEAMCOMPLETED, stage.isNull("teamCompleted") == false ? stage.getInt("teamCompleted"):0);
+
             values.put(StageTable.COLUMN_AREA_LAT, stage.getString("areaLat"));
             values.put(StageTable.COLUMN_AREA_LON, stage.getString("areaLon"));
             values.put(StageTable.COLUMN_LAT, stage.getString("lat"));
             values.put(StageTable.COLUMN_LON, stage.getString("lon"));
             values.put(StageTable.COLUMN_NUMUSERTOFINISH, stage.getString("numUserToFinish"));
             values.put(StageTable.COLUMN_IDHUNT, hunt.getString("idHunt"));
+
+
 
             db.insert(StageTable.TABLE_NAME, null, values);
 
