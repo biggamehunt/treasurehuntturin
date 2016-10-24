@@ -61,7 +61,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     final int TAKE_PHOTO_REQ = 100;
 
     private String clue, nameHunt, nameStage;
-    private int numStage, ray, isLocationRequired, isCheckRequired, isPhotoRequired, isCompleted;
+    private int numStage, ray, isLocationRequired, isCheckRequired, isPhotoRequired, isCompleted, isPhotoSended, isPhotoChecked, userCompleted, teamCompleted;
+
     private int isStarted, isEnded;
     private float areaLat, areaLon, lat, lon;
     boolean click;
@@ -265,6 +266,11 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                             "STAGE.isLocationRequired, " +
                             "STAGE.isCheckRequired, " +
                             "STAGE.isPhotoRequired, " +
+                            "STAGE.isPhotoSended, " +
+                            "STAGE.isPhotoChecked, " +
+                            "STAGE.userCompleted, " +
+                            "STAGE.teamCompleted, " +
+
                             "HUNT.name AS nameHunt, " +
                             "TEAM.isCompleted, " +
                             "TEAM.idTeam " +
@@ -300,12 +306,46 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     isCompleted = c.getInt(c.getColumnIndex("isCompleted"));
                     nameHunt = c.getString(c.getColumnIndex("nameHunt"));
 
+                    isPhotoSended = c.getInt(c.getColumnIndex("isPhotoSended"));
+                    isPhotoChecked = c.getInt(c.getColumnIndex("isPhotoChecked"));
+                    teamCompleted = c.getInt(c.getColumnIndex("teamCompleted"));
+                    userCompleted = c.getInt(c.getColumnIndex("userCompleted"));
 
+                    Log.v("Hunt Activity", "isPhotoSended:"+isPhotoSended);
+                    Log.v("Hunt Activity", "isPhotoChecked:"+isPhotoChecked);
+                    Log.v("Hunt Activity", "teamCompleted:"+teamCompleted);
+                    Log.v("Hunt Activity", "userCompleted:"+userCompleted);
 
+                    //todo: nella socket fare un instanceof per capire se l'user si trova in quest'activity e in questo stage
                     if (isCompleted == 1){
+                        Log.v("Hunt Activity", "isCompleted == 1");
+
+                        //todo: sistemare i toast
+                        centralButton.setClickable(false);
                         Toast toast = Toast.makeText(this, "La caccia è completa!", Toast.LENGTH_SHORT);
                         toast.show();
 
+                    } else if (teamCompleted == 1){
+                        Log.v("Hunt Activity", "teamCompleted == 1");
+
+                        //todo: fare il go to next stage
+                        // questo if dovrebbe essere inverificabie...
+                        centralButton.setClickable(false);
+
+                        Toast toast = Toast.makeText(this, "Il team ha completato lo stage!", Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else if (userCompleted == 1){
+                        Log.v("Hunt Activity", "userCompleted == 1");
+
+                        centralButton.setClickable(false);
+                        Toast toast = Toast.makeText(this, "Hai completato lo stage, ma aspetti ancora i tuoi compagni!", Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else if (isPhotoSended == 1 && isCheckRequired == 1){
+                        Log.v("Hunt Activity", "isPhotoSended == 1 && isCheckRequired == 1");
+
+                        centralButton.setClickable(false);
+                        Toast toast = Toast.makeText(this, "Devi aspettare la conferma del creatore della caccia per poter andare avanti!", Toast.LENGTH_SHORT);
+                        toast.show();
                     }
 
                 } while (c.moveToNext());

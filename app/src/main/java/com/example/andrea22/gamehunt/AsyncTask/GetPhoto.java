@@ -1,8 +1,12 @@
 package com.example.andrea22.gamehunt.AsyncTask;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.auth.AWSCredentials;
@@ -27,12 +31,18 @@ import java.util.ArrayList;
  */
 public class GetPhoto extends AsyncTask<ArrayList<InfoHuntForCheck>, Void, Integer> {
 
-    private Exception exception;
     private GalleryActivity context;
     private ArrayList<Image> images;
+    private ProgressDialog progressDialog;
 
     public GetPhoto (Context context){
         this.context = (GalleryActivity)context;
+        progressDialog = new ProgressDialog(context, R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        //todo: mettere in string
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
     }
 
     @Override
@@ -65,10 +75,6 @@ public class GetPhoto extends AsyncTask<ArrayList<InfoHuntForCheck>, Void, Integ
                         GeneratePresignedUrlRequest generatePresignedUrlRequest =
                                 new GeneratePresignedUrlRequest("treasurehuntturin", objectSummary.getKey());
 
-
-
-
-                        generatePresignedUrlRequest.setMethod(HttpMethod.GET); // Default.
                         generatePresignedUrlRequest.setExpiration(expiration);
 
                         URL s = s3client.generatePresignedUrl(generatePresignedUrlRequest);
@@ -113,39 +119,40 @@ public class GetPhoto extends AsyncTask<ArrayList<InfoHuntForCheck>, Void, Integ
     }
 
     @Override
+    protected void onPreExecute() {
+        Log.d("test debug", "onPreExecute");
+
+        progressDialog.show();
+    }
+
+    @Override
     protected void onPostExecute(Integer result) {
 
         // TODO: check this.exception
         // TODO: do something with the feed
-        if (result == 1) {
-            context.mAdapter.notifyDataSetChanged();
-        }
+
+        if (progressDialog.isShowing()) {
+            Log.d("test debug", "if progressDialog");
+
+            progressDialog.dismiss();
 
 
+            if (result == 0){
+
+                CharSequence text = "errore di caricamento!";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+
+            } else {
+                context.mAdapter.notifyDataSetChanged();
+
+            }
     }
 
-    public String getRelativePath(final String parent, final String child) {
-        if (!child.startsWith(parent)) {
-            throw new IllegalArgumentException("Invalid child '" + child
-                    + "' for parent '" + parent + "'");
-        }
-        // a String.replace() also would be fine here
-        final int parentLen = parent.length();
-        return child.substring(parentLen);
-    }
 
-    public boolean isImmediateDescendant(final String parent, final String child) {
-        if (!child.startsWith(parent)) {
-            // maybe we just should return false
-            throw new IllegalArgumentException("Invalid child '" + child
-                    + "' for parent '" + parent + "'");
-        }
-        final int parentLen = parent.length();
-        final String childWithoutParent = child.substring(parentLen);
-        if (childWithoutParent.contains("/")) {
-            return false;
-        }
-        return true;
     }
 
 }
