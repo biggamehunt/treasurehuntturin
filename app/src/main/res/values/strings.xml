@@ -2,6 +2,7 @@
     <string name="app_name">Game Hunt</string>
     <string name="title_activity_registration">Registration</string>
 
+
     <!-- INTRO -->
     <string name="title_activity_welcome">Home Screen</string>
     <string name="next_intro">NEXT</string>
@@ -9,19 +10,20 @@
     <string name="start_intro">GOT IT</string>
 
     <string name="slide_1_title">Welcome to GameHunt</string>
-    <string name="slide_1_desc">The easiest way to order food from your favourite restaurant!</string>
+    <string name="slide_1_desc">The only way to play treasure hunts directly from your smartphone!</string>
 
-    <string name="slide_2_title">Partecipa</string>
-    <string name="slide_2_desc">Book movie tickets for your family and friends!</string>
+    <string name="slide_2_title">Join the Hunt</string>
+    <string name="slide_2_desc">Follow us on an exciting adventure created from your own friends!</string>
 
-    <string name="slide_3_title">Crea nuove cacce</string>
-    <string name="slide_3_desc">Best discounts on every single service we offer!</string>
+    <string name="slide_3_title">Create the game</string>
+    <string name="slide_3_desc">Starts a new treasure hunt and invite your friends!</string>
 
-    <string name="slide_4_title">Macchia gli schermi</string>
-    <string name="slide_4_desc">Book tickets of any transportation and travel the world!</string>
+    <string name="slide_4_title">Enjoy the GameHunt</string>
+    <string name="slide_4_desc">Play with us and travel the world!</string>
 
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
+
 
     <!-- LOGIN -->
     <string name="username">Username</string>
