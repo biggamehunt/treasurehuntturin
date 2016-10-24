@@ -42,7 +42,7 @@ public class RetrieveLoginTask extends AsyncTask<String, Void, String> {
         this.username=username;
         progressDialog = new ProgressDialog (activity, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
+        progressDialog.setMessage(context.getResources().getString(R.string.loginDialog));
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         error = false;

@@ -552,8 +552,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void takeClue(View view){
 
-
-
         if(click){
             clueText.setVisibility(View.GONE);
         } else {

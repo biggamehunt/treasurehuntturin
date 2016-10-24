@@ -34,6 +34,7 @@
     <string name="action_sign_in2">Already a member? Login</string>
     <string name="continue_reg">Create Account</string>
     <string name="login_error">Error: Invalid Credential</string>
+    <string name="loginDialog">Authenticating...</string>
 
     <!-- REGISTRATION -->
     <string name="reg_username">Username</string>
@@ -115,6 +116,9 @@
     <string name="team6">Team Purple</string>
     <string name="team7">Team Pink</string>
     <string name="team8">Team Brown</string>
+
+    <!-- GALLERY ACTIVITY -->
+    <string name="loadPhoto">Loading...</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

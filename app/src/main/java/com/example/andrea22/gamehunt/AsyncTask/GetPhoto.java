@@ -39,8 +39,7 @@ public class GetPhoto extends AsyncTask<ArrayList<InfoHuntForCheck>, Void, Integ
         this.context = (GalleryActivity)context;
         progressDialog = new ProgressDialog(context, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
-        //todo: mettere in string
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(context.getResources().getString(R.string.loadPhoto));
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
     }
