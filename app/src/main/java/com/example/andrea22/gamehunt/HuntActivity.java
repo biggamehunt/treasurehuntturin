@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -553,15 +554,28 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     public void takeClue(View view){
 
         if(click){
-            clueText.setVisibility(View.GONE);
+           // clueText.setVisibility(View.GONE);
         } else {
+
+            /*
             clueText.setVisibility(View.VISIBLE);
             Animation a = AnimationUtils.loadAnimation(this, R.anim.scale);
             a.reset();
             clueText.clearAnimation();
             clueText.startAnimation(a);
+            */
+            RunAnimation();
         }
         click = !click;
+    }
+
+    private void RunAnimation()
+    {
+        Animation a = AnimationUtils.loadAnimation(this, R.anim.scale);
+        a.reset();
+        RelativeLayout tv = (RelativeLayout) findViewById(R.id.relativeClueText);
+        tv.clearAnimation();
+        tv.startAnimation(a);
     }
 
     public void takePosition(View view){

@@ -54,15 +54,24 @@
             android:layout_height="match_parent"
             android:src="@android:color/transparent"/>
 
-        <TextView
+        <RelativeLayout
+            android:id="@+id/relativeClueText"
             android:layout_above="@+id/bot"
-            android:id="@+id/clueText"
-            android:visibility="gone"
-            android:height="150dp"
-            android:background="@color/white"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ma questo è un fantastico suggerimento"/>
+            >
+
+            <TextView
+                android:id="@+id/clueText"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ma questo è un fantastico suggerimento"/>
+
+
+        </RelativeLayout>
+
+
 
 
         <android.support.v7.widget.Toolbar
