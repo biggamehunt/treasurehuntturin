@@ -22,6 +22,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
@@ -71,9 +72,11 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     TextView clueText;
     Toolbar bottomBar;
 
-    //FloatingActionButton photoButton, position, info;
     Bitmap resized;
     //WebSocketClient mWebSocketClient;
+
+    private ViewGroup hiddenPanel;
+    private boolean isPanelShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,15 +94,14 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         Log.v("Hunt Activity", "isStarted:"+isStarted);
         Log.v("Hunt Activity", "isEnded:"+isEnded);
 
-        //photoButton = (FloatingActionButton) findViewById(R.id.photo);
-        //position = (FloatingActionButton) findViewById(R.id.position);
-        //info = (FloatingActionButton) findViewById(R.id.info);
-
         bottomBar = (Toolbar) findViewById(R.id.bot);
         centralButton = (ImageButton)findViewById(R.id.central);
         clueButton = (ImageButton)findViewById(R.id.clue);
         teamButton = (ImageButton)findViewById(R.id.team);
         clueText = (TextView)findViewById(R.id.clueText);
+        hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel);
+        hiddenPanel.setVisibility(View.INVISIBLE);
+        isPanelShown = false;
 
         if (isStarted==1 && isEnded==0) {
             Log.v("Hunt Activity", "in corso!");
@@ -239,11 +241,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
             }
             Log.v("Hunt Activity", "isPhotoRequired:" + isPhotoRequired);
-
-
-
-
-
         }
     }
 
@@ -252,8 +249,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         try {
-
-
             Cursor c = db.rawQuery(
                     "SELECT  STAGE.idStage, " +
                             "STAGE.numStage, " +
@@ -283,9 +278,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                     "WHERE   TEAM.idHunt = "+idHunt+" AND USER.idUser = " + idUser, null);
             Log.v("Hunt Activity", "info prelevate: " + c.getCount());
-
-
-
 
             Log.v("Hunt Activity", "idHunt:"+idHunt);
             Log.v("Hunt Activity", "idUser:"+idUser);
@@ -348,11 +340,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                         Toast toast = Toast.makeText(this, "Devi aspettare la conferma del creatore della caccia per poter andare avanti!", Toast.LENGTH_SHORT);
                         toast.show();
                     }
-
                 } while (c.moveToNext());
-
             }
-
             Log.v("Hunt Activity", "numStage:"+numStage);
             Log.v("Hunt Activity", "lat:"+lat);
             Log.v("Hunt Activity", "lon:"+lon);
@@ -360,16 +349,15 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             Log.v("Hunt Activity", "nameHunt:"+nameHunt);
 
             Log.v("Hunt Activity", "clue:"+clue);
+            if(clue.isEmpty()){
+                clueText.setText(getResources().getString(R.string.clueEmpty));
+            } else {
 
-            clueText.setText(clue);
-
-
-
-
+                clueText.setText(clue);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -414,17 +402,12 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                         startActivity(intent);
                     } else if (!res.trim().equals("0")) {
 
-
-
-
                         JSONObject jsonRes = new JSONObject(res);
-
 
                         DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                         SQLiteDatabase db = myHelper.getWritableDatabase();
 
                         myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser,idHunt,nameHunt);
-
 
                         //FrameLayout frame = (FrameLayout) findViewById(R.id.rect_map);
                         //CoordinatorLayout cl = (CoordinatorLayout) findViewById(R.id.coordinator_maps);
@@ -442,35 +425,19 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                             //frame.setVisibility(View.VISIBLE);
                         }
-
-
-
-
-
                     } else {
                         //toDo mettere il text di tutti i toast nelle variabili
                         Toast toast = Toast.makeText(this, "Si è verificato un errore. Prova a ricarare la foto.", Toast.LENGTH_SHORT);
                         toast.show();
                     }
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
-
-
-
-
-
         }
-
     }
 
     public boolean uploadImage() throws ExecutionException, InterruptedException {
-
-
 
         Log.d("Hunt Activity", "mImageUri:" + mImageUri);
         Log.d("Hunt Activity", "getContentResolver:" + getContentResolver());
@@ -487,15 +454,10 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
             file = new File(url.getPath());
         }
-
-
-
-
         Log.v("HuntActivity", idHunt+"/"+idStage+"/"+idUser);
 
         Log.v("HuntActivity","nuuuuuu::::"+url);
         getContentResolver().notifyChange(url, null);
-
 
         ContentResolver cr = this.getContentResolver();
         Bitmap bitmap;
@@ -513,7 +475,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             //Convert bitmap to byte array
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             resized.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
-
 
             //write the bytes in file
             FileOutputStream fos;
@@ -551,33 +512,25 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void takeClue(View view){
 
-        if(click){
-           // clueText.setVisibility(View.GONE);
-        } else {
-
-            /*
-            clueText.setVisibility(View.VISIBLE);
-            Animation a = AnimationUtils.loadAnimation(this, R.anim.scale);
-            a.reset();
-            clueText.clearAnimation();
-            clueText.startAnimation(a);
-            */
-            RunAnimation();
+    public void takeClue(final View view) {
+        if(!isPanelShown) {
+            // Show the panel
+            Animation bottomUp = AnimationUtils.loadAnimation(HuntActivity.this, R.anim.bottom_up);
+            ViewGroup hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel);
+            hiddenPanel.startAnimation(bottomUp);
+            hiddenPanel.setVisibility(View.VISIBLE);
+            isPanelShown = true;
         }
-        click = !click;
+        else {
+            // Hide the Panel
+            Animation bottomDown = AnimationUtils.loadAnimation(HuntActivity.this, R.anim.bottom_down);
+            ViewGroup hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel);
+            hiddenPanel.startAnimation(bottomDown);
+            hiddenPanel.setVisibility(View.INVISIBLE);
+            isPanelShown = false;
+        }
     }
-
-    private void RunAnimation()
-    {
-        Animation a = AnimationUtils.loadAnimation(this, R.anim.scale);
-        a.reset();
-        RelativeLayout tv = (RelativeLayout) findViewById(R.id.relativeClueText);
-        tv.clearAnimation();
-        tv.startAnimation(a);
-    }
-
     public void takePosition(View view){
         Log.v("Hunt Activity", "check location");
 
@@ -621,7 +574,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             Log.v("Hunt Activity", "lat: "+lat);
             Log.v("Hunt Activity", "lon: "+lon);
 
-            //todo: mettere distance tra le costanti
+            //todo: mettere distance tra le costanti e riportarlo a 50
             if (distance <= 500) {
                 Log.v("Hunt Activity", "distance <= 500");
 
@@ -654,17 +607,14 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                         } else if (!res.trim().equals("0")) {
 
 
-
                             Log.v("Hunt Activity", "!res.trim().equals(0)");
 
                             JSONObject jsonRes = new JSONObject(res);
-
 
                             DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                             SQLiteDatabase db = myHelper.getWritableDatabase();
 
                             myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser,idHunt,nameHunt);
-
 
                             //FrameLayout frame = (FrameLayout) findViewById(R.id.rect_map);
                             //CoordinatorLayout cl = (CoordinatorLayout) findViewById(R.id.coordinator_maps);
@@ -679,40 +629,17 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                             } else if (jsonRes.getString("userIsCompleted").equals("1")) {
                                 Log.d("Hunt Activity", "userIsCompleted");
                                 //cl.setVisibility(View.INVISIBLE);
-
                                 //frame.setVisibility(View.VISIBLE);
                             }
-
-
-
-
-
                         } else {
                             //toDo mettere il text di tutti i toast nelle variabili
-                            Toast toast = Toast.makeText(this, "Si è verificato un errore.", Toast.LENGTH_SHORT);
+                            Toast toast = Toast.makeText(this, getResources().getString(R.string.errorToast), Toast.LENGTH_SHORT);
                             toast.show();
                         }
-
-
-
-
-
-
-
                     } catch (Exception e){
                         e.printStackTrace();
                     }
-
-
-
-
-
-
-
-
-
-
-                    Toast.makeText(this, "Sono arrivato!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.arrivedToast), Toast.LENGTH_SHORT).show();
                 } else {
                     Log.v("Hunt Activity", "open camera");
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -744,15 +671,12 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                 }
             } else {
-                Toast.makeText(this, "Ne devo fare di strada ancora! " + distance, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.notArrivedToast) + " " + (int)distance + " m", Toast.LENGTH_LONG).show();
             }
-
         }
-
     }
 
     public void takeTeam(View view){
-
     }
 
     private File createTemporaryFile(String part, String ext) throws Exception {
@@ -763,10 +687,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             tempDir.mkdirs();
         }
         Log.v("Hunt Activity", "File.createTempFile(part, ext, tempDir) : " + File.createTempFile(part, ext, tempDir).toString());
-
         return File.createTempFile(part, ext, tempDir);
     }
-
 
     @Override
     protected void onRestart() {
@@ -796,7 +718,5 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
     }
-
 }

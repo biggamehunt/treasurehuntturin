@@ -73,6 +73,14 @@
     <string name="noNameHunt">Please insert the hunt name</string>
     <string name="noDateHunt">Please insert date and time correctly</string>
 
+    <!-- HUNT ACTIVITY -->
+    <string name="clueTitle">Clue</string>
+    <string name="clueEmpty">(No clue for this stage)</string>
+    <string name="notArrivedToast">There are still to be done about</string>
+    <string name="arrivedToast">Well done! You\'re arrived.</string>
+    <string name="errorToast">There was an error, please try again.</string>
+
+
 
     <!-- STAGE MANAGEMENT -->
     <string name="maxNumStage">Maximum number of stages reached</string>

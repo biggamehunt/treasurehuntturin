@@ -55,18 +55,29 @@
             android:src="@android:color/transparent"/>
 
         <RelativeLayout
-            android:id="@+id/relativeClueText"
+            android:id="@+id/hidden_panel"
             android:layout_above="@+id/bot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             >
-
             <TextView
-                android:id="@+id/clueText"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:paddingTop="6dp"
+                android:paddingStart="6dp"
+                android:id="@+id/clueTitle"
                 android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ma questo è un fantastico suggerimento"/>
+                android:text="@string/clueTitle"/>
+
+            <TextView
+                android:layout_below="@+id/clueTitle"
+                android:padding="6dp"
+                android:id="@+id/clueText"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"/>
 
 
         </RelativeLayout>
