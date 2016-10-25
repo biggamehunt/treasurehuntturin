@@ -336,14 +336,20 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     } else if (isPhotoSended == 1 && isCheckRequired == 1){
                         Log.v("Hunt Activity", "isPhotoSended == 1 && isCheckRequired == 1");
 
-                        centralButton.setClickable(false);
-                        Toast toast = Toast.makeText(this, "Devi aspettare la conferma del creatore della caccia per poter andare avanti!", Toast.LENGTH_SHORT);
+                        final Toast toast = Toast.makeText(this, "Devi aspettare la conferma del creatore della caccia per poter andare avanti!", Toast.LENGTH_SHORT);
                         toast.show();
+                        centralButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                toast.show();
+
+                            }
+                        });
                     }
                 } while (c.moveToNext());
             }
             Log.v("Hunt Activity", "numStage:"+numStage);
-            Log.v("Hunt Activity", "lat:"+lat);
+            Log.v("Hunt Activity", "lat:" + lat);
             Log.v("Hunt Activity", "lon:"+lon);
             Log.v("Hunt Activity", "nameStage:"+nameStage);
             Log.v("Hunt Activity", "nameHunt:"+nameHunt);
@@ -414,16 +420,25 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                         Log.d("Hunt Activity", "teamIsCompleted:"+jsonRes.getString("teamIsCompleted"));
                         Log.d("Hunt Activity", "userIsCompleted:"+jsonRes.getString("userIsCompleted"));
 
-                        if (jsonRes.getString("teamIsCompleted").equals("1")) {
+                        if (jsonRes.getInt("teamIsCompleted")==1) {
                             Log.d("Hunt Activity", "teamIsCompleted");
+                            centralButton.setClickable(false);
                             //cl.setVisibility(View.INVISIBLE);
                             //frame.setVisibility(View.VISIBLE);
 
-                        } else if (jsonRes.getString("userIsCompleted").equals("1")) {
+                        } else if (jsonRes.getInt("userIsCompleted")==1) {
                             Log.d("Hunt Activity", "userIsCompleted");
-                            //cl.setVisibility(View.INVISIBLE);
-
+                            centralButton.setClickable(false);
                             //frame.setVisibility(View.VISIBLE);
+                        } else if (jsonRes.getInt("userIsCompleted")==0 && jsonRes.getInt("isPhotoSended")==1){
+                            final Toast toast = Toast.makeText(this, "Devi aspettare la conferma del creatore della caccia per poter andare avanti!", Toast.LENGTH_SHORT);
+                            centralButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    toast.show();
+
+                                }
+                            });
                         }
                     } else {
                         //toDo mettere il text di tutti i toast nelle variabili
