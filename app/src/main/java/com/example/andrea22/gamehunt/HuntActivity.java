@@ -430,7 +430,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                             Log.d("Hunt Activity", "userIsCompleted");
                             centralButton.setClickable(false);
                             //frame.setVisibility(View.VISIBLE);
-                        } else if (jsonRes.getInt("userIsCompleted")==0 && jsonRes.getInt("isPhotoSended")==1){
+                        } else if (jsonRes.getInt("userIsCompleted")==0 && jsonRes.getInt("userIsPhotoSended")==1){
                             final Toast toast = Toast.makeText(this, "Devi aspettare la conferma del creatore della caccia per poter andare avanti!", Toast.LENGTH_SHORT);
                             centralButton.setOnClickListener(new View.OnClickListener() {
                                 @Override

@@ -133,7 +133,6 @@ public class LoginActivity extends AppCompatActivity {
                         textView.setText(textView.getText() + "\n" + message);*/
                         Log.i("Websocket", "message:"+message);
                         if (message.substring(0,2).equals("up")){ //up=update
-                            Log.i("Websocket", "up");
 
                             String[] firstSplit = message.substring(3).split("-");
                             int idStage = Integer.parseInt(firstSplit[0]);
@@ -164,7 +163,6 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.i("Websocket", "dopo il notification");
                             }
                         } else if (message.substring(0,2).equals("eh")){ //eh=endhunt
-                            Log.i("Websocket", "eh");
 
                             String[] firstSplit = message.substring(3).split("-");
                             int idStage = Integer.parseInt(firstSplit[0]);
@@ -194,7 +192,6 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.i("Websocket", "dopo il notification");
                             }
                         } else if (message.substring(0,2).equals("cf")){ //cd=checkfailed
-                            Log.i("Websocket", "cf");
 
                             String[] firstSplit = message.substring(3).split("-");
                             int idStage = Integer.parseInt(firstSplit[1]);
@@ -213,6 +210,64 @@ public class LoginActivity extends AppCompatActivity {
                             if (res) {
                                 NotificationCompat.Builder n = new NotificationCompat.Builder(context)
                                         .setContentTitle("Foto rifiutata!")
+                                        .setContentText(name)
+                                        .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}) //Vibrazione
+                                        .setLights(Color.RED, 3000, 3000) //Led
+                                        .setSmallIcon(R.mipmap.ic_launcher);
+
+                                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                notificationManager.notify(0, n.build());
+                                Log.i("Websocket", "dopo il notification");
+                            }
+                        } else if (message.substring(0,2).equals("cd")){ //cd=checkdone
+
+                            String[] firstSplit = message.substring(3).split("-");
+                            int idStage = Integer.parseInt(firstSplit[1]);
+                            int idHunt = Integer.parseInt(firstSplit[2]);
+                            String name = firstSplit[3];
+                            name=name.replace("___","-");
+                            name=name.replace("£$%","&");
+                            DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                            SQLiteDatabase db = myHelper.getWritableDatabase();
+                            boolean res;
+                            if (myHelper.getHuntIsLoadedIsStartedIsEnded(db,idHunt)[0]==1) {
+                                res = myHelper.notifyUserComplete(db, idStage);
+                            } else {
+                                res = true;
+                            }
+                            if (res) {
+                                NotificationCompat.Builder n = new NotificationCompat.Builder(context)
+                                        .setContentTitle("Foto Accettata!")
+                                        .setContentText(name)
+                                        .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}) //Vibrazione
+                                        .setLights(Color.RED, 3000, 3000) //Led
+                                        .setSmallIcon(R.mipmap.ic_launcher);
+
+                                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                notificationManager.notify(0, n.build());
+                                Log.i("Websocket", "dopo il notification");
+                            }
+                        } else if (message.substring(0,2).equals("ca")){ //ca=checkdoneall
+
+                            String[] firstSplit = message.substring(3).split("-");
+                            int idStage = Integer.parseInt(firstSplit[0]);
+                            int nextStage = Integer.parseInt(firstSplit[1]);
+                            int idTeam = Integer.parseInt(firstSplit[2]);
+                            int idHunt = Integer.parseInt(firstSplit[3]);
+                            String name = firstSplit[4];
+                            name=name.replace("___","-");
+                            name=name.replace("£$%","&");
+                            boolean res;
+                            DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                            SQLiteDatabase db = myHelper.getWritableDatabase();
+                            if (myHelper.getHuntIsLoadedIsStartedIsEnded(db,idHunt)[0]==1) {
+                                res = myHelper.notifyFromTeamStageCompleted(db, idStage, nextStage, idTeam); //todo: questo deve andare PRIMA del notificationcompat builder!
+                            } else {
+                                res = true;
+                            }
+                            if (res) {
+                                NotificationCompat.Builder n = new NotificationCompat.Builder(context)
+                                        .setContentTitle("Stage Completato!")
                                         .setContentText(name)
                                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}) //Vibrazione
                                         .setLights(Color.RED, 3000, 3000) //Led
