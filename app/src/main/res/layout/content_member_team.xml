@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    >
+
+    <com.example.andrea22.gamehunt.Graphics.CircleImageView
+            android:id="@+id/imageUser"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/she"/>
+
+    <TextView
+        android:id="@+id/nameUser"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:text="Nome Cognome"
+        android:paddingLeft="14dp"
+        android:textSize="14sp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:visibility="invisible"
+            android:layout_marginRight="24dp"
+            android:id="@+id/doneUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_check_white_24dp"
+            android:tint="@android:color/holo_green_light"/>
+
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>
+

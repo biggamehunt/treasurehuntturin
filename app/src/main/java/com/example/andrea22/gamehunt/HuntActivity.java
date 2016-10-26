@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,13 +60,14 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     File photo;
     final int TAKE_PHOTO_REQ = 100;
 
-    private String clue, nameHunt, nameStage;
+    private String clue, nameHunt, nameStage, nameTeam, sloganTeam;
     private int numStage, ray, isLocationRequired, isCheckRequired, isPhotoRequired, isCompleted, isPhotoSended, isPhotoChecked, userCompleted, teamCompleted;
     private int isStarted, isEnded;
     private float areaLat, areaLon, lat, lon;
 
     ImageButton centralButton, clueButton, teamButton;
-    TextView clueText;
+    TextView clueText, teamTitle, teamSlogan;
+    LinearLayout containerMembers;
     Toolbar bottomBar;
 
     Bitmap resized;
@@ -73,6 +75,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     private ViewGroup hiddenPanel, hiddenTeam;
     private boolean isPanelShown, isTeamShown;
+
+    ArrayList<String> members;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,11 +98,16 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         clueButton = (ImageButton)findViewById(R.id.clue);
         teamButton = (ImageButton)findViewById(R.id.team);
         clueText = (TextView)findViewById(R.id.clueText);
+        teamTitle = (TextView)findViewById(R.id.teamTitle);
+        teamSlogan = (TextView)findViewById(R.id.teamSlogan);
         hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel);
         hiddenPanel.setVisibility(View.GONE);
         hiddenTeam = (ViewGroup)findViewById(R.id.hidden_panel_team);
         hiddenTeam.setVisibility(View.GONE);
         isPanelShown = isTeamShown = false;
+
+        containerMembers = (LinearLayout) findViewById(R.id.membersContainer);
+        members = new ArrayList<>();
 
         if (isStarted==1 && isEnded==0) {
             Log.v("Hunt Activity", "in corso!");
@@ -107,6 +116,26 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             idUser = pref.getInt("idUser", 0);
 
             setStageMap();
+            setTeamList();
+
+            teamTitle.setText(nameTeam);
+            teamSlogan.setText(sloganTeam);
+
+            if(clue.isEmpty() || clue.equals("")){
+                clueText.setText(getResources().getString(R.string.clueEmpty));
+            } else {
+                clueText.setText(clue);
+            }
+
+            Log.v("Hunt Activity", "members" + members);
+
+            for (int i = 0; i < members.size(); i++){
+                LinearLayout ll = (LinearLayout)getLayoutInflater().inflate(R.layout.content_member_team, null, true);
+                ((TextView)ll.getChildAt(1)).setText(members.get(i));
+                Log.v("Hunt Activity", "LinearL" + ll);
+                Log.v("Hunt Activity", "container" + containerMembers);
+                containerMembers.addView(ll);
+            }
 
             //todo: da rivedere... isComplete lo setto dopo l'if!!!
 
@@ -241,7 +270,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    /*
+
 
     public void setTeamList(){
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
@@ -249,10 +278,23 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
         try {
             Cursor c = db.rawQuery(
-                    "SELECT USER.username FROM USER LEFT JOIN BE ON TEAM "
+                    "SELECT USER.username FROM " +
+                            "TEAM LEFT JOIN BE ON TEAM.idTeam = BE.idTeam " +
+                            "LEFT JOIN USER ON USER.idUser = BE.idUser " +
+                            "WHERE TEAM.idTeam = " + idTeam, null);
 
+            Log.v("Hunt Activity", "info prelevate: " + c.getCount());
+            Log.v("Hunt Activity", "ID TEAM: " + idTeam);
+            if (c.moveToFirst()) {
+                do {
+                    members.add(c.getString(c.getColumnIndex("username")));
+                    Log.v("Hunt Activity", "username: " + c.getString(c.getColumnIndex("username")));
+                } while (c.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-*/
     public void setStageMap(){
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -278,7 +320,9 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                             "HUNT.name AS nameHunt, " +
                             "TEAM.isCompleted, " +
-                            "TEAM.idTeam " +
+                            "TEAM.idTeam, " +
+                            "TEAM.name, " +
+                            "TEAM.slogan " +
 
                     "FROM    TEAM LEFT JOIN BE ON TEAM.idTeam = BE.idTeam " +
                             "LEFT JOIN USER ON USER.idUser = BE.idUser " +
@@ -305,6 +349,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     isCheckRequired = c.getInt(c.getColumnIndex("isCheckRequired"));
                     isPhotoRequired = c.getInt(c.getColumnIndex("isPhotoRequired"));
                     idTeam = c.getInt(c.getColumnIndex("idTeam"));
+                    nameTeam = c.getString(c.getColumnIndex("name"));
+                    sloganTeam = c.getString(c.getColumnIndex("slogan"));
                     isCompleted = c.getInt(c.getColumnIndex("isCompleted"));
                     nameHunt = c.getString(c.getColumnIndex("nameHunt"));
 
@@ -363,12 +409,11 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             Log.v("Hunt Activity", "nameStage:"+nameStage);
             Log.v("Hunt Activity", "nameHunt:"+nameHunt);
             Log.v("Hunt Activity", "clue:"+clue);
+            Log.v("Hunt Activity", "members:"+members);
 
-            if(clue.isEmpty() || clue.equals("")){
-                clueText.setText(getResources().getString(R.string.clueEmpty));
-            } else {
-                clueText.setText(clue);
-            }
+
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -589,6 +634,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             isPanelShown = false;
         }
     }
+
     public void takePosition(View view){
         Log.v("Hunt Activity", "check location");
 
