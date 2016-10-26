@@ -26,7 +26,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,10 +42,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,10 +61,9 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     private String clue, nameHunt, nameStage;
     private int numStage, ray, isLocationRequired, isCheckRequired, isPhotoRequired, isCompleted, isPhotoSended, isPhotoChecked, userCompleted, teamCompleted;
-
     private int isStarted, isEnded;
     private float areaLat, areaLon, lat, lon;
-    boolean click;
+
     ImageButton centralButton, clueButton, teamButton;
     TextView clueText;
     Toolbar bottomBar;
@@ -75,8 +71,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     Bitmap resized;
     //WebSocketClient mWebSocketClient;
 
-    private ViewGroup hiddenPanel;
-    private boolean isPanelShown;
+    private ViewGroup hiddenPanel, hiddenTeam;
+    private boolean isPanelShown, isTeamShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +81,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         parent = this;
         Intent intent = getIntent();
 
-        click = false;
         idHunt = Integer.parseInt(intent.getStringExtra("idHunt"));
 
         isStarted = intent.getIntExtra("isStarted", -1);
@@ -100,8 +95,10 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         teamButton = (ImageButton)findViewById(R.id.team);
         clueText = (TextView)findViewById(R.id.clueText);
         hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel);
-        hiddenPanel.setVisibility(View.INVISIBLE);
-        isPanelShown = false;
+        hiddenPanel.setVisibility(View.GONE);
+        hiddenTeam = (ViewGroup)findViewById(R.id.hidden_panel_team);
+        hiddenTeam.setVisibility(View.GONE);
+        isPanelShown = isTeamShown = false;
 
         if (isStarted==1 && isEnded==0) {
             Log.v("Hunt Activity", "in corso!");
@@ -244,6 +241,18 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    /*
+
+    public void setTeamList(){
+        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        try {
+            Cursor c = db.rawQuery(
+                    "SELECT USER.username FROM USER LEFT JOIN BE ON TEAM "
+
+    }
+*/
     public void setStageMap(){
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -353,14 +362,14 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             Log.v("Hunt Activity", "lon:"+lon);
             Log.v("Hunt Activity", "nameStage:"+nameStage);
             Log.v("Hunt Activity", "nameHunt:"+nameHunt);
-
             Log.v("Hunt Activity", "clue:"+clue);
-            if(clue.isEmpty()){
+
+            if(clue.isEmpty() || clue.equals("")){
                 clueText.setText(getResources().getString(R.string.clueEmpty));
             } else {
-
                 clueText.setText(clue);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -527,9 +536,43 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    public void takeTeam(final View view){
+        if(!isTeamShown) {
+            if(isPanelShown){
+                // Hide the Clue Panel
+                Animation bottomDown = AnimationUtils.loadAnimation(HuntActivity.this, R.anim.bottom_down);
+                ViewGroup hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel);
+                hiddenPanel.startAnimation(bottomDown);
+                hiddenPanel.setVisibility(View.GONE);
+                isPanelShown = false;
+            }
+            // Show the panel
+            Animation bottomUp = AnimationUtils.loadAnimation(HuntActivity.this, R.anim.bottom_up);
+            ViewGroup hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel_team);
+            hiddenPanel.startAnimation(bottomUp);
+            hiddenPanel.setVisibility(View.VISIBLE);
+            isTeamShown = true;
+        }
+        else {
+            // Hide the Panel
+            Animation bottomDown = AnimationUtils.loadAnimation(HuntActivity.this, R.anim.bottom_down);
+            ViewGroup hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel_team);
+            hiddenPanel.startAnimation(bottomDown);
+            hiddenPanel.setVisibility(View.GONE);
+            isTeamShown = false;
+        }
+    }
 
     public void takeClue(final View view) {
         if(!isPanelShown) {
+            if(isTeamShown){
+                // Hide the Team Panel
+                Animation bottomDown = AnimationUtils.loadAnimation(HuntActivity.this, R.anim.bottom_down);
+                ViewGroup hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel_team);
+                hiddenPanel.startAnimation(bottomDown);
+                hiddenPanel.setVisibility(View.GONE);
+                isTeamShown = false;
+            }
             // Show the panel
             Animation bottomUp = AnimationUtils.loadAnimation(HuntActivity.this, R.anim.bottom_up);
             ViewGroup hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel);
@@ -542,7 +585,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             Animation bottomDown = AnimationUtils.loadAnimation(HuntActivity.this, R.anim.bottom_down);
             ViewGroup hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel);
             hiddenPanel.startAnimation(bottomDown);
-            hiddenPanel.setVisibility(View.INVISIBLE);
+            hiddenPanel.setVisibility(View.GONE);
             isPanelShown = false;
         }
     }
@@ -691,8 +734,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void takeTeam(View view){
-    }
 
     private File createTemporaryFile(String part, String ext) throws Exception {
         File tempDir= Environment.getExternalStorageDirectory();

@@ -919,5 +919,24 @@ public class DBHelper extends SQLiteOpenHelper {
         return hunts;
     }
 
+    public String selectAllMembersTeam(SQLiteDatabase db, int idTeam)  {
+        if (idTeam != 0){
+            String users = "";
+            Cursor c = db.rawQuery("SELECT users FROM TEAM WHERE idTeam = " + idTeam + ";", null);
+            if (c.moveToFirst()) {
+                do {
+                    users += c.getString(c.getColumnIndex("users"))+"|";
+                } while (c.moveToNext());
+            }
+
+            Log.v("db log", "Select all users eseguito");
+
+            return users;
+
+        }
+        return null;
+    }
+
+
 
 }
