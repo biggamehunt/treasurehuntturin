@@ -180,7 +180,7 @@ public class TeamManagementActivity extends AppCompatActivity {
             initializeAdapter();
             addTutorial();
         } else {
-            CharSequence text = "Errore Sconosciuto!";
+            CharSequence text = getResources().getString(R.string.uknownErrorToast);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.show();
         }
@@ -248,7 +248,6 @@ public class TeamManagementActivity extends AppCompatActivity {
         }
     }
 
-
     public void finish(View view){
 
         Log.v(getLocalClassName(), "entro in finish");
@@ -297,7 +296,7 @@ public class TeamManagementActivity extends AppCompatActivity {
                     String users = c.getString(c.getColumnIndex("users"));
 
                     if (users==null || users.equals("")) {
-                        CharSequence text = "Non puoi lasciare dei team vuoti!";
+                        CharSequence text = getResources().getString(R.string.emptyTeamToast);
                         Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
                         toast.show();
                         return;
@@ -366,7 +365,7 @@ public class TeamManagementActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.enter, R.anim.exit);
 
             } else {
-                CharSequence text = "c'è stato qualche errore";
+                CharSequence text = getResources().getString(R.string.uknownErrorToast);
                 int duration = Toast.LENGTH_SHORT;
 
                 Toast toast = Toast.makeText(this, text, duration);

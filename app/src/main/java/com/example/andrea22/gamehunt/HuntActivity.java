@@ -151,35 +151,26 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             Log.v("Hunt Activity", "timeStart:"+timeStart);
 
             new AlertDialog.Builder(this)
-            .setTitle("Devi ancora aspettare!")
-                    .setMessage("La caccia partirà il " + timeStart)
+            .setTitle(getResources().getString(R.string.dialogTitle))
+                    .setMessage(getResources().getString(R.string.dialogMessage) + " " + timeStart)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
             bottomBar.setVisibility(View.GONE);
-            //photoButton.setVisibility(View.INVISIBLE);
-            //info.setVisibility(View.INVISIBLE);
-            //position.setVisibility(View.INVISIBLE);
+
         } else if (isStarted==1 && isEnded==1){
             Log.v("Hunt Activity", "è finita...");
 
             new AlertDialog.Builder(this)
-            .setTitle("La caccia è terminata!")
-                    .setMessage("Grazie per aver giocato con noi.")
+            .setTitle(getResources().getString(R.string.dialogTitle1))
+                    .setMessage(getResources().getString(R.string.dialogMessage1))
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
-            //photoButton.setVisibility(View.INVISIBLE);
-            //info.setVisibility(View.INVISIBLE);
-            //position.setVisibility(View.INVISIBLE);
             bottomBar.setVisibility(View.GONE);
-
-
         } else {
             //todo da gestire
         }
-
-
     }
 
     @Override
@@ -410,11 +401,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             Log.v("Hunt Activity", "nameHunt:"+nameHunt);
             Log.v("Hunt Activity", "clue:"+clue);
             Log.v("Hunt Activity", "members:"+members);
-
-
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -565,17 +551,17 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             int res = new SendPhoto(this).execute(list).get();
 
             if (res == 1) {
-                Toast.makeText(this, "Image Upload!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.toastMessage), Toast.LENGTH_SHORT).show();
                 return true;
 
             } else {
 
-                Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.toastMessage1), Toast.LENGTH_SHORT).show();
                 return false;
             }
 
         } catch (Exception e) {
-            Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.toastMessage1), Toast.LENGTH_SHORT).show();
             Log.d("Hunt Activity", "Failed to load", e);
             return false;
         }
