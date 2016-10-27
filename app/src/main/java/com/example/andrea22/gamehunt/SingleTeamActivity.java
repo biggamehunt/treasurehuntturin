@@ -180,7 +180,7 @@ public class SingleTeamActivity extends AppCompatActivity {
 
 
         if (usersTeam.size() >= 30){
-            CharSequence text = "Ragiunto il numero massimo di utenti per il team!";
+            CharSequence text = getResources().getString(R.string.maxUsersErrorToast);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
@@ -193,7 +193,7 @@ public class SingleTeamActivity extends AppCompatActivity {
 
                 if (username.equals(pref.getString("username", ""))) {
                     //todo: inserire i messaggi dei toasts in string.xml
-                    CharSequence text = "Non puoi aggiungere l'utente che ha creato la caccia";
+                    CharSequence text = getResources().getString(R.string.addAdminErrorToast);
                     Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
@@ -205,7 +205,7 @@ public class SingleTeamActivity extends AppCompatActivity {
                     Log.v(getLocalClassName(), "interno:" + users.get(i));
 
                     if (username.trim().equals((users.get(i)).trim())) {
-                        CharSequence text = "User già aggiunto!";
+                        CharSequence text = getResources().getString(R.string.addAlreadyErrorToast);
                         int duration = Toast.LENGTH_SHORT;
 
                         Toast toast = Toast.makeText(this, text, duration);
@@ -263,7 +263,7 @@ public class SingleTeamActivity extends AppCompatActivity {
 
 
                 } else {
-                    CharSequence text = "Username non esistente";
+                    CharSequence text = getResources().getString(R.string.notExistErrorToast);
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(this, text, duration);

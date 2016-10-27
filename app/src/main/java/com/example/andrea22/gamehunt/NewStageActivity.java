@@ -102,7 +102,7 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
                    return;
                 } else if (ischeckreq.isChecked() == false) {
                     islocreq.setChecked(true);
-                    CharSequence text = "COMBINAZIONE IMPOSSIBILE!";
+                    CharSequence text = getResources().getString(R.string.impossibleCombination);
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(buttonView.getContext(), text, duration);
@@ -122,7 +122,7 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
 
                 if (isChecked == false) {
                     if (islocreq.isChecked() == false) {
-                        CharSequence text = "COMBINAZIONE IMPOSSIBILE!";
+                        CharSequence text = getResources().getString(R.string.impossibleCombination);
                         int duration = Toast.LENGTH_SHORT;
 
                         Toast toast = Toast.makeText(buttonView.getContext(), text, duration);
@@ -147,7 +147,7 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
                 if (isChecked) {
                     if (isphotoreq.isChecked()==false){
                         isphotoreq.setChecked(true);
-                        CharSequence text = "CON IL CHECK E' RICHIESTO ANCHE L'INIVIO DI UNA FOTO!";
+                        CharSequence text = getResources().getString(R.string.photoSendToast);
                         int duration = Toast.LENGTH_SHORT;
 
                         Toast toast = Toast.makeText(buttonView.getContext(), text, duration);
@@ -158,7 +158,7 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
                 } else if (isChecked == false) {
                     if (islocreq.isChecked()==false){
 
-                        CharSequence text = "CON IL CHECK DISATTIVATO BISOGNA AVERE LA LOCATION!";
+                        CharSequence text = getResources().getString(R.string.photoSendToast);
                         int duration = Toast.LENGTH_SHORT;
 
                         Toast toast = Toast.makeText(buttonView.getContext(), text, duration);
@@ -393,14 +393,14 @@ public class NewStageActivity extends FragmentActivity implements OnMapReadyCall
         //todo: inserire su string i toast
 
         if (stagelocation == null) {
-            CharSequence text = " AREA DELLO STAGE MANCANTE!";
+            CharSequence text = getResources().getString(R.string.areaMissinigToast);
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(this, text, duration);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else if (finallocation == null) {
-            CharSequence text = "PUNTO DI ARRIVO MANCANTE";
+            CharSequence text = getResources().getString(R.string.arriveMissinigToast);
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(this, text, duration);

@@ -2,39 +2,37 @@
     <string name="app_name">Game Hunt</string>
     <string name="title_activity_registration">Registration</string>
 
-
     <!-- INTRO -->
     <string name="title_activity_welcome">Home Screen</string>
     <string name="next_intro">NEXT</string>
     <string name="skip_intro">SKIP</string>
     <string name="start_intro">GOT IT</string>
-
     <string name="slide_1_title">Welcome to GameHunt</string>
     <string name="slide_1_desc">The only way to play treasure hunts directly from your smartphone!</string>
-
     <string name="slide_2_title">Join the Hunt</string>
     <string name="slide_2_desc">Follow us on an exciting adventure created from your own friends!</string>
-
     <string name="slide_3_title">Create the game</string>
     <string name="slide_3_desc">Starts a new treasure hunt and invite your friends!</string>
-
     <string name="slide_4_title">Enjoy the GameHunt</string>
     <string name="slide_4_desc">Play with us and travel the world!</string>
-
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
-
 
     <!-- LOGIN -->
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
     <string name="action_sign_in">Login</string>
+    <string name="loginFailed">Login failed</string>
     <string name="action_registration">Don\'t you have an account yet? Sign up!</string>
     <string name="action_sign_in2">Already a member? Login</string>
     <string name="continue_reg">Create Account</string>
-    <string name="login_error">Error: Invalid Credential</string>
+    <string name="login_error">Invalid credential</string>
     <string name="loginDialog">Authenticating...</string>
+    <string name="stageCompleted">Stage Completed</string>
+    <string name="huntCompleted">Hunt Completed</string>
+    <string name="photoRejected">Photo rejected</string>
+    <string name="photoAccepted">Photo accepted</string>
 
     <!-- REGISTRATION -->
     <string name="reg_username">Username</string>
@@ -64,7 +62,7 @@
     <string name="tutorialHuntText1">Create new Hunt</string>
     <string name="tutorialHuntText2">Tap the button to start creating your hunt</string>
 
-    <!-- NEWHUNT -->
+    <!-- NEWHUNT ACTIVITY -->
     <string name="nameHunt">Hunt name</string>
     <string name="dateInitHunt">Today</string>
     <string name="timeInitHunt">Start time</string>
@@ -72,6 +70,10 @@
     <string name="timeEndHunt">Finish time</string>
     <string name="noNameHunt">Please insert the hunt name</string>
     <string name="noDateHunt">Please insert date and time correctly</string>
+    <string name="invalideDateToast">La data di inizio non è valida!</string>
+    <string name="dateErrorToast">Start date must be more recent than the final</string>
+    <string name="timeErrorToast">Please insert at least three hours from start time</string>
+    <string name="noStartTimeToast">Please insert a start time</string>
 
     <!-- HUNT ACTIVITY -->
     <string name="clueTitle">Clue</string>
@@ -79,13 +81,18 @@
     <string name="notArrivedToast">There are still to be done about</string>
     <string name="arrivedToast">Well done! You\'re arrived.</string>
     <string name="errorToast">There was an error, please try again.</string>
-
-
+    <string name="dialogTitle">You must wait!</string>
+    <string name="dialogMessage">The hunt will start on</string>
+    <string name="dialogTitle1">The hunt is over</string>
+    <string name="dialogMessage1">Thanks for playing with us.</string>
+    <string name="toastMessage">Image Uploaded</string>
+    <string name="toastMessage1">Failed to load</string>
 
     <!-- STAGE MANAGEMENT -->
     <string name="maxNumStage">Maximum number of stages reached</string>
     <string name="tutorialStageText1">Create your stage</string>
     <string name="tutorialStageText2">Tap the button to start creating your stage</string>
+    <string name="noStageErrorToast">You must insert at least a stage!</string>
 
 
     <!-- TEAM MANAGEMENT -->
@@ -97,7 +104,14 @@
     <string name="dialogOk">OK</string>
     <string name="dialogCancel">Cancel</string>
     <string name="maxTeamToast">Max number of teams reached</string>
+    <string name="uknownErrorToast">Unknown error, please try again</string>
+    <string name="emptyTeamToast">You can not have empty team!</string>
 
+    <!-- SINGLE TEAM -->
+    <string name="maxUsersErrorToast">you have reached the maximum number of users for the team!</string>
+    <string name="addAdminErrorToast">You can not add the user who created the hunt!</string>
+    <string name="addAlreadyErrorToast">User already added!</string>
+    <string name="notExistErrorToast">This username does not exist</string>
 
     <!-- FRAGMENT_NEWSTAGE -->
     <string name="areaStage">Stage area</string>
@@ -108,6 +122,13 @@
     <string name="reqPhotoStage">Required Photo</string>
     <string name="reqCheckStage">Photo Check</string>
     <string name="descr_overflow_button">blabla bla</string>
+
+    <!-- NEW STAGE ACTIVITY -->
+    <string name="areaMissinigToast">Missing stage area</string>
+    <string name="arriveMissinigToast">Missing arrival point</string>
+    <string name="impossibleCombination">impossible to combine these choices</string>
+    <string name="photoSendToast">the photo control also requires sending</string>
+    <string name="photoCheckDisable">With Photo Check disable you must have the Location</string>
 
     <!-- MODHUNT -->
     <string name="title_activity_modhunt">Modify Hunt</string>

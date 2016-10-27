@@ -152,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             if (res) {
                                 NotificationCompat.Builder n = new NotificationCompat.Builder(context)
-                                        .setContentTitle("Stage Completato!")
+                                        .setContentTitle(getResources().getString(R.string.stageCompleted))
                                         .setContentText(name)
                                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}) //Vibrazione
                                         .setLights(Color.RED, 3000, 3000) //Led
@@ -181,7 +181,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             if (res) {
                                 NotificationCompat.Builder n = new NotificationCompat.Builder(context)
-                                        .setContentTitle("Caccia Completata!")
+                                        .setContentTitle(getResources().getString(R.string.huntCompleted))
                                         .setContentText(name)
                                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}) //Vibrazione
                                         .setLights(Color.RED, 3000, 3000) //Led
@@ -209,7 +209,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             if (res) {
                                 NotificationCompat.Builder n = new NotificationCompat.Builder(context)
-                                        .setContentTitle("Foto rifiutata!")
+                                        .setContentTitle(getResources().getString(R.string.photoRejected))
                                         .setContentText(name)
                                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}) //Vibrazione
                                         .setLights(Color.RED, 3000, 3000) //Led
@@ -237,7 +237,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             if (res) {
                                 NotificationCompat.Builder n = new NotificationCompat.Builder(context)
-                                        .setContentTitle("Foto Accettata!")
+                                        .setContentTitle(getResources().getString(R.string.photoAccepted))
                                         .setContentText(name)
                                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}) //Vibrazione
                                         .setLights(Color.RED, 3000, 3000) //Led
@@ -267,7 +267,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             if (res) {
                                 NotificationCompat.Builder n = new NotificationCompat.Builder(context)
-                                        .setContentTitle("Stage Completato!")
+                                        .setContentTitle(getResources().getString(R.string.stageCompleted))
                                         .setContentText(name)
                                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}) //Vibrazione
                                         .setLights(Color.RED, 3000, 3000) //Led
@@ -296,7 +296,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             if (res) {
                                 NotificationCompat.Builder n = new NotificationCompat.Builder(context)
-                                        .setContentTitle("Caccia Completata!")
+                                        .setContentTitle(getResources().getString(R.string.huntCompleted))
                                         .setContentText(name)
                                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}) //Vibrazione
                                         .setLights(Color.RED, 3000, 3000) //Led
@@ -328,7 +328,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), getResources().getString(R.string.loginFailed), Toast.LENGTH_LONG).show();
         loginButton.setEnabled(true);
     }
 

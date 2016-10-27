@@ -163,7 +163,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
             toast.show();
             return;
         } else if (startTime.getText().toString().equals(getResources().getString(R.string.timeInitHunt))){
-            CharSequence text = "Nessun tempo di inizio";
+            CharSequence text = getResources().getString(R.string.noStartTimeToast);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
@@ -234,7 +234,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
         switch (dateControl(timeStart, timeEnd)) {
 
             case 0:
-                text = "Meno di tre ore di differenza da inizio a fine";
+                text = getResources().getString(R.string.timeErrorToast);
                 toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
 
@@ -242,7 +242,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                 break;
 
             case -1:
-                text = "data iniziale più grande della finale";
+                text = getResources().getString(R.string.dateErrorToast);
                 toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
 
@@ -296,7 +296,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
 
                         startActivity(intent);
                     } else if (res.trim().equals("-2")) {
-                        text = "La data di partenza non è valida!";
+                        text = getResources().getString(R.string.invalideDateToast);
                         int duration = Toast.LENGTH_SHORT;
 
                         toast = Toast.makeText(this, text, duration);
@@ -317,7 +317,7 @@ public class NewHuntActivity extends AppCompatActivity implements DatePickerDial
                         overridePendingTransition(R.anim.enter, R.anim.exit);
 
                     } else {
-                        text = "c'è stato qualche errore";
+                        text = getResources().getString(R.string.uknownErrorToast);
                         int duration = Toast.LENGTH_SHORT;
 
                         toast = Toast.makeText(this, text, duration);

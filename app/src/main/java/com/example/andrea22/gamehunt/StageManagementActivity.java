@@ -112,7 +112,7 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
     public void goToTeamManagement(View view){
 
         if (stages.size() < 1){
-            CharSequence text = "Devi inseire almeno uno stage!";
+            CharSequence text = getResources().getString(R.string.noStageErrorToast);
             Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
             toast.show();
             return;
@@ -170,7 +170,7 @@ public class StageManagementActivity extends AppCompatActivity implements OnStar
                 overridePendingTransition(R.anim.enter, R.anim.exit);
 
             } else {
-                CharSequence text = "c'è stato qualche errore";
+                CharSequence text = getResources().getString(R.string.uknownErrorToast);
                 int duration = Toast.LENGTH_SHORT;
 
                 Toast toast = Toast.makeText(this, text, duration);
