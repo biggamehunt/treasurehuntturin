@@ -3,6 +3,7 @@ package com.example.andrea22.gamehunt;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -131,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                         /*TextView textView;
                         textView = (TextView)findViewById(R.id.messages);
                         textView.setText(textView.getText() + "\n" + message);*/
-                        Log.i("Websocket", "message:"+message);
+                        Log.i("Websocket", "message:" + message);
                         if (message.substring(0,2).equals("up")){ //up=update
 
                             String[] firstSplit = message.substring(3).split("-");
@@ -222,7 +223,8 @@ public class LoginActivity extends AppCompatActivity {
                         } else if (message.substring(0,2).equals("cd")){ //cd=checkdone
 
                             String[] firstSplit = message.substring(3).split("-");
-                            int idStage = Integer.parseInt(firstSplit[1]);
+                            int idStage = Integer.parseInt(firstSplit[0]);
+                            int idTeam = Integer.parseInt(firstSplit[1]);
                             int idHunt = Integer.parseInt(firstSplit[2]);
                             String name = firstSplit[3];
                             name=name.replace("___","-");
@@ -231,7 +233,9 @@ public class LoginActivity extends AppCompatActivity {
                             SQLiteDatabase db = myHelper.getWritableDatabase();
                             boolean res;
                             if (myHelper.getHuntIsLoadedIsStartedIsEnded(db,idHunt)[0]==1) {
-                                res = myHelper.notifyUserComplete(db, idStage);
+                                SharedPreferences pref = context.getSharedPreferences("session", context.MODE_PRIVATE);
+
+                                res = myHelper.notifyUserComplete(db, idStage, pref.getInt("idUser",0),idTeam,idHunt);
                             } else {
                                 res = true;
                             }
@@ -306,7 +310,25 @@ public class LoginActivity extends AppCompatActivity {
                                 notificationManager.notify(0, n.build());
                                 Log.i("Websocket", "dopo il notification");
                             }
+                        } else if (message.substring(0,2).equals("uc")){ //uc:userhascomplete
+
+                            String[] firstSplit = message.substring(3).split("-");
+                            int idUser = Integer.parseInt(firstSplit[0]);
+                            int idTeam = Integer.parseInt(firstSplit[1]);
+                            int idHunt = Integer.parseInt(firstSplit[2]);
+
+                            DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                            SQLiteDatabase db = myHelper.getWritableDatabase();
+                            if (myHelper.getHuntIsLoadedIsStartedIsEnded(db,idHunt)[0]==1) {
+                                myHelper.notifyUserHasCompleted(db, idUser, idTeam); //todo: questo deve andare PRIMA del notificationcompat builder!
+                            }
+
                         }
+
+
+
+
+
 
                     }
                 });

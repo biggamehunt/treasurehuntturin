@@ -68,7 +68,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     private float areaLat, areaLon, lat, lon;
 
     ImageButton centralButton, clueButton, teamButton;
-    TextView clueText, teamTitle, teamSlogan;
+    TextView clueText, teamTitle, teamSlogan, stageTitle;
     LinearLayout containerMembers;
     Toolbar bottomBar;
 
@@ -101,6 +101,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         clueButton = (ImageButton)findViewById(R.id.clue);
         teamButton = (ImageButton)findViewById(R.id.team);
         clueText = (TextView)findViewById(R.id.clueText);
+        stageTitle = (TextView)findViewById(R.id.stageTitle);
+
         teamTitle = (TextView)findViewById(R.id.teamTitle);
         teamSlogan = (TextView)findViewById(R.id.teamSlogan);
         hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel);
@@ -111,6 +113,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
         containerMembers = (LinearLayout) findViewById(R.id.membersContainer);
         members = new ArrayList<>();
+        membersDone = new ArrayList<>();
 
         if (isStarted==1 && isEnded==0) {
             Log.v("Hunt Activity", "in corso!");
@@ -123,7 +126,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
             teamTitle.setText(nameTeam);
             teamSlogan.setText(sloganTeam);
-
+            stageTitle.setText(nameStage);
             if(clue.isEmpty() || clue.equals("")){
                 clueText.setText(getResources().getString(R.string.clueEmpty));
             } else {
@@ -131,14 +134,20 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
             Log.v("Hunt Activity", "members" + members);
+            Log.v("Hunt Activity", "members" + membersDone);
 
             for (int i = 0; i < members.size(); i++){
                 LinearLayout ll = (LinearLayout)getLayoutInflater().inflate(R.layout.content_member_team, null, true);
                 ((TextView)ll.getChildAt(1)).setText(members.get(i));
 
                 if(membersDone.get(i) == 1){
-                    ((RelativeLayout)ll.getChildAt(2)).setVisibility(View.VISIBLE);
+                    Log.v("Hunt Activity", "membersDone.get(i) == 1");
+
+                    (ll.getChildAt(2)).setVisibility(View.VISIBLE);
                 }
+
+                containerMembers.addView(ll);
+
             }
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map);

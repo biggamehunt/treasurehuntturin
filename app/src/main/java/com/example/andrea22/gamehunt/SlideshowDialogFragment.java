@@ -167,22 +167,39 @@ public class SlideshowDialogFragment extends DialogFragment {
 */
                             //FrameLayout frame = (FrameLayout) findViewById(R.id.rect_map);
                             //CoordinatorLayout cl = (CoordinatorLayout) findViewById(R.id.coordinator_maps);
-                            Log.d("Slidehow", "teamIsCompleted:"+jsonRes.getString("teamIsCompleted"));
-                            Log.d("Slidehow", "userIsCompleted:"+jsonRes.getString("userIsCompleted"));
+                            Log.d("Hunt Activity", "teamIsCompleted:"+jsonRes.getString("teamIsCompleted"));
+                            Log.d("Hunt Activity", "userIsCompleted:"+jsonRes.getString("userIsCompleted"));
+                            if (jsonRes.getInt("huntDone")==1) {
+                                Log.d("Hunt Activity", "Hunt is Done!");
+                                JSONArray jUsers = jsonRes.getJSONArray("users");
+                                String users="";
 
-                            if (jsonRes.getString("teamIsCompleted").equals("1")) {
-                                Log.d("Slidehow", "teamIsCompleted");
-                                LoginActivity.mWebSocketClient.send("ca:" + image.getIdStage()+"-"+jsonRes.getInt("nextStage")+"-"+jsonRes.getInt("idTeam")+"-"+image.getIdHunt()+"-"+image.getName());
+                                for (int i=0; i<jUsers.length();i++){
+                                    users += jUsers.getInt(i)+"&";
+
+                                }
+                                LoginActivity.mWebSocketClient.send("ha:" + users+"-"+image.getIdStage()+"-"+jsonRes.getInt("team")+"-"+image.getIdHunt()+"-"+image.getName());
+                            } else if (jsonRes.getString("teamIsCompleted").equals("1")) {
+                                Log.d("Hunt Activity", "teamIsCompleted");
+
+                                JSONArray jUsers = jsonRes.getJSONArray("users");
+                                String users="";
+
+                                for (int i=0; i<jUsers.length();i++){
+                                    users += jUsers.getInt(i)+"&";
+
+                                }
+
+
+                                LoginActivity.mWebSocketClient.send("ca:" + users+"-"+image.getIdStage()+"-"+jsonRes.getInt("nextStage")+"-"+jsonRes.getInt("team")+"-"+image.getIdHunt()+"-"+image.getName());
 
 
                             } else if (jsonRes.getString("userIsCompleted").equals("1")) {
-                                Log.d("Slidehow", "User is completed");
-                                LoginActivity.mWebSocketClient.send("cd:" + image.getIdStage()+"-"+jsonRes.getInt("idTeam")+"-"+image.getIdHunt()+"-"+image.getName());
-                            } else if (jsonRes.getInt("huntDone")==1) {
-                                Log.d("Slidehow", "Hunt is Done!");
-                                LoginActivity.mWebSocketClient.send("ha:" + image.getIdStage()+"-"+jsonRes.getInt("idTeam")+"-"+image.getIdHunt()+"-"+image.getName());
+                                Log.d("Hunt Activity", "User is completed");
+                                LoginActivity.mWebSocketClient.send("cd:" + image.getIdUser()+"-"+image.getIdStage()+"-"+jsonRes.getInt("team")+"-"+image.getIdHunt()+"-"+image.getName());
+
                             } else if (jsonRes.getString("userIsCompleted").equals("0")) {
-                                Log.d("Slidehow", "User is not completed");
+                                Log.d("Hunt Activity", "User is not completed");
                                 Log.d("Hunt Activity", "cf:" + image.getIdUser()+"-"+image.getIdStage()+"-"+image.getIdHunt()+"-"+image.getName());
 
                                 LoginActivity.mWebSocketClient.send("cf:" + image.getIdUser()+"-"+image.getIdStage()+"-"+image.getIdHunt()+"-"+image.getName());
@@ -277,7 +294,7 @@ public class SlideshowDialogFragment extends DialogFragment {
 
                             } else if (jsonRes.getString("userIsCompleted").equals("1")) {
                                 Log.d("Hunt Activity", "User is completed");
-                                LoginActivity.mWebSocketClient.send("cd:" + image.getIdUser()+"-"+image.getIdStage()+"-"+image.getIdHunt()+"-"+image.getName());
+                                LoginActivity.mWebSocketClient.send("cd:" + image.getIdUser()+"-"+image.getIdStage()+"-"+jsonRes.getInt("team")+"-"+image.getIdHunt()+"-"+image.getName());
 
                             } else if (jsonRes.getString("userIsCompleted").equals("0")) {
                                 Log.d("Hunt Activity", "User is not completed");

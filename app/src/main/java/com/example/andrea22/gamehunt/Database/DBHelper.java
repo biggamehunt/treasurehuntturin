@@ -2,6 +2,7 @@ package com.example.andrea22.gamehunt.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -626,6 +627,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
             if (json.has("userIsCompleted") && json.get("userIsCompleted").equals("1")){
                 db.execSQL("UPDATE STAGE SET userCompleted = 1 WHERE idStage =" + idStage + ";");
+
+                String users="";
+                Cursor c = db.rawQuery("SELECT * FROM BE WHERE idTeam = " + idTeam + ";", null);
+                if (c.moveToFirst()) {
+
+                    do {
+                        users += c.getString(c.getColumnIndex("idUser"))+"&";
+                    } while (c.moveToNext());
+                }
+                LoginActivity.mWebSocketClient.send("uc:" + users + "-" + idUser + "-" + idTeam + "-" + idHunt);
                 Log.v("db log", "userCompleted = 1");
 
             }
@@ -634,6 +645,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 Log.v("db log", "teamCompleted = 1");
 
                 if (json.has("nextStage")){
+                    db.execSQL("UPDATE BE SET isComplete = 0 WHERE idTeam =" + idTeam + ";");
+
                     //la caccia al tesoro non è ancora finita!
                     db.execSQL("UPDATE TEAM SET idCurrentStage = "+json.get("nextStage")+" WHERE idTeam =" + idTeam + ";");
                     Log.v("db log", "nextstage = "+json.get("nextStage"));
@@ -726,13 +739,21 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean notifyUserComplete(SQLiteDatabase db, int idStage)  {
+    public boolean notifyUserComplete(SQLiteDatabase db, int idStage, int idUser, int idTeam, int idHunt)  {
 
         try {
             Log.v("db log", "prima del set isPhotoChecked & userCompleted");
             db.execSQL("UPDATE STAGE SET isPhotoChecked = 1, userCompleted = 1  WHERE idStage =" + idStage + ";");
             Log.v("db log", "dopo il set isPhotoChecked & userCompleted");
+            String users="";
+            Cursor c = db.rawQuery("SELECT * FROM BE WHERE idTeam = " + idTeam + ";", null);
+            if (c.moveToFirst()) {
 
+                do {
+                    users += c.getString(c.getColumnIndex("idUser"))+"&";
+                } while (c.moveToNext());
+            }
+            LoginActivity.mWebSocketClient.send("uc:" + users + "-" + idUser + "-" + idTeam + "-" + idHunt);
 
 
         } catch (Exception e){
@@ -757,6 +778,20 @@ public class DBHelper extends SQLiteOpenHelper {
             return false;
         }
         return true;
+    }
+
+    public void notifyUserHasCompleted (SQLiteDatabase db, int idUser, int idTeam){
+        try {
+            Log.v("db log", "prima del set isComplete");
+            db.execSQL("UPDATE BE SET isComplete = 1 WHERE idUser =" + idUser + " AND idTeam = " + idTeam + ";");
+            Log.v("db log", "dopo il set isComplete");
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+
     }
 
     public boolean updateSlogan(SQLiteDatabase db, String slogan, int numTeam, int idUser, int idHunt)  {
