@@ -5,6 +5,8 @@ public class BeTable {
         public static final String COLUMN_IDBE = "idBe";
         public static final String COLUMN_IDUSER = "idUser";
         public static final String COLUMN_IDTEAM = "idTeam";
+        public static final String COLUMN_ISCOMPLETE = "isComplete";
+
         public static final String USERTABLE = "USER";
         public static final String TEAMTABLE = "TEAM";
 
@@ -15,6 +17,7 @@ public class BeTable {
                         COLUMN_IDBE + " INTEGER PRIMARY KEY NOT NULL, " +
                         COLUMN_IDUSER + " INTEGER NOT NULL, " +
                         COLUMN_IDTEAM + " INTEGER NOT NULL, " +
+                        COLUMN_ISCOMPLETE + " INTEGER NOT NULL DEFAULT 0, " +
                         "FOREIGN KEY(" + COLUMN_IDUSER + ") REFERENCES " + USERTABLE + "(" + COLUMN_IDUSER + "), "+
 
                         "FOREIGN KEY(" + COLUMN_IDTEAM + ") REFERENCES " + TEAMTABLE + "(" + COLUMN_IDTEAM + "));";

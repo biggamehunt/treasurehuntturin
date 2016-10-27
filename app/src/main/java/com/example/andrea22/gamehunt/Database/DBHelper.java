@@ -593,6 +593,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
             values.put(BeTable.COLUMN_IDTEAM, team.getString("idTeam"));
             values.put(BeTable.COLUMN_IDUSER, user.getString("idUser"));
+            values.put(BeTable.COLUMN_ISCOMPLETE, user.getString("stageComplete"));
+
 
             db.insert(BeTable.TABLE_NAME, null, values);
 
@@ -694,7 +696,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL("UPDATE STAGE SET teamCompleted = 1 WHERE idStage =" + idStage + ";");
                 Log.v("db log", "prima del set idCurrentStage");
 
-                db.execSQL("UPDATE TEAM SET idCurrentStage = " + idNextStage + " WHERE idTeam =" + idTeam + ";");
+            db.execSQL("UPDATE BE SET isComplete = 0 WHERE idTeam =" + idTeam + ";");
+
+            db.execSQL("UPDATE TEAM SET idCurrentStage = " + idNextStage + " WHERE idTeam =" + idTeam + ";");
 
 
         } catch (Exception e){

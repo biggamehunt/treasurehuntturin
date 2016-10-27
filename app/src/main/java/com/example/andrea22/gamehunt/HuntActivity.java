@@ -269,7 +269,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
         try {
             Cursor c = db.rawQuery(
-                    "SELECT USER.username FROM " +
+                    "SELECT USER.username, BE.isComplete FROM " +
                             "TEAM LEFT JOIN BE ON TEAM.idTeam = BE.idTeam " +
                             "LEFT JOIN USER ON USER.idUser = BE.idUser " +
                             "WHERE TEAM.idTeam = " + idTeam, null);
@@ -279,7 +279,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             if (c.moveToFirst()) {
                 do {
                     members.add(c.getString(c.getColumnIndex("username")));
-                    Log.v("Hunt Activity", "username: " + c.getString(c.getColumnIndex("username")));
+                    Log.v("Hunt Activity", "username: " + c.getString(c.getColumnIndex("username"))+", isComplete: "+c.getInt(c.getColumnIndex("isComplete")));
                 } while (c.moveToNext());
             }
         } catch (Exception e) {
@@ -334,7 +334,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     lat = c.getFloat(c.getColumnIndex("lat"));
                     lon = c.getFloat(c.getColumnIndex("lon"));
                     ray = c.getInt(c.getColumnIndex("ray"));
-                    nameStage =  c.getString(c.getColumnIndex("nameStage"));
+                    nameStage = c.getString(c.getColumnIndex("nameStage"));
                     clue =  c.getString(c.getColumnIndex("clue"));
                     isLocationRequired = c.getInt(c.getColumnIndex("isLocationRequired"));
                     isCheckRequired = c.getInt(c.getColumnIndex("isCheckRequired"));
