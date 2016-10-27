@@ -26,7 +26,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,6 +79,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean isPanelShown, isTeamShown;
 
     ArrayList<String> members;
+    ArrayList<Integer> membersDone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,14 +135,11 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             for (int i = 0; i < members.size(); i++){
                 LinearLayout ll = (LinearLayout)getLayoutInflater().inflate(R.layout.content_member_team, null, true);
                 ((TextView)ll.getChildAt(1)).setText(members.get(i));
-                Log.v("Hunt Activity", "LinearL" + ll);
-                Log.v("Hunt Activity", "container" + containerMembers);
-                containerMembers.addView(ll);
+
+                if(membersDone.get(i) == 1){
+                    ((RelativeLayout)ll.getChildAt(2)).setVisibility(View.VISIBLE);
+                }
             }
-
-            //todo: da rivedere... isComplete lo setto dopo l'if!!!
-
-            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
@@ -261,8 +261,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-
-
     public void setTeamList(){
         DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -279,6 +277,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             if (c.moveToFirst()) {
                 do {
                     members.add(c.getString(c.getColumnIndex("username")));
+                    membersDone.add(c.getInt(c.getColumnIndex("isComplete")));
                     Log.v("Hunt Activity", "username: " + c.getString(c.getColumnIndex("username"))+", isComplete: "+c.getInt(c.getColumnIndex("isComplete")));
                 } while (c.moveToNext());
             }
