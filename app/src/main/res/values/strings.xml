@@ -70,7 +70,7 @@
     <string name="timeEndHunt">Finish time</string>
     <string name="noNameHunt">Please insert the hunt name</string>
     <string name="noDateHunt">Please insert date and time correctly</string>
-    <string name="invalideDateToast">La data di inizio non è valida!</string>
+    <string name="invalideDateToast">Invalid start date!</string>
     <string name="dateErrorToast">Start date must be more recent than the final</string>
     <string name="timeErrorToast">Please insert at least three hours from start time</string>
     <string name="noStartTimeToast">Please insert a start time</string>
@@ -108,10 +108,10 @@
     <string name="emptyTeamToast">You can not have empty team!</string>
 
     <!-- SINGLE TEAM -->
-    <string name="maxUsersErrorToast">you have reached the maximum number of users for the team!</string>
+    <string name="maxUsersErrorToast">Maximum number of users for the team reached!</string>
     <string name="addAdminErrorToast">You can not add the user who created the hunt!</string>
     <string name="addAlreadyErrorToast">User already added!</string>
-    <string name="notExistErrorToast">This username does not exist</string>
+    <string name="notExistErrorToast">This user does not exist</string>
 
     <!-- FRAGMENT_NEWSTAGE -->
     <string name="areaStage">Stage area</string>

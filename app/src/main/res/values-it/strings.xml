@@ -1,0 +1,163 @@
+<resources>
+    <string name="app_name">Game Hunt</string>
+    <string name="title_activity_registration">Registrazione</string>
+
+    <!-- INTRO -->
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next_intro">SUCC</string>
+    <string name="skip_intro">SALTA</string>
+    <string name="start_intro">INIZIA</string>
+    <string name="slide_1_title">Benvenuto su GameHunt</string>
+    <string name="slide_1_desc">L\'unica applicazione che ti consente di giocare una caccia la tesoro direttamente dal tuo smartphone!</string>
+    <string name="slide_2_title">Unisciti alla caccia</string>
+    <string name="slide_2_desc">Seguici in fantastica avventura creata da tuoi stessi amici!</string>
+    <string name="slide_3_title">Crea il tuo gioco</string>
+    <string name="slide_3_desc">Inizia una nuova caccia al tesoro e invita i tuoi amici!</string>
+    <string name="slide_4_title">Divertiti con GameHunt</string>
+    <string name="slide_4_desc">Gioca con noi e viaggia per il mondo!</string>
+    <string name="play_again">Gioca ancora</string>
+
+    <!-- LOGIN -->
+    <string name="username">Utente</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="action_sign_in">Accedi</string>
+    <string name="loginFailed">Accesso fallito</string>
+    <string name="action_registration">Non hai ancora un account? Registrati!</string>
+    <string name="action_sign_in2">Sei già un membro? Accedi</string>
+    <string name="continue_reg">Crea un account</string>
+    <string name="login_error">Nome utente o password errati!</string>
+    <string name="loginDialog">Autenticazione in corso...</string>
+    <string name="stageCompleted">Stage Completato</string>
+    <string name="huntCompleted">Caccia Completata</string>
+    <string name="photoRejected">Foto rifiutata</string>
+    <string name="photoAccepted">Foto accettata</string>
+
+    <!-- REGISTRATION -->
+    <string name="reg_username">Utente</string>
+    <string name="reg_email">Email</string>
+    <string name="reg_password">Password</string>
+    <string name="reg_conf_password">Conferma Password</string>
+    <string name="reg_error">Nome utente o email già esistente</string>
+    <string name="userLength_error">Nome utente troppo corto</string>
+    <string name="passLength_error">Password troppo corta</string>
+    <string name="confirmpass_error">Password non corrisponde</string>
+    <string name="emailLength_error">Email troppo corta</string>
+
+    <!-- HUNTLIST -->
+    <string name="tab1">Gioca</string>
+    <string name="tab2">Tue Cacce</string>
+    <string name="tab3">Tutte</string>
+    <string name="title_activity_huntlist">Lista delle cacce</string>
+    <string name="welcome1">Unisciti, e batti tutti gli avversari</string>
+    <string name="welcome2">Scegli la caccia e UNISCITI!</string>
+    <string name="welcome3">Gioca ora! Scegli la tua caccia</string>
+    <string name="welcome4">Sei pronto per la prossima caccia?</string>
+    <string name="welcome5">Sarai in grado di trovare il tesoro?</string>
+    <string name="goToHunt">VAI ALLA CACCIA</string>
+    <string name="goToStages">AGGIUNGI STAGE</string>
+    <string name="goToTeams">AGGIUNGI TEAM</string>
+    <string name="modifyHunt">MODIFICA</string>
+    <string name="tutorialHuntText1">Crea una nuova caccia</string>
+    <string name="tutorialHuntText2">Clicca il pulsante per creare una nuova caccia</string>
+
+    <!-- NEWHUNT ACTIVITY -->
+    <string name="nameHunt">Nome Caccia</string>
+    <string name="dateInitHunt">Oggi</string>
+    <string name="timeInitHunt">Ora d\'inizio</string>
+    <string name="dateEndHunt">Data limite</string>
+    <string name="timeEndHunt">Ora limite</string>
+    <string name="noNameHunt">Nome della caccia non inserito</string>
+    <string name="noDateHunt">Data e ora non corrette</string>
+    <string name="invalideDateToast">La data di inizio non è valida!</string>
+    <string name="dateErrorToast">La data d\'inizio deve essere più recente di quella finale</string>
+    <string name="timeErrorToast">La caccia deve durare almeno tre ore</string>
+    <string name="noStartTimeToast">Data d\'inizio mancante</string>
+
+    <!-- HUNT ACTIVITY -->
+    <string name="clueTitle">Suggerimento</string>
+    <string name="clueEmpty">(Nessun suggerimento per questo stage)</string>
+    <string name="notArrivedToast">Devi fare ancora circa</string>
+    <string name="arrivedToast">Ben fatto! Sei arrivato.</string>
+    <string name="errorToast">Abbiamo riscontrato un errore, prova di nuovo.</string>
+    <string name="dialogTitle">Devi aspettare!</string>
+    <string name="dialogMessage">La caccia inizierà il</string>
+    <string name="dialogTitle1">La caccia è finita</string>
+    <string name="dialogMessage1">Grazie peraver giocato con noi.</string>
+    <string name="toastMessage">Immagine caricata</string>
+    <string name="toastMessage1">caricamento fallito</string>
+
+    <!-- STAGE MANAGEMENT -->
+    <string name="maxNumStage">Massimo numero di stage raggiunto!</string>
+    <string name="tutorialStageText1">Crea uno stage</string>
+    <string name="tutorialStageText2">Clicca il pulsante per creare un nuovo stage</string>
+    <string name="noStageErrorToast">Devi inserire almeno uno stage!</string>
+
+
+    <!-- TEAM MANAGEMENT -->
+    <string name="tutorialTeamText1">Crea un Team</string>
+    <string name="tutorialTeamText2">Clicca sul pulsante per creare un nuovo team</string>
+    <string name="maxNumTeam">Massimo numero di team raggiunto</string>
+    <string name="namePick">Inserisci il nome del team</string>
+    <string name="sloganPick">Inserisci un motto</string>
+    <string name="dialogOk">OK</string>
+    <string name="dialogCancel">Cancella</string>
+    <string name="maxTeamToast">Massimo numero di team raggiunto</string>
+    <string name="uknownErrorToast">Errore sconosciuto, prova ancora</string>
+    <string name="emptyTeamToast">Non puoi avere team vuoti!</string>
+
+    <!-- SINGLE TEAM -->
+    <string name="maxUsersErrorToast">Massimo numero di utenti per team raggiunto!</string>
+    <string name="addAdminErrorToast">Il creatore della caccia non può partecipare! Birbone!</string>
+    <string name="addAlreadyErrorToast">Utente già aggiunto!</string>
+    <string name="notExistErrorToast">Questo utente non esiste!</string>
+
+    <!-- FRAGMENT_NEWSTAGE -->
+    <string name="areaStage">Area dello Stage</string>
+    <string name="nameStage">Nome Stage (Opzionale)</string>
+    <string name="memberStage">Utenti all\'arrivo</string>
+    <string name="hintStage">Suggerimento (Opzionale)</string>
+    <string name="reqLocStage">Posizione richiesta</string>
+    <string name="reqPhotoStage">Foto richiesta</string>
+    <string name="reqCheckStage">Controllo della foto</string>
+
+    <!-- NEW STAGE ACTIVITY -->
+    <string name="areaMissinigToast">Area dello Stage mancante</string>
+    <string name="arriveMissinigToast">Punto di arrivo mancante</string>
+    <string name="impossibleCombination">Le scelte effettuate sono incompatibili</string>
+    <string name="photoSendToast">Il controllo delle foto richiede logicamente il loro invio</string>
+    <string name="photoCheckDisable">Se la richiesta della foto è disabilitata, devi richiedere la posizione</string>
+
+    <!-- MODHUNT -->
+    <string name="title_activity_modhunt">Modifica Caccia</string>
+
+    <!-- TOOLBARS -->
+    <string name="next">SUCC</string>
+
+    <!-- TEAM NAMES -->
+    <string name="team1">Team Rosso</string>
+    <string name="team2">Team Blu</string>
+    <string name="team3">Team Verde</string>
+    <string name="team4">Team Giallo</string>
+    <string name="team5">Team Arancione</string>
+    <string name="team6">Team Viola</string>
+    <string name="team7">Team Rosa</string>
+    <string name="team8">Team Marrone</string>
+
+    <!-- GALLERY ACTIVITY -->
+    <string name="loadPhoto">Caricamento...</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_newhunt">Nuova Caccia</string>
+    <string name="pick_time">Mostra ora</string>
+    <string name="pick_date">Mostra data</string>
+    <string name="descriptionHunt">Descrizione</string>
+    <string name="title_activity_maps">Mappa</string>
+    <string name="clueHunt">Suggerimento (Opzionale)</string>
+    <string name="title_activity_hunt">Caccia</string>
+    <string name="title_activity_activity_single_team">ActivitySingleTeam</string>
+    <string name="action_settings">boooh</string>
+
+</resources>

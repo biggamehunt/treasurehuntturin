@@ -74,6 +74,7 @@
             android:background="@drawable/gotohunt_style"/>
 
         <TextView
+            android:visibility="gone"
             android:padding="4dp"
             android:paddingLeft="4dp"
             android:layout_marginTop="12dp"
