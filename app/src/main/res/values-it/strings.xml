@@ -8,9 +8,9 @@
     <string name="skip_intro">SALTA</string>
     <string name="start_intro">INIZIA</string>
     <string name="slide_1_title">Benvenuto su GameHunt</string>
-    <string name="slide_1_desc">L\'unica applicazione che ti consente di giocare una caccia la tesoro direttamente dal tuo smartphone!</string>
+    <string name="slide_1_desc">L\'unica applicazione che ti consente di giocare la caccia la tesoro direttamente dal tuo smartphone!</string>
     <string name="slide_2_title">Unisciti alla caccia</string>
-    <string name="slide_2_desc">Seguici in fantastica avventura creata da tuoi stessi amici!</string>
+    <string name="slide_2_desc">Seguici in una fantastica avventura creata da tuoi stessi amici!</string>
     <string name="slide_3_title">Crea il tuo gioco</string>
     <string name="slide_3_desc">Inizia una nuova caccia al tesoro e invita i tuoi amici!</string>
     <string name="slide_4_title">Divertiti con GameHunt</string>
@@ -67,6 +67,7 @@
     <string name="timeInitHunt">Ora d\'inizio</string>
     <string name="dateEndHunt">Data limite</string>
     <string name="timeEndHunt">Ora limite</string>
+    <string name="descHunt">Descrizione (Opzionale)</string>
     <string name="noNameHunt">Nome della caccia non inserito</string>
     <string name="noDateHunt">Data e ora non corrette</string>
     <string name="invalideDateToast">La data di inizio non è valida!</string>
@@ -111,6 +112,10 @@
     <string name="addAdminErrorToast">Il creatore della caccia non può partecipare! Birbone!</string>
     <string name="addAlreadyErrorToast">Utente già aggiunto!</string>
     <string name="notExistErrorToast">Questo utente non esiste!</string>
+    <string name="sloganTeam">Motto (Opzionale)</string>
+    <string name="goToTeam">vai al team</string>
+
+
 
     <!-- FRAGMENT_NEWSTAGE -->
     <string name="areaStage">Area dello Stage</string>

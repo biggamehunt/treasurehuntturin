@@ -59,7 +59,7 @@
                     android:hint="Team Blue"
                     android:maxLength="30"
                     android:textColor="@android:color/black"
-                    android:textSize="22dp"
+                    android:textSize="22sp"
                     android:onClick="namePicker"/>
 
                 <View
@@ -75,8 +75,8 @@
                     android:maxLines="2"
                     android:lines="2"
                     android:maxLength="50"
-                    android:hint="Slogan (Optional)"
-                    android:textSize="14dp"
+                    android:hint="@string/sloganTeam"
+                    android:textSize="14sp"
                     android:onClick="sloganPicker"/>
 
                 <View
@@ -106,11 +106,11 @@
                                 android:id="@+id/goToTeam"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="go to team"
-                                android:textSize="14dp"
+                                android:text="@string/goToTeam"
+                                android:textSize="14sp"
                                 android:background="@drawable/button_style"
                                 android:textColor="#ffffff"
-                                android:layout_gravity="bottom|right"
+                                android:layout_gravity="bottom|end"
                                 android:onClick="goToSingleTeam"/>
 
 
@@ -145,20 +145,20 @@
                                     android:id="@+id/numUser"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="16dp"
+                                    android:textSize="16sp"
                                     android:text="0"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="16dp"
+                                    android:textSize="16sp"
                                     android:text="/"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="30"
-                                    android:textSize="16dp"
+                                    android:textSize="16sp"
                                     />
 
                             </LinearLayout>

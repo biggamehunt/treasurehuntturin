@@ -16,7 +16,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <include layout="@layout/toolbar_new_hunt"/>
@@ -30,7 +30,7 @@
                     android:maxLines="2"
                     android:theme="@style/NewHuntMenu"
                     android:height="75dp"
-                    android:textSize="25dp"
+                    android:textSize="25sp"
                     android:id="@+id/nameHunt"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
@@ -48,10 +48,10 @@
                     android:id="@+id/newHuntImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:src="@drawable/ic_photo_camera_white_24dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginEnd="16dp"
                     android:adjustViewBounds="false"/>
 
             </RelativeLayout>
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_query_builder_black_24dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:id="@+id/timeNewHunt" />
 
                 <TextView
@@ -80,17 +80,17 @@
                     android:layout_centerVertical="true"
                     android:id="@+id/dateStartPick"
                     android:onClick="showDatePickerDialog"
-                    android:textSize="20dp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/timeInitHunt"
-                    android:layout_marginLeft="200dp"
+                    android:layout_marginStart="200dp"
                     android:layout_centerVertical="true"
                     android:id="@+id/timeStartPick"
                     android:onClick="showTimePickerDialog"
-                    android:textSize="20dp" />
+                    android:textSize="20sp" />
 
             </RelativeLayout>
 
@@ -106,17 +106,17 @@
                     android:layout_marginStart="60dp"
                     android:id="@+id/dateEndPick"
                     android:onClick="showDatePickerDialog"
-                    android:textSize="20dp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/timeEndHunt"
-                    android:layout_marginLeft="200dp"
+                    android:layout_marginStart="200dp"
                     android:layout_centerVertical="true"
                     android:id="@+id/timeEndPick"
                     android:onClick="showTimePickerDialog"
-                    android:textSize="20dp" />
+                    android:textSize="20sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -131,7 +131,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_create_black_24dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:id="@+id/descrNewHunt" />
 
                 <EditText
@@ -140,81 +140,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
-                    android:hint="Description"
+                    android:hint="@string/descHunt"
                     android:layout_toEndOf="@+id/descrNewHunt"
                     android:layout_marginStart="20dp"
                     android:layout_centerVertical="true"
                     android:id="@+id/descriptionHunt"
                     android:background="@null"
                     android:elegantTextHeight="false"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:autoText="false"
                     android:maxLength="300"
                     android:maxLines="5"/>
 
-
             </RelativeLayout>
-
-<!--
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="goToStage"
-                android:layout_marginTop="40dp">
-
-                <ImageButton
-                    android:alpha="0.3"
-                    android:background="#fff"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_location_black_24dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:id="@+id/stageNewHunt"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Stages"
-                    android:layout_toEndOf="@+id/stageNewHunt"
-                    android:layout_marginStart="20dp"
-                    android:layout_centerVertical="true"
-                    android:textSize="20dp" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="goToTeam"
-                android:layout_marginTop="40dp">
-
-                <ImageButton
-                    android:alpha="0.3"
-                    android:background="#fff"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_group_black_24dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:id="@+id/groupNewHunt"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Teams"
-                    android:layout_toEndOf="@+id/groupNewHunt"
-                    android:layout_marginStart="20dp"
-                    android:layout_centerVertical="true"
-                    android:textSize="20dp" />
-
-            </RelativeLayout>
--->
 
         </LinearLayout>
 
     </ScrollView>
-
-    <!-- <include layout="@layout/navbar"/> -->
 
 </android.support.v4.widget.DrawerLayout>

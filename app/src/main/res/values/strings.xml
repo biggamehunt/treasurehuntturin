@@ -68,6 +68,7 @@
     <string name="timeInitHunt">Start time</string>
     <string name="dateEndHunt">Finish date</string>
     <string name="timeEndHunt">Finish time</string>
+    <string name="descHunt">Description (Optional)</string>
     <string name="noNameHunt">Please insert the hunt name</string>
     <string name="noDateHunt">Please insert date and time correctly</string>
     <string name="invalideDateToast">Invalid start date!</string>
@@ -112,6 +113,8 @@
     <string name="addAdminErrorToast">You can not add the user who created the hunt!</string>
     <string name="addAlreadyErrorToast">User already added!</string>
     <string name="notExistErrorToast">This user does not exist</string>
+    <string name="sloganTeam">Slogan (Optional)</string>
+    <string name="goToTeam">go to team</string>
 
     <!-- FRAGMENT_NEWSTAGE -->
     <string name="areaStage">Stage area</string>
