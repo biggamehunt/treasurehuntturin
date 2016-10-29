@@ -77,7 +77,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         return pvh;
     }
 
-    int pos;
+
     @Override
     public void onBindViewHolder(final SingleHuntViewHolder singleHuntViewHolder, int i) {
 
@@ -88,11 +88,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         singleHuntViewHolder.description.setText(singlehunts.get(i).getDescription());
         singleHuntViewHolder.modifyHunt.setText(this.context.getResources().getString(R.string.modifyHunt));
 
-        pos=i;
 
         singleHuntViewHolder.cv.measure(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
         targetHeight = singleHuntViewHolder.cv.getMeasuredHeightAndState();
-        Log.v("dim finale", "" + targetHeight);
+        Log.v("Adapter", "Photo To Check: " + singlehunts.get(i).getPhotoToCheck());
 
         singleHuntViewHolder.description.setVisibility(View.GONE);
         singleHuntViewHolder.goToHunt.setVisibility(View.GONE);

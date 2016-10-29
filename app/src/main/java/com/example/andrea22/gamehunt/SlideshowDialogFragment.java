@@ -2,6 +2,7 @@ package com.example.andrea22.gamehunt;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerAdapter;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.Entity.Image;
 import com.example.andrea22.gamehunt.AsyncTask.RetrieveJson;
 
@@ -158,13 +160,13 @@ public class SlideshowDialogFragment extends DialogFragment {
 
                             JSONObject jsonRes = new JSONObject(res);
 
-/*
+
                             DBHelper myHelper = DBHelper.getInstance(v.getContext());
                             SQLiteDatabase db = myHelper.getWritableDatabase();
 
-                            myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser,idHunt,nameHunt);
+                            myHelper.updatePhotoToCheck(db, image.getIdHunt());
 
-*/
+
                             //FrameLayout frame = (FrameLayout) findViewById(R.id.rect_map);
                             //CoordinatorLayout cl = (CoordinatorLayout) findViewById(R.id.coordinator_maps);
                             Log.d("Hunt Activity", "teamIsCompleted:"+jsonRes.getString("teamIsCompleted"));
@@ -256,15 +258,11 @@ public class SlideshowDialogFragment extends DialogFragment {
 
                             JSONObject jsonRes = new JSONObject(res);
 
-/*
                             DBHelper myHelper = DBHelper.getInstance(v.getContext());
                             SQLiteDatabase db = myHelper.getWritableDatabase();
 
-                            myHelper.setAfterPhotoSended(db, res, idStage, idTeam, idUser,idHunt,nameHunt);
+                            myHelper.updatePhotoToCheck(db, image.getIdHunt());
 
-*/
-                            //FrameLayout frame = (FrameLayout) findViewById(R.id.rect_map);
-                            //CoordinatorLayout cl = (CoordinatorLayout) findViewById(R.id.coordinator_maps);
                             Log.d("Hunt Activity", "teamIsCompleted:"+jsonRes.getString("teamIsCompleted"));
                             Log.d("Hunt Activity", "userIsCompleted:"+jsonRes.getString("userIsCompleted"));
                             if (jsonRes.getInt("huntDone")==1) {

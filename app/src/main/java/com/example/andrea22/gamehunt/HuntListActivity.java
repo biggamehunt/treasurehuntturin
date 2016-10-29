@@ -97,7 +97,8 @@ public class HuntListActivity extends AppCompatActivity {
                             c.getString(c.getColumnIndex("timeStart")),
                             c.getInt(c.getColumnIndex("isStagesEmpty")),
                             c.getInt(c.getColumnIndex("isTeamsEmpty")),
-                            R.drawable.she_mini, c.getString(c.getColumnIndex("description")), true));
+                            R.drawable.she_mini, c.getString(c.getColumnIndex("description")), true,
+                            c.getInt(c.getColumnIndex("photoToCheck"))));
 
                 } else {
                     otherHunts.add(new SingleHunt(c.getInt(c.getColumnIndex("idHunt")),
@@ -105,7 +106,7 @@ public class HuntListActivity extends AppCompatActivity {
                             c.getString(c.getColumnIndex("timeStart")),
                             c.getInt(c.getColumnIndex("isStagesEmpty")),
                             c.getInt(c.getColumnIndex("isTeamsEmpty")),
-                            R.drawable.she_mini, c.getString(c.getColumnIndex("description")), false));
+                            R.drawable.she_mini, c.getString(c.getColumnIndex("description")), false,0));
                 }
             } while (c.moveToNext());
         }

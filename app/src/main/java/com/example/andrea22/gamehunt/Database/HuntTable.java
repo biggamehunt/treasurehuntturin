@@ -14,7 +14,9 @@ public class HuntTable {
         public static final String COLUMN_ISTEAMSEMPTY = "isTeamsEmpty";
         public static final String COLUMN_ISSTARTED = "isStarted";
         public static final String COLUMN_ISENDED = "isEnded";
-
+        public static final String COLUMN_IDWINNER = "idWinner";
+        public static final String COLUMN_NAMEWINNER = "nameWinner";
+        public static final String COLUMN_PHOTOTOCHECK = "photoToCheck";
 
 
         public static final String COLUMN_IDUSER = "idUser";
@@ -33,6 +35,10 @@ public class HuntTable {
                         COLUMN_ISLOADED + " INTEGER NOT NULL DEFAULT 0, " +
                         COLUMN_ISSTARTED + " INTEGER NOT NULL DEFAULT 0, " +
                         COLUMN_ISENDED + " INTEGER NOT NULL DEFAULT 0, " +
+
+                        COLUMN_IDWINNER + " INTEGER, " + //non è referenziata come chiave esterna perché il vincitore può essere un team avversario, che quindi non è salvato nel db dell'app
+                        COLUMN_NAMEWINNER + " TEXT, " +
+                        COLUMN_PHOTOTOCHECK + " INTEGER NOT NULL DEFAULT 0, " +
 
                         COLUMN_ISSTAGESEMPTY + " INTEGER NOT NULL DEFAULT 0, " +
                         COLUMN_ISTEAMSEMPTY + " INTEGER NOT NULL DEFAULT 0, " +

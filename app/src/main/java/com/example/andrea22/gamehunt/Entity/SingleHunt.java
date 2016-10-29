@@ -11,10 +11,12 @@ public class SingleHunt {
         int imageId;
         String description;
         int isStagesEmpty;
+
         int isTeamsEmpty;
         boolean isMine; //creatore della caccia
+        int photoToCheck;
 
-        public SingleHunt(int idHunt, String title, String date, int isStagesEmpty, int isTeamsEmpty, int imageId,String description, boolean isMine) {
+        public SingleHunt(int idHunt, String title, String date, int isStagesEmpty, int isTeamsEmpty, int imageId,String description, boolean isMine, int photoToCheck) {
                 this.idHunt=idHunt;
                 this.title = title;
                 this.date = date;
@@ -23,6 +25,7 @@ public class SingleHunt {
                 this.isMine = isMine;
                 this.isStagesEmpty = isStagesEmpty;
                 this.isTeamsEmpty = isTeamsEmpty;
+                this.photoToCheck = photoToCheck;
         }
 
         public int getIdHunt() {
@@ -89,4 +92,12 @@ public class SingleHunt {
                 this.date = date;
         }
 
+
+        public int getPhotoToCheck() {
+                return photoToCheck;
+        }
+
+        public void setPhotoToCheck(int photoToCheck) {
+                this.photoToCheck = photoToCheck;
+        }
 }

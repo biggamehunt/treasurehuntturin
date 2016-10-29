@@ -130,44 +130,13 @@ public class DBHelper extends SQLiteOpenHelper {
                         values.put(HuntTable.COLUMN_IDUSER, hunt.getString("idUser"));
                         values.put(HuntTable.COLUMN_ISSTAGESEMPTY, hunt.getString("isStagesEmpty"));
                         values.put(HuntTable.COLUMN_ISTEAMSEMPTY, hunt.getString("isTeamsEmpty"));
+                        values.put(HuntTable.COLUMN_IDWINNER, hunt.isNull("idWinner") == false ? hunt.getString("idWinner") : "");
+                        values.put(HuntTable.COLUMN_NAMEWINNER, hunt.isNull("nameWinner") == false ? hunt.getString("nameWinner") : "");
+                        values.put(HuntTable.COLUMN_PHOTOTOCHECK, hunt.getString("photoToCheck"));
 
 
                         db.insert(HuntTable.TABLE_NAME, null, values);
                         Log.v("db log", "Insert Hunt eseguito");
-
-                        /*if (hunt.isNull("stages") == false) {
-                            JSONArray stages_create = hunt.getJSONArray("stages");
-                            JSONObject stage = null;
-                            if (stages_create != null) {
-                                for (int j = 0; j < stages_create.length(); j++) {
-
-                                    stage = stages_create.getJSONObject(j);
-                                    values = new ContentValues();
-
-
-                                    values.put(StageTable.COLUMN_IDSTAGE, stage.getString("idStage"));
-                                    values.put(StageTable.COLUMN_RAY, stage.isNull("ray") == false ? stage.getString("ray"):"");
-                                    values.put(StageTable.COLUMN_NUMSTAGE, stage.getString("numStage"));
-                                    values.put(StageTable.COLUMN_CLUE, stage.isNull("clue") == false ? stage.getString("clue"):"");
-                                    values.put(StageTable.COLUMN_ISLOCATIONREQUIRED, stage.getString("isLocationRequired"));
-                                    values.put(StageTable.COLUMN_ISPHOTOREQUIRED, stage.getString("isPhotoRequired"));
-                                    values.put(StageTable.COLUMN_ISCHECKREQUIRED, stage.getString("isCheckRequired"));
-                                    values.put(StageTable.COLUMN_NUMUSERTOFINISH, stage.getString("numUserToFinish"));
-
-
-                                    values.put(StageTable.COLUMN_IDHUNT, stage.getString("idHunt"));
-                                    values.put(StageTable.COLUMN_AREA_LAT, stage.getString("areaLat"));
-                                    values.put(StageTable.COLUMN_AREA_LON, stage.getString("areaLon"));
-                                    values.put(StageTable.COLUMN_LAT, stage.getString("lat"));
-                                    values.put(StageTable.COLUMN_LON, stage.getString("lon"));
-
-                                    db.insert(StageTable.TABLE_NAME, null, values);
-
-                                    Log.v("db log", "Insert Stage eseguito");
-
-                                }
-                            }
-                        }*/
 
 
 
@@ -206,37 +175,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.insert(HuntTable.TABLE_NAME, null, values);
         Log.v("db log", "Insert Hunt eseguito");
-/*
-        if (hunt.isNull("stages") == false) {
-            JSONArray stages_create = hunt.getJSONArray("stages");
-            JSONObject stage = null;
-            for (int i = 0; i < stages_create.length(); i++) {
-
-                stage = stages_create.getJSONObject(i);
-                values = new ContentValues();
-
-
-                values.put(StageTable.COLUMN_IDSTAGE, stage.getString("idStage"));
-                values.put(StageTable.COLUMN_RAY, stage.isNull("ray") == false ? stage.getString("ray"):"");
-                values.put(StageTable.COLUMN_NUMSTAGE, stage.getString("numStage"));
-                values.put(StageTable.COLUMN_CLUE, stage.isNull("clue") == false ? stage.getString("clue"):"");
-                values.put(StageTable.COLUMN_NAME, stage.getString("name"));
-                values.put(StageTable.COLUMN_ISLOCATIONREQUIRED, stage.getString("isLocationRequired"));
-                values.put(StageTable.COLUMN_ISPHOTOREQUIRED, stage.getString("isPhotoRequired"));
-                values.put(StageTable.COLUMN_ISCHECKREQUIRED, stage.getString("isCheckRequired"));
-                values.put(StageTable.COLUMN_IDHUNT, hunt.getString("idHunt"));
-                values.put(StageTable.COLUMN_AREA_LAT, stage.getString("areaLat"));
-                values.put(StageTable.COLUMN_AREA_LON, stage.getString("areaLon"));
-                values.put(StageTable.COLUMN_LAT, stage.getString("lat"));
-                values.put(StageTable.COLUMN_LON, stage.getString("lon"));
-                values.put(StageTable.COLUMN_NUMUSERTOFINISH, stage.getString("numUserToFinish"));
-
-                db.insert(StageTable.TABLE_NAME, null, values);
-
-                Log.v("db log", "Insert Stage eseguito");
-
-            }
-        }*/
 
         return Integer.parseInt(hunt.getString("idHunt"));
 
@@ -744,6 +682,8 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             Log.v("db log", "prima del set isPhotoChecked & userCompleted");
             db.execSQL("UPDATE STAGE SET isPhotoChecked = 1, userCompleted = 1  WHERE idStage =" + idStage + ";");
+
+
             Log.v("db log", "dopo il set isPhotoChecked & userCompleted");
             String users="";
             Cursor c = db.rawQuery("SELECT * FROM BE WHERE idTeam = " + idTeam + ";", null);
@@ -974,6 +914,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
         }
         return null;
+    }
+
+    public boolean updatePhotoToCheck(SQLiteDatabase db, int idHunt){
+        try {
+            Log.v("db log", "prima di photoToCheck");
+            db.execSQL("UPDATE HUNT SET photoToCheck = photoToCheck - 1 WHERE idHunt =" + idHunt + ";");
+            Log.v("db log", "dopo di photoToCheck");
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 
