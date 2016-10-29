@@ -95,6 +95,7 @@ public class HuntListActivity extends AppCompatActivity {
                     userHunts.add(new SingleHunt(c.getInt(c.getColumnIndex("idHunt")),
                             c.getString(c.getColumnIndex("name")),
                             c.getString(c.getColumnIndex("timeStart")),
+                            R.drawable.ic_crop_original_white_24dp, "1",
                             c.getInt(c.getColumnIndex("isStagesEmpty")),
                             c.getInt(c.getColumnIndex("isTeamsEmpty")),
                             R.drawable.she_mini, c.getString(c.getColumnIndex("description")), true,
@@ -104,6 +105,7 @@ public class HuntListActivity extends AppCompatActivity {
                     otherHunts.add(new SingleHunt(c.getInt(c.getColumnIndex("idHunt")),
                             c.getString(c.getColumnIndex("name")),
                             c.getString(c.getColumnIndex("timeStart")),
+                            R.drawable.ic_crop_original_white_24dp, "1",
                             c.getInt(c.getColumnIndex("isStagesEmpty")),
                             c.getInt(c.getColumnIndex("isTeamsEmpty")),
                             R.drawable.she_mini, c.getString(c.getColumnIndex("description")), false,0));

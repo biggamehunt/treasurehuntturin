@@ -40,6 +40,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         TextView description;
         TextView goToHunt;
         TextView modifyHunt;
+        RelativeLayout rlcard;
+        ImageView crop;
+        TextView txtCount;
 
         SingleHuntViewHolder(View itemView) {
             super(itemView);
@@ -50,6 +53,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
             description = (TextView)itemView.findViewById(R.id.single_description);
             goToHunt = (TextView)itemView.findViewById(R.id.single_goToHunt);
             modifyHunt = (TextView)itemView.findViewById(R.id.modifyHunt);
+            rlcard = (RelativeLayout)itemView.findViewById(R.id.rlcard);
+            crop = (ImageView)itemView.findViewById(R.id.crop);
+            txtCount = (TextView)itemView.findViewById(R.id.txtCount);
 
         }
 
@@ -84,7 +90,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         singleHuntViewHolder.huntTitle.setText(singlehunts.get(i).getTitle());
         singleHuntViewHolder.huntDate.setText(singlehunts.get(i).getDate());
         singleHuntViewHolder.huntImage.setImageResource(singlehunts.get(i).getImageId());
-
+        singleHuntViewHolder.crop.setImageResource(singlehunts.get(i).getCropId());
+        singleHuntViewHolder.txtCount.setText(singlehunts.get(i).getTxtCount());
         singleHuntViewHolder.description.setText(singlehunts.get(i).getDescription());
         singleHuntViewHolder.modifyHunt.setText(this.context.getResources().getString(R.string.modifyHunt));
 
@@ -198,13 +205,16 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         if (view.getHeight() == dimStart) {
             //EXPAND
 
-            ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(3)).setVisibility(View.VISIBLE);
             ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(4)).setVisibility(View.VISIBLE);
+            ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(5)).setVisibility(View.VISIBLE);
 
 
+            /*
             if (showmodify == true){
+
                 ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(5)).setVisibility(View.VISIBLE);
             }
+            */
             Log.v("RVAdapter", "expand h after add child:" + view.getHeight());
 
             final int targetHeight = view.getMeasuredHeight();
@@ -233,9 +243,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
 
             Log.v("RVAdapter", "collapse");
 
-            ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(3)).setVisibility(View.GONE);
             ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(4)).setVisibility(View.GONE);
             ((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(5)).setVisibility(View.GONE);
+            //((TextView)((RelativeLayout)((CardView)view).getChildAt(0)).getChildAt(6)).setVisibility(View.GONE);
 
             ValueAnimator anim = ValueAnimator.ofInt(view.getMeasuredHeightAndState(),
                     dimStart);
