@@ -38,12 +38,8 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
  */
 public class HuntListActivity extends AppCompatActivity {
 
-    private FloatingActionButton fabHunt;
-    private Animation rotate_forward, rotate_backward;
     private TextView tv;
     public List<SingleHunt> userHunts, otherHunts, hunts;
-    private View topLevelLayout;
-
     private ItemTouchHelper mItemTouchHelper;
 
     @Override
@@ -51,50 +47,15 @@ public class HuntListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hunt_list);
 
-        fabHunt = (FloatingActionButton) findViewById(R.id.fabHunt);
-/*
-        topLevelLayout = findViewById(R.id.hunt_list_top_layout);
-
-        if (isFirstTime()) {
-            topLevelLayout.setVisibility(View.INVISIBLE);
-        }
-*/
-
-        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
-//        fab.setOnClickListener(this);
-
-        initializeSlogan();
+        //initializeSlogan();
         initializeData();
         initializeAdapter();
         addTutorial();
-
-
-
-
-
-
-
-
-/*
-        // Get the ViewPager and set it's PagerAdapter so that it can display items
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new SimpleFragmentPagerAdapter(getSupportFragmentManager(),HuntListActivity.this));
-
-        // Give the TabLayout the ViewPager
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
-
-        // Get the colors for tabLayout
-        tabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.drawable.tab_selector));
-        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorAccent));
-
-*/
-
-
-
     }
 
+    /*
     private void initializeSlogan(){
+
 
         ArrayList<String> slogans = new ArrayList<String>();
         slogans.add(getString(R.string.welcome1));
@@ -109,6 +70,7 @@ public class HuntListActivity extends AppCompatActivity {
         tv = (TextView) findViewById(R.id.slogan);
         tv.setText(random_string);
     }
+    */
 
     private void initializeData() {
 
@@ -147,11 +109,8 @@ public class HuntListActivity extends AppCompatActivity {
                 }
             } while (c.moveToNext());
         }
-
         Log.v("data", "userHunts: "+userHunts.size());
         Log.v("data", "otherHunts: " + otherHunts.size());
-
-
     }
 
     private void initializeAdapter() {
@@ -166,37 +125,23 @@ public class HuntListActivity extends AppCompatActivity {
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.drawable.tab_selector));
         tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorAccent));
 
-
         final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-
         final PagerAdapter adapterPage;
         hunts = new ArrayList<SingleHunt>();
 
         Log.v("data", "getTabCount: " + tabLayout.getTabCount());
 
-
         hunts.addAll(otherHunts);
-
         adapterPage = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),hunts);
-
-
-
-
         viewPager.setAdapter(adapterPage);
-
-
-
-
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
-
                 final PagerAdapter adapterPage;
                 hunts = new ArrayList<>();
-
 
                 if (tab.getPosition() == 2) {
                     hunts.addAll(otherHunts);
@@ -209,19 +154,14 @@ public class HuntListActivity extends AppCompatActivity {
                     hunts.addAll(otherHunts);
 
                 }
-
                 addTutorial();
 
                 //todo: rimuovere sto 3
                 adapterPage = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), 3, hunts);
 
-
                 viewPager.setAdapter(adapterPage);
 
-
                 viewPager.setCurrentItem(tab.getPosition());
-
-
             }
 
             @Override
@@ -234,15 +174,10 @@ public class HuntListActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
         /*ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(rv);*/
     }
-
 
     public void goToGrid(View view) {
         Log.v("db log", "id: " + view.getId());
@@ -268,7 +203,6 @@ public class HuntListActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
-
     public void goToTeamsCreation(String idHunt){
         SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
@@ -279,7 +213,6 @@ public class HuntListActivity extends AppCompatActivity {
         startActivity(intent);
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
-
 
     public void goToHunt(String idHunt){
         Intent intent = new Intent(this, HuntActivity.class);
