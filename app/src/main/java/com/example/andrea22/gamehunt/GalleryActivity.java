@@ -79,6 +79,5 @@ public class GalleryActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
 
-        overridePendingTransition(R.anim.back_enter, R.anim.back_exit);
     }
 }

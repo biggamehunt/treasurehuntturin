@@ -41,16 +41,20 @@ public class HuntListActivity extends AppCompatActivity {
     private TextView tv;
     public List<SingleHunt> userHunts, otherHunts, hunts;
     private ItemTouchHelper mItemTouchHelper;
+    int totalPhotoToCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hunt_list);
-
+        totalPhotoToCheck = 0;
         //initializeSlogan();
         initializeData();
         initializeAdapter();
         addTutorial();
+        tv = (TextView)findViewById(R.id.txtToolbarCount);
+        Log.v("HundListActivity",""+tv);
+        tv.setText(""+totalPhotoToCheck);
     }
 
     /*
@@ -84,7 +88,6 @@ public class HuntListActivity extends AppCompatActivity {
 
         SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
 
-
         if (c.moveToFirst()) {
 
             Log.v("data", "idUser: " + pref.getInt("idUser", 0));
@@ -92,10 +95,12 @@ public class HuntListActivity extends AppCompatActivity {
             //todo: modificare la variabile false che sta per isStarted
             do {
                 if(c.getInt(c.getColumnIndex("idUser")) == (pref.getInt("idUser",0))){
+                    totalPhotoToCheck+=c.getInt(c.getColumnIndex("photoToCheck"));
+
                     userHunts.add(new SingleHunt(c.getInt(c.getColumnIndex("idHunt")),
                             c.getString(c.getColumnIndex("name")),
                             c.getString(c.getColumnIndex("timeStart")),
-                            R.drawable.ic_crop_original_white_24dp, "1",
+
                             c.getInt(c.getColumnIndex("isStagesEmpty")),
                             c.getInt(c.getColumnIndex("isTeamsEmpty")),
                             R.drawable.she_mini, c.getString(c.getColumnIndex("description")), true,
@@ -105,7 +110,6 @@ public class HuntListActivity extends AppCompatActivity {
                     otherHunts.add(new SingleHunt(c.getInt(c.getColumnIndex("idHunt")),
                             c.getString(c.getColumnIndex("name")),
                             c.getString(c.getColumnIndex("timeStart")),
-                            R.drawable.ic_crop_original_white_24dp, "1",
                             c.getInt(c.getColumnIndex("isStagesEmpty")),
                             c.getInt(c.getColumnIndex("isTeamsEmpty")),
                             R.drawable.she_mini, c.getString(c.getColumnIndex("description")), false,0));
@@ -114,6 +118,8 @@ public class HuntListActivity extends AppCompatActivity {
         }
         Log.v("data", "userHunts: "+userHunts.size());
         Log.v("data", "otherHunts: " + otherHunts.size());
+
+
     }
 
     private void initializeAdapter() {

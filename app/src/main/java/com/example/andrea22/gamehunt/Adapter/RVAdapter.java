@@ -90,10 +90,17 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         singleHuntViewHolder.huntTitle.setText(singlehunts.get(i).getTitle());
         singleHuntViewHolder.huntDate.setText(singlehunts.get(i).getDate());
         singleHuntViewHolder.huntImage.setImageResource(singlehunts.get(i).getImageId());
-        singleHuntViewHolder.crop.setImageResource(singlehunts.get(i).getCropId());
-        singleHuntViewHolder.txtCount.setText(singlehunts.get(i).getTxtCount());
         singleHuntViewHolder.description.setText(singlehunts.get(i).getDescription());
         singleHuntViewHolder.modifyHunt.setText(this.context.getResources().getString(R.string.modifyHunt));
+
+        if (singlehunts.get(i).isMine()){
+            singleHuntViewHolder.crop.setImageResource(singlehunts.get(i).getCropId());
+
+            singleHuntViewHolder.txtCount.setText(""+singlehunts.get(i).getPhotoToCheck());
+        } else {
+            singleHuntViewHolder.crop.setVisibility(View.GONE);
+            singleHuntViewHolder.txtCount.setVisibility(View.GONE);
+        }
 
 
         singleHuntViewHolder.cv.measure(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
@@ -122,6 +129,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
 
             }
         });
+
+
 
         if (singlehunts.get(i).getIsStagesEmpty() == 0 && singlehunts.get(i).getIsTeamsEmpty() == 0){
             singleHuntViewHolder.goToHunt.setText(this.context.getResources().getString(R.string.goToHunt));

@@ -1,5 +1,7 @@
 package com.example.andrea22.gamehunt.Entity;
 
+import com.example.andrea22.gamehunt.R;
+
 /**
  * Created by Simone on 29/06/2016.
  */
@@ -9,8 +11,6 @@ public class SingleHunt {
         String title;
         String date;
         int imageId;
-        int cropId;
-        String txtCount;
         String description;
         int isStagesEmpty;
 
@@ -18,14 +18,12 @@ public class SingleHunt {
         boolean isMine; //creatore della caccia
         int photoToCheck;
 
-        public SingleHunt(int idHunt, String title, String date, int cropId, String txtCount, int isStagesEmpty, int isTeamsEmpty, int imageId,String description, boolean isMine, int photoToCheck) {
+        public SingleHunt(int idHunt, String title, String date, int isStagesEmpty, int isTeamsEmpty, int imageId,String description, boolean isMine, int photoToCheck) {
                 this.idHunt=idHunt;
                 this.title = title;
                 this.date = date;
                 this.imageId = imageId;
                 this.description = description;
-                this.cropId = cropId;
-                this.txtCount = txtCount;
                 this.isMine = isMine;
                 this.isStagesEmpty = isStagesEmpty;
                 this.isTeamsEmpty = isTeamsEmpty;
@@ -84,20 +82,9 @@ public class SingleHunt {
                 return description;
         }
 
-        public void setTxtCount(String description) {
-                this.txtCount = txtCount;
-        }
-
-        public String getTxtCount() {
-                return txtCount;
-        }
-
-        public void setCropId(int cropId){
-                this.cropId = cropId;
-        }
 
         public int getCropId(){
-                return cropId;
+                return R.drawable.ic_crop_original_white_24dp;
         }
 
         public void setDescription(String description) {

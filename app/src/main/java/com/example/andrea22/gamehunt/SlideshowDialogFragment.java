@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.andrea22.gamehunt.AsyncTask.DeletePhoto;
+import com.example.andrea22.gamehunt.AsyncTask.GetPhoto;
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.Entity.Image;
 import com.example.andrea22.gamehunt.AsyncTask.RetrieveJson;
@@ -120,7 +122,7 @@ public class SlideshowDialogFragment extends DialogFragment {
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, final int position) {
 
             layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = layoutInflater.inflate(R.layout.image_fullscreen_preview, container, false);
@@ -130,7 +132,6 @@ public class SlideshowDialogFragment extends DialogFragment {
             ImageView checkNo = (ImageView) view.findViewById(R.id.checkNo);
             final ImageView checkOk = (ImageView) view.findViewById(R.id.checkOk);
             final Image image = images.get(position);
-
 
             checkNo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -207,7 +208,20 @@ public class SlideshowDialogFragment extends DialogFragment {
                                 LoginActivity.mWebSocketClient.send("cf:" + image.getIdUser()+"-"+image.getIdStage()+"-"+image.getIdHunt()+"-"+image.getName());
                             }
 
+                            //eliminazione dell'immagine
 
+                            Log.v("SlideshowDialogFragment","prima di DeletePhoto");
+                            int resDelete = new DeletePhoto(v.getContext()).execute(image.getIdHunt()+"/"+image.getIdStage()+"/"+image.getIdUser()).get();
+                            Log.v("SlideshowDialogFragment","prima dell'if. resDelete = "+resDelete );
+
+                            if (resDelete == 1){
+                                dismiss();
+                                images.remove(position);
+                                Log.v("SlideshowDialogFragment", "prima del notifyData");
+
+                                notifyDataSetChanged();
+
+                            }
 
 
 
@@ -216,7 +230,6 @@ public class SlideshowDialogFragment extends DialogFragment {
                             Toast toast = Toast.makeText(v.getContext(), "Si è verificato un errore.", Toast.LENGTH_SHORT);
                             toast.show();
                         }
-
 
 
 
@@ -301,7 +314,21 @@ public class SlideshowDialogFragment extends DialogFragment {
                                 LoginActivity.mWebSocketClient.send("cf:" + image.getIdUser()+"-"+image.getIdStage()+"-"+image.getIdHunt()+"-"+image.getName());
                             }
 
+                            //eliminazione dell'immagine
 
+                            Log.v("SlideshowDialogFragment","prima di DeletePhoto");
+                            int resDelete = new DeletePhoto(v.getContext()).execute(image.getIdHunt()+"/"+image.getIdStage()+"/"+image.getIdUser()).get();
+                            Log.v("SlideshowDialogFragment","prima dell'if. resDelete = "+resDelete );
+
+                            if (resDelete == 1){
+                                dismiss();
+                                images.remove(position);
+                                Log.v("SlideshowDialogFragment", "prima del notifyData");
+
+                                notifyDataSetChanged();
+
+
+                            }
 
 
 
