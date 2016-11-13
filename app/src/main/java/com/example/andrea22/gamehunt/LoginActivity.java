@@ -1,6 +1,9 @@
 package com.example.andrea22.gamehunt;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.NotificationManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,6 +32,7 @@ import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -46,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         usernameview = (EditText) findViewById(R.id.username);
         passwordview = (EditText) findViewById(R.id.password);
         loginButton= (Button)findViewById(R.id.sign_in);
@@ -53,6 +58,9 @@ public class LoginActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+
+
     }
 
     public void login(View view) {
@@ -334,18 +342,55 @@ public class LoginActivity extends AppCompatActivity {
                             SQLiteDatabase db = myHelper.getWritableDatabase();
                             myHelper.notifyPhotoHasArrived(db, idHunt); //todo: questo deve andare PRIMA del notificationcompat builder!
 
-                            if (getApplicationContext() instanceof HuntListActivity){
 
-                                int totalPhotoToCheck = Integer.parseInt(((HuntListActivity)getApplicationContext()).tv.getText().toString())+1;
+                            /*ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+                            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+                            Log.d("topActivity", "CURRENT Activity ::" + taskInfo.get(0).topActivity.getClassName());
+*/                          Activity currentActivity = ((GameHunt)context.getApplicationContext()).getCurrentActivity();
+                            Log.i("Websocket", "currentActivity:"+currentActivity);
 
-                                ((HuntListActivity)getApplicationContext()).tv.setText(""+totalPhotoToCheck);
 
-                                SimpleFragmentPagerAdapter adapter = (SimpleFragmentPagerAdapter)((HuntListActivity)getApplicationContext()).viewPager.getAdapter();
+                           // if (taskInfo.get(0).topActivity.getClassName().equals("com.example.andrea22.gamehunt.HuntListActivity")){
+
+                            if (currentActivity!=null) {
+
+                                int totalPhotoToCheck = Integer.parseInt(((HuntListActivity)currentActivity).tv.getText().toString())+1;
+
+                                ((HuntListActivity)currentActivity).tv.setText(""+totalPhotoToCheck);
+
+                                SimpleFragmentPagerAdapter adapter = (SimpleFragmentPagerAdapter)((HuntListActivity)currentActivity).viewPager.getAdapter();
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+                                Log.i("Websocket", "fuori dal for!");
+
+
                                 for (int i = 0; i < adapter.getHunts().size() ; i++) {
                                     if (adapter.getHunts().get(i).getIdHunt() == idHunt) {
+                                        Log.i("Websocket", "trovato l'id!");
+
                                         adapter.getHunts().get(i).setPhotoToCheck(adapter.getHunts().get(i).getPhotoToCheck()+1);
                                         adapter.notifyDataSetChanged();
-
+                                        ((HuntListActivity)currentActivity).viewPager.setCurrentItem(0);
                                         break;
                                     }
                                 }

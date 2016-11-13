@@ -1,5 +1,6 @@
 package com.example.andrea22.gamehunt;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -43,11 +44,14 @@ public class HuntListActivity extends AppCompatActivity {
     private ItemTouchHelper mItemTouchHelper;
     int totalPhotoToCheck;
     public ViewPager viewPager;
+    protected GameHunt mMyApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hunt_list);
+        mMyApp = (GameHunt) this.getApplicationContext();
+
         totalPhotoToCheck = 0;
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         //initializeSlogan();
@@ -58,6 +62,23 @@ public class HuntListActivity extends AppCompatActivity {
         Log.v("HundListActivity",""+tv);
         tv.setText(""+totalPhotoToCheck);
 
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mMyApp.setCurrentActivity(this);
+    }
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+        mMyApp.setCurrentActivity(null);
+    }
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+        mMyApp.setCurrentActivity(null);
     }
 
     /*
@@ -173,6 +194,7 @@ public class HuntListActivity extends AppCompatActivity {
                 viewPager.setAdapter(adapterPage);
 
                 viewPager.setCurrentItem(tab.getPosition());
+
             }
 
             @Override
@@ -193,12 +215,14 @@ public class HuntListActivity extends AppCompatActivity {
     public void goToGrid(View view) {
         Log.v("db log", "id: " + view.getId());
         Intent intent = new Intent(this, GalleryActivity.class);
+        mMyApp.setCurrentActivity(null);
         startActivity(intent);
     }
 
     public void createHunt(View view){
         Log.v("db log", "id: " + view.getId());
         Intent intent = new Intent(this, NewHuntActivity.class);
+        mMyApp.setCurrentActivity(null);
         startActivity(intent);
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
@@ -210,6 +234,7 @@ public class HuntListActivity extends AppCompatActivity {
         editor.apply();
 
         Intent intent = new Intent(this, StageManagementActivity.class);
+        mMyApp.setCurrentActivity(null);
         startActivity(intent);
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
@@ -221,6 +246,7 @@ public class HuntListActivity extends AppCompatActivity {
         editor.apply();
 
         Intent intent = new Intent(this, TeamManagementActivity.class);
+        mMyApp.setCurrentActivity(null);
         startActivity(intent);
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
@@ -327,7 +353,7 @@ public class HuntListActivity extends AppCompatActivity {
             e.printStackTrace();
 
         }
-
+        mMyApp.setCurrentActivity(null);
         startActivity(intent);
     }
 
@@ -384,6 +410,7 @@ public class HuntListActivity extends AppCompatActivity {
             e.printStackTrace();
 
         }
+        mMyApp.setCurrentActivity(null);
 
         startActivity(intent);
     }
@@ -439,12 +466,14 @@ public class HuntListActivity extends AppCompatActivity {
             if (res.trim().equals("-1")) {
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                mMyApp.setCurrentActivity(null);
 
                 startActivity(intent);
             } else if (!res.trim().equals("1")) {
 
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                mMyApp.setCurrentActivity(null);
 
                 startActivity(intent);
             }
