@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,20 +57,21 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Uri mImageUri;
     private GoogleMap mMap;
-    private int idHunt, idTeam, idStage, idUser;
+    private int idHunt, idTeam, idStage, idUser, idWinner;
     private static HuntActivity parent;
 
     File photo;
     final int TAKE_PHOTO_REQ = 100;
 
-    private String clue, nameHunt, nameStage, nameTeam, sloganTeam;
+    private String clue, nameHunt, nameStage, nameTeam, sloganTeam, nameWinner;
     private int numStage, ray, isLocationRequired, isCheckRequired, isPhotoRequired, isCompleted, isPhotoSended, isPhotoChecked, userCompleted, teamCompleted;
     private int isStarted, isEnded;
     private float areaLat, areaLon, lat, lon;
 
     ImageButton centralButton, clueButton, teamButton;
-    TextView clueText, teamTitle, teamSlogan, stageTitle;
+    TextView clueText, teamTitle, teamSlogan, stageTitle, tvFinal, winTeam;
     LinearLayout containerMembers;
+    FrameLayout flFinal;
     Toolbar bottomBar;
 
     Bitmap resized;
@@ -115,70 +117,79 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         members = new ArrayList<>();
         membersDone = new ArrayList<>();
 
-        if (isStarted==1 && isEnded==0) {
-            Log.v("Hunt Activity", "in corso!");
-            SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+        flFinal = (FrameLayout) findViewById(R.id.flFinal);
+        tvFinal = (TextView) findViewById(R.id.tvFinal);
+        winTeam = (TextView) findViewById(R.id.winTeam);
 
-            idUser = pref.getInt("idUser", 0);
+        SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
+        idUser = pref.getInt("idUser", 0);
+        boolean checkComplete = completeHunt();
 
-            setStageMap();
-            setTeamList();
+        if(checkComplete == false) {
 
-            teamTitle.setText(nameTeam);
-            teamSlogan.setText(sloganTeam);
-            stageTitle.setText(nameStage);
-            if(clue.isEmpty() || clue.equals("")){
-                clueText.setText(getResources().getString(R.string.clueEmpty));
-            } else {
-                clueText.setText(clue);
-            }
+            if (isStarted == 1 && isEnded == 0) {
+                Log.v("Hunt Activity", "in corso!");
 
-            Log.v("Hunt Activity", "members" + members);
-            Log.v("Hunt Activity", "members" + membersDone);
 
-            for (int i = 0; i < members.size(); i++){
-                LinearLayout ll = (LinearLayout)getLayoutInflater().inflate(R.layout.content_member_team, null, true);
-                ((TextView)ll.getChildAt(1)).setText(members.get(i));
+                setStageMap();
+                setTeamList();
 
-                if(membersDone.get(i) == 1){
-                    Log.v("Hunt Activity", "membersDone.get(i) == 1");
-
-                    (ll.getChildAt(2)).setVisibility(View.VISIBLE);
+                teamTitle.setText(nameTeam);
+                teamSlogan.setText(sloganTeam);
+                stageTitle.setText(nameStage);
+                if (clue.isEmpty() || clue.equals("")) {
+                    clueText.setText(getResources().getString(R.string.clueEmpty));
+                } else {
+                    clueText.setText(clue);
                 }
 
-                containerMembers.addView(ll);
+                Log.v("Hunt Activity", "members" + members);
+                Log.v("Hunt Activity", "members" + membersDone);
 
+                for (int i = 0; i < members.size(); i++) {
+                    LinearLayout ll = (LinearLayout) getLayoutInflater().inflate(R.layout.content_member_team, null, true);
+                    ((TextView) ll.getChildAt(1)).setText(members.get(i));
+
+                    if (membersDone.get(i) == 1) {
+                        Log.v("Hunt Activity", "membersDone.get(i) == 1");
+
+                        (ll.getChildAt(2)).setVisibility(View.VISIBLE);
+                    }
+
+                    containerMembers.addView(ll);
+
+                }
+                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.map);
+                mapFragment.getMapAsync(this);
+
+            } else if (isStarted == 0 && isEnded == 0) {
+                Log.v("Hunt Activity", "deve partire ancora...");
+
+                String timeStart = intent.getStringExtra("timeStart");
+                Log.v("Hunt Activity", "timeStart:" + timeStart);
+
+                new AlertDialog.Builder(this)
+                        .setTitle(getResources().getString(R.string.dialogTitle))
+                        .setMessage(getResources().getString(R.string.dialogMessage) + " " + timeStart)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
+                bottomBar.setVisibility(View.GONE);
+
+            } else if (isStarted == 1 && isEnded == 1) {
+                Log.v("Hunt Activity", "è finita...");
+
+                new AlertDialog.Builder(this)
+                        .setTitle(getResources().getString(R.string.dialogTitle1))
+                        .setMessage(getResources().getString(R.string.dialogMessage1))
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
+                bottomBar.setVisibility(View.GONE);
+            } else {
+                //todo da gestire
             }
-            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.map);
-            mapFragment.getMapAsync(this);
-
-        } else if (isStarted==0 && isEnded==0){
-            Log.v("Hunt Activity", "deve partire ancora...");
-
-            String timeStart = intent.getStringExtra("timeStart");
-            Log.v("Hunt Activity", "timeStart:"+timeStart);
-
-            new AlertDialog.Builder(this)
-            .setTitle(getResources().getString(R.string.dialogTitle))
-                    .setMessage(getResources().getString(R.string.dialogMessage) + " " + timeStart)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-
-            bottomBar.setVisibility(View.GONE);
-
-        } else if (isStarted==1 && isEnded==1){
-            Log.v("Hunt Activity", "è finita...");
-
-            new AlertDialog.Builder(this)
-            .setTitle(getResources().getString(R.string.dialogTitle1))
-                    .setMessage(getResources().getString(R.string.dialogMessage1))
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-
-            bottomBar.setVisibility(View.GONE);
-        } else {
-            //todo da gestire
         }
     }
 
@@ -412,6 +423,62 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean completeHunt(){
+        DBHelper mDbHelper = DBHelper.getInstance(getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        try {
+            Cursor c = db.rawQuery(
+                    "SELECT TEAM.idTeam, " +
+                            "HUNT.idWinner, " +
+                            "HUNT.nameWinner, " +
+                            "HUNT.name " +
+
+                            "FROM TEAM LEFT JOIN BE ON TEAM.idTeam = BE.idTeam " +
+                            "LEFT JOIN USER ON USER.idUser = BE.idUser " +
+                            "LEFT JOIN STAGE ON STAGE.idStage = TEAM.idCurrentStage " +
+                            "LEFT JOIN HUNT ON HUNT.idHunt = TEAM.idHunt " +
+
+                            "WHERE   TEAM.idHunt = "+idHunt+" AND USER.idUser = " + idUser, null);
+            Log.v("Hunt Activity", "info prelevate: " + c.getCount());
+
+            if (c.moveToFirst()) {
+                do {
+                    idTeam = c.getInt(c.getColumnIndex("idTeam"));
+                    idWinner = c.getInt(c.getColumnIndex("idWinner"));
+                    nameWinner = c.getString(c.getColumnIndex("nameWinner"));
+                    nameHunt = c.getString(c.getColumnIndex("name"));
+
+
+                }while (c.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.v("Hunt Activity", "idUser:"+idUser);
+        Log.v("Hunt Activity", "idHunt:"+idHunt);
+        Log.v("Hunt Activity", "idTeam:"+idTeam);
+        Log.v("Hunt Activity", "idWinner:"+idWinner);
+        Log.v("Hunt Activity", "nameWinner:"+nameWinner);
+        Log.v("Hunt Activity", "nameHunt:"+nameHunt);
+
+        if(idWinner == 0){
+            return false;
+        }
+
+        if(idTeam == idWinner){
+            tvFinal.setText(getResources().getString(R.string.winner));
+            flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        } else {
+            tvFinal.setText(getResources().getString(R.string.loser));
+            flFinal.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        }
+        winTeam.setText(getResources().getString(R.string.winTeam) + " " + nameWinner);
+        flFinal.setVisibility(View.VISIBLE);
+        return true;
+
     }
 
     @Override

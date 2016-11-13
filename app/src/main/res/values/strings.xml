@@ -88,6 +88,10 @@
     <string name="dialogMessage1">Thanks for playing with us.</string>
     <string name="toastMessage">Image Uploaded</string>
     <string name="toastMessage1">Failed to load</string>
+    <string name="winner">YOU WIN</string>
+    <string name="loser">YOU LOSE</string>
+    <string name="winTeam">The winning team is</string>
+
 
     <!-- STAGE MANAGEMENT -->
     <string name="maxNumStage">Maximum number of stages reached</string>

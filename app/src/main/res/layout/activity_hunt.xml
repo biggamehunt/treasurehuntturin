@@ -1,199 +1,235 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white"
-    android:id="@+id/linearLayoutNewStage"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v7.widget.Toolbar
-        android:elevation="4dp"
-        android:id="@+id/top"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_dehaze_white_24dp"
-            android:background="@drawable/imagebutton_background"
-            android:layout_centerVertical="true"/>
-
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_search_white_24dp"
-            android:background="@drawable/imagebutton_background"
-            android:layout_gravity="right"
-            android:layout_marginRight="15dp"
-            android:layout_centerVertical="true"/>
-
-    </android.support.v7.widget.Toolbar>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <fragment
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="com.example.andrea22.gamehunt.HuntActivity"/>
-
-        <ImageView
-            android:id="@+id/transparent_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@android:color/transparent"/>
-
-        <RelativeLayout
-            android:elevation="4dp"
-            android:id="@+id/hidden_panel"
-            android:layout_above="@+id/bot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
-            <TextView
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:paddingTop="6dp"
-                android:paddingStart="6dp"
-                android:id="@+id/stageTitle"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:paddingTop="6dp"
-                android:paddingStart="6dp"
-                android:id="@+id/clueTitle"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/clueTitle"/>
-
-            <TextView
-                android:layout_below="@+id/clueTitle"
-                android:padding="6dp"
-                android:id="@+id/clueText"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:elevation="4dp"
-            android:id="@+id/hidden_panel_team"
-            android:layout_above="@+id/bot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
-            <TextView
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:paddingTop="6dp"
-                android:paddingStart="6dp"
-                android:id="@+id/teamTitle"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Team Members"/>
-
-            <TextView
-                android:paddingStart="6dp"
-                android:id="@+id/teamSlogan"
-                android:layout_below="@+id/teamTitle"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Team Slogan"/>
-
-            <android.support.v4.widget.NestedScrollView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_below="@+id/teamSlogan"
-                android:padding="6dp"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="175dp"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:context=".HuntActivity"
-                tools:showIn="@layout/activity_hunt">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:id="@+id/membersContainer"/>
-
-            </android.support.v4.widget.NestedScrollView>
-
-        </RelativeLayout>
-
-
-
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:id="@+id/linearLayoutNewStage">
 
         <android.support.v7.widget.Toolbar
             android:elevation="4dp"
-            android:id="@+id/bot"
+            android:id="@+id/top"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true">
+            android:background="?attr/colorPrimary"
+            xmlns:android="http://schemas.android.com/apk/res/android">
 
             <ImageButton
-                android:padding="6dp"
-                android:id="@+id/central"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_photo_camera_white_24dp"
-                android:tint="@color/colorPrimary"
-                android:background="@drawable/imagebutton_style"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_horizontal"
-                android:onClick="takePosition"/>
-
-            <ImageButton
-                android:padding="6dp"
-                android:id="@+id/clue"
-                android:layout_marginStart="70dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_create_black_24dp"
-                android:alpha="0.3"
-                android:background="@drawable/imagebutton_style"
-                android:layout_centerVertical="true"
-                android:onClick="takeClue"/>
+                android:src="@drawable/ic_dehaze_white_24dp"
+                android:background="@drawable/imagebutton_background"
+                android:layout_centerVertical="true"/>
 
 
             <ImageButton
-                android:padding="6dp"
-                android:id="@+id/team"
-                android:layout_marginEnd="70dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_group_black_24dp"
-                android:background="@drawable/imagebutton_style"
-                android:alpha="0.3"
-                android:layout_centerVertical="true"
-                android:layout_gravity="end"
-                android:onClick="takeTeam"/>
+                android:src="@drawable/ic_search_white_24dp"
+                android:background="@drawable/imagebutton_background"
+                android:layout_gravity="right"
+                android:layout_marginRight="15dp"
+                android:layout_centerVertical="true"/>
 
         </android.support.v7.widget.Toolbar>
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-</LinearLayout>
+            <fragment
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:map="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.example.andrea22.gamehunt.HuntActivity"/>
+
+            <ImageView
+                android:id="@+id/transparent_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@android:color/transparent"/>
+
+            <RelativeLayout
+                android:elevation="4dp"
+                android:id="@+id/hidden_panel"
+                android:layout_above="@+id/bot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:paddingTop="6dp"
+                    android:paddingStart="6dp"
+                    android:id="@+id/stageTitle"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:paddingTop="6dp"
+                    android:paddingStart="6dp"
+                    android:id="@+id/clueTitle"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clueTitle"/>
+
+                <TextView
+                    android:layout_below="@+id/clueTitle"
+                    android:padding="6dp"
+                    android:id="@+id/clueText"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:elevation="4dp"
+                android:id="@+id/hidden_panel_team"
+                android:layout_above="@+id/bot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:paddingTop="6dp"
+                    android:paddingStart="6dp"
+                    android:id="@+id/teamTitle"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Team Members"/>
+
+                <TextView
+                    android:paddingStart="6dp"
+                    android:id="@+id/teamSlogan"
+                    android:layout_below="@+id/teamTitle"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Team Slogan"/>
+
+                <android.support.v4.widget.NestedScrollView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_below="@+id/teamSlogan"
+                    android:padding="6dp"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="175dp"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    tools:context=".HuntActivity"
+                    tools:showIn="@layout/activity_hunt">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:id="@+id/membersContainer"/>
+
+                </android.support.v4.widget.NestedScrollView>
+
+            </RelativeLayout>
+
+
+
+
+            <android.support.v7.widget.Toolbar
+                android:elevation="4dp"
+                android:id="@+id/bot"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/white"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true">
+
+                <ImageButton
+                    android:padding="6dp"
+                    android:id="@+id/central"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_photo_camera_white_24dp"
+                    android:tint="@color/colorPrimary"
+                    android:background="@drawable/imagebutton_style"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="takePosition"/>
+
+                <ImageButton
+                    android:padding="6dp"
+                    android:id="@+id/clue"
+                    android:layout_marginStart="70dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_create_black_24dp"
+                    android:alpha="0.3"
+                    android:background="@drawable/imagebutton_style"
+                    android:layout_centerVertical="true"
+                    android:onClick="takeClue"/>
+
+
+                <ImageButton
+                    android:padding="6dp"
+                    android:id="@+id/team"
+                    android:layout_marginEnd="70dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_group_black_24dp"
+                    android:background="@drawable/imagebutton_style"
+                    android:alpha="0.3"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="end"
+                    android:onClick="takeTeam"/>
+
+            </android.support.v7.widget.Toolbar>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/flFinal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent">
+
+        <TextView
+            android:id="@+id/tvFinal"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/winner"
+            android:textSize="@dimen/slide_title"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/winTeam"
+            android:layout_marginTop="30dp"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/winTeam"
+            android:textStyle="bold"/>
+
+    </FrameLayout>
+
+</RelativeLayout>
