@@ -23,9 +23,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/single_image"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             />
 
 
@@ -34,9 +34,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/single_title"
-            android:layout_toRightOf="@+id/single_image"
+            android:layout_toEndOf="@+id/single_image"
             android:layout_alignParentTop="true"
-            android:textSize="24dp"
+            android:textSize="24sp"
             android:textColor="@color/colorPrimary"
             android:maxLines="2"
             />
@@ -47,12 +47,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/single_date"
-            android:layout_toRightOf="@+id/single_image"
+            android:layout_toEndOf="@+id/single_image"
             android:layout_below="@+id/single_title"
             />
 
         <RelativeLayout
-            android:layout_toRightOf="@+id/single_image"
+            android:layout_toEndOf="@+id/single_image"
             android:layout_below="@+id/single_date"
             android:layout_marginTop="10dp"
             android:orientation="vertical"
@@ -60,7 +60,7 @@
             android:id="@+id/rlcard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             >
 
 
@@ -101,7 +101,7 @@
             android:id="@+id/single_description"
             android:layout_below="@+id/single_image"
             android:maxLines="5"
-            android:textSize="16dp"/>
+            android:textSize="16sp"/>
 
         <TextView
             android:padding="4dp"
@@ -110,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/single_goToHunt"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_below="@+id/single_description"
             android:textColor="@color/colorAccent"
             android:background="@drawable/gotohunt_style"/>
@@ -119,11 +119,12 @@
         <TextView
             android:visibility="gone"
             android:padding="4dp"
-            android:paddingLeft="4dp"
+            android:paddingStart="4dp"
+            android:paddingTop="4dp"
             android:layout_marginTop="12dp"
-            android:layout_marginLeft="14dp"
+            android:layout_marginStart="14dp"
             android:text="MODIFY"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:id="@+id/modifyHunt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

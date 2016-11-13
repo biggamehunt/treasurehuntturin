@@ -74,6 +74,9 @@
     <string name="dateErrorToast">La data d\'inizio deve essere più recente di quella finale</string>
     <string name="timeErrorToast">La caccia deve durare almeno tre ore</string>
     <string name="noStartTimeToast">Data d\'inizio mancante</string>
+    <string name="photoDesc">Scegli immagine</string>
+    <string name="timeDesc">Prenditi il tuo tempo :)</string>
+    <string name="descDesc">Descrizione</string>
 
     <!-- HUNT ACTIVITY -->
     <string name="clueTitle">Suggerimento</string>
@@ -90,6 +93,13 @@
     <string name="winner">HAI VINTO</string>
     <string name="loser">HAI PERSO</string>
     <string name="winTeam">La squadra vincitrice è</string>
+
+    <string name="huntComp">Caccia completata!</string>
+    <string name="stageComp">Stage completato!</string>
+    <string name="waitTeam">Hai completato lo stage!</string>
+    <string name="waitTeam2">Attendi i tuoi compagni!</string>
+    <string name="waitCheck">Attendi la conferma del moderatore per poter andare avanti!</string>
+    <string name="photoError">Si è verificato un errore. Prova a ricarare la foto.</string>
 
 
     <!-- STAGE MANAGEMENT -->
@@ -118,6 +128,8 @@
     <string name="notExistErrorToast">Questo utente non esiste!</string>
     <string name="sloganTeam">Motto (Opzionale)</string>
     <string name="goToTeam">vai al team</string>
+    <string name="userHint">Invita</string>
+
 
 
 

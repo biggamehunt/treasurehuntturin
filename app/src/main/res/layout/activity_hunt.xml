@@ -71,6 +71,7 @@
                     android:textStyle="bold"
                     android:paddingTop="6dp"
                     android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
                     android:id="@+id/stageTitle"
                     android:background="@color/white"
                     android:layout_width="match_parent"
@@ -80,6 +81,7 @@
                     android:textStyle="bold"
                     android:paddingTop="6dp"
                     android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
                     android:id="@+id/clueTitle"
                     android:background="@color/white"
                     android:layout_width="match_parent"
@@ -107,6 +109,7 @@
                     android:textStyle="bold"
                     android:paddingTop="6dp"
                     android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
                     android:id="@+id/teamTitle"
                     android:background="@color/white"
                     android:layout_width="match_parent"
@@ -115,6 +118,7 @@
 
                 <TextView
                     android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
                     android:id="@+id/teamSlogan"
                     android:layout_below="@+id/teamTitle"
                     android:background="@color/white"

@@ -75,6 +75,9 @@
     <string name="dateErrorToast">Start date must be more recent than the final</string>
     <string name="timeErrorToast">Please insert at least three hours from start time</string>
     <string name="noStartTimeToast">Please insert a start time</string>
+    <string name="photoDesc">Take photo</string>
+    <string name="timeDesc">Take your time :)</string>
+    <string name="descDesc">Description</string>
 
     <!-- HUNT ACTIVITY -->
     <string name="clueTitle">Clue</string>
@@ -91,6 +94,14 @@
     <string name="winner">YOU WIN</string>
     <string name="loser">YOU LOSE</string>
     <string name="winTeam">The winning team is</string>
+
+    <string name="huntComp">Hunt completed!</string>
+    <string name="stageComp">Stage completed!</string>
+    <string name="waitTeam">Stage completed!</string>
+    <string name="waitTeam2">Wait for your team!</string>
+    <string name="waitCheck">Wait for moderator check!</string>
+    <string name="photoError">Unknown Error. Try to send the photo again.</string>
+
 
 
     <!-- STAGE MANAGEMENT -->
@@ -119,6 +130,7 @@
     <string name="notExistErrorToast">This user does not exist</string>
     <string name="sloganTeam">Slogan (Optional)</string>
     <string name="goToTeam">go to team</string>
+    <string name="userHint">Invite</string>
 
     <!-- FRAGMENT_NEWSTAGE -->
     <string name="areaStage">Stage area</string>

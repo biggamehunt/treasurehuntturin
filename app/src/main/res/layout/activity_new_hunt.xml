@@ -45,6 +45,7 @@
                 </EditText>
 
                 <ImageButton
+                    android:contentDescription="@string/photoDesc"
                     android:id="@+id/newHuntImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -61,7 +62,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="35dp">
 
-                <ImageButton
+                <ImageView
+                    android:contentDescription="@string/timeDesc"
                     android:alpha="0.3"
                     android:background="#fff"
                     android:layout_width="wrap_content"
@@ -124,7 +126,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp">
 
-                <ImageButton
+                <ImageView
+                    android:contentDescription="@string/descDesc"
                     android:alpha="0.3"
                     android:background="#fff"
                     android:layout_width="wrap_content"

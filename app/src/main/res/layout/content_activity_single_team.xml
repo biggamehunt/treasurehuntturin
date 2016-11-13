@@ -26,8 +26,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:text="Nome Cognome"
-        android:paddingLeft="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:textSize="16sp"/>
 
     <RelativeLayout
@@ -46,7 +46,7 @@
             />
 
         <ImageView
-            android:layout_marginRight="4dp"
+            android:layout_marginEnd="4dp"
             android:id="@+id/deleteUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
