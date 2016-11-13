@@ -38,16 +38,18 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
  */
 public class HuntListActivity extends AppCompatActivity {
 
-    private TextView tv;
+    public TextView tv;
     public List<SingleHunt> userHunts, otherHunts, hunts;
     private ItemTouchHelper mItemTouchHelper;
     int totalPhotoToCheck;
+    public ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hunt_list);
         totalPhotoToCheck = 0;
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         //initializeSlogan();
         initializeData();
         initializeAdapter();
@@ -55,6 +57,7 @@ public class HuntListActivity extends AppCompatActivity {
         tv = (TextView)findViewById(R.id.txtToolbarCount);
         Log.v("HundListActivity",""+tv);
         tv.setText(""+totalPhotoToCheck);
+
     }
 
     /*
@@ -134,9 +137,8 @@ public class HuntListActivity extends AppCompatActivity {
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.drawable.tab_selector));
         tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorAccent));
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         final PagerAdapter adapterPage;
-        hunts = new ArrayList<SingleHunt>();
+        hunts = new ArrayList<>();
 
         Log.v("data", "getTabCount: " + tabLayout.getTabCount());
 
@@ -263,7 +265,7 @@ public class HuntListActivity extends AppCompatActivity {
                         if (jRes.getInt("isStarted")==1 && jRes.getInt("isEnded")==0) {
                             Log.v("HuntListActivity", "in corso");
 
-                            myHelper.insertHuntDetail(db,res);
+                            myHelper.insertHuntDetail(db,res, pref.getInt("idUser",0));
                             myHelper.setHuntIsLoaded(db, Integer.parseInt(idHunt));
                             intent.putExtra("isStarted", 1);
                             intent.putExtra("isEnded",0);
@@ -361,7 +363,7 @@ public class HuntListActivity extends AppCompatActivity {
 
                         Log.d("test debug", "if. res = " + res);
 
-                        myHelper.insertHuntDetail(db,res);
+                        myHelper.insertHuntDetail(db,res,pref.getInt("idUser",0));
                         myHelper.setHuntIsLoaded(db, Integer.parseInt(idHunt));
 
                     } else {

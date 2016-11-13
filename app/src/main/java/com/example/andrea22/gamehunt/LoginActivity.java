@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.andrea22.gamehunt.Adapter.SimpleFragmentPagerAdapter;
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.AsyncTask.RetrieveLoginTask;
 import com.google.android.gms.appindexing.AppIndex;
@@ -321,6 +322,37 @@ public class LoginActivity extends AppCompatActivity {
                             SQLiteDatabase db = myHelper.getWritableDatabase();
                             if (myHelper.getHuntIsLoadedIsStartedIsEnded(db,idHunt)[0]==1) {
                                 myHelper.notifyUserHasCompleted(db, idUser, idTeam); //todo: questo deve andare PRIMA del notificationcompat builder!
+                            }
+
+                        } else if (message.substring(0,2).equals("ps")){ //uc:photosended
+
+                            String[] firstSplit = message.substring(3).split("-");
+                            int idHunt = Integer.parseInt(firstSplit[0]);
+
+
+                            DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
+                            SQLiteDatabase db = myHelper.getWritableDatabase();
+                            myHelper.notifyPhotoHasArrived(db, idHunt); //todo: questo deve andare PRIMA del notificationcompat builder!
+
+                            if (getApplicationContext() instanceof HuntListActivity){
+
+                                int totalPhotoToCheck = Integer.parseInt(((HuntListActivity)getApplicationContext()).tv.getText().toString())+1;
+
+                                ((HuntListActivity)getApplicationContext()).tv.setText(""+totalPhotoToCheck);
+
+                                SimpleFragmentPagerAdapter adapter = (SimpleFragmentPagerAdapter)((HuntListActivity)getApplicationContext()).viewPager.getAdapter();
+                                for (int i = 0; i < adapter.getHunts().size() ; i++) {
+                                    if (adapter.getHunts().get(i).getIdHunt() == idHunt) {
+                                        adapter.getHunts().get(i).setPhotoToCheck(adapter.getHunts().get(i).getPhotoToCheck()+1);
+                                        adapter.notifyDataSetChanged();
+
+                                        break;
+                                    }
+                                }
+
+
+
+
                             }
 
                         }

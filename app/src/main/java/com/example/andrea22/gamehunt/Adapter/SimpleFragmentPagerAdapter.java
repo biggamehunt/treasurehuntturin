@@ -24,6 +24,10 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
         this.hunts = hunts;
     }
 
+    public List<SingleHunt> getHunts (){
+        return hunts;
+    }
+
     @Override
     public Fragment getItem(int position) {
 

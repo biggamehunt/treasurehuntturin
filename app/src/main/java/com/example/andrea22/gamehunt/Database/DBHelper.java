@@ -451,7 +451,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertHuntDetail(SQLiteDatabase db, String res) throws JSONException {
+    public void insertHuntDetail(SQLiteDatabase db, String res, int idUser) throws JSONException {
 
 
 
@@ -512,35 +512,49 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert(TeamTable.TABLE_NAME, null, values);
         Log.v("db log", "Insert Team eseguito");
 
-        JSONArray users = team.getJSONArray("users");
+
         JSONObject user;
 
-        for (int i = 0; i < users.length(); i++) {
+        if (team.has("users")){
+            JSONArray users = team.getJSONArray("users");
+            for (int i = 0; i < users.length(); i++) {
 
-            user = users.getJSONObject(i);
-            values = new ContentValues();
+                user = users.getJSONObject(i);
+                values = new ContentValues();
 
-            values.put(UserTable.COLUMN_IDUSER, user.getString("idUser"));
-            values.put(UserTable.COLUMN_USERNAME, user.getString("username"));
-            values.put(UserTable.COLUMN_EMAIL, user.getString("email"));
+                values.put(UserTable.COLUMN_IDUSER, user.getString("idUser"));
+                values.put(UserTable.COLUMN_USERNAME, user.getString("username"));
+                values.put(UserTable.COLUMN_EMAIL, user.getString("email"));
 
-            db.insertWithOnConflict(UserTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                db.insertWithOnConflict(UserTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
 
-            Log.v("db log", "Insert User eseguito");
+                Log.v("db log", "Insert User eseguito");
 
+                values = new ContentValues();
+
+                values.put(BeTable.COLUMN_IDTEAM, team.getString("idTeam"));
+                values.put(BeTable.COLUMN_IDUSER, user.getString("idUser"));
+                values.put(BeTable.COLUMN_ISCOMPLETE, user.getString("stageComplete"));
+
+
+                db.insert(BeTable.TABLE_NAME, null, values);
+
+                Log.v("db log", "Insert Be eseguito");
+
+
+            }
+        } else {
             values = new ContentValues();
 
             values.put(BeTable.COLUMN_IDTEAM, team.getString("idTeam"));
-            values.put(BeTable.COLUMN_IDUSER, user.getString("idUser"));
-            values.put(BeTable.COLUMN_ISCOMPLETE, user.getString("stageComplete"));
+            values.put(BeTable.COLUMN_IDUSER, idUser);
 
 
             db.insert(BeTable.TABLE_NAME, null, values);
-
-            Log.v("db log", "Insert Be eseguito");
-
-
         }
+
+
+
 
 
         db.execSQL("UPDATE HUNT SET isStarted = "+hunt.getInt("isStarted")+" AND isEnded = "+hunt.getInt("isEnded")+" WHERE idHunt =" + hunt.getString("idHunt") + ";");
@@ -929,6 +943,22 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return true;
     }
+
+    public boolean notifyPhotoHasArrived(SQLiteDatabase db, int idHunt){
+        try {
+            Log.v("db log", "prima di photoToCheck");
+            db.execSQL("UPDATE HUNT SET photoToCheck = photoToCheck + 1 WHERE idHunt =" + idHunt + ";");
+            Log.v("db log", "dopo di photoToCheck");
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
 
 
 
