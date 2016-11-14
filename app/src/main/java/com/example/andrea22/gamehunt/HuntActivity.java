@@ -90,7 +90,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         parent = this;
         Intent intent = getIntent();
 
-        idHunt = Integer.parseInt(intent.getStringExtra("idHunt"));
+        idHunt = intent.getIntExtra("idHunt",-1);
 
         isStarted = intent.getIntExtra("isStarted", -1);
         isEnded = intent.getIntExtra("isEnded",-1);
@@ -859,6 +859,21 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                 Toast.makeText(this, getResources().getString(R.string.notArrivedToast) + " " + (int)distance + " m", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+
+    public void goToNextStage(View view) {
+
+        Intent intent = new Intent(this, HuntActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        intent.putExtra("idHunt", idHunt);
+        intent.putExtra("isStarted", isStarted);
+        intent.putExtra("isEnded", isEnded);
+
+        startActivity(intent);
+
+       // overridePendingTransition(R.anim.back_enter, R.anim.back_exit);
     }
 
 

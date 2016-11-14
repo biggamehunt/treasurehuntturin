@@ -227,10 +227,10 @@ public class HuntListActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
-    public void goToStagesCreation(String idHunt){
+    public void goToStagesCreation(int idHunt){
         SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("idLastHunt", Integer.parseInt(idHunt));
+        editor.putInt("idLastHunt", idHunt);
         editor.apply();
 
         Intent intent = new Intent(this, StageManagementActivity.class);
@@ -239,10 +239,10 @@ public class HuntListActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
-    public void goToTeamsCreation(String idHunt){
+    public void goToTeamsCreation(int idHunt){
         SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("idLastHunt", Integer.parseInt(idHunt));
+        editor.putInt("idLastHunt", idHunt);
         editor.apply();
 
         Intent intent = new Intent(this, TeamManagementActivity.class);
@@ -251,7 +251,7 @@ public class HuntListActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
-    public void goToHunt(String idHunt){
+    public void goToHunt(int idHunt){
         Intent intent = new Intent(this, HuntActivity.class);
         intent.putExtra("idHunt", idHunt);
         SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
@@ -263,7 +263,7 @@ public class HuntListActivity extends AppCompatActivity {
                 DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                 SQLiteDatabase db = myHelper.getWritableDatabase();
 
-                int[] info = myHelper.getHuntIsLoadedIsStartedIsEnded(db, Integer.parseInt(idHunt));
+                int[] info = myHelper.getHuntIsLoadedIsStartedIsEnded(db, idHunt);
 
                 //info[0] = isLoaded
                 //info[1] = isStarted
@@ -292,7 +292,7 @@ public class HuntListActivity extends AppCompatActivity {
                             Log.v("HuntListActivity", "in corso");
 
                             myHelper.insertHuntDetail(db,res, pref.getInt("idUser",0));
-                            myHelper.setHuntIsLoaded(db, Integer.parseInt(idHunt));
+                            myHelper.setHuntIsLoaded(db, idHunt);
                             intent.putExtra("isStarted", 1);
                             intent.putExtra("isEnded",0);
 

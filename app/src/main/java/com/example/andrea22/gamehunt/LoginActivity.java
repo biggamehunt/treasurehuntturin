@@ -359,34 +359,9 @@ public class LoginActivity extends AppCompatActivity {
                                 ((HuntListActivity)currentActivity).tv.setText(""+totalPhotoToCheck);
 
                                 SimpleFragmentPagerAdapter adapter = (SimpleFragmentPagerAdapter)((HuntListActivity)currentActivity).viewPager.getAdapter();
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-                                Log.i("Websocket", "fuori dal for!");
-
 
                                 for (int i = 0; i < adapter.getHunts().size() ; i++) {
                                     if (adapter.getHunts().get(i).getIdHunt() == idHunt) {
-                                        Log.i("Websocket", "trovato l'id!");
 
                                         adapter.getHunts().get(i).setPhotoToCheck(adapter.getHunts().get(i).getPhotoToCheck()+1);
                                         adapter.notifyDataSetChanged();

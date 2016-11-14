@@ -110,7 +110,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.SingleHuntViewHold
         singleHuntViewHolder.description.setVisibility(View.GONE);
         singleHuntViewHolder.goToHunt.setVisibility(View.GONE);
         singleHuntViewHolder.modifyHunt.setVisibility(View.GONE);
-        final String idHunt = ""+singlehunts.get(i).getIdHunt();
+        final int idHunt = singlehunts.get(i).getIdHunt();
         singleHuntViewHolder.modifyHunt.setTag(singlehunts.get(i).getIdHunt());
 
         if (dimStart != -1) {
