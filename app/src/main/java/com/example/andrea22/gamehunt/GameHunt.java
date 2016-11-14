@@ -13,6 +13,7 @@ public class GameHunt extends MultiDexApplication {
     }
 
     private Activity mCurrentActivity = null;
+
     public Activity getCurrentActivity(){
         return mCurrentActivity;
     }
