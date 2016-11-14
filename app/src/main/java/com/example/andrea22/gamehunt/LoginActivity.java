@@ -157,6 +157,36 @@ public class LoginActivity extends AppCompatActivity {
                             SQLiteDatabase db = myHelper.getWritableDatabase();
                             if (myHelper.getHuntIsLoadedIsStartedIsEnded(db,idHunt)[0]==1) {
                                 res = myHelper.notifyFromTeamStageCompleted(db, idStage, nextStage, idTeam); //todo: questo deve andare PRIMA del notificationcompat builder!
+
+
+
+
+                                Activity currentActivity = ((GameHunt)context.getApplicationContext()).getCurrentActivity();
+
+
+                                // if (taskInfo.get(0).topActivity.getClassName().equals("com.example.andrea22.gamehunt.HuntListActivity")){
+
+
+                                if (currentActivity instanceof HuntActivity) {
+                                    Log.i("Websocket", "currentActivity:"+currentActivity);
+
+                                    ((HuntActivity)currentActivity).tvFinal.setText("La caccia è completa!");
+                                    ((HuntActivity)currentActivity).flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                    ((HuntActivity)currentActivity).flFinal.setVisibility(View.VISIBLE);
+
+
+                                }
+
+
+
+
+
+
+
+
+
+
+
                             } else {
                                 res = true;
                             }
@@ -352,7 +382,7 @@ public class LoginActivity extends AppCompatActivity {
 
                            // if (taskInfo.get(0).topActivity.getClassName().equals("com.example.andrea22.gamehunt.HuntListActivity")){
 
-                            if (currentActivity!=null) {
+                            if (currentActivity instanceof HuntListActivity) {
 
                                 int totalPhotoToCheck = Integer.parseInt(((HuntListActivity)currentActivity).tv.getText().toString())+1;
 

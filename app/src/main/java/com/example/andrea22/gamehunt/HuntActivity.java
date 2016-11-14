@@ -59,6 +59,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private int idHunt, idTeam, idStage, idUser, idWinner;
     private static HuntActivity parent;
+    protected GameHunt mMyApp;
 
     File photo;
     final int TAKE_PHOTO_REQ = 100;
@@ -88,6 +89,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hunt);
         parent = this;
+        mMyApp = (GameHunt) this.getApplicationContext();
+
         Intent intent = getIntent();
 
         idHunt = intent.getIntExtra("idHunt",-1);
@@ -541,7 +544,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     if (res.trim().equals("-1")) {
                         Intent intent = new Intent(this, LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
+                        mMyApp.setCurrentActivity(null);
                         startActivity(intent);
                     } else if (!res.trim().equals("0")) {
 
@@ -792,6 +795,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                         if (res.trim().equals("-1")) {
                             Intent intent = new Intent(this, LoginActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            mMyApp.setCurrentActivity(null);
 
                             startActivity(intent);
                         } else if (!res.trim().equals("0")) {
@@ -879,6 +883,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         intent.putExtra("idHunt", idHunt);
         intent.putExtra("isStarted", isStarted);
         intent.putExtra("isEnded", isEnded);
+        mMyApp.setCurrentActivity(null);
 
         startActivity(intent);
 
@@ -916,6 +921,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                mMyApp.setCurrentActivity(null);
 
                 startActivity(intent);
             }
@@ -932,8 +938,28 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         super.onBackPressed();
         Intent intent = new Intent(this, HuntListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        mMyApp.setCurrentActivity(null);
+
         startActivity(intent);
 
         overridePendingTransition(R.anim.back_enter, R.anim.back_exit);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mMyApp.setCurrentActivity(this);
+    }
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+        mMyApp.setCurrentActivity(null);
+    }
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+        mMyApp.setCurrentActivity(null);
     }
 }
