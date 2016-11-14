@@ -377,38 +377,41 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     Log.v("Hunt Activity", "isPhotoChecked:"+isPhotoChecked);
                     Log.v("Hunt Activity", "teamCompleted:"+teamCompleted);
                     Log.v("Hunt Activity", "userCompleted:"+userCompleted);
-
+/*
                     //todo: nella socket fare un instanceof per capire se l'user si trova in quest'activity e in questo stage
                     if (isCompleted == 1){
-                        /*
+
                         Log.v("Hunt Activity", "isCompleted == 1");
 
                         //todo: sistemare i toast
                         centralButton.setClickable(false);
                         Toast toast = Toast.makeText(this, "La caccia è completa!", Toast.LENGTH_SHORT);
                         toast.show();
-                        */
-                        tvEndHunt.setText("La caccia è completa!");
-                        flEndHunt.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                        flEndHunt.setVisibility(View.VISIBLE);
+
+
+                        //tvEndHunt.setText("La caccia è completa!");
+                        //flEndHunt.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                        //flEndHunt.setVisibility(View.VISIBLE);
+
 
                     } else if (teamCompleted == 1){
                         Log.v("Hunt Activity", "teamCompleted == 1");
 
-                        /*
+
 
                         //todo: fare il go to next stage
                         // questo if dovrebbe essere inverificabie...
-                        centralButton.setClickable(false);
+                        //centralButton.setClickable(false);
 
-                        Toast toast = Toast.makeText(this, "Il team ha completato lo stage!", Toast.LENGTH_SHORT);
-                        toast.show();
-                        */
+                        //Toast toast = Toast.makeText(this, "Il team ha completato lo stage!", Toast.LENGTH_SHORT);
+                        //toast.show();
+
                         tvFinal.setText("Il team ha completato lo stage!");
                         flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                         flFinal.setVisibility(View.VISIBLE);
 
-                    } else if (userCompleted == 1){
+                    } else */
+                if (userCompleted == 1){
                         Log.v("Hunt Activity", "userCompleted == 1");
 
                         centralButton.setClickable(false);
@@ -556,14 +559,16 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                         if (jsonRes.getInt("teamIsCompleted")==1) {
                             Log.d("Hunt Activity", "teamIsCompleted");
-                            centralButton.setClickable(false);
-                            //cl.setVisibility(View.INVISIBLE);
-                            //frame.setVisibility(View.VISIBLE);
+                            tvFinal.setText("Il team ha completato lo stage!");
+                            flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                            flFinal.setVisibility(View.VISIBLE);
 
                         } else if (jsonRes.getInt("userIsCompleted")==1) {
                             Log.d("Hunt Activity", "userIsCompleted");
                             centralButton.setClickable(false);
-                            //frame.setVisibility(View.VISIBLE);
+                            Toast toast = Toast.makeText(this, "Hai completato lo stage, ma aspetti ancora i tuoi compagni!", Toast.LENGTH_SHORT);
+                            toast.show();
+
                         } else if (jsonRes.getInt("userIsCompleted")==0 && jsonRes.getInt("userIsPhotoSended")==1){
                             final Toast toast = Toast.makeText(this, "Devi aspettare la conferma del creatore della caccia per poter andare avanti!", Toast.LENGTH_SHORT);
                             centralButton.setOnClickListener(new View.OnClickListener() {
@@ -808,8 +813,10 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                             if (jsonRes.getString("teamIsCompleted").equals("1")) {
                                 Log.d("Hunt Activity", "teamIsCompleted");
-                                //cl.setVisibility(View.INVISIBLE);
-                                //frame.setVisibility(View.VISIBLE);
+
+                                tvFinal.setText(getResources().getString(R.string.arrivedToast));
+                                flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                flFinal.setVisibility(View.VISIBLE);
 
                             } else if (jsonRes.getString("userIsCompleted").equals("1")) {
                                 Log.d("Hunt Activity", "userIsCompleted");
@@ -824,9 +831,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                     } catch (Exception e){
                         e.printStackTrace();
                     }
-                    tvFinal.setText(getResources().getString(R.string.arrivedToast));
-                    flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    flFinal.setVisibility(View.VISIBLE);
+
 
                     //Toast.makeText(this, getResources().getString(R.string.arrivedToast), Toast.LENGTH_SHORT).show();
                 } else {
