@@ -69,9 +69,9 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     private float areaLat, areaLon, lat, lon;
 
     ImageButton centralButton, clueButton, teamButton;
-    TextView clueText, teamTitle, teamSlogan, stageTitle, tvFinal, winTeam;
+    TextView clueText, teamTitle, teamSlogan, stageTitle, tvFinal, winTeam, secondText, tvEndHunt;
     LinearLayout containerMembers;
-    FrameLayout flFinal;
+    FrameLayout flFinal, flEndHunt;
     Toolbar bottomBar;
 
     Bitmap resized;
@@ -120,6 +120,10 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         flFinal = (FrameLayout) findViewById(R.id.flFinal);
         tvFinal = (TextView) findViewById(R.id.tvFinal);
         winTeam = (TextView) findViewById(R.id.winTeam);
+
+        flEndHunt = (FrameLayout) findViewById(R.id.flEndHunt);
+        tvEndHunt = (TextView) findViewById(R.id.tvEndHunt);
+        secondText = (TextView) findViewById(R.id.secondText);
 
         SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
         idUser = pref.getInt("idUser", 0);
@@ -384,9 +388,9 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                         Toast toast = Toast.makeText(this, "La caccia è completa!", Toast.LENGTH_SHORT);
                         toast.show();
                         */
-                        tvFinal.setText("La caccia è completa!");
-                        flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                        flFinal.setVisibility(View.VISIBLE);
+                        tvEndHunt.setText("La caccia è completa!");
+                        flEndHunt.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                        flEndHunt.setVisibility(View.VISIBLE);
 
                     } else if (teamCompleted == 1){
                         Log.v("Hunt Activity", "teamCompleted == 1");
@@ -484,14 +488,14 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         if(idTeam == idWinner){
-            tvFinal.setText(getResources().getString(R.string.winner));
-            flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            tvEndHunt.setText(getResources().getString(R.string.winner));
+            flEndHunt.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         } else {
-            tvFinal.setText(getResources().getString(R.string.loser));
-            flFinal.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            tvEndHunt.setText(getResources().getString(R.string.loser));
+            flEndHunt.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         }
         winTeam.setText(getResources().getString(R.string.winTeam) + " " + nameWinner);
-        flFinal.setVisibility(View.VISIBLE);
+        flEndHunt.setVisibility(View.VISIBLE);
         return true;
 
     }

@@ -212,6 +212,35 @@
 
     <FrameLayout
         android:visibility="gone"
+        android:id="@+id/flEndHunt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent">
+
+        <TextView
+            android:id="@+id/tvEndHunt"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/winner"
+            android:textSize="@dimen/slide_title"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/winTeam"
+            android:layout_marginTop="30dp"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/winTeam"
+            android:textStyle="bold"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:visibility="gone"
         android:id="@+id/flFinal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -229,7 +258,7 @@
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/winTeam"
+            android:id="@+id/secondText"
             android:layout_marginTop="30dp"
             android:textColor="@android:color/white"
             android:layout_width="wrap_content"
