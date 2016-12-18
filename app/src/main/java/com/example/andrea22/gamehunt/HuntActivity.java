@@ -70,7 +70,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
     private float areaLat, areaLon, lat, lon;
 
     ImageButton centralButton, clueButton, teamButton;
-    TextView clueText, teamTitle, teamSlogan, stageTitle, tvFinal, winTeam, secondText, tvEndHunt;
+    TextView clueText, teamTitle, teamSlogan, stageTitle, tvFinal, winTeam, tvEndHunt;
     LinearLayout containerMembers;
     FrameLayout flFinal, flEndHunt;
     Toolbar bottomBar;
@@ -126,7 +126,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
         flEndHunt = (FrameLayout) findViewById(R.id.flEndHunt);
         tvEndHunt = (TextView) findViewById(R.id.tvEndHunt);
-        secondText = (TextView) findViewById(R.id.secondText);
 
         SharedPreferences pref = getSharedPreferences("session", MODE_PRIVATE);
         idUser = pref.getInt("idUser", 0);
@@ -243,7 +242,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
 
             //TODO: aggiungere su R.string titolo e snippet dei marker
-            mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
+            //mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
             //marker.setVisible(false);
 
             Log.v("Hunt Activity", "isLocationRequired:"+isLocationRequired);
@@ -560,19 +559,37 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                         Log.d("Hunt Activity", "teamIsCompleted:"+jsonRes.getString("teamIsCompleted"));
                         Log.d("Hunt Activity", "userIsCompleted:"+jsonRes.getString("userIsCompleted"));
 
+
                         if (jsonRes.getInt("teamIsCompleted")==1) {
-                            Log.d("Hunt Activity", "teamIsCompleted");
-                            tvFinal.setText("Il team ha completato lo stage!");
-                            flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                            flFinal.setVisibility(View.VISIBLE);
+                            if (jsonRes.getInt("huntDone")==1) {
+                                tvEndHunt.setText("Il team ha completato la caccia!");
+
+                                myHelper.updateWinner(db, idHunt, idTeam, nameTeam);
+
+                                nameWinner = nameTeam;
+
+
+                                winTeam.setText(getResources().getString(R.string.winTeam) + " " + nameWinner);
+                                flEndHunt.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                flEndHunt.setVisibility(View.VISIBLE);
+                            } else {
+                                Log.d("Hunt Activity", "teamIsCompleted");
+                                //todo: mettere in strings
+                                tvFinal.setText("Il team ha completato lo stage!");
+                                flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                flFinal.setVisibility(View.VISIBLE);
+                            }
+
 
                         } else if (jsonRes.getInt("userIsCompleted")==1) {
                             Log.d("Hunt Activity", "userIsCompleted");
                             centralButton.setClickable(false);
+                            //todo: mettere in strings
                             Toast toast = Toast.makeText(this, "Hai completato lo stage, ma aspetti ancora i tuoi compagni!", Toast.LENGTH_SHORT);
                             toast.show();
 
                         } else if (jsonRes.getInt("userIsCompleted")==0 && jsonRes.getInt("userIsPhotoSended")==1){
+                            //todo: mettere in strings
                             final Toast toast = Toast.makeText(this, "Devi aspettare la conferma del creatore della caccia per poter andare avanti!", Toast.LENGTH_SHORT);
                             centralButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -724,7 +741,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void takePosition(View view){
+    public void takePosition(View view) {
         Log.v("Hunt Activity", "check location");
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -815,12 +832,26 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                             Log.d("Hunt Activity", "teamIsCompleted:"+jsonRes.getString("teamIsCompleted"));
                             Log.d("Hunt Activity", "userIsCompleted:"+jsonRes.getString("userIsCompleted"));
 
-                            if (jsonRes.getString("teamIsCompleted").equals("1")) {
-                                Log.d("Hunt Activity", "teamIsCompleted");
+                            if (jsonRes.getInt("teamIsCompleted")==1) {
+                                if (jsonRes.getInt("huntDone")==1) {
+                                    tvEndHunt.setText("Il team ha completato la caccia!");
 
-                                tvFinal.setText(getResources().getString(R.string.arrivedToast));
-                                flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                                flFinal.setVisibility(View.VISIBLE);
+                                    myHelper.updateWinner(db, idHunt, idTeam, nameTeam);
+
+                                    nameWinner = nameTeam;
+
+
+                                    winTeam.setText(getResources().getString(R.string.winTeam) + " " + nameWinner);
+                                    flEndHunt.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                    flEndHunt.setVisibility(View.VISIBLE);
+                                } else {
+                                    Log.d("Hunt Activity", "teamIsCompleted");
+                                    //todo: mettere in strings
+                                    tvFinal.setText("Il team ha completato lo stage!");
+                                    flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                    flFinal.setVisibility(View.VISIBLE);
+                                }
+
 
                             } else if (jsonRes.getString("userIsCompleted").equals("1")) {
                                 Log.d("Hunt Activity", "userIsCompleted");

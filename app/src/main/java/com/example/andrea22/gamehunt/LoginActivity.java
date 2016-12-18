@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -69,34 +70,45 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        loginButton.setEnabled(false);
+
 
         String username = usernameview.getText().toString();
         String password = passwordview.getText().toString();
 
-
-        try {
-
+        if(username.length() < 4){
+            CharSequence text = getString(R.string.userLength_error);
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        } /*else if(password.length() < 7){
+            CharSequence text = getString(R.string.passLength_error);
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        } */else {
             try {
-                String username_ut8 = java.net.URLEncoder.encode(username, "UTF-8");
-                String password_ut8 = java.net.URLEncoder.encode(password, "UTF-8");
+                loginButton.setEnabled(false);
+                try {
+                    String username_ut8 = java.net.URLEncoder.encode(username, "UTF-8");
+                    String password_ut8 = java.net.URLEncoder.encode(password, "UTF-8");
 
-                String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=login&username=" + username_ut8 + "&password=" + password_ut8;
+                    String u = "http://jbossews-treasurehunto.rhcloud.com/ProfileOperation?action=login&username=" + username_ut8 + "&password=" + password_ut8;
 
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
 
-                new RetrieveLoginTask(this,username).execute(u);
+                    new RetrieveLoginTask(this, username).execute(u);
+
+                } catch (Exception e) {
+                    Log.d("test debug", "eccezione: " + e.getMessage());
+                    e.printStackTrace();
+                }
 
             } catch (Exception e) {
                 Log.d("test debug", "eccezione: " + e.getMessage());
                 e.printStackTrace();
+
             }
-
-        } catch (Exception e) {
-            Log.d("test debug", "eccezione: " + e.getMessage());
-            e.printStackTrace();
-
         }
 
     }
@@ -170,7 +182,7 @@ public class LoginActivity extends AppCompatActivity {
                                 if (currentActivity instanceof HuntActivity) {
                                     Log.i("Websocket", "currentActivity:"+currentActivity);
 
-                                    ((HuntActivity)currentActivity).tvFinal.setText("La caccia è completa!");
+                                    ((HuntActivity)currentActivity).tvFinal.setText("Lo Stage è completo!");
                                     ((HuntActivity)currentActivity).flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                                     ((HuntActivity)currentActivity).flFinal.setVisibility(View.VISIBLE);
 
@@ -215,7 +227,7 @@ public class LoginActivity extends AppCompatActivity {
                             SQLiteDatabase db = myHelper.getWritableDatabase();
                             boolean res;
                             if (myHelper.getHuntIsLoadedIsStartedIsEnded(db,idHunt)[0]==1) {
-                                res = myHelper.notifyFromTeamHuntCompleted(db,idStage,idTeam);
+                                res = myHelper.notifyFromTeamHuntCompleted(db,idStage,idTeam,idHunt);
                             } else {
                                 res = true;
                             }
@@ -333,7 +345,7 @@ public class LoginActivity extends AppCompatActivity {
                             DBHelper myHelper = DBHelper.getInstance(getApplicationContext());
                             SQLiteDatabase db = myHelper.getWritableDatabase();
                             if (myHelper.getHuntIsLoadedIsStartedIsEnded(db,idHunt)[0]==1) {
-                                res = myHelper.notifyFromTeamHuntCompleted(db, idStage, idTeam); //todo: questo deve andare PRIMA del notificationcompat builder!
+                                res = myHelper.notifyFromTeamHuntCompleted(db, idStage, idTeam, idHunt); //todo: questo deve andare PRIMA del notificationcompat builder!
                             } else {
                                 res = true;
                             }

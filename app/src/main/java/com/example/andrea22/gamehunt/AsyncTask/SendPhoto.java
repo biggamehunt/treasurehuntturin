@@ -29,13 +29,14 @@ public class SendPhoto extends AsyncTask<ArrayList<Object>, Void, Integer> {
 
             AWSCredentials credentials = new BasicAWSCredentials(context.getResources().getString(R.string.access_key),
                     context.getResources().getString(R.string.secret_key));
+            File foto = (File)params[0].get(0);
+            String namestage = (String)params[0].get(2);
+            String path = (String)params[0].get(1);
 
             AmazonS3 s3client = new AmazonS3Client(credentials);
-
-            PutObjectRequest req = new PutObjectRequest("treasurehuntturin", (String)params[0].get(1), (File)params[0].get(0));
-
+            PutObjectRequest req = new PutObjectRequest("treasurehuntturin", path, foto);
             ObjectMetadata metadata = new ObjectMetadata();
-            metadata.addUserMetadata("namestage",(String)params[0].get(2));
+            metadata.addUserMetadata("namestage",namestage);
             req.setMetadata(metadata);
             s3client.putObject(req);
             return 1;

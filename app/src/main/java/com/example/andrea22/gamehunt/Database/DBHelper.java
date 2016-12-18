@@ -717,7 +717,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean notifyFromTeamHuntCompleted(SQLiteDatabase db, int idStage, int idTeam)  {
+    public boolean notifyFromTeamHuntCompleted(SQLiteDatabase db, int idStage, int idTeam, int idHunt)  {
 
         try {
             Log.v("db log", "prima del set teamCompleted");
@@ -725,6 +725,18 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.v("db log", "prima del set idCurrentStage");
 
             db.execSQL("UPDATE TEAM SET idCurrentStage = null, isCompleted = 1 WHERE idTeam =" + idTeam + ";");
+
+            String nameTeam = "";
+            Cursor c = db.rawQuery("SELECT name FROM TEAM WHERE idTeam = " + idTeam + ";", null);
+            if (c.moveToFirst()) {
+
+                do {
+                    nameTeam += c.getString(c.getColumnIndex("name"));
+                } while (c.moveToNext());
+            }
+
+
+            db.execSQL("UPDATE HUNT SET idWinner = " + idTeam +", nameWinner = '" + nameTeam + "' WHERE idHunt =" + idHunt + ";");
 
 
         } catch (Exception e){
@@ -958,7 +970,17 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public void updateWinner(SQLiteDatabase db, int idHunt, int idTeam, String nameTeam){
+        try {
+            Log.v("db log", "prima updateWinner");
+            db.execSQL("UPDATE HUNT SET idWinner = " + idTeam +", nameWinner = '" + nameTeam + "' WHERE idHunt =" + idHunt + ";");
+            Log.v("db log", "dopo updateWinner");
 
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
 
 

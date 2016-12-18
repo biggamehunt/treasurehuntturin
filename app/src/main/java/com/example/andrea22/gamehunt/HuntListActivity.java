@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.support.design.widget.FloatingActionButton;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 import com.example.andrea22.gamehunt.Database.DBHelper;
 import com.example.andrea22.gamehunt.AsyncTask.RetrieveJson;
@@ -45,13 +47,13 @@ public class HuntListActivity extends AppCompatActivity {
     int totalPhotoToCheck;
     public ViewPager viewPager;
     protected GameHunt mMyApp;
-
+    private FloatingActionButton floatingadd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hunt_list);
         mMyApp = (GameHunt) this.getApplicationContext();
-
+        floatingadd = (FloatingActionButton)findViewById(R.id.fabHunt);
         totalPhotoToCheck = 0;
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         //initializeSlogan();
@@ -174,6 +176,13 @@ public class HuntListActivity extends AppCompatActivity {
 
                 final PagerAdapter adapterPage;
                 hunts = new ArrayList<>();
+                /*CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) floatingadd.getLayoutParams();
+                int fab_bottomMargin = layoutParams.bottomMargin;
+                floatingadd.animate().translationY(floatingadd.getHeight() + fab_bottomMargin).setInterpolator(new LinearInterpolator()).start();
+
+                Log.v("HuntListActivity","dopo l'animation del +");
+*/
+                floatingadd.animate().translationY(0).setInterpolator(new LinearInterpolator()).start();
 
                 if (tab.getPosition() == 2) {
                     hunts.addAll(otherHunts);
@@ -487,7 +496,7 @@ public class HuntListActivity extends AppCompatActivity {
     }
 
     public void addTutorial(){
-        if (userHunts.size()==0){
+        if (hunts.size()==0 && userHunts.size()==0){
             new MaterialTapTargetPrompt.Builder(HuntListActivity.this)
                     .setBackgroundColour(getResources().getColor(R.color.colorPrimary))
                     .setTarget(findViewById(R.id.fabHunt))
