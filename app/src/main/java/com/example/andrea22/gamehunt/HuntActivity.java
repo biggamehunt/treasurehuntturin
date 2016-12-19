@@ -27,9 +27,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +41,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
@@ -241,7 +238,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
             double longitude = bestLocation.getLongitude();
 
 
-            //TODO: aggiungere su R.string titolo e snippet dei marker
             //mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
             //marker.setVisible(false);
 
@@ -417,14 +413,14 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                         Log.v("Hunt Activity", "userCompleted == 1");
 
                         centralButton.setClickable(false);
-                        Toast toast = Toast.makeText(this, "Hai completato lo stage, ma aspetti ancora i tuoi compagni!", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(this, getResources().getString(R.string.waitTeam2), Toast.LENGTH_SHORT);
                         toast.show();
 
 
                     } else if (isPhotoSended == 1 && isCheckRequired == 1){
                         Log.v("Hunt Activity", "isPhotoSended == 1 && isCheckRequired == 1");
 
-                        final Toast toast = Toast.makeText(this, "Devi aspettare la conferma del creatore della caccia per poter andare avanti!", Toast.LENGTH_SHORT);
+                        final Toast toast = Toast.makeText(this, getResources().getString(R.string.waitCheck), Toast.LENGTH_SHORT);
                         toast.show();
 
                         centralButton.setOnClickListener(new View.OnClickListener() {
@@ -562,7 +558,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                         if (jsonRes.getInt("teamIsCompleted")==1) {
                             if (jsonRes.getInt("huntDone")==1) {
-                                tvEndHunt.setText("Il team ha completato la caccia!");
+                                tvEndHunt.setText(getResources().getString(R.string.teamCompHunt));
 
                                 myHelper.updateWinner(db, idHunt, idTeam, nameTeam);
 
@@ -574,8 +570,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                                 flEndHunt.setVisibility(View.VISIBLE);
                             } else {
                                 Log.d("Hunt Activity", "teamIsCompleted");
-                                //todo: mettere in strings
-                                tvFinal.setText("Il team ha completato lo stage!");
+                                tvFinal.setText(getResources().getString(R.string.teamCompHunt));
                                 flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                                 flFinal.setVisibility(View.VISIBLE);
                             }
@@ -585,12 +580,12 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                             Log.d("Hunt Activity", "userIsCompleted");
                             centralButton.setClickable(false);
                             //todo: mettere in strings
-                            Toast toast = Toast.makeText(this, "Hai completato lo stage, ma aspetti ancora i tuoi compagni!", Toast.LENGTH_SHORT);
+                            Toast toast = Toast.makeText(this, getResources().getString(R.string.waitTeam2), Toast.LENGTH_SHORT);
                             toast.show();
 
                         } else if (jsonRes.getInt("userIsCompleted")==0 && jsonRes.getInt("userIsPhotoSended")==1){
                             //todo: mettere in strings
-                            final Toast toast = Toast.makeText(this, "Devi aspettare la conferma del creatore della caccia per poter andare avanti!", Toast.LENGTH_SHORT);
+                            final Toast toast = Toast.makeText(this, getResources().getString(R.string.waitCheck), Toast.LENGTH_SHORT);
                             centralButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -602,7 +597,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     } else {
                         //toDo mettere il text di tutti i toast nelle variabili
-                        Toast toast = Toast.makeText(this, "Si è verificato un errore. Prova a ricarare la foto.", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(this, getResources().getString(R.string.photoError), Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 } catch (Exception e) {
@@ -859,7 +854,6 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                                 //frame.setVisibility(View.VISIBLE);
                             }
                         } else {
-                            //toDo mettere il text di tutti i toast nelle variabili
                             Toast toast = Toast.makeText(this, getResources().getString(R.string.errorToast), Toast.LENGTH_SHORT);
                             toast.show();
                         }

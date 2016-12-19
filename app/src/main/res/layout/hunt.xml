@@ -53,7 +53,7 @@
                 />
 
             <RelativeLayout
-
+                android:layout_below="@+id/single_description"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 android:background="@null"

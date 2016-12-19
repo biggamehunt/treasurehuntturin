@@ -93,7 +93,7 @@
     <string name="winner">HAI VINTO</string>
     <string name="loser">HAI PERSO</string>
     <string name="winTeam">La squadra vincitrice è</string>
-
+    <string name="teamCompHunt">Il team ha completato la caccia!</string>
     <string name="huntComp">Caccia completata!</string>
     <string name="stageComp">Stage completato!</string>
     <string name="waitTeam">Hai completato lo stage!</string>

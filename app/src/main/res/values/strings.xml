@@ -94,7 +94,7 @@
     <string name="winner">YOU WIN</string>
     <string name="loser">YOU LOSE</string>
     <string name="winTeam">The winning team is</string>
-
+    <string name="teamCompHunt">Team has completed the hunt</string>
     <string name="huntComp">Hunt completed!</string>
     <string name="stageComp">Stage completed!</string>
     <string name="waitTeam">Stage completed!</string>

@@ -223,7 +223,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/winner"
             android:textSize="@dimen/slide_title"
             android:textStyle="bold"/>
 
@@ -234,7 +233,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/winTeam"
             android:textStyle="bold"/>
 
     </FrameLayout>
@@ -253,7 +251,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/winner"
             android:textSize="@dimen/slide_title"
             android:textStyle="bold"/>
 
