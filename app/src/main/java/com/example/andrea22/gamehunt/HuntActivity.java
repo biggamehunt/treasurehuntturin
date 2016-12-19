@@ -558,7 +558,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                         if (jsonRes.getInt("teamIsCompleted")==1) {
                             if (jsonRes.getInt("huntDone")==1) {
-                                tvEndHunt.setText(getResources().getString(R.string.teamCompHunt));
+
+                                tvEndHunt.setText(getResources().getString(R.string.winner));
 
                                 myHelper.updateWinner(db, idHunt, idTeam, nameTeam);
 
@@ -570,7 +571,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                                 flEndHunt.setVisibility(View.VISIBLE);
                             } else {
                                 Log.d("Hunt Activity", "teamIsCompleted");
-                                tvFinal.setText(getResources().getString(R.string.teamCompHunt));
+                                tvFinal.setText(getResources().getString(R.string.stageComp) );
                                 flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                                 flFinal.setVisibility(View.VISIBLE);
                             }
@@ -583,7 +584,19 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                             Toast toast = Toast.makeText(this, getResources().getString(R.string.waitTeam2), Toast.LENGTH_SHORT);
                             toast.show();
 
-                        } else if (jsonRes.getInt("userIsCompleted")==0 && jsonRes.getInt("userIsPhotoSended")==1){
+                        } else if (jsonRes.getInt("teamIsCompleted")==0) {
+
+                            if (jsonRes.getInt("huntDone")==1) {
+                                tvEndHunt.setText(getResources().getString(R.string.loser));
+                                myHelper.updateWinner(db, idHunt, jsonRes.getInt("idWinner"), jsonRes.getString("nameWinner"));
+
+
+
+                                winTeam.setText(getResources().getString(R.string.winTeam) + " " + jsonRes.getString("nameWinner"));
+                                flEndHunt.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                                flEndHunt.setVisibility(View.VISIBLE);
+                            }
+                        } else if (jsonRes.getInt("userIsCompleted")==0 && jsonRes.getInt("userIsPhotoSended")==1) {
                             //todo: mettere in strings
                             final Toast toast = Toast.makeText(this, getResources().getString(R.string.waitCheck), Toast.LENGTH_SHORT);
                             centralButton.setOnClickListener(new View.OnClickListener() {
@@ -595,6 +608,8 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                             });
                             LoginActivity.mWebSocketClient.send("ps:" + jsonRes.getInt("idAdmin") + "-" + idHunt);
                         }
+
+
                     } else {
                         //toDo mettere il text di tutti i toast nelle variabili
                         Toast toast = Toast.makeText(this, getResources().getString(R.string.photoError), Toast.LENGTH_SHORT);
@@ -829,7 +844,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
 
                             if (jsonRes.getInt("teamIsCompleted")==1) {
                                 if (jsonRes.getInt("huntDone")==1) {
-                                    tvEndHunt.setText("Il team ha completato la caccia!");
+                                    tvEndHunt.setText(getResources().getString(R.string.winner));
 
                                     myHelper.updateWinner(db, idHunt, idTeam, nameTeam);
 
@@ -842,7 +857,7 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                                 } else {
                                     Log.d("Hunt Activity", "teamIsCompleted");
                                     //todo: mettere in strings
-                                    tvFinal.setText("Il team ha completato lo stage!");
+                                    tvFinal.setText(getResources().getString(R.string.stageComp) );
                                     flFinal.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                                     flFinal.setVisibility(View.VISIBLE);
                                 }
@@ -852,6 +867,22 @@ public class HuntActivity extends FragmentActivity implements OnMapReadyCallback
                                 Log.d("Hunt Activity", "userIsCompleted");
                                 //cl.setVisibility(View.INVISIBLE);
                                 //frame.setVisibility(View.VISIBLE);
+                            } else if (jsonRes.getInt("teamIsCompleted")==0) {
+
+                                if (jsonRes.getInt("huntDone")==1) {
+                                    tvEndHunt.setText(getResources().getString(R.string.loser));
+                                    myHelper.updateWinner(db, idHunt, jsonRes.getInt("idWinner"), jsonRes.getString("nameWinner"));
+
+
+
+                                    winTeam.setText(getResources().getString(R.string.winTeam) + " " + jsonRes.getString("nameWinner"));
+                                    flEndHunt.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                                    flEndHunt.setVisibility(View.VISIBLE);
+                                }
+
+
+
+
                             }
                         } else {
                             Toast toast = Toast.makeText(this, getResources().getString(R.string.errorToast), Toast.LENGTH_SHORT);
